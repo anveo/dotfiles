@@ -1,5 +1,8 @@
 # cd
 alias ..='cd ..'
+
+#grep
+alias g="find . -type f |xargs grep --exclude=\*.svn\* -n 2> /dev/null "
  
 # ls
 alias ls="ls -F"
