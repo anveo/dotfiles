@@ -1,0 +1,11 @@
+[user]
+        name = Brian Racer
+        email = brian@jetpackweb.com
+[alias]
+        co = checkout
+        st = status
+[apply]
+        whitespace = nowarn
+[github]
+        user = anveo
+        token = e04e3b5d80248acf9b82997039d1b7f7
