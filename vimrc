@@ -62,6 +62,8 @@ vmap P p :call setreg('"', getreg('0')) <CR>
 " map <F7> to toggle NERDTree window
 nmap <silent> <F7> :NERDTreeToggle<CR>
 
+nmap <silent> <F8> :TlistToggle<CR>
+
 " Leader shortcuts for Rails commands
 map <Leader>m :Rmodel
 map <Leader>c :Rcontroller
