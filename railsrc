@@ -1,0 +1,3 @@
+# Log to STDOUT if in Rails
+require 'logger'
+RAILS_DEFAULT_LOGGER = Logger.new(STDOUT)
