@@ -1,5 +1,6 @@
 " Nicer font
-set guifont=Monaco\ 12
+"set guifont=Monaco\ 14
+set guifont=Monaco:h14
 
 " No icky toolbar, menu or scrollbars in the GUI
 if has('gui')
@@ -11,3 +12,6 @@ if has('gui')
   set guioptions-=R
   set guioptions+=b
 end
+
+" Enable the tab bar
+set showtabline=2 " 2=always
