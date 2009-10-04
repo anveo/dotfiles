@@ -35,7 +35,7 @@ set grepprg=ack
 set grepformat=%f:%l:%m
 
 " Snippets are activated by Shift+Tab
-" let g:snippetsEmu_key = "<S-Tab>"
+let g:snippetsEmu_key = "<S-Tab>"
 " Tab completion options
 " " (only complete to the longest unambiguous match, and show a menu)
 "set completeopt=longest,menu
@@ -105,7 +105,7 @@ map <Leader>sm :RSmodel
 map <Leader>sc :RScontroller
 map <Leader>sv :RSview
 map <Leader>su :RSunittest
-map <Leader>sf :RSfunctionaltest 
+map <Leader>sf :RSfunctionaltest
 
 " Edit routes
 command! Rroutes :e config/routes.rb
@@ -116,8 +116,8 @@ autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
 autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
 autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
 autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
-autocmd FileType ruby,eruby let g:rubycomplete_include_object = 1
-autocmd FileType ruby,eruby let g:rubycomplete_include_objectspace = 1
+autocmd FileType ruby,eruby let g:rubycomplete_include_object = 0
+autocmd FileType ruby,eruby let g:rubycomplete_include_objectspace = 0
 
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
