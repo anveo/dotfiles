@@ -11,7 +11,7 @@ scrollback 10000
 vbell off
 vbell_msg "Bell on %t (%n)"
 # look and feel
-caption always "%{=b kR}[%{-b}%{W}%l%{b R}][%= %{= kw}%?%-Lw%?%{=b kR}(%{W}%n*%f %t%?(%u)%?%{=b kR})%{= kw}%?%+Lw%?%?%= %{=b R}]%{=b R}[%{-b W} %d %M %c %{=b R}]%{W}"
+caption always "%{=b kR}[%u%H][%{-b}%{W}%l%{b R}][%= %{= kw}%?%-Lw%?%{=b kR}(%{W}%n*%f %t%?(%u)%?%{=b kR})%{= kw}%?%+Lw%?%?%= %{=b R}]%{=b R}[%{-b W} %d %M %c %{=b R}]%{W}"
 #termcapinfo xterm 'hs:ts=\E]2;:fs=\007:ds=\E]2;screen\007'
 hardstatus alwaysignore
 #hardstatus alwayslastline '%{gW}%-w%{.wb}%n %t%{-}%+w %=%{.w}'
@@ -19,7 +19,7 @@ hardstatus alwaysignore
 nethack on
 activity "Activity in %t (%n)"
 attrcolor b ".I"
-termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+#termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
 defbce "on"
-term screen-256color-bce
-termcapinfo xterm|xterms|xs|rxvt ti@:te@
+#term screen-256color-bce
+#termcapinfo xterm|xterms|xs|rxvt ti@:te@
