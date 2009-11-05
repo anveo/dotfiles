@@ -5,13 +5,13 @@ alias ..='cd ..'
 alias g="find . -type f |xargs grep --exclude=\*.svn\* -n 2> /dev/null "
  
 # ls
-alias ls="ls -F --color=auto"
-alias l="ls -lAh --color=auto"
-alias ll="ls -l --color=auto"
-alias la="ls -A --color=auto"
+alias ls="ls -F"
+alias l="ls -lAh"
+alias ll="ls -l"
+alias la="ls -A"
 
 alias grep='grep --color=auto'
- 
+
 # git
 alias gl='git pull'
 alias gp='git push'
@@ -33,3 +33,9 @@ alias tlog='tail -f log/development.log'
 alias scaffold='script/generate nifty_scaffold'
 alias migrate='rake db:migrate db:test:clone'
 alias rst='touch tmp/restart.txt'
+
+# OSX specific
+if [ `uname` == 'Darwin' ]; then
+  # We need gui support for plugins
+  alias vi='mvim -v'
+fi
