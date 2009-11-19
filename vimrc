@@ -49,7 +49,7 @@ if has("folding")
  set foldtext=strpart(getline(v:foldstart),0,50).'\ ...\ '.substitute(getline(v:foldend),'^[\ #]*','','g').'\ '
 endif
 
-colorscheme vibrantink
+colorscheme koehler
 highlight NonText guibg=#060606
 highlight Folded guibg=#0A0A0A guifg=#9090D0
 

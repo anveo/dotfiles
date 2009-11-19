@@ -50,10 +50,6 @@ if [ -f ~/.bash_profile ]; then
   . ~/.bash_profile
 fi
 
-if [ -f ~/.profile ]; then
-  . ~/.profile
-fi
-
 if [ -f ~/.localrc ]; then
   . ~/.localrc
 fi

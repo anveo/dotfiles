@@ -1,6 +1,12 @@
+colorscheme vibrantink
+
 " Nicer font
-"set guifont=Monaco\ 14
 set guifont=Monaco:h14
+
+let os = substitute(system('uname'), "\n", "", "")
+if os == "Linux"
+  set guifont=Monaco\ 12
+endif
 
 " No icky toolbar, menu or scrollbars in the GUI
 if has('gui')
@@ -14,4 +20,4 @@ if has('gui')
 end
 
 " Enable the tab bar
-set showtabline=2 " 2=always
+" set showtabline=2 " 2=always
