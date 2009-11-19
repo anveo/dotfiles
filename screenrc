@@ -28,4 +28,5 @@ termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
 defbce "on"
 # set TERM
 term screen-256color-bce
+term xterm-256color
 #termcapinfo xterm|xterms|xs|rxvt ti@:te@
