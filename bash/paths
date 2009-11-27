@@ -2,3 +2,7 @@
 #export MANPATH="/usr/local/man:/usr/local/mysql/man:/usr/local/git/man:$MANPATH"
 export PATH=~/bin:"${PATH}"
 export PATH=/var/lib/gems/1.8/bin:"${PATH}"
+
+# Mac Ports
+export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/bin:$PATH
+export MANPATH=/opt/local/share/man:$MANPATH
