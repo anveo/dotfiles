@@ -31,6 +31,7 @@ esac
 case "$TERM" in
 xterm*|rxvt*)
     PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    PS1="\u@\h: \w$ "
     ;;
 *)
     PS1="\u@\h: \w$ "
@@ -38,7 +39,7 @@ xterm*|rxvt*)
 esac
 
 if [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
+  . /etc/bash_completion
 fi
 
 source ~/.bash/aliases
