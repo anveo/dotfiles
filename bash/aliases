@@ -1,10 +1,23 @@
+# Utility
+alias reload='source ~/dotfiles/bash/aliases'
+
 # cd
 alias ..='cd ..'
+alias cdd='cd -'
+alias cdg='cd /var/lib/gems/1.8/gems'
+
+function take() {
+  mkdir -p "$1"
+  cd "$1"
+}
 
 #grep
 alias grep='grep --color=auto'
 alias g="find . -type f |xargs grep --exclude=\*.svn\* -n 2> /dev/null "
- 
+
+#history
+alias h="history"
+
 # ls
 alias ls="ls -F --color=auto"
 alias l="ls -lAh"
@@ -23,7 +36,21 @@ alias gs='git status'
 alias gst='git status'
 alias grm="git status | grep deleted | awk '{print \$3}' | xargs git rm"
 #alias gae="for i in $(find . -type d -regex ``./[^.].*'' -empty); do touch $i\"/.gitignore\"; done;"
- 
+
+# Setup a tracking branch from [remote] [branch_name]
+function gbt() {
+  git branch --track $2 $1/$2 && git checkout $2
+}
+
+# Processes
+alias k9="killall -9"
+function killnamed () { 
+    ps ax | grep $1 | cut -d ' ' -f 2 | xargs kill 
+}
+
+# Ruby
+alias r="rake"
+
 # rails
 alias sc='script/console'
 alias ss='script/server'
@@ -35,17 +62,20 @@ alias migrate='rake db:migrate db:test:clone'
 alias rst='touch tmp/restart.txt'
 
 # projects
-alias bw='cd ~/projects/bandwith'
-alias fb='cd ~/projects/fontbros'
-alias v1='cd ~/projects/volumeone'
+alias cdbw='cd ~/projects/bandwith'
+alias cdfb='cd ~/projects/fontbros'
+alias cdv1='cd ~/projects/volumeone'
 
 # OSX specific
 if [ `uname` == 'Darwin' ]; then
   # We need gui support for plugins
   alias vi='mvim -v'
-  
+
   # no --color option
   alias ls="ls -F -G"
-  
+
+  # Gem location
+  alias cdg='cd /var/lib/gems/1.8/gems'
+
   alias lamp='cd /Applications/XAMPP'
 fi
