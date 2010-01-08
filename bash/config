@@ -38,4 +38,4 @@ BMAGENTA='\e[45m'
 BCYAN='\e[46m'
 BWHITE='\e[47m'
 
-PS1="\n\u@\h:\w \[$EBLACK\]\$(vcprompt)\[$NO_COLOR\] \n→ "
+PS1="\n\u@\h:\w \[$EBLACK\]\$(vcprompt.py)\[$NO_COLOR\] \n→ "
