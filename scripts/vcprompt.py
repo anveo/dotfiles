@@ -106,7 +106,7 @@ def svn(path):
     file = os.path.join(path, '.svn/entries')
     if not os.path.exists(file):
         return None
-    pp = Popen('/usr/bin/svn info 2>/dev/null', shell=True, stdout=PIPE)
+    pp = Popen('`which svn` info 2>/dev/null', shell=True, stdout=PIPE)
     for ll in pp.stdout:
         if re.search('^Revision: ', ll):
             m = re.match('^Revision: (\d+)', ll)
