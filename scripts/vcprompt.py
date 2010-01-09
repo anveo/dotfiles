@@ -67,6 +67,7 @@ def fossil(path):
     repo = repo.fetchone()[1].split('/')[-1]
     return "fossil:" + repo
 
+@vcs
 def hg(path):
     files = ['.hg/branch', '.hg/undo.branch']
     file = None
