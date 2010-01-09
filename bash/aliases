@@ -62,9 +62,13 @@ alias migrate='rake db:migrate db:test:clone'
 alias rst='touch tmp/restart.txt'
 
 # projects
-alias cdbw='cd ~/projects/bandwith'
-alias cdfb='cd ~/projects/fontbros'
-alias cdv1='cd ~/projects/volumeone'
+alias cdbw='cd ~/projects/local/bandwith'
+alias cdbwr='cd ~/projects/local/bandwithradio'
+alias cdec='cd ~/projects/local/ecollect'
+alias cdfb='cd ~/projects/local/fontbros'
+alias cdll='cd ~/projects/local/listedlocal'
+alias cdv1='cd ~/projects/local/volumeone'
+alias cdyb='cd ~/projects/local/yayboo'
 
 # OSX specific
 if [ `uname` == 'Darwin' ]; then
