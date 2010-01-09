@@ -25,7 +25,7 @@ def vcprompt(path=None):
         for vcs in SYSTEMS:
             prompt = vcs(path)
             if prompt:
-                return prompt
+                return '['+prompt+']'
         paths.pop()
     return ""
 
@@ -67,8 +67,6 @@ def fossil(path):
     repo = repo.fetchone()[1].split('/')[-1]
     return "fossil:" + repo
 
-
-@vcs
 def hg(path):
     files = ['.hg/branch', '.hg/undo.branch']
     file = None
@@ -101,21 +99,25 @@ def git(path):
 @vcs
 def svn(path):
     revision = UNKNOWN
+    branch = ''
+    url = ''
+    repo_root = ''
     file = os.path.join(path, '.svn/entries')
     if not os.path.exists(file):
         return None
-    with open(file, 'r') as f:
-        previous_line = ""
-        for line in f:
-            line = line.strip()
-            # In SVN's entries file, the first set of digits is
-            # the version number. The second is the revision.
-            if re.match('(\d+)', line):
-                if re.match('dir', previous_line):
-                    revision = "r%s" % line
-                    break
-            previous_line = line
-    return 'svn:%s' % revision
+    pp = Popen('/usr/bin/svn info 2>/dev/null', shell=True, stdout=PIPE)
+    for ll in pp.stdout:
+        if re.search('^Revision: ', ll):
+            m = re.match('^Revision: (\d+)', ll)
+            revision =  'r'+m.groups(0)[0]
+        if re.search('^Repository Root:', ll):
+            m = re.match('^Repository Root: (.*)', ll)
+            repo_root =  m.groups(0)[0]
+        if re.search('^URL:', ll):
+            m = re.match('^URL: (.*)', ll)
+            url = m.groups(0)[0]
+    branch = url.replace(repo_root,'')
+    return 'svn:%s:%s' % (branch, revision)
 
 
 if __name__ == '__main__':
