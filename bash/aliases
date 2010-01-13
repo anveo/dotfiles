@@ -82,4 +82,10 @@ if [ `uname` == 'Darwin' ]; then
   alias cdg='cd /opt/local/lib/ruby/gems/1.8/gems'
 
   alias lamp='cd /Applications/XAMPP'
+else
+  alias pbcopy='xclip -selection clipboard'
+  alias pbpaste='xclip -selection clipboard -o'
+  # Or
+  # alias pbcopy='xsel --clipboard --input'
+  # alias pbcopy='xsel --clipboard --output'
 fi
