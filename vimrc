@@ -1,14 +1,7 @@
-source ~/.vim/vimrc      "linux
+source ~/.vim/vimrc
 
-" Use Vim settings, rather then Vi settings (much better!).
-" This must be first, because it changes other options as a side effect.
-set nocompatible
-
-" allow backspacing over everything in insert mode
-set backspace=indent,eol,start
-
-set sts=2
-set sw=2
+" Easier non-interactive command insertion
+nnoremap <Space> :
 
 "Set mapleader
 let mapleader = ","
@@ -22,12 +15,11 @@ nmap <leader>vi :tabe ~/.vimrc<CR>
 noremap ' `
 noremap ` '
 
-"Show line number
+" Show line numbers
 set number
 set numberwidth=3
 
-"Don't highlight search results and ignore case
-set nohlsearch
+" Ignore case
 set ignorecase
 
 " ack
@@ -69,8 +61,26 @@ map! <F1> <Esc>
 vmap P p :call setreg('"', getreg('0')) <CR>
 
 " map <F7> to toggle NERDTree window
+nmap <leader>d :NERDTreeToggle<CR>
 nmap <silent> <F7> :NERDTreeToggle<CR>
 nmap <silent> <F6> :TlistToggle<CR>
+
+" Close buffer when tab is closed
+set nohidden
+
+" open tabs with command-<tab number>
+map <D-1> :tabn 1<CR>
+map <D-2> :tabn 2<CR>
+map <D-3> :tabn 3<CR>
+map <D-4> :tabn 4<CR>
+map <D-5> :tabn 5<CR>
+map <D-6> :tabn 6<CR>
+map <D-7> :tabn 7<CR>
+map <D-8> :tabn 8<CR>
+map <D-9> :tabn 9<CR>
+
+nmap <leader>v :vsplit<CR> <C-w><C-w>
+nmap <leader>s :split<CR> <C-w><C-w>
 
 " NERDTree
 let NERDChristmasTree = 1
@@ -89,6 +99,12 @@ let Tlist_Use_Right_Window = 1
 let Tlist_Exit_OnlyWindow = 1 "Exit if only the taglist is open
 let Tlist_File_Fold_Auto_Close = 1 " Only auto expand the current file
 "let Tlist_Ctags_Cmd = '/opt/local/bin/ctags'
+
+" bind control-l to hashrocket
+imap <C-l> <Space>=><Space>"
+" convert word into ruby symbol
+imap <C-k> <C-o>b:<Esc>Ea
+nmap <C-k> lbi:<Esc>E
 
 " Leader shortcuts for Rails commands
 map <Leader>m :Rmodel
