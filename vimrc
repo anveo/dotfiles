@@ -21,10 +21,18 @@ set numberwidth=3
 
 " Ignore case
 set ignorecase
+" Case sentisive searching if using uppercase letter
+set smartcase
+
+" Jump to end of line in insert mode
+imap <C-j> <End>
 
 " ack
 set grepprg=ack
 set grepformat=%f:%l:%m
+
+nmap <Leader>g :Ack
+nmap <Leader>G :AckG
 
 " Snippets are activated by Shift+Tab
 let g:snippetsEmu_key = "<S-Tab>"
@@ -130,8 +138,8 @@ command! RTroutes :tabe config/routes.rb
 " Turn on language specific omnifuncs
 autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
 autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
-autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
-autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+autocmd FileType ruby,eruby let g:rubycomplete_rails = 0
+autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 0
 autocmd FileType ruby,eruby let g:rubycomplete_include_object = 0
 autocmd FileType ruby,eruby let g:rubycomplete_include_objectspace = 0
 
