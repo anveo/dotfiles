@@ -3,9 +3,21 @@
         email = brian@jetpackweb.com
 [alias]
         co = checkout
+        ci = checkin
         st = status
+        br = branch
+        log1 = log --pretty=oneline --abbrev-commit
+        diffi = diff --ignore-all-space
+
 [apply]
         whitespace = nowarn
+
+[color]
+        diff = true
+
+[push]
+        default = matching
+
 [github]
         user = anveo
         token = e04e3b5d80248acf9b82997039d1b7f7

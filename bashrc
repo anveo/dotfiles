@@ -1,5 +1,6 @@
 # If not running interactively, don't do anything
-#[ -z "$PS1" ] && return
+# Important for ssh+svn support
+[ -z "$PS1" ] && return
 
 # don't put duplicate lines in the history. See bash(1) for more options
 # don't overwrite GNU Midnight Commander's setting of `ignorespace'.
@@ -21,6 +22,11 @@ shopt -s checkwinsize
 case "$TERM" in
     xterm-color) color_prompt=yes;;
 esac
+
+if [[ "${COLORTERM}" == "gnome-terminal" ]]; then
+    export TERM="gnome-256color"
+    unset COLORTERM
+fi
 
 if [ -f /etc/bash_completion ]; then
   . /etc/bash_completion

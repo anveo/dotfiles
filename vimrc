@@ -14,6 +14,8 @@ nmap <leader>vi :tabe ~/.vimrc<CR>
 " Columns are cooler than rows
 noremap ' `
 noremap ` '
+noremap g' g`
+noremap g` g'
 
 " Show line numbers
 set number
@@ -33,6 +35,13 @@ set grepformat=%f:%l:%m
 
 nmap <Leader>g :Ack
 nmap <Leader>G :AckG
+
+" Terminal Stuff
+if &term =~? '^\(xterm\|screen\|putty\|konsole\|gnome\)'
+  let &t_RV="\<Esc>[>c" " Let Vim check for xterm-compatibility
+  set ttyfast " Because no one should have to suffer
+  set ttymouse=xterm2 " Assume xterm mouse support
+endif
 
 " Snippets are activated by Shift+Tab
 let g:snippetsEmu_key = "<S-Tab>"

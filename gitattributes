@@ -1,0 +1,3 @@
+*.rb diff=ruby
+*.py diff=python
+*.vim diff=vim
