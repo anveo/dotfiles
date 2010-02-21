@@ -4,3 +4,18 @@ if [ `uname` == 'Darwin' ]; then
   # We need gui support for plugins
   export EDITOR="mvim -v"
 fi
+
+# Clojure stuff
+export CLOJURE_EXT=~/.clojure
+
+# CLOJURE_JAVA The command to launch a JVM instance for Clojure
+# default: java
+# example: /usr/local/bin/java6
+#
+# CLOJURE_OPTS Java options for this JVM instance
+# default:
+# example:"-Xms32M -Xmx128M -server"
+#
+# CLOJURE_MAIN The Java class to launch
+# default: clojure.main
+# example: clojure.contrib.repl_ln

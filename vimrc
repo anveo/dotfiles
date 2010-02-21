@@ -161,5 +161,11 @@ autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 autocmd FileType c set omnifunc=ccomplete#Complete
 
 " JQuery syntax
-"au BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
-au BufRead,BufNewFile *.js set ft=javascript syntax=jquery
+au BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
+"au BufRead,BufNewFile *.js set ft=javascript syntax=jquery
+
+" Clojure
+let clj_want_gorilla = 1
+let g:clj_highlight_builtins = 1
+let g:clj_highlight_contrib = 1
+let g:clj_paren_rainbow = 1 
