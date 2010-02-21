@@ -21,3 +21,7 @@
 [github]
         user = anveo
         token = e04e3b5d80248acf9b82997039d1b7f7
+[core]
+	editor = vim
+[merge]
+	tool = vimdiff
