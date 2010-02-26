@@ -26,6 +26,9 @@ set ignorecase
 " Case sentisive searching if using uppercase letter
 set smartcase
 
+" Don't highlight search matches
+set nohlsearch
+
 " Jump to end of line in insert mode
 imap <C-j> <End>
 
@@ -83,7 +86,7 @@ nmap <silent> <F7> :NERDTreeToggle<CR>
 nmap <silent> <F6> :TlistToggle<CR>
 
 " Close buffer when tab is closed
-set nohidden
+" set nohidden
 
 " open tabs with command-<tab number>
 map <D-1> :tabn 1<CR>
