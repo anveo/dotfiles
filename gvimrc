@@ -26,5 +26,8 @@ if has('gui_macvim')
   set fuoptions=maxvert,maxhorz " Full-screen mode uses the full screen
 endif
 
+" Disable bell
+set vb
+
 " Enable the tab bar
 " set showtabline=2 " 2=always
