@@ -1,5 +1,7 @@
 source ~/.vim/vimrc
 
+let g:sparkupNextMapping = '<c-x>'
+
 " Easier non-interactive command insertion
 nnoremap <Space> :
 
