@@ -11,9 +11,19 @@ function take() {
   cd "$1"
 }
 
-#grep
+# grep
+if which ack-grep 1>/dev/null
+then
+  alias ack="ack-grep"
+fi
 alias grep='grep --color=auto'
 alias g="find . -type f |xargs grep --exclude=\*.svn\* -n 2> /dev/null "
+
+# diff
+if which colordiff 1>/dev/null
+then
+  alias diff="colordiff"
+fi
 
 #history
 alias h="history"
