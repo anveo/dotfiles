@@ -125,7 +125,7 @@ let Tlist_File_Fold_Auto_Close = 1 " Only auto expand the current file
 " bind control-l to hashrocket
 imap <C-l> <Space>=><Space>"
 " convert word into ruby symbol
-imap <C-k> <C-o>b:<Esc>Ea
+imap <C-k> <C-o>b:<Esc>ea
 nmap <C-k> lbi:<Esc>E
 
 " Leader shortcuts for Rails commands
