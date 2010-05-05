@@ -1,11 +1,13 @@
 colorscheme vibrantink
 
+set lines=55 columns=100
+
 " Nicer font
 set guifont=Monaco:h14
 
 let os = substitute(system('uname'), "\n", "", "")
 if os == "Linux"
-  set guifont=Monaco\ 12
+  set guifont=DejaVu\ Sans\ Mono\ 13
 endif
 
 " No icky toolbar, menu or scrollbars in the GUI
@@ -14,10 +16,10 @@ if has('gui')
   set guioptions-=m
   set guioptions-=T
   set guioptions-=l
-  "set guioptions-=L
-  "set guioptions-=r
+  set guioptions-=L
+  set guioptions-=r
   set guioptions-=R
-  set guioptions+=b
+  set guioptions-=b
   set mousehide                   " Hide the mouse while typing
 end
 
