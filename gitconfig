@@ -8,6 +8,8 @@
         br = branch
         log1 = log --pretty=oneline --abbrev-commit
         diffi = diff --ignore-all-space
+        unstage = reset HEAD --
+        last = log -1 HEAD
 
 [apply]
         whitespace = nowarn
