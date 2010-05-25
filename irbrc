@@ -2,6 +2,13 @@ require 'rubygems'
 require 'irb/completion'
 require 'irb/ext/save-history'
 
+# For vim integration
+begin
+  require 'interactive_editor'
+rescue LoadError
+  puts "interactive_editor is not installed. To enable, run: gem install interactive_editor"
+end
+
 # http://drnicutilities.rubyforge.org/map_by_method/
 begin
   require 'map_by_method'
