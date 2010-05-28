@@ -4,7 +4,6 @@ alias reload='source ~/dotfiles/bash/aliases'
 # cd
 alias ..='cd ..'
 alias cdd='cd -'
-alias cdg='cd /var/lib/gems/1.8/gems'
 
 function take() {
   mkdir -p "$1"
@@ -33,6 +32,7 @@ alias ls="ls -F --color=auto"
 alias l="ls -lAh"
 alias ll="ls -l"
 alias la="ls -A"
+alias sl="ls"
 
 # git
 alias gl='git pull'
@@ -103,46 +103,30 @@ else
   # alias pbcopy='xsel --clipboard --output'
 fi
 
-# Use GNU versions of coreutils on OSX
-#if [ `uname` == 'Darwin' ]; then
-#  alias awk=$(type -p gawk gnuawk awk | head -1)
-#  alias base64=$(type -p gbase64 base64 | head -1)
-#  alias basename=$(type -p gbasename basename | head -1)
-#  alias cat=$(type -p gcat cat | head -1)
-#  alias cp=$(type -p gcp cp | head -1)
-#  alias cut=$(type -p gcut cut | head -1)
-#  alias date=$(type -p gdate date | head -1)
-#  alias diff=$(type -p gdiff diff | head -1)
-#  alias df=$(type -p gdf df | head -1)
-#  alias du=$(type -p gdu du | head -1)
-#  alias false=$(type -p gfalse false | head -1)
-#  alias fmt=$(type -p gdu du | head -1)
-#  alias head=$(type -p ghead head | head -1)
-#  alias join=$(type -p gjoin join | head -1)
-#  alias make=$(type -p gmake make | head -1)
-#  alias md5sum=$(type -p gmd5sum md5sum | head -1)
-#  alias mv=$(type -p gmv mv | head -1)
-#  alias nl=$(type -p gnl nl | head -1)
-#  alias paste=$(type -p gpaste paste | head -1)
-#  alias printf=$(type -p gprintf printf | head -1)
-#  alias readlink=$(type -p greadlink readlink | head -1)
-#  alias rm=$(type -p grm rm | head -1)
-#  alias seq=$(type -p gseq seq | head -1)
-#  alias sha1sum=$(type -p gsha1sum sha1sum | head -1)
-#  alias sleep=$(type -p gsleep sleep | head -1)
-#  alias sort=$(type -p gsort sort | head -1)
-#  alias split=$(type -p gsplit split | head -1)
-#  alias tac=$(type -p gtac tac | head -1)
-#  alias tail=$(type -p gtail tail | head -1)
-#  alias tar=$(type -p gnutar gtar tar | head -1)
-#  alias tee=$(type -p gtee tee | head -1)
-#  alias touch=$(type -p gtouch touch | head -1)
-#  alias tr=$(type -p gtr tr | head -1)
-#  alias true=$(type -p gtrue true | head -1)
-#  alias uniq=$(type -p guniq uniq | head -1)
-#  alias uptime=$(type -p guptime uptime | head -1)
-#  alias wc=$(type -p gwc wc | head -1)
-#  alias who=$(type -p gwho who | head -1)
-#  alias whoami=$(type -p gwhoami whoami | head -1)
-#  alias yes=$(type -p gyes yes | head -1)
-#fi
+# Show what is taking up space
+alias diskspace="du -S | sort -n -r |more"
+
+# Show me the size (sorted) of only the folders in this directory
+alias folders="find . -maxdepth 1 -type d -print | xargs du -sk | sort -rn"
+
+# Easy archive extraction
+extract () {
+  if [ -f $1 ] ; then
+    case $1 in
+      *.tar.bz2)   tar xvjf $1    ;;
+  *.tar.gz)    tar xvzf $1    ;;
+  *.bz2)       bunzip2 $1     ;;
+  *.rar)       unrar x $1       ;;
+  *.gz)        gunzip $1      ;;
+  *.tar)       tar xvf $1     ;;
+  *.tbz2)      tar xvjf $1    ;;
+  *.tgz)       tar xvzf $1    ;;
+  *.zip)       unzip $1       ;;
+  *.Z)         uncompress $1  ;;
+  *.7z)        7z x $1        ;;
+  *)           echo "don't know how to extract '$1'..." ;;
+  esac
+  else
+    echo "'$1' is not a valid file!"
+      fi
+}
