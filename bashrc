@@ -28,10 +28,6 @@ if [[ "${COLORTERM}" == "gnome-terminal" ]]; then
     unset COLORTERM
 fi
 
-if [ -f /etc/bash_completion ]; then
-  . /etc/bash_completion
-fi
-
 source ~/.bash/env
 source ~/.bash/config
 source ~/.bash/aliases

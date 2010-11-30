@@ -96,9 +96,6 @@ if [ `uname` == 'Darwin' ]; then
   # no --color option
   alias ls="ls -F -G"
 
-  # Gem location for macport
-  alias cdg='cd /opt/local/lib/ruby/gems/1.8/gems'
-
   alias lamp='cd /Applications/XAMPP'
 else
   alias pbcopy='xclip -selection clipboard'
@@ -135,3 +132,4 @@ extract () {
     echo "'$1' is not a valid file!"
       fi
 }
+alias xtract="extract"

@@ -2,7 +2,7 @@ autoload -U colors
 colors
 setopt prompt_subst
 PROMPT='
-%~ %{$fg_bold[black]%}$(vcprompt)
+%~ %{$fg_bold[black]%}$(vcprompt.py)
 → %{$reset_color%}'
 
 # Set RPROMPT to have info show up on the right, too.
