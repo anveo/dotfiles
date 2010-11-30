@@ -84,7 +84,9 @@ alias cdec='cd ~/projects/local/ecollect'
 alias cdfb='cd ~/projects/local/fontbros'
 alias cdll='cd ~/projects/local/listedlocal'
 alias cdv1='cd ~/projects/local/volumeone'
+alias cdv2='cd ~/projects/local/volumetwo'
 alias cdyb='cd ~/projects/local/yayboo'
+alias cdyt='cd ~/projects/local/yaptime'
 
 # OSX specific
 if [ `uname` == 'Darwin' ]; then
