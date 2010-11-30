@@ -4,7 +4,7 @@ desc "install the dot files into user's home directory"
 task :install do
   replace_all = false
   Dir['*'].each do |file|
-    next if %w[Gemfile Rakefile README LICENSE scripts].include? file
+    next if %w[Gemfile Rakefile README LICENSE scripts vimfiles].include? file
 
     if File.exist?(File.join(ENV['HOME'], ".#{file}"))
       if replace_all
@@ -26,13 +26,19 @@ task :install do
     else
       link_file(file)
     end
-  end
-end
 
-desc "install commonly used shell scripts"
-task :install_scripts do
-  puts "linking ~/scripts"
+  end
+
+  # link scripts
   system %Q{ln -s "$PWD/scripts" "$HOME/scripts"}
+  system %Q{mkdir -p "$HOME/bin"}
+  system %Q{mkdir -p "$HOME/local/bin"}
+  system %Q{ln -s "$PWD/scripts/vcprompt.py" "$HOME/local/bin/vcprompt.py"}
+  system %Q{ln -s "$PWD/scripts/phpm/phpm" "$HOME/local/bin/phpm"}
+
+  # link vimfiles
+  system %Q{ln -s "$PWD/vimfiles" "$HOME/.vim"}
+  system %Q{ln -s "$PWD/vimfiles/.vimrc" "$HOME/.vimrc"}
 end
 
 def replace_file(file)
