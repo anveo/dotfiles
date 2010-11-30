@@ -29,7 +29,7 @@ if has('gui_macvim')
 endif
 
 " Disable bell
-set vb
+set visualbell t_vb=
 
 " Enable the tab bar
 " set showtabline=2 " 2=always
