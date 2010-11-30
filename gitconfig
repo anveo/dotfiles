@@ -27,7 +27,7 @@
 	editor = vim
 
 [merge]
-	tool = vimdiff
+	tool = meld
 
 [branch]
   # When creating a new branch off a remote branch, always set it up to
