@@ -10,6 +10,9 @@ function take() {
   cd "$1"
 }
 
+# file manager
+alias n="nautilus"
+
 # grep
 if which ack-grep 1>/dev/null
 then
