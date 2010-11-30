@@ -1,0 +1,1162 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<manual>
+	<methodsynopsis function="Action-&gt;perform">
+<sdesc>Process the specified HTTP request, and create the corresponding HTTP  response (or forward to another web component that will create it).</sdesc>
+<desc>Return an ActionForward instance describing where and how control should  be forwarded, or null if the response has already been completed.  Subclasses must override this method to provide any business logic they  wish to perform.</desc>
+<type></type>
+<methodparam>
+<type></type>
+<parameter>actionMapping</parameter>
+</methodparam>
+<methodparam>
+<type></type>
+<parameter>actionForm</parameter>
+</methodparam>
+<methodparam>
+<type></type>
+<parameter>servletRequest</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ActionController-&gt;ActionController">
+<sdesc>Create a ActionController specifying the options.</sdesc>
+<desc></desc>
+<type>ActionController</type>
+<methodparam>
+<type>array</type>
+<parameter>options</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ActionController-&gt;destroy">
+<sdesc>Finish off the request and take down the controller.</sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="ActionController-&gt;process">
+<sdesc>Process the request.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>array</type>
+<parameter>mappings</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ActionForm-&gt;putAll">
+<sdesc>Copies all of the mappings from the specified map to this map. These  mappings will replace any mappings that this map had for any of the keys  currently in the specified map.</sdesc>
+<desc>**Altered behaviour** If the value for a key is not set, and a value for  this key already exists, it'll not be overwritten. Technically speaking  this class is now not a correct subclass of HashMap anymore.</desc>
+<type>void</type>
+<methodparam>
+<type>mixed</type>
+<parameter>values</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ActionForm-&gt;reset">
+<sdesc>Reset all properties to their default state. This method is called  before the properties are repopulated by the ActionController. The  default implementation does nothing. Subclasses should override this  method to reset all bean properties to default values.</sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="ActionForm-&gt;validate">
+<sdesc>Validate the properties that have been set for this request and  return ActionError objects representing any validation errors that have  been found. Subclasses must override this method to provide any  validation they wish to perform.</sdesc>
+<desc></desc>
+<type>ActionErrors</type>
+</methodsynopsis>
+<methodsynopsis function="ActionForward-&gt;ActionForward">
+<sdesc>Create an ActionForward with the specified values.</sdesc>
+<desc></desc>
+<type>ActionForward</type>
+<methodparam>
+<type>string</type>
+<parameter>name</parameter>
+</methodparam>
+<methodparam>
+<type>array</type>
+<parameter>forward</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ActionForward-&gt;appendPath">
+<sdesc>Appends the add_path string to the forward-path.</sdesc>
+<desc>Does not url-encode the $add_path.</desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>add_path</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ActionForward-&gt;getName">
+<sdesc>Get the name of the ActionForward.</sdesc>
+<desc></desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="ActionForward-&gt;getPath">
+<sdesc>Get the path of the ActionForward.</sdesc>
+<desc></desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="ActionForward-&gt;getRedirect">
+<sdesc>Get the redirect flag of the ActionForward.</sdesc>
+<desc></desc>
+<type>integer</type>
+</methodsynopsis>
+<methodsynopsis function="ActionForward-&gt;getViewEngine">
+<sdesc>Get the validate flag of the ActionForward.</sdesc>
+<desc></desc>
+<type>integer</type>
+</methodsynopsis>
+<methodsynopsis function="ActionForward-&gt;setAttribute">
+<sdesc>Add an attribute (key and value pair) to the forward-path.</sdesc>
+<desc>This urlencodes both key and value before appending to the forward-path.</desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>key</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>value</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ActionForward-&gt;setName">
+<sdesc>Set the name of the ActionForward.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>name</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ActionForward-&gt;setPath">
+<sdesc>Set the path of the ActionForward.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>path</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ActionForward-&gt;setRedirect">
+<sdesc>Set the redirect flag of the ActionForward.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>integer</type>
+<parameter>redirect</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ActionForward-&gt;setViewEngine">
+<sdesc>Set the validate flag of the ActionForward.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>viewengine</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ActionMapping-&gt;ActionMapping">
+<sdesc>Create a ActionMapping with the specified values.</sdesc>
+<desc></desc>
+<type>ActionMapping</type>
+<methodparam>
+<type>array</type>
+<parameter>mapping</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ActionMapping-&gt;findForward">
+<sdesc>Finds what to forward to</sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="ActionMapping-&gt;getForward">
+<sdesc>Get the forward flag</sdesc>
+<desc></desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="ActionMapping-&gt;getInput">
+<sdesc>Get the input URI of the ActionForward.</sdesc>
+<desc></desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="ActionMapping-&gt;getName">
+<sdesc>Get the name of the ActionForward.</sdesc>
+<desc></desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="ActionMapping-&gt;getRoleNames">
+<sdesc>Get the role-names for this action. Returns array with rolesnames.</sdesc>
+<desc></desc>
+<type>array</type>
+</methodsynopsis>
+<methodsynopsis function="ActionMapping-&gt;getRoles">
+<sdesc>Get the role-names for this action. Returns a comma  separated list of rolenames.</sdesc>
+<desc></desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="ActionMapping-&gt;getScope">
+<sdesc>Get the scope flag of the ActionForward.</sdesc>
+<desc></desc>
+<type>integer</type>
+</methodsynopsis>
+<methodsynopsis function="ActionMapping-&gt;getType">
+<sdesc>Get the type of the ActionForward.</sdesc>
+<desc></desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="ActionMapping-&gt;getUnknown">
+<sdesc>Get the validate flag of the ActionForward.</sdesc>
+<desc></desc>
+<type>integer</type>
+</methodsynopsis>
+<methodsynopsis function="ActionMapping-&gt;getValidate">
+<sdesc>Get the validate flag of the ActionForward.</sdesc>
+<desc></desc>
+<type>integer</type>
+</methodsynopsis>
+<methodsynopsis function="ActionMapping-&gt;setForward">
+<sdesc>Set the forward flag.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>forward</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ActionMapping-&gt;setInput">
+<sdesc>Set the input URI of the ActionForward.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>input</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ActionMapping-&gt;setName">
+<sdesc>Set the name of the ActionForward.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>name</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ActionMapping-&gt;setRoles">
+<sdesc>Set the role-names for this action. $role should be a comma  separated list of rolenames.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>roles</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ActionMapping-&gt;setScope">
+<sdesc>Set the scope flag of the ActionForward.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>scope</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ActionMapping-&gt;setType">
+<sdesc>Set the type of the ActionForward.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>type</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ActionMapping-&gt;setUnknown">
+<sdesc>Set the validate flag of the ActionForward.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>unknown</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ActionMapping-&gt;setValidate">
+<sdesc>Set the validate flag of the ActionForward.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>validate</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ActionMappings-&gt;ActionMappings">
+<sdesc>Guess what, a constructor!</sdesc>
+<desc></desc>
+<type>ActionMappings</type>
+</methodsynopsis>
+<methodsynopsis function="ActionMappings-&gt;findForm">
+<sdesc>Find a form</sdesc>
+<desc></desc>
+<type>array</type>
+<methodparam>
+<type>string</type>
+<parameter>name</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ActionMappings-&gt;findFormProperties">
+<sdesc>Find properties for a form</sdesc>
+<desc></desc>
+<type>array</type>
+</methodsynopsis>
+<methodsynopsis function="ActionMappings-&gt;findMapping">
+<sdesc>Find an ActionMapping</sdesc>
+<desc></desc>
+<type></type>
+<methodparam>
+<type>string</type>
+<parameter>path</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ActionMappings-&gt;findUnknownAction">
+<sdesc>Search for the name of an action Unknown=&quot;true&quot;</sdesc>
+<desc></desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="ActionMappings-&gt;findUsers">
+<sdesc>Get which users have access to this action</sdesc>
+<desc></desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="ActionMappings-&gt;findView">
+<sdesc>Find a view</sdesc>
+<desc></desc>
+<type>string</type>
+<methodparam>
+<type>string</type>
+<parameter>name</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ActionMappings-&gt;mappingExists">
+<sdesc>Check to see if a mapping (action) exists.</sdesc>
+<desc></desc>
+<type>boolean</type>
+<methodparam>
+<type>string</type>
+<parameter>name</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ArrayList-&gt;ArrayList">
+<sdesc>Create an ArrayList with the specified elements.</sdesc>
+<desc></desc>
+<type>ArrayList</type>
+<methodparam>
+<type>string</type>
+<parameter>elements</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ArrayList-&gt;add">
+<sdesc>Appends the specified element to the end of this list.</sdesc>
+<desc></desc>
+<type>boolean</type>
+<methodparam>
+<type>mixed</type>
+<parameter>element</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ArrayList-&gt;addAll">
+<sdesc>Appends all of the elements in the specified ArrayList to the end of  this list, in the order that they are returned by the specified  ArrayList's ListIterator.</sdesc>
+<desc></desc>
+<type>boolean</type>
+<methodparam>
+<type></type>
+<parameter>list</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ArrayList-&gt;clear">
+<sdesc>Removes all of the elements from this list.</sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="ArrayList-&gt;contains">
+<sdesc>Returns true if this list contains the specified element.</sdesc>
+<desc></desc>
+<type>boolean</type>
+<methodparam>
+<type>mixed</type>
+<parameter>element</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ArrayList-&gt;get">
+<sdesc>Returns the element at the specified position in this list.</sdesc>
+<desc></desc>
+<type>mixed</type>
+<methodparam>
+<type>integer</type>
+<parameter>index</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ArrayList-&gt;indexOf">
+<sdesc>Searches for the first occurence of the given argument.</sdesc>
+<desc></desc>
+<type>mixed</type>
+<methodparam>
+<type>mixed</type>
+<parameter>element</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ArrayList-&gt;isEmpty">
+<sdesc>Tests if this list has no elements.</sdesc>
+<desc></desc>
+<type>boolean</type>
+</methodsynopsis>
+<methodsynopsis function="ArrayList-&gt;lastIndexOf">
+<sdesc>Returns the index of the last occurrence of the specified object in this  list.</sdesc>
+<desc></desc>
+<type>mixed</type>
+<methodparam>
+<type>mixed</type>
+<parameter>element</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ArrayList-&gt;listIterator">
+<sdesc>Get a ListIterator for the ArrayList.</sdesc>
+<desc></desc>
+<type></type>
+</methodsynopsis>
+<methodsynopsis function="ArrayList-&gt;remove">
+<sdesc>Removes the element at the specified position in this list.</sdesc>
+<desc></desc>
+<type>mixed</type>
+<methodparam>
+<type>integer</type>
+<parameter>index</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ArrayList-&gt;removeRange">
+<sdesc>Removes from this List all of the elements whose index is between start,  inclusive and end, exclusive.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>integer</type>
+<parameter>start</parameter>
+</methodparam>
+<methodparam>
+<type>integer</type>
+<parameter>end</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ArrayList-&gt;set">
+<sdesc>Replaces the element at the specified position in this list with the  specified element.</sdesc>
+<desc></desc>
+<type>mixed</type>
+<methodparam>
+<type>integer</type>
+<parameter>index</parameter>
+</methodparam>
+<methodparam>
+<type>mixed</type>
+<parameter>element</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ArrayList-&gt;size">
+<sdesc>Returns the number of elements in this list.</sdesc>
+<desc></desc>
+<type>integer</type>
+</methodsynopsis>
+<methodsynopsis function="ArrayList-&gt;toArray">
+<sdesc>Returns an array containing all of the elements in this list in the  correct order.</sdesc>
+<desc></desc>
+<type>array</type>
+</methodsynopsis>
+<methodsynopsis function="HashMap-&gt;HashMap">
+<sdesc>Create a HashMap with the specified values.</sdesc>
+<desc></desc>
+<type>HashMap</type>
+<methodparam>
+<type>array</type>
+<parameter>values</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="HashMap-&gt;clear">
+<sdesc>Removes all mappings from this map.</sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="HashMap-&gt;contains">
+<sdesc>Indicates if the specified mapped property contain a value for the specified key value.</sdesc>
+<desc></desc>
+<type>boolean</type>
+<methodparam>
+<type>string</type>
+<parameter>key</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>value</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="HashMap-&gt;containsKey">
+<sdesc>Returns true if this map contains a mapping for the specified key.</sdesc>
+<desc></desc>
+<type>boolean</type>
+<methodparam>
+<type>mixed</type>
+<parameter>key</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="HashMap-&gt;containsValue">
+<sdesc>Returns true if this map maps one or more keys to the specified value.</sdesc>
+<desc></desc>
+<type>boolean</type>
+<methodparam>
+<type>mixed</type>
+<parameter>value</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="HashMap-&gt;get">
+<sdesc>Returns the value to which the specified key is mapped in this identity  hash map, or null if the map contains no mapping for this key.</sdesc>
+<desc></desc>
+<type>mixed</type>
+<methodparam>
+<type>mixed</type>
+<parameter>key</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="HashMap-&gt;isEmpty">
+<sdesc>Returns true if this map contains no key-value mappings.</sdesc>
+<desc></desc>
+<type>boolean</type>
+</methodsynopsis>
+<methodsynopsis function="HashMap-&gt;keySet">
+<sdesc>Returns an array of the keys contained in this map.</sdesc>
+<desc></desc>
+<type>array</type>
+</methodsynopsis>
+<methodsynopsis function="HashMap-&gt;put">
+<sdesc>Associates the specified value with the specified key in this map.</sdesc>
+<desc></desc>
+<type>mixed</type>
+<methodparam>
+<type>mixed</type>
+<parameter>key</parameter>
+</methodparam>
+<methodparam>
+<type>mixed</type>
+<parameter>value</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="HashMap-&gt;putAll">
+<sdesc>Copies all of the mappings from the specified map to this map. These  mappings will replace any mappings that this map had for any of the keys  currently in the specified map.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>mixed</type>
+<parameter>values</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="HashMap-&gt;remove">
+<sdesc>Removes the mapping for this key from this map if present.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>mixed</type>
+<parameter>key</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="HashMap-&gt;size">
+<sdesc>Returns the number of key-value mappings in this map.</sdesc>
+<desc></desc>
+<type>integer</type>
+</methodsynopsis>
+<methodsynopsis function="HashMap-&gt;values">
+<sdesc>Returns an array of the values contained in this map.</sdesc>
+<desc></desc>
+<type>array</type>
+</methodsynopsis>
+<methodsynopsis function="HttpServletRequest-&gt;HttpServletRequest">
+<sdesc>Constructor.</sdesc>
+<desc></desc>
+<type>HttpServletRequest</type>
+</methodsynopsis>
+<methodsynopsis function="HttpServletRequest-&gt;actionExists">
+<sdesc>Does the action exist in the mappings?</sdesc>
+<desc></desc>
+<type>boolean</type>
+</methodsynopsis>
+<methodsynopsis function="HttpServletRequest-&gt;getAction">
+<sdesc>Retrieve action to be executed</sdesc>
+<desc></desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="HttpServletRequest-&gt;getAttribute">
+<sdesc>Get a request attribute</sdesc>
+<desc></desc>
+<type>mixed</type>
+<methodparam>
+<type>$name</type>
+<parameter>name</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="HttpServletRequest-&gt;getAttributeNames">
+<sdesc>Returns an array containing the names of the attributes available to this request.</sdesc>
+<desc></desc>
+<type>array</type>
+</methodsynopsis>
+<methodsynopsis function="HttpServletRequest-&gt;getAttributes">
+<sdesc>Retrieve ALL attributes</sdesc>
+<desc></desc>
+<type>array</type>
+</methodsynopsis>
+<methodsynopsis function="HttpServletRequest-&gt;getContextPath">
+<sdesc>Get the path of the request from the environment.</sdesc>
+<desc></desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="HttpServletRequest-&gt;getController">
+<sdesc>Get the controller.</sdesc>
+<desc></desc>
+<type></type>
+</methodsynopsis>
+<methodsynopsis function="HttpServletRequest-&gt;getParameter">
+<sdesc>Returns the value of a request parameter as a String,  or null if the parameter does not exist.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>$name</type>
+<parameter>name</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="HttpServletRequest-&gt;getParameterNames">
+<sdesc>Returns an array containing the names of the attributes available to this request.</sdesc>
+<desc></desc>
+<type>array</type>
+</methodsynopsis>
+<methodsynopsis function="HttpServletRequest-&gt;getParameters">
+<sdesc>Retrieve ALL parameters</sdesc>
+<desc></desc>
+<type>array</type>
+</methodsynopsis>
+<methodsynopsis function="HttpServletRequest-&gt;getPathInfo">
+<sdesc>Get path information from the environment.</sdesc>
+<desc></desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="HttpServletRequest-&gt;getRequestedSessionId">
+<sdesc>Returns the session ID of this request.</sdesc>
+<desc></desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="HttpServletRequest-&gt;isActionCall">
+<sdesc>Returns whether or the controller is called with an action</sdesc>
+<desc></desc>
+<type>bool</type>
+</methodsynopsis>
+<methodsynopsis function="HttpServletRequest-&gt;mapRequest">
+<sdesc>map $_REQUEST to this object.</sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="HttpServletRequest-&gt;removeAttribute">
+<sdesc>Remove a request attribute</sdesc>
+<desc></desc>
+<type>mixed</type>
+<methodparam>
+<type>$name</type>
+<parameter>name</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="HttpServletRequest-&gt;setAction">
+<sdesc>Set action to be executed</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>$action</type>
+<parameter>action</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="HttpServletRequest-&gt;setAttribute">
+<sdesc>Set a new request attribute</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>$name</type>
+<parameter>name</parameter>
+</methodparam>
+<methodparam>
+<type>$obj</type>
+<parameter>obj</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="HttpServletRequest-&gt;setController">
+<sdesc>Method to set the controller.</sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="ListIterator-&gt;ListIterator">
+<sdesc>Create a ListIterator with the specified values.</sdesc>
+<desc></desc>
+<type>ListIterator</type>
+<methodparam>
+<type>array</type>
+<parameter>values</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ListIterator-&gt;add">
+<sdesc>Insert the specified element into the list.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>mixed</type>
+<parameter>value</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="ListIterator-&gt;hasNext">
+<sdesc>Check if the ListIterator has more elements when traversing the list in  the forward direction.</sdesc>
+<desc></desc>
+<type>boolean</type>
+</methodsynopsis>
+<methodsynopsis function="ListIterator-&gt;hasPrevious">
+<sdesc>Check if the ListIterator has more elements when traversing the list in  the reverse direction.</sdesc>
+<desc></desc>
+<type>boolean</type>
+</methodsynopsis>
+<methodsynopsis function="ListIterator-&gt;next">
+<sdesc>Get the next element in the list.</sdesc>
+<desc></desc>
+<type>mixed</type>
+</methodsynopsis>
+<methodsynopsis function="ListIterator-&gt;nextIndex">
+<sdesc>Get the index of the element that would be returned by a subsequent call  to next().</sdesc>
+<desc></desc>
+<type>mixed</type>
+</methodsynopsis>
+<methodsynopsis function="ListIterator-&gt;previous">
+<sdesc>Get the previous element in the list.</sdesc>
+<desc></desc>
+<type>mixed</type>
+</methodsynopsis>
+<methodsynopsis function="ListIterator-&gt;previousIndex">
+<sdesc>Get the index of the element that would be returned by a subsequent call  to prev().</sdesc>
+<desc></desc>
+<type>mixed</type>
+</methodsynopsis>
+<methodsynopsis function="ListIterator-&gt;remove">
+<sdesc>Remove from the list the last element that was returned by next() or  previous().</sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="ListIterator-&gt;set">
+<sdesc>Replace the last element returned by next() or previous() with the  specified element.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>mixed</type>
+<parameter>value</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="MappingBuilder-&gt;MappingBuilder">
+<sdesc>constructor</sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="MappingBuilder-&gt;GetMappings">
+<sdesc>retrieve mappings</sdesc>
+<desc></desc>
+<type></type>
+</methodsynopsis>
+<methodsynopsis function="MappingBuilder-&gt;GetMappingsArray">
+<sdesc>Retrieve mappings array. This doesn't return an  ActionMappings object, but the phrame 2.0-like mapping array.</sdesc>
+<desc></desc>
+<type>array</type>
+</methodsynopsis>
+<methodsynopsis function="MappingBuilder-&gt;GetOptions">
+<sdesc>retrieve option (?)</sdesc>
+<desc></desc>
+<type>array</type>
+</methodsynopsis>
+<methodsynopsis function="MappingBuilder-&gt;_AddForm">
+<sdesc>add a form to the mapping</sdesc>
+<desc>&quot;protected&quot; function to be used by the constructor function of a derived class</desc>
+<type>boolean</type>
+<methodparam>
+<type>string</type>
+<parameter>psIdent</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>psType</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="MappingBuilder-&gt;_AddFormProperty">
+<sdesc>Add properties to forms.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>psIdent</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>psName</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>psInitial</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="MappingBuilder-&gt;_AddForward">
+<sdesc>add a forward to an existing mapping</sdesc>
+<desc>&quot;protected&quot; function to be used by the constructor function of a derived class</desc>
+<type>boolean</type>
+<methodparam>
+<type>string</type>
+<parameter>psMapIdent</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>psFwdIdent</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>psPath</parameter>
+</methodparam>
+<methodparam>
+<type>bool</type>
+<parameter>pbRedir</parameter>
+</methodparam>
+<methodparam>
+<type>bool</type>
+<parameter>psEngine</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="MappingBuilder-&gt;_AddGlobalForward">
+<sdesc>add a forward to an existing mapping</sdesc>
+<desc>&quot;protected&quot; function to be used by the constructor function of a derived class</desc>
+<type>boolean</type>
+<methodparam>
+<type>string</type>
+<parameter>psFwdIdent</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>psPath</parameter>
+</methodparam>
+<methodparam>
+<type>bool</type>
+<parameter>pbRedir</parameter>
+</methodparam>
+<methodparam>
+<type>bool</type>
+<parameter>psEngine</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="MappingBuilder-&gt;_AddMapping">
+<sdesc>add a map to the mapping</sdesc>
+<desc>&quot;protected&quot; function to be used by the constructor function of a derived class</desc>
+<type>boolean</type>
+<methodparam>
+<type>string</type>
+<parameter>psIdent</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>psType</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>psInput</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>psForm</parameter>
+</methodparam>
+<methodparam>
+<type>bool</type>
+<parameter>pbValidate</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>psScope</parameter>
+</methodparam>
+<methodparam>
+<type>bool</type>
+<parameter>pbUnknown</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="MappingBuilder-&gt;_AddUser">
+<sdesc>Add a new user.</sdesc>
+<desc></desc>
+<type>boolean</type>
+<methodparam>
+<type>string</type>
+<parameter>psName</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>psPassword</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>psRoles</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="MappingBuilder-&gt;_AddWelcomeFile">
+<sdesc>Add a welcome file.</sdesc>
+<desc></desc>
+<type>boolean</type>
+<methodparam>
+<type>string</type>
+<parameter>psName</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="MappingBuilder-&gt;_SetOptions">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Object-&gt;">
+<sdesc>Returns a copy of this object instance.</sdesc>
+<desc></desc>
+<type>mixed</type>
+</methodsynopsis>
+<methodsynopsis function="Object-&gt;equals">
+<sdesc>Compares the specified object with this object for equality.</sdesc>
+<desc></desc>
+<type>boolean</type>
+<methodparam>
+<type>mixed</type>
+<parameter>object</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Object-&gt;toString">
+<sdesc>Returns a string representation of this object.</sdesc>
+<desc></desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="Stack-&gt;Stack">
+<sdesc>Create a Stack with the specified values.</sdesc>
+<desc></desc>
+<type>Stack</type>
+<methodparam>
+<type>string</type>
+<parameter>values</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Stack-&gt;peek">
+<sdesc>Peek at the value from the top of the Stack without removing it.</sdesc>
+<desc></desc>
+<type>mixed</type>
+</methodsynopsis>
+<methodsynopsis function="Stack-&gt;pop">
+<sdesc>Pop a value from the Stack.</sdesc>
+<desc></desc>
+<type>mixed</type>
+</methodsynopsis>
+<methodsynopsis function="Stack-&gt;push">
+<sdesc>Push a value into the Stack.</sdesc>
+<desc></desc>
+<type>mixed</type>
+<methodparam>
+<type>mixed</type>
+<parameter>value</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="StringUtils-&gt;StartWithSlash">
+<sdesc>Make sure a string starts with a /</sdesc>
+<desc></desc>
+<type>string</type>
+<methodparam>
+<type>string</type>
+<parameter>str</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="UserMappingBuilder-&gt;UserMappingBuilder">
+<sdesc>constructor</sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="UserMappingBuilder-&gt;addAction">
+<sdesc>add a map to the mapping</sdesc>
+<desc>&quot;protected&quot; function to be used by the constructor function of a derived class</desc>
+<type>boolean</type>
+<methodparam>
+<type>string</type>
+<parameter>psIdent</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>psType</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>psInput</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>psForm</parameter>
+</methodparam>
+<methodparam>
+<type>bool</type>
+<parameter>pbValidate</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>psScope</parameter>
+</methodparam>
+<methodparam>
+<type>bool</type>
+<parameter>pbUnknown</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="UserMappingBuilder-&gt;addForm">
+<sdesc>add a form to the mapping</sdesc>
+<desc>&quot;protected&quot; function to be used by the constructor function of a derived class</desc>
+<type>boolean</type>
+<methodparam>
+<type>string</type>
+<parameter>psIdent</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>psType</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="UserMappingBuilder-&gt;addFormProperty">
+<sdesc>Add properties to forms.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>psIdent</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>psName</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>psInitial</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="UserMappingBuilder-&gt;addForward">
+<sdesc>add a forward to an existing mapping</sdesc>
+<desc>&quot;protected&quot; function to be used by the constructor function of a derived class</desc>
+<type>boolean</type>
+<methodparam>
+<type>string</type>
+<parameter>psMapIdent</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>psFwdIdent</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>psPath</parameter>
+</methodparam>
+<methodparam>
+<type>bool</type>
+<parameter>pbRedir</parameter>
+</methodparam>
+<methodparam>
+<type>bool</type>
+<parameter>psEngine</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="UserMappingBuilder-&gt;addGlobalForward">
+<sdesc>add a forward to an existing mapping</sdesc>
+<desc>&quot;protected&quot; function to be used by the constructor function of a derived class</desc>
+<type>boolean</type>
+<methodparam>
+<type>string</type>
+<parameter>psFwdIdent</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>psPath</parameter>
+</methodparam>
+<methodparam>
+<type>bool</type>
+<parameter>pbRedir</parameter>
+</methodparam>
+<methodparam>
+<type>bool</type>
+<parameter>psEngine</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="UserMappingBuilder-&gt;addUser">
+<sdesc>Add a new user.</sdesc>
+<desc></desc>
+<type>boolean</type>
+<methodparam>
+<type>string</type>
+<parameter>psName</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>psPassword</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>psRoles</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="UserMappingBuilder-&gt;setOptions">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="UserMappingBuilder-&gt;setWelcomeFile">
+<sdesc>Add a welcome file.</sdesc>
+<desc></desc>
+<type>boolean</type>
+<methodparam>
+<type>string</type>
+<parameter>psPath</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Xml-&gt;marshal">
+<sdesc>Generates Xml data based on variable introspection.</sdesc>
+<desc></desc>
+<type>boolean</type>
+<methodparam>
+<type>mixed</type>
+<parameter>var</parameter>
+</methodparam>
+<methodparam>
+<type>integer</type>
+<parameter>level</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>name</parameter>
+</methodparam>
+<methodparam>
+<type>boolean</type>
+<parameter>child</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Xml-&gt;transform">
+<sdesc>Transform a document from the supplied Xml data and Xsl stylesheet array  (pipelining) optionally processing any runtime parameters to the  transformer.</sdesc>
+<desc></desc>
+<type>string</type>
+<methodparam>
+<type>string</type>
+<parameter>xml</parameter>
+</methodparam>
+<methodparam>
+<type>array</type>
+<parameter>xsls</parameter>
+</methodparam>
+<methodparam>
+<type>array</type>
+<parameter>params</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Xml-&gt;xmlentities">
+<sdesc>Converts all applicable characters to xml entities. This is similar to  the htmlentities() php function.</sdesc>
+<desc></desc>
+<type>string</type>
+<methodparam>
+<type>string</type>
+<parameter>xml</parameter>
+</methodparam>
+<methodparam>
+<type>boolean</type>
+<parameter>utf8</parameter>
+</methodparam>
+</methodsynopsis>
+<entry/>
+</manual>  	
