@@ -28,10 +28,6 @@ if [[ "${COLORTERM}" == "gnome-terminal" ]]; then
     unset COLORTERM
 fi
 
-if [ -f /etc/bash_completion ]; then
-  . /etc/bash_completion
-fi
-
 source ~/.bash/env
 source ~/.bash/config
 source ~/.bash/aliases
@@ -42,4 +38,4 @@ if [ -f ~/.localrc ]; then
   . ~/.localrc
 fi
 
-if [[ -s ~/.rvm/scripts/rvm ]] ; then source ~/.rvm/scripts/rvm ; fi
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.

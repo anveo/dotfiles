@@ -1,0 +1,1890 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<manual>
+	<methodsynopsis function="Ismo_Core_Application-&gt;Ismo_Core_Application">
+<sdesc>The constructor.</sdesc>
+<desc></desc>
+<type>Ismo_Core_Application</type>
+<methodparam>
+<type>string</type>
+<parameter>name</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Application-&gt;execute">
+<sdesc>Handles the request by executing the right action method.</sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Application-&gt;registerFilter">
+<sdesc>Registers a filter.</sdesc>
+<desc>Before a request is processed and handed down to the state that will  take care of it, the filter() method on all the registered filter  class instances are called. It's given the request URI and the filter  class can then decided if this request is allowed or not.If a filter class returns true when its filter() method is  called, it is assumed that the filter class has handled the request  (usually be forwarding somewhere, e.g. a login page). If the method  returns false the next filter class's filter() method is  called.This continues until all the registered filter classes have been  processed. If all method calls returned false the state is  deduced and the execution given to it.</desc>
+<type>void</type>
+<methodparam>
+<type>IsmoFilter</type>
+<parameter>filterClassInstance</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Application-&gt;setConfiguration">
+<sdesc>Set the configuration to pass to the state instance.</sdesc>
+<desc>You can use this method to pass any global configuration  parameters to the dispatched state.</desc>
+<type>void</type>
+<methodparam>
+<type>mixed</type>
+<parameter>config</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Application-&gt;setDefaultState">
+<sdesc>This sets the application's default state.</sdesc>
+<desc>Example:  1       $a = new MyApplication();2       $a-&gt;('default');</desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>state</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Application-&gt;setLogger">
+<sdesc>This sets the log class being used.</sdesc>
+<desc>If you're making your own class it should implement the PEAR package  Log's Log interface but it might be easier to just use one of the the  Log package's ready implementations.Example:  1       $app = new ('foo');2       $log =&amp; new Log_file('log.txt', 'identity text');3       $app-&gt;($log);</desc>
+<type>void</type>
+<methodparam>
+<type>mixed</type>
+<parameter>logInstance</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Application-&gt;setMissingStateCallBack">
+<sdesc>Set a callback function for missing state errors.</sdesc>
+<desc>Use this method to set a callback function to be called when a requested  state can't be found.</desc>
+<type>void</type>
+<methodparam>
+<type>callback</type>
+<parameter>callback</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Application-&gt;setRequest">
+<sdesc>This sets the request class instance to use.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>mixed</type>
+<parameter>requestInstance</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Application-&gt;setStateLoader">
+<sdesc>This sets the loader class to use.</sdesc>
+<desc>The state loader is the class that loads and makes instances of the  state classes.Example of state loaders are Ismo_Core_Loaders_FileSystem  and Ismo_Core_Loaders_IncludePath.Example:  1       $loader = new ();2       $loader-&gt;setStatePath('./states');3       $app = new ('MyCoolName');4       $app-&gt;($loader);</desc>
+<type>void</type>
+<methodparam>
+<type>mixed</type>
+<parameter>loader</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Application-&gt;setURLStyle">
+<sdesc>Controls which kind of URL style that will be used.</sdesc>
+<desc>IsmoCore currently supports two kind of styles. The normal query  parameter based one, i.e.  http://foo.bar?state=thaState&amp;action=theAction and the path-info  parameter based on, which looks like  http://foo.bar/theState/theAction.By default the query parameter based style is used, but that can  be changed using this method.The style setting determines how the state and action is identified  and it also affects the created URL:s.</desc>
+<type>void</type>
+<methodparam>
+<type>integer</type>
+<parameter>style</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Base-&gt;Ismo_Core_Namespace_Base">
+<sdesc></sdesc>
+<desc></desc>
+<type>Ismo_Core_Namespace_Base</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Base-&gt;">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Base-&gt;clear">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Base-&gt;convert">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Base-&gt;get">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Base-&gt;getChildren">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Base-&gt;getInstance">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Base-&gt;numChildren">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Base-&gt;ref">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Base-&gt;set">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Base-&gt;setVar">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Base-&gt;varRef">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Base-&gt;_convert">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Cast-&gt;debug">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Cast-&gt;flatten">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Cast-&gt;interpolateFlatten">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Cast-&gt;interpolateString">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Cast-&gt;interpolateToArray">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Cast-&gt;merge">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Cast-&gt;toArray">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Cast-&gt;toNamespace">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Cast-&gt;toVar">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Cast-&gt;_flatten">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Cast-&gt;_nested">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant-&gt;Ismo_Core_Namespace_Persistant">
+<sdesc></sdesc>
+<desc></desc>
+<type>Ismo_Core_Namespace_Persistant</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant-&gt;open">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant-&gt;reset">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant-&gt;save">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller-&gt;Ismo_Core_State_Controller">
+<sdesc></sdesc>
+<desc></desc>
+<type>Ismo_Core_State_Controller</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller-&gt;actionExists">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller-&gt;firstAction">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller-&gt;getActionByIdx">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller-&gt;getActions">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller-&gt;getAlias">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller-&gt;getId">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller-&gt;getIndex">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller-&gt;init">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller-&gt;isBetween">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller-&gt;isFirst">
+<sdesc>* action handling **</sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller-&gt;isLast">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller-&gt;lastAction">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller-&gt;nextAction">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller-&gt;prevAction">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller-&gt;setAlias">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller-&gt;setAliases">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller-&gt;_extractActions">
+<sdesc>* private **</sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Converter-&gt;Ismo_Core_Namespace_Converter">
+<sdesc></sdesc>
+<desc></desc>
+<type>Ismo_Core_Namespace_Converter</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Converter-&gt;convert">
+<sdesc>* conversion **</sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Converter-&gt;convertFlattened">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Converter-&gt;getRoot">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Converter-&gt;open">
+<sdesc>* open **</sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Converter-&gt;openArray">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Converter-&gt;openIni">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Converter-&gt;openXML">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Converter-&gt;toArray">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Converter-&gt;toIni">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Converter-&gt;toString">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Converter-&gt;toXML">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Converter-&gt;write">
+<sdesc>* write **</sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Converter-&gt;writeArray">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Converter-&gt;writeIni">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Converter-&gt;writeXML">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Cookie-&gt;Ismo_Core_Cookie">
+<sdesc>Constructor</sdesc>
+<desc></desc>
+<type>Ismo_Core_Cookie</type>
+<methodparam>
+<type>string</type>
+<parameter>name</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>value</parameter>
+</methodparam>
+<methodparam>
+<type>integer</type>
+<parameter>expire</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>path</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>domain</parameter>
+</methodparam>
+<methodparam>
+<type>boolean</type>
+<parameter>secure</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Cookie-&gt;getDomain">
+<sdesc>Returns the cookie's domain or &quot;&quot; if it's not set.</sdesc>
+<desc></desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Cookie-&gt;getExpire">
+<sdesc>Returns the cookie's expire time or 0 if it's not set.</sdesc>
+<desc></desc>
+<type>integer</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Cookie-&gt;getName">
+<sdesc>Returns the cookie's name or &quot;&quot; if it's not set.</sdesc>
+<desc></desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Cookie-&gt;getPath">
+<sdesc>Returns the cookie's path or &quot;&quot; if it's not set.</sdesc>
+<desc></desc>
+<type>mixed</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Cookie-&gt;getValue">
+<sdesc>Returns the cookie's value or &quot;&quot; if it's not set.</sdesc>
+<desc></desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Cookie-&gt;isSecure">
+<sdesc>Returns whether the cookie is secure or not.</sdesc>
+<desc></desc>
+<type>boolean</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Cookie-&gt;setDomain">
+<sdesc>Sets the cookie's domain.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>domain</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Cookie-&gt;setExpire">
+<sdesc>Sets the cookie's expire time.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>integer</type>
+<parameter>expire</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Cookie-&gt;setName">
+<sdesc>Sets the cookie's name.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>name</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Cookie-&gt;setPath">
+<sdesc>Sets the cookie's path.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>path</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Cookie-&gt;setSecure">
+<sdesc>Sets whether the cookie is secure or not.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>boolean</type>
+<parameter>secure</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Cookie-&gt;setValue">
+<sdesc>Sets the cookie's value.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>value</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Database-&gt;Ismo_Core_Namespace_Persistant_Database">
+<sdesc></sdesc>
+<desc></desc>
+<type>Ismo_Core_Namespace_Persistant_Database</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Database-&gt;clear">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Database-&gt;clearAll">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Database-&gt;diff">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Database-&gt;findByKey">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Database-&gt;findByValue">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Database-&gt;get">
+<sdesc>* usage **</sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Database-&gt;getMultiple">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Database-&gt;getRaw">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Database-&gt;insert">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Database-&gt;returnRooted">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Database-&gt;set">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Database-&gt;setColumns">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Database-&gt;setConnection">
+<sdesc>* settings **</sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Database-&gt;setDatabase">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Database-&gt;setSelective">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Database-&gt;setSelective_o">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Database-&gt;setTable">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Database-&gt;set_o">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Database-&gt;update">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Database-&gt;_autoQuery">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Database-&gt;_find">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Database-&gt;_keyExists">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Database-&gt;_keyExistsHierarchy">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Database-&gt;_prepare">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Database-&gt;_query">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Database-&gt;_sql">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_FileSystem-&gt;Ismo_Core_Namespace_Persistant_FileSystem">
+<sdesc></sdesc>
+<desc></desc>
+<type>Ismo_Core_Namespace_Persistant_FileSystem</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_FileSystem-&gt;open">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_FileSystem-&gt;reset">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_FileSystem-&gt;save">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_FileSystem-&gt;setStoragePath">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Loaders_FileSystem-&gt;Ismo_Core_Loaders_FileSystem">
+<sdesc>The constructor.</sdesc>
+<desc></desc>
+<type>Ismo_Core_Loaders_FileSystem</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Loaders_FileSystem-&gt;findFile">
+<sdesc>Returns the full path to a file from the configured path using possible set  prefix, postfix and extension if it exists.</sdesc>
+<desc>This method needs to be implemented</desc>
+<type>string</type>
+<methodparam>
+<type>string</type>
+<parameter>fileName</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Loaders_FileSystem-&gt;getInstance">
+<sdesc>Loads, creates and returns an instance of the requested class.</sdesc>
+<desc>Tries to load the class from the configured location in the file  system and then creates and instance of the class.</desc>
+<type>mixed</type>
+<methodparam>
+<type>string</type>
+<parameter>className</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Loaders_FileSystem-&gt;openFile">
+<sdesc>Tries to open a file from the configured path using possible set prefix,  postfix and extension.</sdesc>
+<desc>Note  It's the callers responsibility to close the returned file handle.This method needs to be implemented</desc>
+<type>mixed</type>
+<methodparam>
+<type>string</type>
+<parameter>fileName</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Loaders_FileSystem-&gt;setExtension">
+<sdesc>Sets the file extension to use.</sdesc>
+<desc>Example:  1           $loader = new ();2           $loader-&gt;('ini');</desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>extension</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Loaders_FileSystem-&gt;setPath">
+<sdesc>Sets the path which controls in which directory in the file system the  files are looked for.</sdesc>
+<desc>Example:  1           $loader = new ();2           $loader-&gt;('./states/');  1           $loader = new ();2           $loader-&gt;('./configs/');</desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>path</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Loaders_FileSystem-&gt;setPostfix">
+<sdesc>Sets the postfix.</sdesc>
+<desc>Example:  1           $loader = new ();2           $loader-&gt;('_MySpecialPostfix');</desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>postfix</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Loaders_FileSystem-&gt;setPrefix">
+<sdesc>Sets the prefix.</sdesc>
+<desc>Example:  1           $loader = new ();2           $loader-&gt;('MySpecialPrefix_');</desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>prefix</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Filter-&gt;Ismo_Core_Filter">
+<sdesc>The constructor.</sdesc>
+<desc>It doesn't take any parameters and just creates a new  Ismo_Core_Filter instance.</desc>
+<type>Ismo_Core_Filter</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Filter-&gt;filter">
+<sdesc>The function that decides if the request is passed on or not.</sdesc>
+<desc>This is where one can verify if the current user should be allowed  to access the requested resource or not.</desc>
+<type>boolean</type>
+<methodparam>
+<type></type>
+<parameter>&amp;request</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller_Form-&gt;Ismo_Core_State_Controller_Form">
+<sdesc></sdesc>
+<desc></desc>
+<type>Ismo_Core_State_Controller_Form</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller_Form-&gt;getActions">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller_Form-&gt;init">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP_Form-&gt;Ismo_Core_State_HTTP_Form">
+<sdesc></sdesc>
+<desc></desc>
+<type>Ismo_Core_State_HTTP_Form</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP_Form-&gt;closeForm">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP_Form-&gt;displayForm">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP_Form-&gt;exportActionValues">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP_Form-&gt;exportFieldValue">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP_Form-&gt;exportFormValues">
+<sdesc>* values **</sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP_Form-&gt;getReservedActions">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP_Form-&gt;handleCurrent">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP_Form-&gt;handleFirst">
+<sdesc>* handlers **</sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP_Form-&gt;handleIncomplete">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP_Form-&gt;handleLast">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP_Form-&gt;handleNext">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP_Form-&gt;handlePrev">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP_Form-&gt;openForm">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP_Form-&gt;postExec">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP_Form-&gt;preExec">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP_Form-&gt;processForm">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP_Form-&gt;setForm">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP_Form-&gt;_createProcessMethodName">
+<sdesc>* private **</sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Formbuilder-&gt;Ismo_Core_Namespace_Formbuilder">
+<sdesc></sdesc>
+<desc></desc>
+<type>Ismo_Core_Namespace_Formbuilder</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Formbuilder-&gt;create">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Formbuilder-&gt;display">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Formbuilder-&gt;process">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Formbuilder-&gt;useForm">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Formbuilder-&gt;_closeForm">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Formbuilder-&gt;_footer">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Formbuilder-&gt;_header">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Formbuilder-&gt;_openForm">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP-&gt;Ismo_Core_State_HTTP">
+<sdesc>The constructor.</sdesc>
+<desc></desc>
+<type>Ismo_Core_State_HTTP</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP-&gt;execDefault">
+<sdesc>The default action handler method.</sdesc>
+<desc>This action method will be called if no action was given in the request.  The default implementation in the Ismo_Core_State_HTTP class just prints  &quot;hello from ismo&quot;. You will probably want to override this method in  your state classes.</desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP-&gt;execute">
+<sdesc>Handles the request.</sdesc>
+<desc>This is the method that the Ismo_Core_Application class calls. It  figures out the action, checks if the request is authorized, expose the  default variables and then calls the action method.This method should never be called manually.</desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP-&gt;postExec">
+<sdesc>Post action method execution hook.</sdesc>
+<desc>This method is called after the action method is called.Note  If a method named postExecactionName exists it will be called  before this method but after the action method (execactionName)  is called.</desc>
+<type>boolean</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP-&gt;postShow">
+<sdesc>Post show method execution hook.</sdesc>
+<desc>This method is called after the show method is called.Note  If a method named postShowshowMethodName exists it will be called  before this method but after the show method (showshowMethodName)  is called.</desc>
+<type>boolean</type>
+<methodparam>
+<type>string</type>
+<parameter>name</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP-&gt;preExec">
+<sdesc>Pre action method execution hook.</sdesc>
+<desc>This method is called before the action method is called, so it can  e.g. be used for caching or similar things.Note  If a method named preExecactionName exists it will be called  after this method but before the action method (execactionName)  is called.</desc>
+<type>boolean</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP-&gt;preShow">
+<sdesc>Pre show method execution hook.</sdesc>
+<desc>This method is called before the show method is called, so it can  e.g. be used for caching or similar things.Note  If a method named preShowshowMethodName exists it will be called  after this method but before the show method (showshowMethodName)  is called.</desc>
+<type>boolean</type>
+<methodparam>
+<type>string</type>
+<parameter>name</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP-&gt;setConfiguration">
+<sdesc>Set the configuration.</sdesc>
+<desc>This method is used by the Ismo_Core_Application class to  set global configuration parameters. You have to override this  yourself to do anything usefull.</desc>
+<type>void</type>
+<methodparam>
+<type>mixed</type>
+<parameter>config</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP-&gt;setLogger">
+<sdesc>This sets the log class being used.</sdesc>
+<desc>The Ismo_Core_Application class uses this method to set the log  class used by the state. There is no need to call this method manually.</desc>
+<type>void</type>
+<methodparam>
+<type>mixed</type>
+<parameter>logInstance</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP-&gt;setRequest">
+<sdesc>Sets the request instance to use.</sdesc>
+<desc>This is usually an instance of the Ismo_Core_Request class but it might  also be an instance of some other class that implements the same  methods.This is no need to call this method manually.</desc>
+<type>void</type>
+<methodparam>
+<type></type>
+<parameter>request</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP-&gt;setResponse">
+<sdesc>Sets the response instance to use.</sdesc>
+<desc>This is usually an instance of the Ismo_Core_Response class but it might  also be an instance of some other class that implements the same  methods.This is no need to call this method manually.</desc>
+<type>void</type>
+<methodparam>
+<type></type>
+<parameter>response</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP-&gt;setSession">
+<sdesc>Sets the session used by this class.</sdesc>
+<desc>This is usually an instance of the Ismo_Core_Session class but it might  also be an instance of some other class that implements the same  methods.These is no need to call this method manually.</desc>
+<type>void</type>
+<methodparam>
+<type></type>
+<parameter>session</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP-&gt;setStateName">
+<sdesc>Sets the state name.</sdesc>
+<desc>This method is used by the Ismo_Core_Application class to set the  name of the state as it has determined. The name is usually the same as  the name of the state class but it might differ if the  Ismo_Core_Application class has been extended and modified.There is no need to call this method manually.</desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>stateName</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP-&gt;setUrlStyle">
+<sdesc>Sets the Url style used.</sdesc>
+<desc>This method is used by the Ismo_Core_Application class to inform  the state about the currently used url style.There is no need to call this method manually.</desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>urlStyle</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP-&gt;_createShowMethodName">
+<sdesc>Constructs the show method name.</sdesc>
+<desc>Override this method if you want to change the default showXXX</desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP-&gt;_log">
+<sdesc>Logs the given message.</sdesc>
+<desc>Logs the message with the given priority using the configured logger.  The logger class to use is set on the Ismo_Core_Application instance  with the setLogger() method.This method adds the name of the current state to the beginning of the  message and then calls the log method on the current active logger.Example:  1       // ...2       funciton execFoo()3       {4           $this-&gt;('Entering execFoo()', );5           // do stuff6           $this-&gt;('Leaving execFoo()', );7       }8</desc>
+<type>boolean</type>
+<methodparam>
+<type>string</type>
+<parameter>message</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>priority</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Loaders_IncludePath-&gt;Ismo_Core_Loaders_IncludePath">
+<sdesc>The constructor.</sdesc>
+<desc></desc>
+<type>Ismo_Core_Loaders_IncludePath</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Loaders_IncludePath-&gt;addFile">
+<sdesc>Adds one file.</sdesc>
+<desc>All files this loader should be able to load need to be added with this  method. Otherwise getInstance() can't map from the file name to  the class name and the file the class is defined in.Example:  1           $loader = new ();2           $loader-&gt;('main', 'Ismo_Example_States_Main',3               'Ismo/Example/States/Main.php');</desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>name</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>className</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>fileName</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Loaders_IncludePath-&gt;findFile">
+<sdesc>Returns the full path to a file found from PHP's include path.</sdesc>
+<desc>This method needs to be implemented</desc>
+<type>string</type>
+<methodparam>
+<type>string</type>
+<parameter>fileName</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Loaders_IncludePath-&gt;getInstance">
+<sdesc>Loads, creates and returns an instance of the requested class.</sdesc>
+<desc>Looks through the added files (see ) and if a match  is found that file is 1     included and an instance created and  returned.</desc>
+<type>mixed</type>
+<methodparam>
+<type>string</type>
+<parameter>className</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Loaders_IncludePath-&gt;openFile">
+<sdesc>Tries to open a file if it's found from PHP's include path.</sdesc>
+<desc>Note  It's the callers responsibility to close the returned file handle.This method needs to be implemented</desc>
+<type>mixed</type>
+<methodparam>
+<type>string</type>
+<parameter>fileName</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Loaders_Interceptor-&gt;Ismo_Core_Loaders_Interceptor">
+<sdesc>The constructor</sdesc>
+<desc></desc>
+<type>Ismo_Core_Loaders_Interceptor</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Loaders_Interceptor-&gt;addInterceptor">
+<sdesc>Adds an interceptor.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>mixed</type>
+<parameter>states</parameter>
+</methodparam>
+<methodparam>
+<type>array</type>
+<parameter>methods</parameter>
+</methodparam>
+<methodparam>
+<type>object</type>
+<parameter>interceptorInstance</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Loaders_Interceptor-&gt;getInstance">
+<sdesc>Returns an instance of the requested class.</sdesc>
+<desc>Because this is the interceptor loader the returned class is not the  actual class, but instead a proxy for that class. The proxy will  execute configured interceptors when methods are called on the proxy.</desc>
+<type>object the</type>
+<methodparam>
+<type>string</type>
+<parameter>className</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Loaders_Interceptor-&gt;setStateLoader">
+<sdesc>Sets the state loader.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>object</type>
+<parameter>stateLoader</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_AOP_Invocation-&gt;Ismo_Core_AOP_Invocation">
+<sdesc>The empty constructor.</sdesc>
+<desc></desc>
+<type>Ismo_Core_AOP_Invocation</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_AOP_Invocation-&gt;invokeNext">
+<sdesc>This invokes the next interceptor or if no more interceptors exists,  invokes the target method aka the intercepted method call.</sdesc>
+<desc></desc>
+<type>object the</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP_Pages-&gt;Ismo_Core_State_HTTP_Pages">
+<sdesc></sdesc>
+<desc></desc>
+<type>Ismo_Core_State_HTTP_Pages</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP_Pages-&gt;dispatchAction">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP_Pages-&gt;execDefault">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP_Pages-&gt;getActionUrl">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP_Pages-&gt;getAliases">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP_Pages-&gt;getRequiredActions">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_HTTP_Pages-&gt;preExec">
+<sdesc>* action handling **</sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Object_Plain-&gt;Ismo_Core_Object_Plain">
+<sdesc>The constructor.</sdesc>
+<desc>It is possible to pass in either an array or an  Ismo_Core_Object_Plain and if so setFrom() is called with  that parameter.</desc>
+<type>Ismo_Core_Object_Plain</type>
+<methodparam>
+<type>mixed</type>
+<parameter>src</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Object_Plain-&gt;getArrayRepresentation">
+<sdesc>Returns an array representation of the class's attributes.</sdesc>
+<desc>Returns the class's attributes in an associative array, with the  attribute's name as key and the value as the value. This if useful  for example when exposing the object to the template engine.The attribute listed in the _private array are not included.Note:  In versions prior to PHP 4.2.0, if the variables declared in the  class of which the obj is an instance, have not been assigned a value,  those will not be returned in the array. In versions after PHP 4.2.0,  the key will be assigned with a NULL value.Example:1        $p = new Person();2        $p-&gt;name = &quot;name&quot;;3        $p-&gt;phone_no = &quot;034-34343&quot;;4        $hash = $p-&gt;();  This results in $hash being an array containing the key-value  pairs of the attributes that have a value. It will containg the  following &quot;name&quot; =&gt; &quot;name&quot; and &quot;phone_no&quot; =&gt; &quot;034-34343&quot;.</desc>
+<type>array</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Object_Plain-&gt;validate">
+<sdesc>Validates this object.</sdesc>
+<desc>The validation is done by calling a method named validate[class  attribute name] for each class attribute. If the method doesn't exist no  validation will be done for that attribute.Any amount of parameters can be given to this method. All paramters  given will be given to each of the validate methods when they are  called. If the amount of parameters do not match you will get a  PHP error.Please note that the attribute's mentioned in the _private  attribute, i.e. the private attributes, won't be validated.By using require_once() to include PEAR's Validate class in a validate  methode one can use those functions to validate the data.Example:1       $p = new Person();2       $p-&gt;name = &quot;Name&quot;;3       $p-&gt;phoneNo = &quot;0123456&quot;;4       $p-&gt;country = &quot;qwerty&quot;;5       if ($p-&gt;() != true)6       {7           foreach ($p-&gt; as $k =&gt; $v)8           {9               echo &quot;Attribute &quot; . $k . &quot; isn't valid due to &quot; . $v . &quot;&lt;br/&gt;&quot;;10          }11      }This will validate the attribute values of the Person class instance by calling the  validateName(), validatePhoneNo()  and validateCountry() methods if they exist.Another example showing how the multiple parameters work:1       class Foo extends Ismo_Core_Object2       {3           var $name;4           var $address;5     6           function Foo($src = null)7           {8               parent::Ismo_Core_Object($src);9           }10    11          function validateName($country, $language)12          {13              if ($country == 'sweden' &amp;&amp;14                  $language == 'swedish')15              {16                  // do swedish check ...17              }18              else if ($country == 'finland' &amp;&amp;19                       $language == 'finnish')20              {21                  // do finnish check ...22              }23              else24              {25                  // do other check26              }27          }28    29          // and similar other validate methods29      30      }31    32    33      // now when validating Foo objects one has to give a34    // country and language. Of course those attributes could35      // have been assigned default values, i.e.36      // function validate_name($country = null, $language = null)37    36      37    38      $a = new Foo();39      if ($a-&gt;validate('sweden', 'swedish') != true)40      {41          foreach ($a-&gt;errors as $k =&gt; $v)42          {43              echo &quot;Attribute &quot; . $k . &quot; isn't valid due to &quot; . $v . &quot;&lt;br/&gt;&quot;;44          }45      }</desc>
+<type>boolean</type>
+<methodparam>
+<type>mixed</type>
+<parameter>0</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;Ismo_Core_Request">
+<sdesc>The constructor.</sdesc>
+<desc></desc>
+<type>Ismo_Core_Request</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;getCharacterEncoding">
+<sdesc>Gets the used character encoding.</sdesc>
+<desc>Returns the name of the character encoding used in the body of  this request.</desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;getContentLength">
+<sdesc>Gets the content length.</sdesc>
+<desc>Returns the length, in bytes, of the request body or  -1 if the length is not known.</desc>
+<type>integer</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;getContentType">
+<sdesc>Gets the content type.</sdesc>
+<desc>Returns the MIME type of the body of the request or NULL if the  type is not known.</desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;getContextPath">
+<sdesc>Returns the context path.</sdesc>
+<desc>Returns the portion of the request URI that indicates the  context of the request.Example  1       // if the request is done to http://foo/bar.php/name/value2       $contextPath = $this-&gt;();3</desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;getCookies">
+<sdesc>Gets the available cookies.</sdesc>
+<desc>Returns an associative array containing all of the cookies  objects the client sent with this request.</desc>
+<type>array</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;getDefaultLocale">
+<sdesc>Gets the default locale for the application.</sdesc>
+<desc></desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;getHeader">
+<sdesc>Gets the value of header.</sdesc>
+<desc>Returns the value of the specified request header.</desc>
+<type>string</type>
+<methodparam>
+<type>string</type>
+<parameter>name</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;getHeaderNames">
+<sdesc>Gets all the header names.</sdesc>
+<desc>Returns an array of all the header names this request  contains.</desc>
+<type>array</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;getHeaders">
+<sdesc>Gets all the headers.</sdesc>
+<desc>Returns an associative array of all the header names and values of this  request.</desc>
+<type>array</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;getIP">
+<sdesc>Gets the ip address.</sdesc>
+<desc>Returns the Internet Protocol (IP) address of the client that  sent the request. Different from getRemoteAddress, also checks  for HTTP_CLIENT_IP and HTTP_X_FORWARD_FOR</desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;getLocale">
+<sdesc>Deduces the clients preferred locale.</sdesc>
+<desc>You might want to override this method if you want to do more  sophisticated decisions. It gets the supported locales and the  default locale from the class attributes file and tries to find a  match. If no match is found it uses the default locale. The  locale is always changed into lowercase.</desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;getMethod">
+<sdesc>Gets the request method.</sdesc>
+<desc>Returns the name of the HTTP method with which this request  was made., for example, GET, POST, or PUT.</desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;getParameter">
+<sdesc>Returns the parameter from the request parameters if it's available.</sdesc>
+<desc>Parameters can come from different sources. Get parameters are  the result of a HTTP GET operation, post parameters are the  result of a HTTP POST operation, cookie parameters are the  parameters given by the cookies stored in the client browser for  this domain and request parameters are a combination of all the  earlier types combined according to  the variables_order  configuration directive.One has to choose what type of parameter to get with the second  parameter to this method.GET - get the parameter from the GET
+        parametersPOST - get the parameter from the POST
+        parametersCOOKIE - get the parameters from the COOKIE
+        parametersREQUEST - get the parameters from the REQUEST
+        parametersNote that the returned value can be an array if the parameter  has multiple values.</desc>
+<type>mixed</type>
+<methodparam>
+<type>string</type>
+<parameter>name</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>type</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;getParameterArray">
+<sdesc>Returns an array containing the name-value pair of the parameters.</sdesc>
+<desc>It defauls to returning an array for the GET parameters if nothing  else is specified.</desc>
+<type>array</type>
+<methodparam>
+<type>string</type>
+<parameter>type</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;getParameterNames">
+<sdesc>Returns the names of the available parameters.</sdesc>
+<desc>This returns an array containing the names of the available  parameters.  It defauls to returning an array for the GET parameters if nothing  else is specified.</desc>
+<type>array</type>
+<methodparam>
+<type>string</type>
+<parameter>type</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;getPathParameter">
+<sdesc>Returns the path info parameter from the request.</sdesc>
+<desc>This returns the next value after the first occurrence of $name  in the path info string for this request.Example:  1       // the url is http://foo/bar.php/name1/value1/name2/value22       $v = $this-&gt;request-&gt;('name1');3Everything after bar.php above is treated as path info parameters  and a search from the beginning to the end is made and the value after  the first match is returned.</desc>
+<type>mixed</type>
+<methodparam>
+<type>string</type>
+<parameter>name</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;getPathParameterAt">
+<sdesc>Returns the path info parameter from the request at the  specified position.</sdesc>
+<desc>Returns the value at the given position in the path info or  null if no such parameter exists. The first parameter is at  position 0, the second one at position 1 etc.Example:  1       // the url is http://foo/bar.php/name1/value1/name2/value22       $v = $this-&gt;request-&gt;(0);3       // $v is now 'name1'4       $v = $this-&gt;request-&gt;(3);5Everything after bar.php above is treated as path info parameters  and a search from the beginning to the end is made and the value after  the first match is returned.</desc>
+<type>mixed</type>
+<methodparam>
+<type>number</type>
+<parameter>index</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;getPathParametersArray">
+<sdesc>Returns the path info parameters from the request in an indexed array.</sdesc>
+<desc></desc>
+<type>array</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;getPathParametersAssoc">
+<sdesc>Returns the path info parameters from the request in an associative  array.</sdesc>
+<desc></desc>
+<type>array</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;getProtocol">
+<sdesc>Gets the protocol.</sdesc>
+<desc>Returns the name and version of the protocol the request uses  in the form protocol/majorVersion/minorVersion, for example  HTTP/1.1</desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;getQueryString">
+<sdesc>Gets the query string.</sdesc>
+<desc>Returns the query string this is contained in the request  URL after the path.</desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;getRemoteAddress">
+<sdesc>Gets the remove address.</sdesc>
+<desc>Returns the Internet Protocol (IP) address of the client that  sent the request.</desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;getRemoteHost">
+<sdesc>Gets the remove host.</sdesc>
+<desc>Returns the fully qualified name of the client that sent the  request.This is figured out by doing a dns server lookup of the ip address.  If no host is associated with the address NULL is returned.</desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;getServerName">
+<sdesc>Gets the server name.</sdesc>
+<desc>Returns the host name of the server that received the request.</desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;getServerPort">
+<sdesc>Gets the port number.</sdesc>
+<desc>Returns the port number on which this request was received.</desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;getSupportedLocales">
+<sdesc>Gets the supported locales for the application.</sdesc>
+<desc></desc>
+<type>array</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;isPathParameterSet">
+<sdesc>Checks if a path parameter is set.</sdesc>
+<desc>This tests if a variable named $name is set  in the path info string for this request.</desc>
+<type>bool</type>
+<methodparam>
+<type>string</type>
+<parameter>name</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;isSecure">
+<sdesc>Indicates wheather the current request is secure or not.</sdesc>
+<desc>Returns a boolean indication wheather this request was made  using a secute channel, such as HTTPS.</desc>
+<type>boolean</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;setDefaultLocale">
+<sdesc>Sets the default locale for the application.</sdesc>
+<desc>Create an instance of  manually and  set the default locale with this method. Then add it as the  application's request class with  1     ::().</desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>locale</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Request-&gt;setSupportedLocales">
+<sdesc>Sets the locales supported by the application.</sdesc>
+<desc>Create an instance of  manually and  set the supported locales with this method. Then add it as the  application's request class with  1     ::().</desc>
+<type>void</type>
+<methodparam>
+<type>array</type>
+<parameter>locales</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Response-&gt;Ismo_Core_Response">
+<sdesc>Constructor, creates a new Ismo_Core_Response.</sdesc>
+<desc></desc>
+<type>Ismo_Core_Response</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Response-&gt;addCookie">
+<sdesc>Adds the specified cookie to the response.</sdesc>
+<desc>This method can be called multiple times to set more than one cookie or  to modify an already set one. Returns true if the adding was successful,  false otherwise.</desc>
+<type>boolean</type>
+<methodparam>
+<type></type>
+<parameter>cookie</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Response-&gt;addHeader">
+<sdesc>Adds a response header with the given name and value.</sdesc>
+<desc>This method allows response headers to have multiple values. Returns true  if the header could be added, false otherwise. False will be returned  f.g. when the headers have already been sent.  The replace parameter  indicates if an already existing header with the same name should be  replaced or not.</desc>
+<type>boolean</type>
+<methodparam>
+<type>string</type>
+<parameter>name</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>value</parameter>
+</methodparam>
+<methodparam>
+<type>boolean</type>
+<parameter>replace</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Response-&gt;deleteCookie">
+<sdesc>Deletes the specified cookie from the response.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>IsmoCookie</type>
+<parameter>cookie</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Response-&gt;sendError">
+<sdesc>Sends an error response to the client using the specified status code.</sdesc>
+<desc>Sends an error response to the client using the specified status code.  This will create a page that looks like an HTML-formatted server error  page containing the specifed message (if any), setting the content type  to &quot;text/html&quot;, leaving cookies and other headers unmodified.If the headers have already been sent this method returns false  otherwise true. After this method the response should be  considered commited, i.e.  both headers and data have been sent to the  client.</desc>
+<type>boolean</type>
+<methodparam>
+<type>string</type>
+<parameter>code</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>msg</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Response-&gt;sendRedirect">
+<sdesc>Sends a temporary redirect respones to the client using the specifed  redirect URL.</sdesc>
+<desc>If the headers have already been sent this method returns false  otherwise true. After this method the response should be  considered commited.Examples:  1        $u = new (&quot;http://a.b.c&quot;);2        $response-&gt;($u);  Redirects the browser to http://a.b.c using an Ismo_Core_Url instance.1        $response-&gt;(&quot;http://d.e.f&quot;);  Redirects the browser to http://d.e.f using a string.</desc>
+<type>boolean</type>
+<methodparam>
+<type>mixed</type>
+<parameter>location</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Response-&gt;setStatus">
+<sdesc>Sets the status code for this request.</sdesc>
+<desc>Sets the status code for this response. This method is used to set the  return status code when there is no error (for example, for the status  codes SC_OK or SC_MOVED_TEMPORARILY). If there is an error, and the  caller wishes to provide a message for the response, the sendError()  method should be used instead.</desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>code</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Session-&gt;Ismo_Core_Namespace_Persistant_Session">
+<sdesc></sdesc>
+<desc></desc>
+<type>Ismo_Core_Namespace_Persistant_Session</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Session-&gt;open">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Session-&gt;reset">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Persistant_Session-&gt;save">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Session-&gt;Ismo_Core_Session">
+<sdesc>The constructor. Resumes a session if a session is available.</sdesc>
+<desc>Checks to see if a session is available, if one is. It will be  resumed. Otherwise nothing is done. New sessions have to be created  manually.</desc>
+<type>Ismo_Core_Session</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Session-&gt;create">
+<sdesc>Starts a new session.</sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Session-&gt;destroy">
+<sdesc>Destroys the session.</sdesc>
+<desc>Destroys the current session, all the data stored in the session will be  lost.  To clarify, it also unsets all the global variables stored in  _SESSION.</desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Session-&gt;get">
+<sdesc>Gets something previously stored in the session.</sdesc>
+<desc>Tries to retrive an object earlier stored in the session.  If no object with the given key name exists, NULL is returned.</desc>
+<type>mixed</type>
+<methodparam>
+<type>string</type>
+<parameter>key</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Session-&gt;getRequestedSessionId">
+<sdesc>Returns the session id in used for the current session.</sdesc>
+<desc>If there is a current session the id for that one is returned. I.e.  this is the id the client gave which identifies its session. If  there is no session NULL is returned.</desc>
+<type>string</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Session-&gt;has">
+<sdesc>Checks if something is available in the session with the asked for key.</sdesc>
+<desc></desc>
+<type>boolean</type>
+<methodparam>
+<type>string</type>
+<parameter>key</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Session-&gt;hasSession">
+<sdesc>Checks if this IsmoSession instance has a valid client session or not.</sdesc>
+<desc>To clarify, a IsmoSession instance can exist but no client session. The  IsmoSession class just represents the session if it's available, if it's  not available the class represents an non-existent session. And it has a  method to create a session.</desc>
+<type>boolean</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Session-&gt;isRequestedSessionIdFromCookie">
+<sdesc>Checks if the session id came from a cookie.</sdesc>
+<desc></desc>
+<type>boolean</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Session-&gt;isRequestedSessionIdFromUrl">
+<sdesc>Checks if the session id came from the URL.</sdesc>
+<desc></desc>
+<type>boolean</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Session-&gt;isSessionAvailable">
+<sdesc>Checks if a session is available for resuming.</sdesc>
+<desc>By checking if there is a cookie or a get/post parameter set which match  the session name identifier we can judge if there is a session available  for resuming.</desc>
+<type>boolean</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Session-&gt;put">
+<sdesc>Puts something to be saved in the session.</sdesc>
+<desc>Stores something in the session for later retrieval, as long as the  session is still alive. If the session &quot;dies&quot; or is &quot;ended&quot; all the data  associated with the session is lost.If there is no active/current session a new one is started. If there is  already previous saved object with the same key it's overwritten.</desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>key</parameter>
+</methodparam>
+<methodparam>
+<type>mixed</type>
+<parameter>data</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Session-&gt;remove">
+<sdesc>Removes the stored object from the session.</sdesc>
+<desc>If an object with the given key exists in the session it's removed and  true is returned otherwise false is returned.</desc>
+<type>boolean</type>
+<methodparam>
+<type>string</type>
+<parameter>key</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_AOP_StateProxy-&gt;Ismo_Core_AOP_StateProxy">
+<sdesc>The constructor.</sdesc>
+<desc>This creates a dynamic proxy for the class instance given to the  constructor.</desc>
+<type>Ismo_Core_AOP_StateProxy</type>
+<methodparam>
+<type>mixed</type>
+<parameter>instance</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_AOP_StateProxy-&gt;execute">
+<sdesc>Handles the request.</sdesc>
+<desc>This is the method that the Ismo_Core_Application class calls. It  figures out the action, checks if the request is authorized, expose the  default variables and then calls the action method.This method should never be called manually.</desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Static-&gt;clear">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Static-&gt;create">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Static-&gt;debug">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Static-&gt;flatten">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Static-&gt;get">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Static-&gt;interpolateFlatten">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Static-&gt;interpolateString">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Static-&gt;interpolateToArray">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Static-&gt;ref">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Static-&gt;set">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Namespace_Static-&gt;toArray">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller_Status-&gt;Ismo_Core_State_Controller_Status">
+<sdesc></sdesc>
+<desc></desc>
+<type>Ismo_Core_State_Controller_Status</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller_Status-&gt;createSessionName">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller_Status-&gt;exists">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller_Status-&gt;get">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller_Status-&gt;getAll">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller_Status-&gt;getData">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller_Status-&gt;getExisting">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller_Status-&gt;getFirstMissing">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller_Status-&gt;getMissing">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller_Status-&gt;getMissingRequired">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller_Status-&gt;getRequired">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller_Status-&gt;getValue">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller_Status-&gt;init">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller_Status-&gt;isAction">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller_Status-&gt;isComplete">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller_Status-&gt;isRequired">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller_Status-&gt;multipleExist">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller_Status-&gt;reset">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller_Status-&gt;resetAll">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller_Status-&gt;resetData">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller_Status-&gt;set">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller_Status-&gt;setData">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller_Status-&gt;setValue">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_Controller_Status-&gt;update">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Url-&gt;Ismo_Core_Url">
+<sdesc>The constructor.</sdesc>
+<desc>If it's an internal url the session identifier will automatically  be added to the url if it's necessary (i.e. if cookies are disabled  in the user's browser). If it's not an internal url no session  identifier will be added. An internal url is identified by the  value of the $internal parameter. If it's ISMO_CORE_QUERY_STYLE or  ISMO_CORE_PATHINFO_STYLE it's considered an internal url.  ISMO_CORE_QUERY_STYLE is the default value for that parameter.Because this method can't know what is the script and what is  additional path info data. The whole path is considered to be  part of the path to the script. So additional path info  parameters have to be added with the addPathParameter() method.</desc>
+<type>Ismo_Core_Url</type>
+<methodparam>
+<type>string</type>
+<parameter>url</parameter>
+</methodparam>
+<methodparam>
+<type>integer</type>
+<parameter>internal</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Url-&gt;addParameter">
+<sdesc>Adds a query parameter to the url.</sdesc>
+<desc>If a parameter with the same name has already been added it will be  updated instead of added again.Example:  1       $url = new ('http://foo/bar.php');2       $url-&gt;('sort', 'asc');  This results in a url like this, http://foo/bar.php?sort=asc</desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>name</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>value</parameter>
+</methodparam>
+<methodparam>
+<type>boolean</type>
+<parameter>preencoded</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Url-&gt;addPathParameter">
+<sdesc>Adds a path parameter to the url.</sdesc>
+<desc>If a parameter with the same name has already been added it will be  updated instead of added again.Examples:  1       $url = new ('http://foo/bar.php');2       $url-&gt;('sort', 'asc');  This results in a url like this, http://foo/bar.php/sort/asc1       $url = new ('http://foo/bar.php');2       $url-&gt;('sort', 'asc', false);  This results in a url like this, http://foo.bar.php/asc. I.e.  the name of the parameter is hidden and to get the value of  this parameter one has to use the getPathParameterByIndex() method.</desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>name</parameter>
+</methodparam>
+<methodparam>
+<type>string</type>
+<parameter>value</parameter>
+</methodparam>
+<methodparam>
+<type>boolean</type>
+<parameter>visible</parameter>
+</methodparam>
+<methodparam>
+<type>boolean</type>
+<parameter>preencoded</parameter>
+</methodparam>
+<methodparam>
+<type>boolean</type>
+<parameter>omitIfPossible</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Url-&gt;addPathParametersArray">
+<sdesc>Adds path parameters to the url, using an indexed array.</sdesc>
+<desc>Note that you have to url encode params yourself, if needed.</desc>
+<type>void</type>
+<methodparam>
+<type>array</type>
+<parameter>params</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Url-&gt;addPathParametersAssoc">
+<sdesc>Adds path parameters to the url, using an assoc. array.</sdesc>
+<desc>Note that you have to url encode params yourself, if needed.</desc>
+<type>void</type>
+<methodparam>
+<type>array</type>
+<parameter>params</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Url-&gt;removeParameter">
+<sdesc>Removes a parameter from the url.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>name</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Url-&gt;removePathParameter">
+<sdesc>Removes a path info parameter from the url.</sdesc>
+<desc></desc>
+<type>void</type>
+<methodparam>
+<type>string</type>
+<parameter>name</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_Url-&gt;toString">
+<sdesc>Returns the URL in a string format suitable to put in HTML.</sdesc>
+<desc>The URL is always returned in a absolute format.</desc>
+<type>string</type>
+<methodparam>
+<type>boolean</type>
+<parameter>escapeEntities</parameter>
+</methodparam>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_External_XMLRPC_XML-&gt;Ismo_Core_External_XMLRPC_XML">
+<sdesc></sdesc>
+<desc></desc>
+<type>Ismo_Core_External_XMLRPC_XML</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_External_XMLRPC_XML-&gt;close">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_External_XMLRPC_XML-&gt;data">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_External_XMLRPC_XML-&gt;destruct">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_External_XMLRPC_XML-&gt;open">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_External_XMLRPC_XML-&gt;parse">
+<sdesc></sdesc>
+<desc></desc>
+<type>void</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_XMLRPC-&gt;Ismo_Core_State_XMLRPC">
+<sdesc>The constructor.</sdesc>
+<desc></desc>
+<type>Ismo_Core_State_XMLRPC</type>
+</methodsynopsis>
+<methodsynopsis function="Ismo_Core_State_XMLRPC-&gt;execute">
+<sdesc>Handles the request.</sdesc>
+<desc>This is done by first figuring out which action method that  should be called and then calling it.</desc>
+<type>void</type>
+</methodsynopsis>
+<entry/>
+</manual>  	

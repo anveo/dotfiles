@@ -1,32 +1,38 @@
 # skip the startup message
 startup_message off
+
 # Automatically detach on hangup.
 autodetach on
+
 # If a screen dies, don't freeze the whole screen waiting for it.
 nonblock on
+
 # Change default scrollback value for new windows
 defscrollback 10000
 scrollback 10000
+
 # start with visual bell as default
 vbell off
 vbell_msg "Bell on %t (%n)"
+
 # look and feel
 caption always "%{=b kR}[%u%H][%{-b}%{W}%l%{b R}][%= %{= kw}%?%-Lw%?%{=b kR}(%{W}%n*%f %t%?(%u)%?%{=b kR})%{= kw}%?%+Lw%?%?%= %{=b R}]%{=b R}[%{-b W} %d %M %c %{=b R}]%{W}"
-#termcapinfo xterm 'hs:ts=\E]2;:fs=\007:ds=\E]2;screen\007'
 hardstatus alwaysignore
-#hardstatus alwayslastline '%{gW}%-w%{.wb}%n %t%{-}%+w %=%{.w}'
+
 # nethack :)
 nethack on
+
 activity "Activity in %t (%n)"
 
 # terminfo and termcap for nice 256 color terminal
 # allow bold colors - necessary for some reason
 attrcolor b ".I"
+
 # tell screen how to set colors. AB = background, AF=foreground
 termcapinfo xterm 'Co#256:AB=\E[48;5;%dm:AF=\E[38;5;%dm'
+
 # erase background with current bg color
 defbce "on"
+
 # set TERM
-term screen-256color-bce
 term xterm-256color
-#termcapinfo xterm|xterms|xs|rxvt ti@:te@

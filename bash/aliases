@@ -10,6 +10,9 @@ function take() {
   cd "$1"
 }
 
+# file manager
+alias n="nautilus"
+
 # grep
 if which ack-grep 1>/dev/null
 then
@@ -81,7 +84,9 @@ alias cdec='cd ~/projects/local/ecollect'
 alias cdfb='cd ~/projects/local/fontbros'
 alias cdll='cd ~/projects/local/listedlocal'
 alias cdv1='cd ~/projects/local/volumeone'
+alias cdv2='cd ~/projects/local/volumetwo'
 alias cdyb='cd ~/projects/local/yayboo'
+alias cdyt='cd ~/projects/local/yaptime'
 
 # OSX specific
 if [ `uname` == 'Darwin' ]; then
@@ -90,9 +95,6 @@ if [ `uname` == 'Darwin' ]; then
 
   # no --color option
   alias ls="ls -F -G"
-
-  # Gem location for macport
-  alias cdg='cd /opt/local/lib/ruby/gems/1.8/gems'
 
   alias lamp='cd /Applications/XAMPP'
 else
@@ -130,3 +132,4 @@ extract () {
     echo "'$1' is not a valid file!"
       fi
 }
+alias xtract="extract"
