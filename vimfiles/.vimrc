@@ -298,10 +298,12 @@ set wildmode=list:longest:full   "make cmdline tab completion similar to bash
 set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
 set wildignore=*.o,*.obj,*~,*.sassc "stuff to ignore when tab completing
 
+set complete-=i
+
 " Tab navigation
-nmap <leader>tn :tabnext<CR>
-nmap <leader>tp :tabprevious<CR>
-nmap <leader>te :tabedit
+"nmap <leader>tn :tabnext<CR>
+"nmap <leader>tp :tabprevious<CR>
+"nmap <leader>te :tabedit
 
 "some stuff to get the mouse going in term
 set mouse=a
@@ -329,6 +331,9 @@ nnoremap <C-B> :BufExplorer<cr>
 "nmap <leader>t :FuzzyFinderTextMate<CR>
 "let g:fuzzy_ignore = "*.png;*.PNG;*.JPG;*.jpg;*.GIF;*.gif;*.doc;*.DOC;*.pdf;*.PDF;*.ppt;*.docx;*.pptx;*.wpd;*.zip;*.rtf;*.eps;*.psd;*.ttf;*.otf;vendor/**;coverage/**;tmp/**"
 "let g:fuzzy_matching_limit = 40
+
+"alternate command-t invocation
+nnoremap <c-f> :CommandT<CR>
 
 "map Q to something useful
 noremap Q gq

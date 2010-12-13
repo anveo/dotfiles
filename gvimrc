@@ -1,4 +1,4 @@
-colorscheme vibrantink
+colorscheme vividchalk
 
 set lines=55 columns=100
 
