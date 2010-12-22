@@ -4,3 +4,4 @@
 
 # bundler
 .bundle
+vimfiles/bundle/*

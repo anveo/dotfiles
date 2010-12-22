@@ -38,4 +38,7 @@ if [ -f ~/.localrc ]; then
   . ~/.localrc
 fi
 
+# https://github.com/rupa/z
+. "$HOME/dotfiles/bash/scripts/z.sh"
+
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.
