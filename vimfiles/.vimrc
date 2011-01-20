@@ -366,4 +366,6 @@ imap <C-k> <C-o>b:<Esc>ea
 "imap <C-k> <C-o>mu<Esc>bi:<Esc>'u
 nmap <C-k> lbi:<Esc>E
 
-let g:sparkupNextMapping = '<c-x>'
+" Sparkup
+let g:sparkupExecuteMapping = '<C-S-e>'
+let g:sparkupNextMapping = '<C-S-x>'
