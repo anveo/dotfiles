@@ -25,6 +25,8 @@
         token = e04e3b5d80248acf9b82997039d1b7f7
 [core]
 	editor = vim
+	autocrlf = input
+	safecrlf = true
 
 [merge]
 	tool = meld
