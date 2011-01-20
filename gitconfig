@@ -6,10 +6,13 @@
         ci = checkin
         st = status
         br = branch
+        hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
         log1 = log --pretty=oneline --abbrev-commit
         diffi = diff --ignore-all-space
         unstage = reset HEAD --
         last = log -1 HEAD
+        type = cat-file -t
+        dump = cat-file -p
 
 [apply]
         whitespace = nowarn
