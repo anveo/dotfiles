@@ -83,6 +83,9 @@ get_repo "nelstrom" "vim-textobj-rubyblock"
 echo "Installing git-vim"
 get_repo "motemen" "git-vim"
 
+echo "Installing vim-ruby-refactoring"
+get_repo "ecomba" "vim-ruby-refactoring"
+
 echo "Installing jQuery"
 cd $DOTVIM
 curl http://www.vim.org/scripts/download_script.php?src_id=$JQUERY -o "syntax/jquery.vim"
