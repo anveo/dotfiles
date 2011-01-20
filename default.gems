@@ -1,5 +1,6 @@
 rake
 bundler
+gemedit
 interactive_editor
 map_by_method
 what_methods
