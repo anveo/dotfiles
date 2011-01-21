@@ -74,8 +74,17 @@ get_repo "tsaleh" "vim-align"
 echo "Installing vim-indent-object"
 get_repo "michaeljsmith" "vim-indent-object"
 
+echo "Installed vim-textobj-user"
+get_repo "kana" "vim-textobj-user"
+
+echo "Installed vim-textobj-rubyblock"
+get_repo "nelstrom" "vim-textobj-rubyblock"
+
 echo "Installing git-vim"
 get_repo "motemen" "git-vim"
+
+echo "Installing vim-ruby-refactoring"
+get_repo "ecomba" "vim-ruby-refactoring"
 
 echo "Installing jQuery"
 cd $DOTVIM

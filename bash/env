@@ -1,5 +1,10 @@
 export EDITOR="vim"
 
+# If output gets paged, repaint the screen.
+# This solved color codes from being displayed
+# in the rails console
+export LESS="-R"
+
 if [ `uname` == 'Darwin' ]; then
   # We need gui support for plugins
   export EDITOR="mvim -v"

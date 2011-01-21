@@ -34,6 +34,14 @@ filetype indent on
 "turn on syntax highlighting
 syntax on
 
+" Without setting this, ZoomWin restores windows in a way that causes
+" equalalways behavior to be triggered the next time CommandT is used.
+" This is likely a bludgeon to solve some other issue, but it works
+set noequalalways
+
+" ZoomWin configuration
+map <Leader>, :ZoomWin<CR>
+
 " Easier non-interactive command insertion
 nnoremap <Space> :
 
@@ -296,7 +304,8 @@ set nofoldenable        "dont fold by default
 
 set wildmode=list:longest:full   "make cmdline tab completion similar to bash
 set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
-set wildignore=*.o,*.obj,*~,*.sassc "stuff to ignore when tab completing
+"stuff to ignore when tab completing and CommandT
+set wildignore=*.o,*.obj,*~,*.sassc,*.png,*.PNG,*.JPG,*.jpg,*.GIF,*.gif,*.doc,*.DOC,*.pdf,*.PDF,*.ppt,*.docx,*.pptx,*.wpd,*.zip,*.rtf,*.eps,*.psd,*.ttf,*.otf,*.eot,*.svg,*.woff,"log/**","vendor/**","coverage/**","tmp/**"
 
 set complete-=i
 
@@ -357,4 +366,6 @@ imap <C-k> <C-o>b:<Esc>ea
 "imap <C-k> <C-o>mu<Esc>bi:<Esc>'u
 nmap <C-k> lbi:<Esc>E
 
-let g:sparkupNextMapping = '<c-x>'
+" Sparkup
+let g:sparkupExecuteMapping = '<C-S-e>'
+let g:sparkupNextMapping = '<C-S-x>'

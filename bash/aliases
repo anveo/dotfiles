@@ -43,12 +43,17 @@ alias gp='git push'
 alias gd='git diff'
 alias gc='git commit'
 alias gca='git commit -a'
-alias gco='git checkout'
+alias gco='git checkout '
+alias go='git checkout '
 alias gb='git branch'
 alias gs='git status'
 alias gst='git status'
 alias grm="git status | grep deleted | awk '{print \$3}' | xargs git rm"
+alias gg="gitg&"
 #alias gae="for i in $(find . -type d -regex ``./[^.].*'' -empty); do touch $i\"/.gitignore\"; done;"
+# fat fingers
+alias got='git '
+alias get='git '
 
 # Setup a tracking branch from [remote] [branch_name]
 function gbt() {
@@ -103,6 +108,11 @@ else
   # Or
   # alias pbcopy='xsel --clipboard --input'
   # alias pbcopy='xsel --clipboard --output'
+  
+  # OSX like `open` command, alternatives might be xdg-open and see
+  alias open='gnome-open'
+  alias ']'='gnome-open'
+  alias 'o'='gnome-open'
 fi
 
 # Show what is taking up space
