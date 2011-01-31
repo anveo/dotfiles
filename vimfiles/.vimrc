@@ -333,6 +333,7 @@ inoremap <C-L> <C-O>:nohls<CR>
 
 "map to bufexplorer
 nnoremap <C-B> :BufExplorer<cr>
+let g:bufExplorerShowRelativePath=1
 
 "map to fuzzy finder text mate stylez
 "nnoremap <c-f> :FuzzyFinderTextMate<CR>
