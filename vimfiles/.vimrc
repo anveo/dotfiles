@@ -305,7 +305,7 @@ set nofoldenable        "dont fold by default
 set wildmode=list:longest:full   "make cmdline tab completion similar to bash
 set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
 "stuff to ignore when tab completing and CommandT
-set wildignore=*.o,*.obj,*~,*.sassc,*.png,*.PNG,*.JPG,*.jpg,*.GIF,*.gif,*.doc,*.DOC,*.pdf,*.PDF,*.ppt,*.docx,*.pptx,*.wpd,*.zip,*.rtf,*.eps,*.psd,*.ttf,*.otf,*.eot,*.svg,*.woff,"log/**","vendor/**","coverage/**","tmp/**"
+set wildignore=*.o,*.obj,*~,*.sassc,*.png,*.PNG,*.JPG,*.jpg,*.GIF,*.gif,*.doc,*.DOC,*.pdf,*.PDF,*.ppt,*.docx,*.pptx,*.wpd,*.zip,*.rtf,*.eps,*.psd,*.ttf,*.otf,*.eot,*.svg,*.woff,*.mp3,*.mp4,*.m4a,*.wav,"log/**","vendor/**","coverage/**","tmp/**"
 
 set complete-=i
 
