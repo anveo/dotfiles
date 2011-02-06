@@ -322,7 +322,7 @@ set ttymouse=xterm2
 set t_Co=256
 
 " set colorscheme
-colorscheme vividchalk
+colorscheme jellybeans+
 
 "hide buffers when not displayed
 set hidden

@@ -1,4 +1,4 @@
-colorscheme vividchalk
+colorscheme jellybean+
 
 set lines=55 columns=100
 
