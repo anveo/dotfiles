@@ -87,6 +87,9 @@ let g:snippetsEmu_key = "<S-Tab>"
 " For Haml
 au! BufRead,BufNewFile *.haml setfiletype haml
 
+" For Io
+au! BufRead,BufNewFile *.io setfiletype io
+
 " No Help, please
 nmap <F1> <Esc>
 map! <F1> <Esc>
