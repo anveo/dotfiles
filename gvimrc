@@ -1,4 +1,4 @@
-colorscheme jellybean+
+colorscheme jellybeans+
 
 set lines=55 columns=100
 
