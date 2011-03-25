@@ -56,8 +56,8 @@ get_repo "msanders" "snipmate.vim"
 echo "Installing vim-ruby"
 get_repo "vim-ruby" "vim-ruby"
 
-echo "Installing vim-ruby-debugger"
-get_repo "astashov" "vim-ruby-debugger"
+#echo "Installing vim-ruby-debugger"
+#get_repo "astashov" "vim-ruby-debugger"
 
 echo "Installing taglist.vim"
 get_repo "jc00ke" "taglist.vim"
