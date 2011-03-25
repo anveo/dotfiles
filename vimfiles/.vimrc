@@ -83,6 +83,7 @@ nmap <Leader>G :AckG
 
 " Snippets are activated by Shift+Tab
 let g:snippetsEmu_key = "<S-Tab>"
+let g:snippets_dir = '$HOME/.vim/_snippets/'
 
 " For Haml
 au! BufRead,BufNewFile *.haml setfiletype haml
