@@ -95,6 +95,11 @@ au! BufRead,BufNewFile *.io setfiletype io
 nmap <F1> <Esc>
 map! <F1> <Esc>
 
+" Other <F*> binds
+nmap <F3> :set paste<CR>
+nmap <F4> :set nopaste<CR>
+nmap <F5> :GundoToggle<CR>
+
 " map ,d to toggle NERDTree window
 nmap <leader>d :NERDTreeToggle<CR>
 

@@ -89,6 +89,9 @@ get_repo "ecomba" "vim-ruby-refactoring"
 echo "Installing tabular"
 get_repo "godlygeek" "tabular"
 
+echo "Installing gundo"
+get_repo "sjl" "gundo.vim"
+
 echo "Installing jQuery"
 cd $DOTVIM
 curl http://www.vim.org/scripts/download_script.php?src_id=$JQUERY -o "syntax/jquery.vim"
