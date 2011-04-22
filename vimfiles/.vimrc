@@ -83,6 +83,7 @@ nmap <Leader>G :AckG
 
 " Snippets are activated by Shift+Tab
 let g:snippetsEmu_key = "<S-Tab>"
+let g:snippets_dir = '$HOME/.vim/_snippets/'
 
 " For Haml
 au! BufRead,BufNewFile *.haml setfiletype haml
@@ -93,6 +94,11 @@ au! BufRead,BufNewFile *.io setfiletype io
 " No Help, please
 nmap <F1> <Esc>
 map! <F1> <Esc>
+
+" Other <F*> binds
+nmap <F3> :set paste<CR>
+nmap <F4> :set nopaste<CR>
+nmap <F5> :GundoToggle<CR>
 
 " map ,d to toggle NERDTree window
 nmap <leader>d :NERDTreeToggle<CR>
@@ -137,7 +143,7 @@ let NERDChristmasTree = 1
 let NERDTreeHighlightCursorline = 1
 let NERDTreeShowBookmarks = 1
 let NERDTreeShowHidden = 1
-let NERDTreeIgnore = ['.vim$', '\~$', '.svn$', '\.git$', '.DS_Store']
+let NERDTreeIgnore = ['.vim$', '\~$', '.svn$', '\.git$', '.DS_Store', '.sass-cache']
 
 "statusline setup
 set statusline=%f       "tail of the filename

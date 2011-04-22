@@ -37,7 +37,7 @@ cd $DOTVIM/bundle/
 tpope_repos=(rails haml git cucumber fugitive surround unimpaired abolish repeat markdown endwise ragtag vividchalk)
 
 for r in ${tpope_repos[*]}; do
-	repo="vim-$r"
+        repo="vim-$r"
     get_repo "tpope" $repo
 done
 
@@ -56,8 +56,8 @@ get_repo "msanders" "snipmate.vim"
 echo "Installing vim-ruby"
 get_repo "vim-ruby" "vim-ruby"
 
-echo "Installing vim-ruby-debugger"
-get_repo "astashov" "vim-ruby-debugger"
+#echo "Installing vim-ruby-debugger"
+#get_repo "astashov" "vim-ruby-debugger"
 
 echo "Installing taglist.vim"
 get_repo "jc00ke" "taglist.vim"
@@ -86,6 +86,12 @@ get_repo "motemen" "git-vim"
 echo "Installing vim-ruby-refactoring"
 get_repo "ecomba" "vim-ruby-refactoring"
 
+echo "Installing tabular"
+get_repo "godlygeek" "tabular"
+
+echo "Installing gundo"
+get_repo "sjl" "gundo.vim"
+
 echo "Installing jQuery"
 cd $DOTVIM
 curl http://www.vim.org/scripts/download_script.php?src_id=$JQUERY -o "syntax/jquery.vim"
@@ -105,10 +111,10 @@ contains=`grep "$pathogen_cmd" ~/.vimrc | wc -l`
 
 if [ $contains == 0 ]
 then
-	echo "Hasn't been added, adding now."
-	echo "$pathogen_cmd" >> ~/.vimrc
+        echo "Hasn't been added, adding now."
+        echo "$pathogen_cmd" >> ~/.vimrc
 else
-	echo "It was already added. Good to go"
+        echo "It was already added. Good to go"
 fi
 
 ct=`curl -s https://wincent.com/products/command-t | grep releases | head -1 | cut -d\" -f2`

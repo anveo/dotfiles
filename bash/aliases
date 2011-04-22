@@ -3,6 +3,8 @@ alias reload='source ~/dotfiles/bash/aliases'
 
 # cd
 alias ..='cd ..'
+alias ...='cd ..; cd ..'
+alias ....='cd ..; cd ..; cd ..'
 alias cdd='cd -'
 
 function take() {
