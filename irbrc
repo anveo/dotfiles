@@ -53,7 +53,7 @@ end
 
 begin
   # 'lp' to show method lookup path
-  require 'looksee/shortcuts'
+  require 'looksee'
 rescue LoadError
   puts "looksee is not installed. To enable, run: gem install looksee"
 end
