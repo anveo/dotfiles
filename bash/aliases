@@ -12,6 +12,9 @@ function take() {
   cd "$1"
 }
 
+# for github
+alias wgets="wget --no-check-certificate "
+
 # file manager
 alias n="nautilus"
 
