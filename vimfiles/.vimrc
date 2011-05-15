@@ -91,6 +91,10 @@ au! BufRead,BufNewFile *.haml setfiletype haml
 " For Io
 au! BufRead,BufNewFile *.io setfiletype io
 
+" For coffee script
+au FileType coffee map <buffer> <Leader>j :CoffeeCompile<cr>
+au FileType coffee map <buffer> <Leader>h :CoffeeMake<cr>
+
 " No Help, please
 nmap <F1> <Esc>
 map! <F1> <Esc>
