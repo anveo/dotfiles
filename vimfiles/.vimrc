@@ -39,6 +39,12 @@ syntax on
 " This is likely a bludgeon to solve some other issue, but it works
 set noequalalways
 
+set encoding=utf8
+try
+    lang en_US
+catch
+endtry
+
 " ZoomWin configuration
 map <Leader>, :ZoomWin<CR>
 
@@ -69,7 +75,7 @@ set ignorecase
 set smartcase
 
 " Don't highlight search matches
-set nohlsearch
+" "set nohlsearch
 
 " Jump to end of line in insert mode
 imap <C-j> <End>
@@ -90,6 +96,10 @@ au! BufRead,BufNewFile *.haml setfiletype haml
 
 " For Io
 au! BufRead,BufNewFile *.io setfiletype io
+
+" For coffee script
+au FileType coffee map <buffer> <Leader>j :CoffeeCompile<cr>
+au FileType coffee map <buffer> <Leader>h :CoffeeMake<cr>
 
 " No Help, please
 nmap <F1> <Esc>

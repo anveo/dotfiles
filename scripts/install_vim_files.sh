@@ -92,13 +92,22 @@ get_repo "godlygeek" "tabular"
 echo "Installing gundo"
 get_repo "sjl" "gundo.vim"
 
+echo "Installing vim-colors-solarized"
+get_repo "altercation" "vim-colors-solarized"
+
+echo "Installing mustache.vim"
+get_repo "juvenn" "mustache.vim"
+
+echo "Installing vim-coffee-script"
+get_repo "kchmck" "vim-coffee-script"
+
 echo "Installing jQuery"
 cd $DOTVIM
 curl http://www.vim.org/scripts/download_script.php?src_id=$JQUERY -o "syntax/jquery.vim"
 curl https://github.com/jc00ke/Gemfile.vim/raw/master/syntax/Gemfile.vim -o "syntax/Gemfile.vim"
 curl https://github.com/jc00ke/Gemfile.vim/raw/master/ftdetect/Gemfile.vim -o "ftdetect/Gemfile.vim"
-curl https://github.com/jc00ke/mustache.vim/raw/master/syntax/mustache.vim -o "syntax/mustache.vim"
-curl https://github.com/jc00ke/mustache.vim/raw/master/ftdetect/mustache.vim -o "ftdetect/mustache.vim"
+#curl https://github.com/juvenn/mustache.vim/raw/master/syntax/mustache.vim -o "syntax/mustache.vim"
+#curl https://github.com/juvenn/mustache.vim/raw/master/ftdetect/mustache.vim -o "ftdetect/mustache.vim"
 
 cd $DOTVIM/autoload
 echo "Fetching latest pathogen.vim"
