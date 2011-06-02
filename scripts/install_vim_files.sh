@@ -101,6 +101,9 @@ get_repo "juvenn" "mustache.vim"
 echo "Installing vim-coffee-script"
 get_repo "kchmck" "vim-coffee-script"
 
+echo "Installing vim-puppet"
+get_repo "rodjek" "vim-puppet"
+
 echo "Installing jQuery"
 cd $DOTVIM
 curl http://www.vim.org/scripts/download_script.php?src_id=$JQUERY -o "syntax/jquery.vim"
