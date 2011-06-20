@@ -409,3 +409,6 @@ nmap <C-k> lbi:<Esc>E
 " Sparkup
 let g:sparkupExecuteMapping = '<C-S-e>'
 let g:sparkupNextMapping = '<C-S-x>'
+
+" jQuery
+au BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
