@@ -160,7 +160,7 @@ map <Leader>snipj :e ~/.vim/_snippets/javascript.snippets<CR>
 map <Leader>ts :let file_to_run = "<c-r>%"<cr>
 " Execute the results of concatenating the strings below. last_run_file is set
 " above.
-map <Leader>tt :exe '!ruby -I"test" -I"spec"' file_to_run<cr>
+" map <Leader>tt :exe '!ruby -I"test" -I"spec"' file_to_run<cr>
 
 " Edit routes
 command! Rroutes :e config/routes.rb
