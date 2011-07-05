@@ -1,7 +1,6 @@
 #!/bin/bash
 
 DOTVIM="$HOME/.vim"
-JQUERY=12276
 
 if [ ! -e `which git` ]
 then
@@ -101,18 +100,23 @@ get_repo "juvenn" "mustache.vim"
 echo "Installing vim-coffee-script"
 get_repo "kchmck" "vim-coffee-script"
 
+echo "Installing vim-puppet"
+get_repo "rodjek" "vim-puppet"
+
 echo "Installing jQuery"
+JQUERY=15752
 cd $DOTVIM
+
 curl http://www.vim.org/scripts/download_script.php?src_id=$JQUERY -o "syntax/jquery.vim"
-curl https://github.com/jc00ke/Gemfile.vim/raw/master/syntax/Gemfile.vim -o "syntax/Gemfile.vim"
-curl https://github.com/jc00ke/Gemfile.vim/raw/master/ftdetect/Gemfile.vim -o "ftdetect/Gemfile.vim"
+curl https://raw.github.com/jc00ke/Gemfile.vim/master/syntax/Gemfile.vim -o "syntax/Gemfile.vim"
+curl https://raw.github.com/jc00ke/Gemfile.vim/master/ftdetect/Gemfile.vim -o "ftdetect/Gemfile.vim"
 #curl https://github.com/juvenn/mustache.vim/raw/master/syntax/mustache.vim -o "syntax/mustache.vim"
 #curl https://github.com/juvenn/mustache.vim/raw/master/ftdetect/mustache.vim -o "ftdetect/mustache.vim"
 
 cd $DOTVIM/autoload
 echo "Fetching latest pathogen.vim"
 rm pathogen.vim
-curl -O https://github.com/tpope/vim-pathogen/raw/master/autoload/pathogen.vim
+curl -O https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
 
 echo "Checking to see if pathogen has already been added to .vimrc"
 pathogen_cmd="call pathogen#runtime_append_all_bundles()"

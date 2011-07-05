@@ -101,9 +101,16 @@ au! BufRead,BufNewFile *.io setfiletype io
 au FileType coffee map <buffer> <Leader>j :CoffeeCompile<cr>
 au FileType coffee map <buffer> <Leader>h :CoffeeMake<cr>
 
+" Use _ as a word-separator
+set iskeyword-=_
+
 " No Help, please
 nmap <F1> <Esc>
 map! <F1> <Esc>
+
+" Emacs-like beginning and end of line.
+imap <c-e> <c-o>$
+imap <c-a> <c-o>^
 
 " Other <F*> binds
 nmap <F3> :set paste<CR>
@@ -124,8 +131,10 @@ map <D-7> :tabn 7<CR>
 map <D-8> :tabn 8<CR>
 map <D-9> :tabn 9<CR>
 
-nmap <leader>v :vsplit<CR> <C-w><C-w>
-nmap <leader>s :split<CR> <C-w><C-w>
+"nmap <leader>v :vsplit<CR> <C-w><C-w>
+"nmap <leader>s :split<CR> <C-w><C-w>
+
+map <Leader>rf :CommandTFlush<CR>
 
 " Leader shortcuts for Rails commands
 map <Leader>m :Rmodel
@@ -143,6 +152,15 @@ map <Leader>v :Rview
 "map <Leader>sv :RSview
 "map <Leader>su :RSunittest
 "map <Leader>sf :RSfunctionaltest
+
+map <Leader>snip :call ReloadAllSnippets()<CR>
+map <Leader>snipr :e ~/.vim/_snippets/ruby.snippets<CR>
+map <Leader>snipj :e ~/.vim/_snippets/javascript.snippets<CR>
+
+map <Leader>ts :let file_to_run = "<c-r>%"<cr>
+" Execute the results of concatenating the strings below. last_run_file is set
+" above.
+" map <Leader>tt :exe '!ruby -I"test" -I"spec"' file_to_run<cr>
 
 " Edit routes
 command! Rroutes :e config/routes.rb
@@ -324,14 +342,16 @@ set nofoldenable        "dont fold by default
 set wildmode=list:longest:full   "make cmdline tab completion similar to bash
 set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
 "stuff to ignore when tab completing and CommandT
+
+
 set wildignore=*.o,*.obj,*~,*.sassc,*.png,*.PNG,*.JPG,*.jpg,*.GIF,*.gif,*.doc,*.DOC,*.pdf,*.PDF,*.ppt,*.docx,*.pptx,*.wpd,*.zip,*.rtf,*.eps,*.psd,*.ttf,*.otf,*.eot,*.svg,*.woff,*.mp3,*.mp4,*.m4a,*.wav,"log/**","vendor/**","coverage/**","tmp/**"
 
 set complete-=i
 
 " Tab navigation
-"nmap <leader>tn :tabnext<CR>
-"nmap <leader>tp :tabprevious<CR>
-"nmap <leader>te :tabedit
+nmap <leader>tn :tabnext<CR>
+nmap <leader>tp :tabprevious<CR>
+nmap <leader>te :tabedit
 
 "some stuff to get the mouse going in term
 set mouse=a
@@ -380,7 +400,7 @@ set scrolloff=3
 let g:syntastic_enable_signs=1
 
 " bind control-l to hashrocket
-imap <C-l> <Space>=><Space>'
+imap <C-l> <Space>=><Space>
 " convert word into ruby symbol
 imap <C-k> <C-o>b:<Esc>ea
 "imap <C-k> <C-o>mu<Esc>bi:<Esc>'u
@@ -389,3 +409,6 @@ nmap <C-k> lbi:<Esc>E
 " Sparkup
 let g:sparkupExecuteMapping = '<C-S-e>'
 let g:sparkupNextMapping = '<C-S-x>'
+
+" jQuery
+au BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
