@@ -102,7 +102,7 @@ au FileType coffee map <buffer> <Leader>j :CoffeeCompile<cr>
 au FileType coffee map <buffer> <Leader>h :CoffeeMake<cr>
 
 " Use _ as a word-separator
-set iskeyword-=_
+"set iskeyword-=_
 
 " No Help, please
 nmap <F1> <Esc>
@@ -344,7 +344,7 @@ set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
 "stuff to ignore when tab completing and CommandT
 
 
-set wildignore=*.o,*.obj,*~,*.sassc,*.png,*.PNG,*.JPG,*.jpg,*.GIF,*.gif,*.doc,*.DOC,*.pdf,*.PDF,*.ppt,*.docx,*.pptx,*.wpd,*.zip,*.rtf,*.eps,*.psd,*.ttf,*.otf,*.eot,*.svg,*.woff,*.mp3,*.mp4,*.m4a,*.wav,"log/**","vendor/**","coverage/**","tmp/**"
+set wildignore=*.o,*.obj,*~,*.scssc,*.sassc,*.png,*.PNG,*.JPG,*.jpg,*.GIF,*.gif,*.doc,*.DOC,*.pdf,*.PDF,*.ppt,*.docx,*.pptx,*.wpd,*.zip,*.rtf,*.eps,*.psd,*.ttf,*.otf,*.eot,*.svg,*.woff,*.mp3,*.mp4,*.m4a,*.wav,"log/**","vendor/**","coverage/**","tmp/**"
 
 set complete-=i
 

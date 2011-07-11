@@ -7,7 +7,7 @@ set guifont=Monaco:h14
 
 let os = substitute(system('uname'), "\n", "", "")
 if os == "Linux"
-  set guifont=DejaVu\ Sans\ Mono\ 13
+  set guifont=DejaVu\ Sans\ Mono\ 11
 endif
 
 " No icky toolbar, menu or scrollbars in the GUI
