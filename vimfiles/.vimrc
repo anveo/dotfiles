@@ -97,6 +97,9 @@ au! BufRead,BufNewFile *.haml setfiletype haml
 " For Io
 au! BufRead,BufNewFile *.io setfiletype io
 
+" For JSON
+autocmd BufNewFile,BufRead *.json set ft=javascript
+
 " For coffee script
 au FileType coffee map <buffer> <Leader>j :CoffeeCompile<cr>
 au FileType coffee map <buffer> <Leader>h :CoffeeMake<cr>
