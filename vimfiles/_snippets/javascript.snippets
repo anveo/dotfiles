@@ -2,37 +2,28 @@ snippet ready
 	$(function() {
 	  ${1}
 	});
-
 snippet log
 	console.log(${1});
-
 snippet jj
-	$('${1}')
-
+	$('${1}')${2}
 snippet selff
 	var self = $(this);
-
 snippet hidee
 	$('${1}').hide();
-
 snippet showw
 	$('${1}').show();
-
 snippet togglee
 	$('${1}').toggle();
-
 snippet click
 	.click(function(e) {
 	  e.preventDefault();
 	  ${1}
 	});
-
 snippet clickk
 	$('${1}').click(function(e) {
 	  e.preventDefault();
 	  ${2}
 	});
-
 snippet hover
 	$('${1}').hover(
 	  function() {
@@ -42,7 +33,6 @@ snippet hover
 	    ${2}
 	  }
 	);
-
 snippet hoverr
 	.hover(
 	  function() {
@@ -52,7 +42,6 @@ snippet hoverr
 	    ${2}
 	  }
 	);
-
 snippet gett
 	$.get(
 	  '${1:url}',
@@ -61,7 +50,6 @@ snippet gett
 	    ${3}
 	  }
 	);
-
 snippet postt
 	$.post(
 	  '${1:url}',
