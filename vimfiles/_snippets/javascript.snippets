@@ -1,3 +1,9 @@
+snippet meth
+	${1:method}: function(${2:params}) {
+	},
+snippet func
+	function(${1:params}) {
+	},
 snippet ready
 	$(function() {
 	  ${1}
@@ -58,3 +64,9 @@ snippet postt
 	    ${3}
 	  }
 	);
+snippet bm
+	Backbone.Model.extend({${1}});
+snippet bc
+	Backbone.Collection.extend({${1}});
+snippet bv
+	Backbone.View.extend({${1}});
