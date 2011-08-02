@@ -421,9 +421,9 @@ au BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
 
 set colorcolumn=80
 
-highlight ColorColumn ctermbg=red guibg=#592929
+highlight ColorColumn ctermbg=red guibg=#902020
 highlight LineProximity guibg=#212121
-highlight LineOverflow guibg=#592929
+highlight LineOverflow guibg=#902020
 
 let w:m1=matchadd('LineProximity', '\%<81v.\%>75v', -1)
 let w:m2=matchadd('LineOverflow', '\%>80v.\+', -1)
