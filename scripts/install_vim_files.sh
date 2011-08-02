@@ -65,7 +65,7 @@ echo "Installing ack.vim"
 get_repo "mileszs" "ack.vim"
 
 echo "Installing supertab"
-get_repo "tsaleh" "vim-supertab"
+get_repo "ervandew" "supertab"
 
 echo "Installing align"
 get_repo "tsaleh" "vim-align"

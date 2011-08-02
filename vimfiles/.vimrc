@@ -34,26 +34,20 @@ filetype indent on
 "turn on syntax highlighting
 syntax on
 
-" Without setting this, ZoomWin restores windows in a way that causes
-" equalalways behavior to be triggered the next time CommandT is used.
-" This is likely a bludgeon to solve some other issue, but it works
-set noequalalways
-
 set encoding=utf8
 try
     lang en_US
 catch
 endtry
 
-" ZoomWin configuration
-map <Leader>, :ZoomWin<CR>
-
-" Easier non-interactive command insertion
-nnoremap <Space> :
-
 "Set mapleader
 let mapleader = ","
 let g:mapleader = ","
+
+map <Leader>z :ZoomWin<CR>
+
+" Easier non-interactive command insertion
+nnoremap <Space> :
 
 " Make it easy to update/reload .vimrc
 nmap <leader>s :source ~/.vimrc<CR>
@@ -86,6 +80,13 @@ set grepformat=%f:%l:%m
 
 nmap <Leader>g :Ack
 nmap <Leader>G :AckG
+
+" ZoomWin configuration
+
+" Without setting this, ZoomWin restores windows in a way that causes
+" equalalways behavior to be triggered the next time CommandT is used.
+" This is likely a bludgeon to solve some other issue, but it works
+set noequalalways
 
 " Snippets are activated by Shift+Tab
 let g:snippetsEmu_key = "<S-Tab>"
@@ -415,3 +416,20 @@ let g:sparkupNextMapping = '<C-S-x>'
 
 " jQuery
 au BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
+
+" subtle red colorcolumn
+
+set colorcolumn=80
+
+highlight ColorColumn ctermbg=red guibg=#902020
+highlight LineProximity guibg=#212121
+highlight LineOverflow guibg=#902020
+
+let w:m1=matchadd('LineProximity', '\%<81v.\%>75v', -1)
+let w:m2=matchadd('LineOverflow', '\%>80v.\+', -1)
+
+autocmd VimEnter * autocmd WinEnter * let w:created=1
+autocmd VimEnter * let w:created=1
+
+autocmd WinEnter * if !exists('w:created') | let w:m1=matchadd('LineProximity', '\%<81v.\%>75v', -1) | endif
+autocmd WinEnter * if !exists('w:created') | let w:m2=matchadd('LineOverflow', '\%>80v.\+', -1) | endif
