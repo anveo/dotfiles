@@ -29,6 +29,12 @@ task :install do
 
   end
 
+  # link weechat scripts
+  system %Q{mkdir -p $HOME/.weechat/perl/autoload}
+  system %Q{mkdir -p $HOME/.weechat/python/autoload}
+  system %Q{ln -fs "$PWD/extras/weechat/buffers.pl" "$HOME/.weechat/perl/autoload/buffers.pl"}
+  system %Q{ln -fs "$PWD/extras/weechat/toggle_nicklist.py" "$HOME/.weechat/python/autoload/toggle_nicklist.py"}
+
   # link scripts
   system %Q{ln -nfs "$PWD/scripts" "$HOME/scripts"}
   system %Q{mkdir -p "$HOME/bin"}
