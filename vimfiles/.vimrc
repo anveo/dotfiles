@@ -415,3 +415,20 @@ let g:sparkupNextMapping = '<C-S-x>'
 
 " jQuery
 au BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
+
+" subtle red colorcolumn
+
+set colorcolumn=80
+
+highlight ColorColumn ctermbg=red guibg=#592929
+highlight LineProximity guibg=#212121
+highlight LineOverflow guibg=#592929
+
+let w:m1=matchadd('LineProximity', '\%<81v.\%>75v', -1)
+let w:m2=matchadd('LineOverflow', '\%>80v.\+', -1)
+
+autocmd VimEnter * autocmd WinEnter * let w:created=1
+autocmd VimEnter * let w:created=1
+
+autocmd WinEnter * if !exists('w:created') | let w:m1=matchadd('LineProximity', '\%<81v.\%>75v', -1) | endif
+autocmd WinEnter * if !exists('w:created') | let w:m2=matchadd('LineOverflow', '\%>80v.\+', -1) | endif
