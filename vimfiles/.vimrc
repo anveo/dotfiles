@@ -101,6 +101,8 @@ au! BufRead,BufNewFile *.io setfiletype io
 " For JSON
 autocmd BufNewFile,BufRead *.json set ft=javascript
 
+autocmd Filetype javascript setlocal ts=4 sts=4 sw=4
+
 " For coffee script
 au FileType coffee map <buffer> <Leader>j :CoffeeCompile<cr>
 au FileType coffee map <buffer> <Leader>h :CoffeeMake<cr>
@@ -123,6 +125,7 @@ nmap <F5> :GundoToggle<CR>
 
 " map ,d to toggle NERDTree window
 nmap <leader>d :NERDTreeToggle<CR>
+
 
 " open tabs with command-<tab number>
 map <D-1> :tabn 1<CR>
@@ -345,9 +348,8 @@ set nofoldenable        "dont fold by default
 
 set wildmode=list:longest:full   "make cmdline tab completion similar to bash
 set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
+
 "stuff to ignore when tab completing and CommandT
-
-
 set wildignore=*.o,*.obj,*~,*.scssc,*.sassc,*.png,*.PNG,*.JPG,*.jpg,*.GIF,*.gif,*.dat,*.doc,*.DOC,*.log,*.pdf,*.PDF,*.ppt,*.docx,*.pptx,*.wpd,*.zip,*.rtf,*.eps,*.psd,*.ttf,*.otf,*.eot,*.svg,*.woff,*.mp3,*.mp4,*.m4a,*.wav,"log/**","vendor/**","coverage/**","tmp/**"
 
 set complete-=i
