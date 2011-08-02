@@ -101,6 +101,8 @@ au! BufRead,BufNewFile *.io setfiletype io
 " For JSON
 autocmd BufNewFile,BufRead *.json set ft=javascript
 
+autocmd Filetype javascript setlocal ts=4 sts=4 sw=4
+
 " For coffee script
 au FileType coffee map <buffer> <Leader>j :CoffeeCompile<cr>
 au FileType coffee map <buffer> <Leader>h :CoffeeMake<cr>
