@@ -12,3 +12,12 @@ export LD_RUN_PATH=$LD_LIBRARY_PATH
 export CPPFLAGS="-I${HOME}/local/include"
 export CXXFLAGS=$CPPFLAGS
 export CFLAGS=$CPPFLAGS
+
+# android linux
+if [ -d "${HOME}/bin/android-sdk-linux_x86/tools" ]; then
+  export PATH="${HOME}/bin/android-sdk-linux_x86/tools:${PATH}"
+fi
+
+if [ -d "${HOME}/bin/android-sdk-linux_x86/platform-tools" ]; then
+  export PATH="${HOME}/bin/android-sdk-linux_x86/platform-tools:${PATH}"
+fi
