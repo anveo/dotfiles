@@ -163,6 +163,7 @@ map <Leader>v :Rview
 map <Leader>snip :call ReloadAllSnippets()<CR>
 map <Leader>snipr :e ~/.vim/_snippets/ruby.snippets<CR>
 map <Leader>snipj :e ~/.vim/_snippets/javascript.snippets<CR>
+map <Leader>snipa :e ~/.vim/_snippets/_.snippets<CR>
 
 map <Leader>ts :let file_to_run = "<c-r>%"<cr>
 " Execute the results of concatenating the strings below. last_run_file is set
