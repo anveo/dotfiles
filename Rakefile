@@ -29,6 +29,13 @@ task :install do
 
   end
 
+  # link terminator config
+  system %Q{mkdir -p $HOME/.config/terminator}
+  if File.exist?(File.join(ENV['HOME'], ".config/terminator/config"))
+    system %Q{rm "$HOME/.config/terminator/config"}
+  end
+  system %Q{ln -fs "$PWD/extras/terminator/config" "$HOME/.config/terminator/config"}
+
   # link weechat scripts
   system %Q{mkdir -p $HOME/.weechat/perl/autoload}
   system %Q{mkdir -p $HOME/.weechat/python/autoload}
