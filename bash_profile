@@ -1,4 +1,3 @@
-if [ -f ~/.bashrc ]; then
-  . ~/.bashrc
+if [ -f $HOME/.bashrc ]; then
+  . $HOME/.bashrc
 fi
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
