@@ -102,6 +102,7 @@ alias cdyt='cd ~/projects/local/yaptime'
 if [ `uname` == 'Darwin' ]; then
   # We need gui support for plugins
   alias vi='mvim -v'
+  alias vim='mvim -v'
 
   # no --color option
   alias ls="ls -F -G"
