@@ -46,6 +46,7 @@ task :install do
   system %Q{ln -nfs "$PWD/scripts" "$HOME/scripts"}
   system %Q{mkdir -p "$HOME/bin"}
   system %Q{mkdir -p "$HOME/local/bin"}
+  system %Q{ln -fs "$PWD/scripts/ssh-copy-id" "$HOME/local/bin/ssh-copy-id"}
   system %Q{ln -fs "$PWD/scripts/vcprompt.py" "$HOME/local/bin/vcprompt.py"}
   system %Q{ln -fs "$PWD/scripts/phpm/phpm" "$HOME/local/bin/phpm"}
 
