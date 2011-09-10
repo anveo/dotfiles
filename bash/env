@@ -10,6 +10,12 @@ if [ `uname` == 'Darwin' ]; then
   export EDITOR="mvim -v"
 fi
 
+# homebrew hack for scons
+if [ `uname` == 'Darwin' ]; then
+  export SCONS_LIB_DIR=/usr/local/Cellar/scons/2.0.1/lib/scons
+  export PYTHONPATH=/usr/local/lib/scons/ 
+fi
+
 # Clojure stuff
 export CLOJURE_EXT=~/.clojure
 
