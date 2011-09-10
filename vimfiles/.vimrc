@@ -423,17 +423,17 @@ au BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
 
 " subtle red colorcolumn
 
-set colorcolumn=80
+set colorcolumn=120
 
 highlight ColorColumn ctermbg=red guibg=#261e1e
 highlight LineProximity guibg=#212121
 highlight LineOverflow guibg=#902020
 
-let w:m1=matchadd('LineProximity', '\%<81v.\%>75v', -1)
-let w:m2=matchadd('LineOverflow', '\%>80v.\+', -1)
+let w:m1=matchadd('LineProximity', '\%<121v.\%>116v', -1)
+let w:m2=matchadd('LineOverflow', '\%>120v.\+', -1)
 
 autocmd VimEnter * autocmd WinEnter * let w:created=1
 autocmd VimEnter * let w:created=1
 
-autocmd WinEnter * if !exists('w:created') | let w:m1=matchadd('LineProximity', '\%<81v.\%>75v', -1) | endif
-autocmd WinEnter * if !exists('w:created') | let w:m2=matchadd('LineOverflow', '\%>80v.\+', -1) | endif
+autocmd WinEnter * if !exists('w:created') | let w:m1=matchadd('LineProximity', '\%<121v.\%>116v', -1) | endif
+autocmd WinEnter * if !exists('w:created') | let w:m2=matchadd('LineOverflow', '\%>120v.\+', -1) | endif
