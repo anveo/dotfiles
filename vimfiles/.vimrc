@@ -179,7 +179,8 @@ let NERDChristmasTree = 1
 let NERDTreeHighlightCursorline = 1
 let NERDTreeShowBookmarks = 1
 let NERDTreeShowHidden = 1
-let NERDTreeIgnore = ['.vim$', '\~$', '.svn$', '\.git$', '.DS_Store', '.sass-cache']
+"let NERDTreeIgnore = ['.vim$', '\~$', '.svn$', '\.git$', '.DS_Store', '.sass-cache']
+let NERDTreeIgnore = ['\~$', '.svn$', '\.git$', '.DS_Store', '.sass-cache']
 
 "statusline setup
 set statusline=%f       "tail of the filename
