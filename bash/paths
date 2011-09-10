@@ -1,7 +1,6 @@
-# Mac Ports
+# homebrew needs /usr/local/sbin
 if [ `uname` == 'Darwin' ]; then
-  export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/bin:$PATH
-  export MANPATH=/opt/local/share/man:$MANPATH
+  export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 fi
 
 # $HOME/local paths
