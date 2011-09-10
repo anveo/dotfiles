@@ -161,6 +161,7 @@ map <Leader>v :Rview
 "map <Leader>sf :RSfunctionaltest
 
 map <Leader>snip :call ReloadAllSnippets()<CR>
+map <Leader>snipc :e ~/.vim/_snippets/coffee.snippets<CR>
 map <Leader>snipr :e ~/.vim/_snippets/ruby.snippets<CR>
 map <Leader>snipj :e ~/.vim/_snippets/javascript.snippets<CR>
 map <Leader>snipa :e ~/.vim/_snippets/_.snippets<CR>
