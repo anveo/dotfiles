@@ -15,9 +15,6 @@ function take() {
 # for github
 alias wgets="wget --no-check-certificate "
 
-# file manager
-alias n="nautilus"
-
 # grep
 if which ack-grep 1>/dev/null
 then
@@ -87,22 +84,13 @@ alias scaffold='script/generate nifty_scaffold'
 alias migrate='rake db:migrate db:test:clone'
 alias rst='touch tmp/restart.txt'
 
-# projects
-alias cdbw='cd ~/projects/local/bandwith'
-alias cdbwr='cd ~/projects/local/bandwithradio'
-alias cdec='cd ~/projects/local/ecollect'
-alias cdfb='cd ~/projects/local/fontbros'
-alias cdll='cd ~/projects/local/listedlocal'
-alias cdv1='cd ~/projects/local/volumeone'
-alias cdv2='cd ~/projects/local/volumetwo'
-alias cdyb='cd ~/projects/local/yayboo'
-alias cdyt='cd ~/projects/local/yaptime'
-
 # OSX specific
 if [ `uname` == 'Darwin' ]; then
   # We need gui support for plugins
-  alias vi='mvim -v'
-  alias vim='mvim -v'
+
+  # don't need these with `brew install vim --replace-system`
+  #alias vi='mvim -v'
+  #alias vim='mvim -v'
 
   # no --color option
   alias ls="ls -F -G"
