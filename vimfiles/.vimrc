@@ -88,6 +88,12 @@ nmap <Leader>G :AckG
 " This is likely a bludgeon to solve some other issue, but it works
 set noequalalways
 
+" Smart way to move between windows
+nmap <S-j> <C-W>j
+nmap <S-k> <C-W>k
+nmap <S-h> <C-W>h
+nmap <S-l> <C-W>l
+
 " Snippets are activated by Shift+Tab
 let g:snippetsEmu_key = "<S-Tab>"
 let g:snippets_dir = '$HOME/.vim/_snippets/'
