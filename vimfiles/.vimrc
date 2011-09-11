@@ -408,13 +408,6 @@ set scrolloff=3
 "mark syntax errors with :signs
 let g:syntastic_enable_signs=1
 
-" bind control-l to hashrocket
-imap <C-l> <Space>=><Space>
-" convert word into ruby symbol
-imap <C-k> <C-o>b:<Esc>ea
-"imap <C-k> <C-o>mu<Esc>bi:<Esc>'u
-nmap <C-k> lbi:<Esc>E
-
 " Sparkup
 let g:sparkupExecuteMapping = '<C-S-e>'
 let g:sparkupNextMapping = '<C-S-x>'
