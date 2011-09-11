@@ -5,7 +5,7 @@ set nocompatible
 " Load pathogen
 " Needed on some linux distros.
 " see http://www.adamlowe.me/2009/12/vim-destroys-all-other-rails-editors.html
-filetype off 
+filetype off
 call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
 
@@ -52,6 +52,9 @@ nnoremap <Space> :
 " Make it easy to update/reload .vimrc
 nmap <leader>s :source ~/.vimrc<CR>
 nmap <leader>vi :tabe ~/.vimrc<CR>
+
+" when you forget sudo
+command SUW w !sudo tee % > /dev/null
 
 " Columns are cooler than rows
 noremap ' `
