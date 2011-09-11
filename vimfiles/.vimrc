@@ -431,3 +431,14 @@ autocmd VimEnter * let w:created=1
 
 autocmd WinEnter * if !exists('w:created') | let w:m1=matchadd('LineProximity', '\%<121v.\%>116v', -1) | endif
 autocmd WinEnter * if !exists('w:created') | let w:m2=matchadd('LineOverflow', '\%>120v.\+', -1) | endif
+
+"set list listchars=tab:>-,trail:.,extends:>
+" Enter the middle-dot by pressing Ctrl-k then .M
+"set list listchars=tab:\|_,trail::
+" Enter the right-angle-quote by pressing Ctrl-k then >>
+set list listchars=tab:»·,trail:·
+" Enter the Pilcrow mark by pressing Ctrl-k then PI
+"set list listchars=tab:>-,eol:¶
+" The command :dig displays other digraphs you can use.
+highlight SpecialKey guifg=#ffffff guibg=#902020
+highlight NonText guifg=#222222
