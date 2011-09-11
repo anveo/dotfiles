@@ -25,3 +25,6 @@ fi
 if [ -d "${HOME}/bin/ec2-api-tools-1.4.4.0/bin" ]; then
   export PATH="${HOME}/bin/ec2-api-tools-1.4.4.0/bin:${PATH}"
 fi
+
+# node path
+export NODE_PATH=/usr/local/lib/node_modules
