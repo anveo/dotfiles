@@ -1,6 +1,6 @@
-# homebrew needs /usr/local/sbin
+# homebrew needs /usr/local/sbin and /usr/local/share/python
 if [ `uname` == 'Darwin' ]; then
-  export PATH=/usr/local/bin:/usr/local/sbin:$PATH
+  export PATH=/usr/local/share/python:/usr/local/bin:/usr/local/sbin:$PATH
 fi
 
 # $HOME/local paths
@@ -28,3 +28,6 @@ fi
 
 # node path
 export NODE_PATH=/usr/local/lib/node_modules
+
+#clojure
+export CLASSPATH=$CLASSPATH:/usr/local/Cellar/clojure-contrib/1.2.0/clojure-contrib.jar
