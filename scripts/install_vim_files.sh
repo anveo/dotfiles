@@ -108,8 +108,10 @@ JQUERY=15752
 cd $DOTVIM
 
 curl http://www.vim.org/scripts/download_script.php?src_id=$JQUERY -o "syntax/jquery.vim"
-curl https://raw.github.com/jc00ke/Gemfile.vim/master/syntax/Gemfile.vim -o "syntax/Gemfile.vim"
-curl https://raw.github.com/jc00ke/Gemfile.vim/master/ftdetect/Gemfile.vim -o "ftdetect/Gemfile.vim"
+
+# TODO: find new Gemfile syntax ... https://github.com/hron84/Gemfile.vim ???
+#curl https://raw.github.com/jc00ke/Gemfile.vim/master/syntax/Gemfile.vim -o "syntax/Gemfile.vim"
+#curl https://raw.github.com/jc00ke/Gemfile.vim/master/ftdetect/Gemfile.vim -o "ftdetect/Gemfile.vim"
 #curl https://github.com/juvenn/mustache.vim/raw/master/syntax/mustache.vim -o "syntax/mustache.vim"
 #curl https://github.com/juvenn/mustache.vim/raw/master/ftdetect/mustache.vim -o "ftdetect/mustache.vim"
 
