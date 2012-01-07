@@ -54,7 +54,7 @@ nmap <leader>s :source ~/.vimrc<CR>
 nmap <leader>vi :tabe ~/.vimrc<CR>
 
 " when you forget sudo
-command SUW w !sudo tee % > /dev/null
+" command SUW w !sudo tee % > /dev/null
 
 " Columns are cooler than rows
 noremap ' `
@@ -149,8 +149,6 @@ map <D-9> :tabn 9<CR>
 
 "nmap <leader>v :vsplit<CR> <C-w><C-w>
 "nmap <leader>s :split<CR> <C-w><C-w>
-
-map <Leader>rf :CommandTFlush<CR>
 
 " Leader shortcuts for Rails commands
 map <Leader>m :Rmodel
@@ -287,8 +285,14 @@ let g:bufExplorerShowRelativePath=1
 "let g:fuzzy_ignore = "*.png;*.PNG;*.JPG;*.jpg;*.GIF;*.gif;*.doc;*.DOC;*.pdf;*.PDF;*.ppt;*.docx;*.pptx;*.wpd;*.zip;*.rtf;*.eps;*.psd;*.ttf;*.otf;vendor/**;coverage/**;tmp/**"
 "let g:fuzzy_matching_limit = 40
 
-"alternate command-t invocation
-nnoremap <c-f> :CommandT<CR>
+let g:ctrlp_map = '<c-f>'
+let g:ctrlp_cmd = 'CtrlP'
+
+let g:ctrlp_custom_ignore = {
+	\ 'dir':  '\.git$\|\.hg$\|\.svn$',
+	\ 'file': '\.exe$\|\.so$\|\.dll$',
+	\ 'link': 'some_bad_symbolic_link',
+	\ }
 
 "map Q to something useful
 noremap Q gq
