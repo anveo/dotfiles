@@ -9,6 +9,9 @@ filetype off
 call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
 
+" save with sudo
+cmap w!! w !sudo tee % >/dev/null
+
 "allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
