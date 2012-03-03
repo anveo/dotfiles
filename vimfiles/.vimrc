@@ -336,6 +336,16 @@ autocmd VimEnter * let w:created=1
 autocmd WinEnter * if !exists('w:created') | let w:m1=matchadd('LineProximity', '\%<121v.\%>116v', -1) | endif
 autocmd WinEnter * if !exists('w:created') | let w:m2=matchadd('LineOverflow', '\%>120v.\+', -1) | endif
 
+" automatically remove trailing whitespace before write
+function! StripTrailingWhitespace()
+  normal mZ
+  %s/\s\+$//e
+  if line("'Z") != line(".")
+    echo "Stripped whitespace\n"
+  endif
+  normal `Z
+endfunction
+
 "set list listchars=tab:>-,trail:.,extends:>
 " Enter the middle-dot by pressing Ctrl-k then .M
 "set list listchars=tab:\|_,trail::
