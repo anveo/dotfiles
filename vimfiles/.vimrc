@@ -323,7 +323,7 @@ au BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
 
 set colorcolumn=120
 
-highlight ColorColumn ctermbg=red guibg=#261e1e
+highlight ColorColumn ctermbg=234 guibg=#261e1e
 highlight LineProximity guibg=#212121
 highlight LineOverflow guibg=#902020
 
