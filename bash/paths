@@ -31,3 +31,9 @@ export NODE_PATH=/usr/local/lib/node_modules
 
 #clojure
 export CLASSPATH=$CLASSPATH:/usr/local/Cellar/clojure-contrib/1.2.0/clojure-contrib.jar
+
+# brew install autojump
+# https://github.com/joelthelion/autojump
+if [ -f `brew --prefix`/etc/autojump ]; then
+  . `brew --prefix`/etc/autojump
+fi
