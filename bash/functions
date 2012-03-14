@@ -1,0 +1,16 @@
+# Calls grep with STDIN closed if in a terminal to avoid the "eternal wait" problem.
+# http://gist.github.com/476116
+
+# this current breaks osx for some reason
+#function grep { (tty -s && exec <&-; $(which grep) $@); }
+
+
+# cd gem
+#
+#     henrik@Nyx ~$ cdgem thor
+#     henrik@Nyx ~/.rvm/gems/ree-1.8.7-2010.02/gems/thor-0.14.6$
+
+#
+function cdgem {
+  cd `rvm gemdir`/gems; cd `ls|grep $1|sort|tail -1`
+}
