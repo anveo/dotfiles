@@ -5,6 +5,8 @@ alias reload='source ~/dotfiles/bash/aliases'
 alias ..='cd ..'
 alias ...='cd ..; cd ..'
 alias ....='cd ..; cd ..; cd ..'
+alias .....='cd ../../../..'
+alias ......='cd ../../../../..'
 alias cdd='cd -'
 
 function take() {
@@ -33,7 +35,12 @@ fi
 alias h="history"
 
 # ls
-alias ls="ls -F --color=auto"
+# Portable ls with colors
+if ls --color -d . >/dev/null 2>&1; then
+  alias ls='ls --color=auto'  # Linux
+elif ls -G -d . >/dev/null 2>&1; then
+  alias ls='ls -G'  # BSD/OS X
+fi
 alias l="ls -lAh"
 alias ll="ls -l"
 alias la="ls -A"
@@ -89,8 +96,8 @@ if [ `uname` == 'Darwin' ]; then
   # We need gui support for plugins
 
   # don't need these with `brew install vim --replace-system`
-  #alias vi='mvim -v'
-  #alias vim='mvim -v'
+  alias vi='mvim -v'
+  alias vim='mvim -v'
 
   # no --color option
   alias ls="ls -F -G"
