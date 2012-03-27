@@ -1,33 +1,84 @@
-#PS1="\n\u@\h:\w \[$EBLACK\]\$(vcprompt.py)\[$NO_COLOR\] \n→ "
-#[[ -s "$HOME/.rvm/contrib/ps1_functions" ]] && source "$HOME/.rvm/contrib/ps1_functions"
-#ps1_set --prompt ∴
-
 # http://blog.bitfluent.com/post/27983389/git-utilities-you-cant-live-without
 # http://superuser.com/questions/31744/how-to-get-git-completion-bash-to-work-on-mac-os-x
 # http://tammersaleh.com/posts/a-better-rvm-bash-prompt
 # https://rvm.beginrescueend.com/workflow/prompt/
+#
+# https://github.com/wayneeseguin/rvm/blob/master/contrib/ps1_functions
 
 # 17:39:15 henrik@Nyx ~/project[ree-1.8.7@project master*]$ 
 
-function __rvm_prompt {
-  if hash rvm-prompt 2>&- ; then
-    rvm-prompt i v g s
-  else
-    echo "no-rvm"
-  fi
+
+__ps1_git_status()
+{
+  local git_status="$(git status 2>/dev/null)"
+
+  [[ "${git_status}" = *deleted* ]]                    && printf "%s" "-"
+  [[ "${git_status}" = *Untracked[[:space:]]files:* ]] && printf "%s" "+"
+  [[ "${git_status}" = *modified:* ]]                  && printf "%s" "*"
 }
 
-function __git_prompt {
-  GIT_PS1_SHOWDIRTYSTATE=1
-  __git_ps1 " %s" | sed 's/ \([+*]\{1,\}\)$/\1/'
+__ps1_git()
+{
+  local branch="" sha1="" line="" attr="" color=0
+
+  shopt -s extglob # Important, for our nice matchers :)
+
+  command -v git >/dev/null 2>&1 || {
+    printf " \033[1;37m\033[41m[git not found]\033[m "
+    return 0
+  }
+
+  branch=$(git symbolic-ref -q HEAD 2>/dev/null) || return 0 # Not in git repo.
+  branch=${branch##refs/heads/}
+
+  # Now we display the branch.
+  sha1=$(git rev-parse --short --quiet HEAD)
+
+  case "${branch:-"(no branch)"}" in
+   production|prod) attr="1;37m\033[" ; color=41 ;; # red
+   master|deploy)   color=31                     ;; # red
+   stage|staging)   color=33                     ;; # yellow
+   dev|develop|development) color=34             ;; # blue
+   next)            color=36                     ;; # gray
+   *)
+     if [[ -n "${branch}" ]] ; then # Feature Branch :)
+       color=32 # green
+     else
+       color=0 # reset
+     fi
+     ;;
+  esac
+
+  [[ $color -gt 0 ]] &&
+    printf "\[\033[${attr}${color}m\](git:${branch}$(__ps1_git_status):$sha1)\[\033[0m\] "
 }
 
-# Only show username@server over SSH.
-function __name_and_server {
-  if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-    echo "`whoami`@`hostname -s` "
-  fi
+__rbenv_ps1 ()
+{
+  rbenv_ruby_version=`rbenv version | sed -e 's/ .*//'`
+  printf $rbenv_ruby_version
 }
+
+#function __git_prompt {
+#  branch=$(git symbolic-ref -q HEAD 2>/dev/null) || return 0 # Not in git repo.
+#
+#  #GIT_PS1_SHOWDIRTYSTATE=1
+#  #GIT_PS1_SHOWSTASHSTATE=1
+#  #GIT_PS1_SHOWUNTRACKEDFILES=1
+#  #GIT_PS1_SHOWUPSTREAM="auto"
+#
+#  sha1=$(git rev-parse --short --quiet HEAD)
+#
+#  #__git_ps1 " %s " | sed 's/ \([+*]\{1,\}\)$/\1/'
+#  __git_ps1 " %s [$sha1]"
+#}
+#
+## Only show username@server over SSH.
+#function __name_and_server {
+#  if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+#    echo "`whoami`@`hostname -s` "
+#  fi
+#}
 
 bash_prompt() {
 
@@ -54,8 +105,8 @@ bash_prompt() {
   # reset
   local RESET="\[\033[0;37m\]"
 
-  PS1="\t $BY\$(__name_and_server)$Y\w$G[\$(__rvm_prompt)$G\$(__git_prompt)]$RESET$ "
-
+  #PS1="\t $BY\$(__name_and_server)$Y\w$G[\$(__rvm_prompt)$G\$(__git_prompt)]$RESET$ "
+  PS1="\n\t$RESET $EMAGENTA\w \[$EBLACK\]\$(__rbenv_ps1)$RESET $(__ps1_git)$RESET \n∴ "
 }
 
 bash_prompt
