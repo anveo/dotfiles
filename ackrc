@@ -1,4 +1,15 @@
 --type-set=conf=.conf
+--type-set=coffee=.coffee
 --type-set=haml=.haml
 --type-set=sass=.sass,.scss
 --type-set=puppet=.pp
+--ignore-dir=log
+--ignore-dir=tmp
+--ignore-dir=vendor
+--ignore-dir=coverage
+--ignore-dir=spec/fixtures
+--ignore-dir=public/system
+--sort-files
+--follow
+--color
+--group
