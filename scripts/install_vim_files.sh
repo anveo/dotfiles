@@ -113,6 +113,9 @@ echo "Installing jQuery"
 JQUERY=15752
 cd $DOTVIM
 
+echo "Installing YankRing"
+get_repo "vim-scripts" "YankRing.vim"
+
 curl http://www.vim.org/scripts/download_script.php?src_id=$JQUERY -o "syntax/jquery.vim"
 
 # TODO: find new Gemfile syntax ... https://github.com/hron84/Gemfile.vim ???

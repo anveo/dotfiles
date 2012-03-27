@@ -75,3 +75,5 @@ map <Leader>ts :let file_to_run = "<c-r>%"<cr>
 command! Rroutes :e config/routes.rb
 command! RTroutes :tabe config/routes.rb
 
+" YankRing
+map <Leader>yy :YRShow<cr>
