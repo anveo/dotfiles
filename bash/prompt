@@ -105,9 +105,7 @@ bash_prompt() {
   # reset
   local RESET="\[\033[0;37m\]"
 
-  #PS1="\t $BY\$(__name_and_server)$Y\w$G[\$(__rvm_prompt)$G\$(__git_prompt)]$RESET$ "
-  PS1="\n\t$RESET $EMAGENTA\w \[$EBLACK\]\$(__rbenv_ps1)$RESET $(__ps1_git)$RESET \n∴ "
+  PS1="\n\t$RESET $EMAGENTA\w \[$EBLACK\]$(__rbenv_ps1) $(__ps1_git)$RESET \n∴ "
 }
 
-bash_prompt
-unset bash_prompt
+PROMPT_COMMAND="bash_prompt"
