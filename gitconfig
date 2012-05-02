@@ -2,6 +2,8 @@
 	name = Brian Racer
 	email = bracer@gmail.com
 [alias]
+        #l = log --pretty=oneline --graph --abbrev-commit
+        l = log --graph --pretty=format:'%C(yellow)%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=short
         co = checkout
         ci = checkin
         st = status
