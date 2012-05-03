@@ -16,6 +16,7 @@ end
 
 # Set up threads and variables.
 bucket_name = ARGV[0]
+file_match = ARGV[1]
 thread_count = 20
 threads = []
 queue = Queue.new
@@ -34,9 +35,13 @@ threads << Thread.new do
         puts "...started thread '#{Thread.current[:name]}'...\n"
         # Get all the files from this bucket. Fog handles pagination internally.
         s3.directories.get("#{bucket_name}").files.all.each do |file|
-                # Add this file to the queue.
-                queue.enq(file)
-                total_listed += 1
+          if file_match
+            next unless file.key.match("^#{file_match}")
+          end
+
+          # Add this file to the queue.
+          queue.enq(file)
+          total_listed += 1
         end
         # Add a final EOF message to signal the deletion threads to stop.
         thread_count.times {queue.enq(:EOF)}
