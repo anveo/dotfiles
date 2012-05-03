@@ -164,13 +164,13 @@ class Object
   end
 end
 
-# http://sketches.rubyforge.org/
-begin
-  require 'sketches'
-  Sketches.config :editor => 'mvim'
-rescue LoadError
-  puts "sketches is not installed. To enable, run: gem install sketches"
-end
+## http://sketches.rubyforge.org/
+#begin
+  #require 'sketches'
+  #Sketches.config :editor => 'mvim'
+#rescue LoadError
+  #puts "sketches is not installed. To enable, run: gem install sketches"
+#end
 
 # Easily print methods local to an object's class
 class Object
