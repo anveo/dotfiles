@@ -19,6 +19,9 @@ map <Leader>snipr :e ~/.vim/_snippets/ruby.snippets<CR>
 map <Leader>snipj :e ~/.vim/_snippets/javascript.snippets<CR>
 map <Leader>snipa :e ~/.vim/_snippets/_.snippets<CR>
 
+" CSApprox
+let g:CSApprox_verbose_level = 0
+
 " NERDTree
 let NERDChristmasTree = 1
 let NERDTreeHighlightCursorline = 1
