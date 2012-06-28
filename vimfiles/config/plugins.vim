@@ -1,3 +1,6 @@
+" Powerline
+let g:Powerline_symbols = 'fancy'
+
 " ZoomWin configuration
 map <Leader>z :ZoomWin<CR>
 

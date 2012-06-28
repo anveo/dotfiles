@@ -109,6 +109,9 @@ get_repo "kien" "ctrlp.vim"
 echo "Installing vim-css-color"
 get_repo "ap" "vim-css-color"
 
+echo "Installing vim-powerline"
+get_repo "Lokaltog" "vim-powerline"
+
 echo "Installing jQuery"
 JQUERY=15752
 cd $DOTVIM
