@@ -22,3 +22,13 @@ command! -bar -range=% NotRocket execute '<line1>,<line2>s/:\(\w\+\)\s*=>/\1:/e'
 " Save a file as root.
 cabbrev w!! w !sudo tee % > /dev/null<CR>:e!<CR><CR>
 "cmap w!! w !sudo tee % >/dev/null
+
+" use Ctrl+G to toggle the line number counting method
+function! g:ToggleNuMode()
+  if(&rnu == 1)
+    set nu
+  else
+    set rnu
+  endif
+endfunc
+nnoremap <C-G> :call g:ToggleNuMode()<cr>
