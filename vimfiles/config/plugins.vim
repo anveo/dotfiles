@@ -1,6 +1,9 @@
 " Powerline
 let g:Powerline_symbols = 'fancy'
 
+" jellybeans colorscheme
+let g:jellybeans_use_lowcolor_black = 1
+
 " ZoomWin configuration
 map <Leader>z :ZoomWin<CR>
 
