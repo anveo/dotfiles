@@ -6,8 +6,8 @@ fi
 # $HOME/local paths
 export PATH="${HOME}/bin:${HOME}/local/bin:${PATH}"
 export MANPATH="${HOME}/local/share/man:${MANPATH}"
-export LD_LIBRARY_PATH="${HOME}/local/lib:${LD_LIBRARY_PATH}"
-export LD_RUN_PATH=$LD_LIBRARY_PATH
+#export LD_LIBRARY_PATH="${HOME}/local/lib:${LD_LIBRARY_PATH}"
+#export LD_RUN_PATH=$LD_LIBRARY_PATH
 export CPPFLAGS="-I${HOME}/local/include"
 export CXXFLAGS=$CPPFLAGS
 export CFLAGS=$CPPFLAGS
