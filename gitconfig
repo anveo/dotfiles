@@ -3,40 +3,62 @@
 	email = bracer@gmail.com
 [alias]
         #l = log --pretty=oneline --graph --abbrev-commit
-        l = log --graph --pretty=format:'%C(yellow)%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=short
-        co = checkout
-        ci = checkin
-        st = status
         br = branch
-        hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
-        log1 = log --pretty=oneline --abbrev-commit
+        #ci = checkin
+        co = checkout
         diffi = diff --ignore-all-space
-        unstage = reset HEAD --
-        last = log -1 HEAD
-        type = cat-file -t
         dump = cat-file -p
+        dl = "!git ll -1"
+        dlc = diff --cached HEAD^
+        f = "!git ls-files | grep -i"
+        #hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+        l = log --graph --pretty=format:'%C(yellow)%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=short
+        la = "!git config -l | grep alias | cut -c 7-"
+        #ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+        ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+        #last = log -1 HEAD
+        #log1 = log --pretty=oneline --abbrev-commit
+        news = log -p HEAD@{1}..HEAD@{0}
+        r = reset
+        r1 = reset HEAD^
+        r2 = reset HEAD^^
+        rh = reset --hard
+        rh1 = reset HEAD^ --hard
+        rh2 = reset HEAD^^ --hard
+        st = status
+        type = cat-file -t
+        unstage = reset HEAD --
 
 [apply]
         whitespace = nowarn
 
 [color]
         diff = true
+	ui = auto
 
 [push]
-        default = matching
+	default = tracking
 
 [github]
         user = anveo
+
+[credential]
+	helper = git-credential-osxkeychain
+
 [core]
 	editor = vim
 
+[pager]
+	color = true
+
 [merge]
-	tool = meld
+	stat = true
+        diff = vimdiff
 
 [branch]
   # When creating a new branch off a remote branch, always set it up to
   # track the remote branch so that we can pull from there.
-  autosetupmerge = true
+	autosetupmerge = true
   mergeoptions = --no-ff
 
 [branch "master"]
