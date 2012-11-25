@@ -1,6 +1,8 @@
 --type-set=conf=.conf
 --type-set=coffee=.coffee
+--type-set=erb=.erb
 --type-set=haml=.haml
+--type-set=hamlc=.hamlc
 --type-set=sass=.sass,.scss
 --type-set=puppet=.pp
 --ignore-dir=log
