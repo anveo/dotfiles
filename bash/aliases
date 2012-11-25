@@ -61,6 +61,9 @@ function take() {
 # for github
 alias wgets="wget --no-check-certificate "
 
+# for tower
+alias tower="gittower"
+
 # grep
 if which ack-grep 1>/dev/null
 then
