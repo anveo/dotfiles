@@ -33,7 +33,7 @@ echo "Creating .vim folders if necessary"
 mkdir -p $DOTVIM/{autoload,bundle,ftdetect,syntax}
 cd $DOTVIM/bundle/
 
-tpope_repos=(rails haml git cucumber fugitive surround unimpaired abolish repeat markdown endwise ragtag vividchalk)
+tpope_repos=(rails haml git cucumber fugitive surround unimpaired abolish repeat markdown endwise ragtag vividchalk liquid bundler)
 
 for r in ${tpope_repos[*]}; do
         repo="vim-$r"
@@ -100,6 +100,9 @@ get_repo "juvenn" "mustache.vim"
 echo "Installing vim-coffee-script"
 get_repo "kchmck" "vim-coffee-script"
 
+echo "Installing glsl.vim"
+get_repo "Nemo157" "glsl.vim"
+
 echo "Installing vim-puppet"
 get_repo "rodjek" "vim-puppet"
 
@@ -111,6 +114,9 @@ get_repo "ap" "vim-css-color"
 
 echo "Installing vim-powerline"
 get_repo "Lokaltog" "vim-powerline"
+
+echo "Installing gitv"
+get_repo "gregsexton" "gitv"
 
 echo "Installing jQuery"
 JQUERY=15752
