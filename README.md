@@ -1,5 +1,6 @@
-Installation
-============
+## Installation
+
+    brew install reattach-to-user-namespace
 
     # Setup dotfile aliases
     rake install
