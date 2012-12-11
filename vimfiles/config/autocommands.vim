@@ -1,3 +1,11 @@
+" Some file types should wrap their text
+function! s:setupWrapping()
+  set wrap
+  set linebreak
+  set textwidth=72
+  set nolist
+endfunction
+
 if has("autocmd")
 
   " Remember last location in file, but not for commit messages.
@@ -8,11 +16,14 @@ if has("autocmd")
   au FileType make    set noexpandtab
   au FileType python  set noexpandtab
 
-  " These files are also Ruby.
-  au BufRead,BufNewFile {Gemfile,Rakefile,Thorfile,Vagrantfile,Guardfile,config.ru}  set ft=ruby
+  " make Python follow PEP8 for whitespace ( http://www.python.org/dev/peps/pep-0008/ )
+  au FileType python setlocal softtabstop=4 tabstop=4 shiftwidth=4
 
-  " These files are also Markdown.
-  au BufRead,BufNewFile *.{md,mdown,mkd,mkdn} set ft=markdown
+  " These files are also Ruby.
+  au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,Procfile,config.ru,*.rake} set ft=ruby
+
+  " Make sure all mardown files have the correct filetype set and setup wrapping
+  au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn,txt} setf markdown | call s:setupWrapping()
 
   " For Haml
   au! BufRead,BufNewFile *.haml setfiletype haml
