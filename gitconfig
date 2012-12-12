@@ -85,3 +85,7 @@
   # the log.
   #mergeoptions = --no-commit --no-ff
   mergeoptions = --no-ff
+[ghi]
+        token = <.replace github-token>
+[mergetool]
+	keepBackup = true

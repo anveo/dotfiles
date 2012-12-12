@@ -28,6 +28,8 @@ if [[ "${COLORTERM}" == "gnome-terminal" ]]; then
     unset COLORTERM
 fi
 
+export GHI_TOKEN="<.replace github-token>"
+
 source ~/.bash/env
 source ~/.bash/config
 source ~/.bash/aliases
