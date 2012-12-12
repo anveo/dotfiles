@@ -1,32 +1,56 @@
 require 'rake'
 
+IGNORE_FILES = %w[Gemfile Rakefile README LICENSE extras scripts vimfiles default.gems]
+
+def error(text) STDERR.puts "!  #{text}" end
+def info(text, prefix="*") STDOUT.puts "#{prefix}  #{text}" end
+def info_cmd(text) info(text, ">") end
+def info_rm(text) info(text, "x") end
+
 desc "install the dot files into user's home directory"
 task :install do
   replace_all = false
   Dir['*'].each do |file|
-    next if %w[Gemfile Rakefile README LICENSE extras scripts vimfiles default.gems].include? file
+    source = File.join(Dir.pwd, file)
+    basename = File.basename(source)
+    next if IGNORE_FILES.include?(basename)
 
-    if File.exist?(File.join(ENV['HOME'], ".#{file}"))
-      if replace_all
-        replace_file(file)
+    destination = File.expand_path("~/.#{basename}")
+    if File.symlink?(destination)
+      symlink_to = File.readlink(destination)
+      info_rm "Removing symlink #{destination} --> #{symlink_to}" if symlink_to != source
+      FileUtils.rm(destination)
+    elsif File.exist?(destination)
+      error "#{destination} exists. Will not automatically overwrite a non-symlink. Overwrite (y/n)?"
+      print "? "
+      if STDIN.gets.match(/^y/i)
+        info_rm "Removing #{destination}."
+        FileUtils.rm_rf(destination)
       else
-        print "overwrite ~/.#{file}? [ynaq] "
-        case $stdin.gets.chomp
-        when 'a'
-          replace_all = true
-          replace_file(file)
-        when 'y'
-          replace_file(file)
-        when 'q'
-          exit
-        else
-          puts "skipping ~/.#{file}"
-        end
+        next
       end
-    else
-      link_file(file)
     end
 
+    contents = File.read(source) rescue ""
+
+    if contents.include?('<.replace ')
+      info "#{source} has <.replace> placeholders."
+
+      contents.gsub!(/<\.replace (.+?)>/) {
+        begin
+          File.read(File.expand_path("~/.#{$1}"))
+        rescue => e
+          error "Could not replace `#{$&}`: #{e.message}"
+          ""
+        end
+      }
+
+      File.open(destination, 'w') {|f| f.write contents }
+      info_cmd "wrote file #{destination}"
+    else
+      FileUtils.ln_s(source, destination)
+      info_cmd "ln -s #{source} #{destination}"
+    end
   end
 
   # link terminator config
@@ -58,16 +82,6 @@ task :install do
     system %Q{rm "$HOME/.rvm/gemsets/default.gems"}
     system %Q{ln -fs "$PWD/default.gems" "$HOME/.rvm/gemsets/default.gems"}
   else
-    puts "Please install RVM and re-run this script to set gem defaults."
+    #puts "Please install RVM and re-run this script to set gem defaults."
   end
-end
-
-def replace_file(file)
-  system %Q{rm "$HOME/.#{file}"}
-  link_file(file)
-end
-
-def link_file(file)
-  puts "linking ~/.#{file}"
-  system %Q{ln -s "$PWD/#{file}" "$HOME/.#{file}"}
 end
