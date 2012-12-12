@@ -1,6 +1,7 @@
 ## Installation
 
     brew install reattach-to-user-namespace
+    brew install the_silver_searcher
 
     # Setup dotfile aliases
     rake install
