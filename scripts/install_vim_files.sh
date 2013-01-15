@@ -61,6 +61,9 @@ get_repo "vim-ruby" "vim-ruby"
 echo "Installing taglist.vim"
 get_repo "jc00ke" "taglist.vim"
 
+echo "Installing tagbar"
+get_repo "majutsushi" "tagbar"
+
 echo "Installing ack.vim"
 get_repo "mileszs" "ack.vim"
 
