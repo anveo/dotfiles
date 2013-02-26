@@ -72,6 +72,12 @@ fi
 alias grep='grep --color=auto'
 alias g="find . -type f |xargs grep --exclude=\*.svn\* -n 2> /dev/null "
 
+# use silver searcher instead of ack if available
+if which ag 1>/dev/null
+then
+  alias ack="ag"
+fi
+
 # diff
 if which colordiff 1>/dev/null
 then
