@@ -53,6 +53,12 @@ let g:ctrlp_custom_ignore = {
 " Syntastic
 " mark syntax errors with :signs
 let g:syntastic_enable_signs=1
+let g:syntastic_error_symbol='✗'
+let g:syntastic_warning_symbol='⚠'
+
+
+let g:syntastic_mode_map = { 'mode': 'active',
+                           \ 'passive_filetypes': ['scss'] }
 
 " Sparkup
 let g:sparkupExecuteMapping = '<C-S-e>'
