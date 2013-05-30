@@ -38,3 +38,12 @@ function codepoint() {
         perl -e "use utf8; print sprintf('U+%04X', ord(\"$@\"))"
         echo # newline
 }
+
+function marked() {
+  if [ $1 ]
+  then
+    open -a marked.app $1
+  else
+    open -a marked.app
+  fi
+}
