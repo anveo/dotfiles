@@ -131,7 +131,7 @@ cd $DOTVIM
 echo "Installing YankRing"
 get_repo "vim-scripts" "YankRing.vim"
 
-curl http://www.vim.org/scripts/download_script.php?src_id=$JQUERY -o "syntax/jquery.vim"
+#curl http://www.vim.org/scripts/download_script.php?src_id=$JQUERY -o "syntax/jquery.vim"
 
 # TODO: find new Gemfile syntax ... https://github.com/hron84/Gemfile.vim ???
 #curl https://raw.github.com/jc00ke/Gemfile.vim/master/syntax/Gemfile.vim -o "syntax/Gemfile.vim"
