@@ -29,9 +29,9 @@ require 'pp'
 
 # Awesome Print gem (gem install awesome_print)
 begin
-  require 'ap'
+  require 'awesome_print'
 rescue LoadError
-  puts "ap is not installed. To enable, run: gem install awesome_print"
+  puts "awesome_print is not installed. To enable, run: gem install awesome_print"
 end
 
 # Print information about any HTTP requests being made
