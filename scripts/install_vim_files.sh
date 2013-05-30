@@ -121,6 +121,9 @@ get_repo "Lokaltog" "vim-powerline"
 echo "Installing gitv"
 get_repo "gregsexton" "gitv"
 
+echo "Installing chrisbra"
+get_repo "chrisbra" "csv.vim"
+
 echo "Installing jQuery"
 JQUERY=15752
 cd $DOTVIM
