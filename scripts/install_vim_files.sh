@@ -142,7 +142,7 @@ rm pathogen.vim
 curl -O https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
 
 echo "Checking to see if pathogen has already been added to .vimrc"
-pathogen_cmd="call pathogen#runtime_append_all_bundles()"
+pathogen_cmd="call pathogen#incubate()"
 contains=`grep "$pathogen_cmd" ~/.vimrc | wc -l`
 
 if [ $contains == 0 ]
