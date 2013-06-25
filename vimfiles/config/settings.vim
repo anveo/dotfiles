@@ -77,4 +77,4 @@ else
 endif
 
 " load .bashrc
-set shellcmdflag=-ic
+"set shellcmdflag=-ic
