@@ -58,7 +58,7 @@ let g:syntastic_warning_symbol='⚠'
 
 
 let g:syntastic_mode_map = { 'mode': 'active',
-                           \ 'passive_filetypes': ['scss'] }
+                           \ 'passive_filetypes': ['scss', 'php'] }
 
 " Sparkup
 let g:sparkupExecuteMapping = '<C-S-e>'

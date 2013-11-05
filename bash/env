@@ -50,3 +50,6 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 #   https://gist.github.com/1688857
 export RUBY_GC_MALLOC_LIMIT=60000000
 export RUBY_FREE_MIN=200000
+
+# Don't use bundler for the following command. See https://github.com/mpapis/rubygems-bundler#disabling-executables
+export NOEXEC_EXCLUDE="zeus"
