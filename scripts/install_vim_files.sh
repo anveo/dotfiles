@@ -124,6 +124,9 @@ get_repo "gregsexton" "gitv"
 echo "Installing chrisbra"
 get_repo "chrisbra" "csv.vim"
 
+echo "Onstalling vim-processing"
+get_repo "sophacles" "vim-processing"
+
 echo "Installing jQuery"
 JQUERY=15752
 cd $DOTVIM

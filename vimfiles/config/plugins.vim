@@ -105,3 +105,6 @@ let tlist_ant_settings = 'ant;p:Project;r:Property;t:Target'
 
 " Tagbar
 nmap <F9> :TagbarToggle<CR>
+
+" Processing
+let g:use_processing_java=1
