@@ -13,9 +13,9 @@ map <Leader>z :ZoomWin<CR>
 set noequalalways
 
 " Ack
-nmap <Leader>g :Ack
-nmap <Leader>G :AckG
-let g:ackprg = 'ag --nogroup --nocolor --column'
+nmap <Leader>g :Ack!
+nmap <Leader>G :AckFromSearch 
+"let g:ackprg = 'ag --nogroup --nocolor --column'
 
 " Snippets
 let g:snippetsEmu_key = "<S-Tab>"
