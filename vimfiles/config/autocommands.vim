@@ -20,7 +20,7 @@ if has("autocmd")
   au FileType python setlocal softtabstop=4 tabstop=4 shiftwidth=4
 
   " These files are also Ruby.
-  au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,Procfile,config.ru,*.rake,*.god} set ft=ruby
+  au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,Procfile,config.ru,*.rake,*.god,*.bldr} set ft=ruby
 
   " Make sure all mardown files have the correct filetype set and setup wrapping
   au BufRead,BufNewFile *.{md,markdown,mdown,mkd,mkdn,txt} setf markdown | call s:setupWrapping()
