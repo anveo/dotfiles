@@ -124,11 +124,14 @@ get_repo "gregsexton" "gitv"
 echo "Installing chrisbra"
 get_repo "chrisbra" "csv.vim"
 
-echo "Onstalling vim-processing"
+echo "Installing vim-processing"
 get_repo "sophacles" "vim-processing"
 
 echo "Installing delimitMate"
 get_repo "Raimondi" "delimitMate"
+
+echo "Installing bufexplorer"
+get_repo "jlanzarotta" "bufexplorer"
 
 echo "Installing jQuery"
 JQUERY=15752
