@@ -127,6 +127,9 @@ get_repo "chrisbra" "csv.vim"
 echo "Onstalling vim-processing"
 get_repo "sophacles" "vim-processing"
 
+echo "Installing delimitMate"
+get_repo "Raimondi" "delimitMate"
+
 echo "Installing jQuery"
 JQUERY=15752
 cd $DOTVIM
