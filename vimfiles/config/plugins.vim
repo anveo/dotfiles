@@ -108,3 +108,9 @@ nmap <F9> :TagbarToggle<CR>
 
 " Processing
 let g:use_processing_java=1
+
+" vim-easy-align
+" Start interactive EasyAlign in visual mode
+vmap <Enter> <Plug>(EasyAlign)
+" Start interactive EasyAlign with a Vim movement
+nmap <leader>a <Plug>(EasyAlign)

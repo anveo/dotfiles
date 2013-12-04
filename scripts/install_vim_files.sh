@@ -70,9 +70,6 @@ get_repo "mileszs" "ack.vim"
 echo "Installing supertab"
 get_repo "ervandew" "supertab"
 
-echo "Installing align"
-get_repo "tsaleh" "vim-align"
-
 echo "Installing vim-indent-object"
 get_repo "michaeljsmith" "vim-indent-object"
 
@@ -87,9 +84,6 @@ get_repo "motemen" "git-vim"
 
 echo "Installing vim-ruby-refactoring"
 get_repo "ecomba" "vim-ruby-refactoring"
-
-echo "Installing tabular"
-get_repo "godlygeek" "tabular"
 
 echo "Installing gundo"
 get_repo "sjl" "gundo.vim"
@@ -132,6 +126,9 @@ get_repo "Raimondi" "delimitMate"
 
 echo "Installing bufexplorer"
 get_repo "jlanzarotta" "bufexplorer"
+
+echo "Installing vim-easy-align"
+get_repo "junegunn" "vim-easy-align"
 
 echo "Installing jQuery"
 JQUERY=15752
