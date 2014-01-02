@@ -1,15 +1,19 @@
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-
+# Make vim the default editor
 export EDITOR="vim"
+
+# Prefer US English and use UTF-8
+export LANG="en_US"
+export LC_ALL="en_US.UTF-8"
 
 # Make tmux look good.
 export TERM='xterm-256color'
 
-# If output gets paged, repaint the screen.
-# This solved color codes from being displayed
-# in the rails console
-export LESS="-R"
+# Larger bash history (allow 32³ entries; default is 500)
+export HISTSIZE=32768
+export HISTFILESIZE=$HISTSIZE
+export HISTCONTROL=ignoredups
+# Make some commands not show up in history
+export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
 
 if [ `uname` == 'Darwin' ]; then
   # We need gui support for plugins
@@ -37,6 +41,14 @@ export CLOJURE_EXT=~/.clojure
 # default: clojure.main
 # example: clojure.contrib.repl_ln
 
+# Don’t clear the screen after quitting a manual page
+export MANPAGER="less -X"
+
+# If output gets paged, repaint the screen.
+# This solved color codes from being displayed
+# in the rails console
+export LESS="-R"
+
 # Colorful manpages
 export LESS_TERMCAP_mb=$'\E[01;31m'
 export LESS_TERMCAP_md=$'\E[01;31m'
@@ -49,7 +61,8 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 # bump ruby memory usage for patched ruby
 #   https://gist.github.com/1688857
 export RUBY_GC_MALLOC_LIMIT=60000000
-export RUBY_FREE_MIN=200000
+#export RUBY_FREE_MIN=200000
+export RUBY_GC_HEAP_FREE_SLOTS=200000
 
 # Don't use bundler for the following command. See https://github.com/mpapis/rubygems-bundler#disabling-executables
 export NOEXEC_EXCLUDE="zeus"
