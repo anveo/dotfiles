@@ -1,12 +1,3 @@
-source ~/.bash/completion_scripts/git-completion.sh
-complete -C ~/.bash/completion_scripts/rake_completion -o default rake
-complete -C ~/.bash/completion_scripts/project_completion -o default c
-complete -C ~/.bash/completion_scripts/capistrano_completion -o default cap
-
-if [ -f /opt/local/etc/bash_completion ]; then
-  . /opt/local/etc/bash_completion
-fi
-
 if [ -f /etc/bash_completion ]; then
   . /etc/bash_completion
 fi
@@ -14,5 +5,3 @@ fi
 if [ -f `brew --prefix`/etc/bash_completion ]; then
   . `brew --prefix`/etc/bash_completion
 fi
-
-#[ -d "$rvm_path" ] && source $rvm_path/scripts/completion
