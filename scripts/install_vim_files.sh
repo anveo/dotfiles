@@ -130,6 +130,9 @@ get_repo "jlanzarotta" "bufexplorer"
 echo "Installing vim-easy-align"
 get_repo "junegunn" "vim-easy-align"
 
+echo "Installing vim-tmux-navigator"
+get_repo "christoomey" "vim-tmux-navigator"
+
 echo "Installing jQuery"
 JQUERY=15752
 cd $DOTVIM
