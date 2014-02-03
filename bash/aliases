@@ -21,6 +21,9 @@ alias sudo='sudo '
 # bundler
 alias be='bundle exec '
 
+# npm
+alias npm-exec='PATH=$(npm bin):$PATH'
+
 # IP addresses
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en0"
