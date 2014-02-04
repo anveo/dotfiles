@@ -123,3 +123,6 @@ nmap <leader>a <Plug>(EasyAlign)
 "nnoremap <silent> <C-k> :TmuxNavigateUp<cr>
 "nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
 "nnoremap <silent> <C-\> :TmuxNavigatePrevious<cr>
+
+" vim-mustache-handlebars
+let g:mustache_abbreviations = 1

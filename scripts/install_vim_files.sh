@@ -92,7 +92,8 @@ echo "Installing vim-colors-solarized"
 get_repo "altercation" "vim-colors-solarized"
 
 echo "Installing mustache.vim"
-get_repo "juvenn" "mustache.vim"
+#get_repo "juvenn" "mustache.vim"
+get_repo "mustache" "vim-mustache-handlebars"
 
 echo "Installing vim-coffee-script"
 get_repo "kchmck" "vim-coffee-script"
