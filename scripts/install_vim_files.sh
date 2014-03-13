@@ -134,6 +134,9 @@ get_repo "junegunn" "vim-easy-align"
 #echo "Installing vim-tmux-navigator"
 #get_repo "christoomey" "vim-tmux-navigator"
 
+echo "Installing vim-gitgutter"
+get_repo "airblade" "vim-gitgutter"
+
 echo "Installing jQuery"
 JQUERY=15752
 cd $DOTVIM
