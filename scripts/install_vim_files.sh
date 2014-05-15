@@ -137,12 +137,16 @@ get_repo "junegunn" "vim-easy-align"
 echo "Installing vim-gitgutter"
 get_repo "airblade" "vim-gitgutter"
 
-echo "Installing jQuery"
-JQUERY=15752
-cd $DOTVIM
+echo "Installing vim-easymotion"
+get_repo "Lokaltog" "vim-easymotion"
 
 echo "Installing YankRing"
 get_repo "vim-scripts" "YankRing.vim"
+
+#echo "Installing jQuery"
+#JQUERY=15752
+
+cd $DOTVIM
 
 #curl http://www.vim.org/scripts/download_script.php?src_id=$JQUERY -o "syntax/jquery.vim"
 
@@ -154,8 +158,7 @@ get_repo "vim-scripts" "YankRing.vim"
 
 cd $DOTVIM/autoload
 echo "Fetching latest pathogen.vim"
-rm pathogen.vim
-curl -O https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
+curl -O https://raw.githubusercontent.com/tpope/vim-pathogen/master/autoload/pathogen.vim
 
 echo "Checking to see if pathogen has already been added to .vimrc"
 pathogen_cmd="call pathogen#infect('bundle/{}')"

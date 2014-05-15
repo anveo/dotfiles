@@ -32,8 +32,8 @@ noremap <leader>y "*y
 noremap <leader>p :set paste<CR>"*p<CR>:set nopaste<CR>
 
 " Default searches to "very magic", more like the world outside Vim.
-nnoremap / /\v
-vnoremap / /\v
+"nnoremap / /\v
+"vnoremap / /\v
 nnoremap ? ?\v
 vnoremap ? ?\v
 
