@@ -46,7 +46,19 @@ set wildmode=list:longest:full   "make cmdline tab completion similar to bash
 set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
 
 "stuff to ignore when tab completing and CommandT
-set wildignore=*.o,*.obj,*~,*.scssc,*.sassc,*.png,*.PNG,*.JPG,*.jpg,*.GIF,*.gif,*.dat,*.doc,*.DOC,*.log,*.pdf,*.PDF,*.ppt,*.docx,*.pptx,*.wpd,*.zip,*.rtf,*.eps,*.psd,*.ttf,*.otf,*.eot,*.svg,*.woff,*.mp3,*.mp4,*.m4a,*.wav,"log/**","vendor/**","coverage/**","tmp/**"
+set wildignore=*~,*.scssc,*.sassc,*.png,*.PNG,*.JPG,*.jpg,*.GIF,*.gif,*.dat,*.doc,*.DOC,*.log,*.pdf,*.PDF,*.ppt,*.docx,*.pptx,*.wpd,*.zip,*.rtf,*.eps,*.psd,*.ttf,*.otf,*.eot,*.svg,*.woff,*.mp3,*.mp4,*.m4a,*.wav,"log/**","vendor/**","coverage/**","tmp/**"
+" Disable output and VCS files
+set wildignore+=*.o,*.out,*.obj,.git,*.rbc,*.rbo,*.class,.svn,*.gem
+" Disable archive files
+set wildignore+=*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz
+" Ignore bundler and sass cache
+set wildignore+=*/vendor/gems/*,*/vendor/cache/*,*/.bundle/*,*/.sass-cache/*
+" Ignore librarian-chef, vagrant, test-kitchen and Berkshelf cache
+set wildignore+=*/tmp/librarian/*,*/.vagrant/*,*/.kitchen/*,*/vendor/cookbooks/*
+" Ignore rails temporary asset caches
+set wildignore+=*/tmp/cache/assets/*/sprockets/*,*/tmp/cache/assets/*/sass/*
+" Disable temp and backup files
+set wildignore+=*.swp,*~,._*
 
 set complete-=i
 

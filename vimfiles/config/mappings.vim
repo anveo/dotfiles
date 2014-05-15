@@ -133,7 +133,7 @@ nnoremap Y y$
 "nmap <leader>s :split<CR> <C-w><C-w>
 
 " Open URL from this line (OS X only).
-map <leader>u :call OpenURI()<CR>
+"map <leader>u :call OpenURI()<CR>
 
 " Tab/shift-tab to indent/outdent in visual mode.
 vnoremap <Tab> >gv
@@ -141,3 +141,26 @@ vnoremap <S-Tab> <gv
 " Keep selection when indenting/outdenting.
 vnoremap > >gv
 vnoremap < <gv
+
+" format the entire file
+nnoremap <leader>fef :normal! gg=G``<CR>
+
+" upper/lower word
+nmap <leader>u mQviwU`Q
+nmap <leader>l mQviwu`Q
+
+" upper/lower first char of word
+nmap <leader>U mQgewvU`Q
+nmap <leader>L mQgewvu`Q
+
+" cd to the directory containing the file in the buffer
+nmap <silent> <leader>cd :lcd %:h<CR>
+
+" set text wrapping toggles
+nmap <silent> <leader>tw :set invwrap<CR>:set wrap?<CR>
+
+" find merge conflict markers
+nmap <silent> <leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
+
+" Toggle hlsearch with <leader>hs
+nmap <leader>hs :set hlsearch! hlsearch?<CR>

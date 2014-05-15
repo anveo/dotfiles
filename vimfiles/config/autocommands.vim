@@ -19,6 +19,9 @@ if has("autocmd")
   " make Python follow PEP8 for whitespace ( http://www.python.org/dev/peps/pep-0008/ )
   au FileType python setlocal softtabstop=4 tabstop=4 shiftwidth=4
 
+  " In Makefiles, use real tabs, not tabs expanded to spaces
+  au FileType make setlocal noexpandtab
+
   " These files are also Ruby.
   au BufRead,BufNewFile {Gemfile,Rakefile,Vagrantfile,Thorfile,Procfile,config.ru,*.rake,*.god,*.bldr} set ft=ruby
 
@@ -75,4 +78,10 @@ if has("autocmd")
  autocmd InsertEnter * match TechWordsToAvoid /\cobviously\|basically\|simply\|of\scourse\|clearly\|just\|everyone\sknows\|however,\|so,\|easy/
  autocmd InsertLeave * match TechWordsToAvoid /\cobviously\|basically\|simply\|of\scourse\|clearly\|just\|everyone\sknows\|however,\|so,\|easy/
  autocmd BufWinLeave * call clearmatches()
+
+
+ if has("gui_running")
+   " Automatically resize splits when resizing MacVim window
+   autocmd VimResized * wincmd =
+ endif
 endif
