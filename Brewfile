@@ -21,6 +21,7 @@ install rbenv-gem-rehash
 install rbenv-readline
 install ruby-build
 install reattach-to-user-namespace
+install ssh-copy-id
 install the_silver_searcher
 install tmux
 install tree
