@@ -15,7 +15,7 @@ set noequalalways
 " Ack
 nmap <Leader>g :Ack!
 nmap <Leader>G :AckFromSearch 
-"let g:ackprg = 'ag --nogroup --nocolor --column'
+let g:ackprg = 'ag --nogroup --nocolor --column'
 
 " Snippets
 let g:snippetsEmu_key = "<S-Tab>"
