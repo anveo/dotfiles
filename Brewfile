@@ -1,4 +1,5 @@
 install ack
+install autojump
 install bash
 install bash-completion
 install ctags
