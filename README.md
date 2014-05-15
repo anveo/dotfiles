@@ -19,3 +19,7 @@
 
     # Add cask path for Alfred
     $ homebrew cask alfred link
+
+### iTerm Themes
+
+    git clone git@github.com:mbadolato/iTerm2-Color-Schemes.git

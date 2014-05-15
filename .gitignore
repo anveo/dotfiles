@@ -5,3 +5,6 @@
 # bundler
 .bundle
 vimfiles/bundle/*
+
+# Misc
+iTerm2-Color-Schemes
