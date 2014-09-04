@@ -13,15 +13,29 @@ map <Leader>z :ZoomWin<CR>
 set noequalalways
 
 " Ack
-nmap <Leader>g :Ack!
-nmap <Leader>G :AckFromSearch 
-let g:ackprg = 'ag --nogroup --nocolor --column'
+nmap <Leader>f :Ack!<Space>
+nmap <Leader>ff :Ack!<Space>
+"nmap <Leader>F :AckFromSearch!<Space>
+" Highlight and Ack for the word under the cursor
+nnoremap <leader>F    *<C-O>:AckFromSearch!<CR>
+" Ack for the current selection
+vnoremap <leader>F    "dy:Ack!<space>'<C-r>d'<CR>
+
+if executable("ack")
+  " use default config
+elseif executable("ack-grep")
+  let g:ackprg="ack-grep -H --nocolor --nogroup --column"
+elseif executable("ag")
+  let g:ackprg="ag -S --follow --nocolor --nogroup --column"
+else
+endif
 
 " Snippets
 let g:snippetsEmu_key = "<S-Tab>"
 let g:snippets_dir = '$HOME/.vim/_snippets/'
 map <Leader>snip :call ReloadAllSnippets()<CR>
 map <Leader>snipc :e ~/.vim/_snippets/coffee.snippets<CR>
+map <Leader>snipcc :e ~/.vim/_snippets/cpp.snippets<CR>
 map <Leader>snipr :e ~/.vim/_snippets/ruby.snippets<CR>
 map <Leader>snipj :e ~/.vim/_snippets/javascript.snippets<CR>
 map <Leader>snipa :e ~/.vim/_snippets/_.snippets<CR>
