@@ -9,6 +9,9 @@ alias .....='cd ../../../..'
 alias ......='cd ../../../../..'
 alias cdd='cd -'
 
+alias vst='cd ~/Library/Audio/Plug-Ins/'
+alias svst='cd /Library/Audio/Plug-Ins/'
+
 # Shortcuts
 alias d="cd ~/Documents/Dropbox"
 alias dl="cd ~/Downloads"
