@@ -37,7 +37,7 @@
 	ui = auto
 
 [push]
-	default = tracking
+	default = simple
 
 [github]
         user = anveo
@@ -89,3 +89,9 @@
         token = <.replace github-token>
 [mergetool]
 	keepBackup = true
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
