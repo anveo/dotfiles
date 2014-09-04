@@ -143,6 +143,12 @@ get_repo "Lokaltog" "vim-easymotion"
 echo "Installing YankRing"
 get_repo "vim-scripts" "YankRing.vim"
 
+#echo "Installing YouCompleteMe"
+#get_repo "Valloric" "YouCompleteMe"
+
+echo "Installing vim-symbol-strings"
+get_repo "anveo" "vim-symbols-strings"
+
 #echo "Installing jQuery"
 #JQUERY=15752
 
