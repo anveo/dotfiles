@@ -66,6 +66,9 @@ task :install do
   system %Q{ln -fs "$PWD/extras/weechat/buffers.pl" "$HOME/.weechat/perl/autoload/buffers.pl"}
   system %Q{ln -fs "$PWD/extras/weechat/toggle_nicklist.py" "$HOME/.weechat/python/autoload/toggle_nicklist.py"}
 
+  # link blender configs
+  system %Q{ln -fs "$PWD/extras/blender" "$HOME/.blender"}
+
   # link scripts
   system %Q{ln -nfs "$PWD/scripts" "$HOME/scripts"}
   system %Q{mkdir -p "$HOME/bin"}

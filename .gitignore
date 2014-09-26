@@ -1,6 +1,7 @@
 *~
 *.swp
 .DS_Store
+*.pyc
 
 # bundler
 .bundle
