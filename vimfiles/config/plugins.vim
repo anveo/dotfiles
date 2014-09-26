@@ -13,7 +13,7 @@ map <Leader>z :ZoomWin<CR>
 set noequalalways
 
 " Ack
-nmap <Leader>f :Ack!<Space>
+nmap <Leader>f :Ack!
 nmap <Leader>ff :Ack!<Space>
 "nmap <Leader>F :AckFromSearch!<Space>
 " Highlight and Ack for the word under the cursor
