@@ -149,6 +149,12 @@ get_repo "vim-scripts" "YankRing.vim"
 echo "Installing vim-symbol-strings"
 get_repo "anveo" "vim-symbols-strings"
 
+echo "Installing bats.vim"
+get_repo "rosstimson" "bats.vim"
+
+echo "Installing vim-jsx"
+get_repo "mxw" "vim-jsx"
+
 #echo "Installing jQuery"
 #JQUERY=15752
 
