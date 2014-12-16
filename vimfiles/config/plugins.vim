@@ -172,3 +172,6 @@ omap / <Plug>(easymotion-tn)
 " different highlight method and have some other features )
 "map  n <Plug>(easymotion-next)
 "map  N <Plug>(easymotion-prev)
+
+" Dash
+nmap <silent> <leader>gg <Plug>DashSearch
