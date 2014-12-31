@@ -61,6 +61,7 @@
   # track the remote branch so that we can pull from there.
 	autosetupmerge = true
   mergeoptions = --no-ff
+	autosetuprebase = always
 
 [branch "master"]
   # This is the list of cmdline options that should be added to git-merge
