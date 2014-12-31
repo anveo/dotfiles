@@ -158,6 +158,9 @@ get_repo "mxw" "vim-jsx"
 echo "Installing dash.vim"
 get_repo "rizzatti" "dash.vim"
 
+echo "Installing vim-go"
+get_repo "fatih" "vim-go"
+
 #echo "Installing jQuery"
 #JQUERY=15752
 
