@@ -75,8 +75,10 @@ let g:syntastic_mode_map = { 'mode': 'active',
                            \ 'passive_filetypes': ['scss', 'php'] }
 
 " Sparkup
-let g:sparkupExecuteMapping = '<C-S-e>'
-let g:sparkupNextMapping = '<C-S-x>'
+"let g:sparkupExecuteMapping = '<C-S-e>'
+"let g:sparkupNextMapping = '<C-S-x>'
+" Emmit
+let g:user_emmet_leader_key='<C-e>'
 
 " Rails
 " Leader shortcuts for Rails commands
