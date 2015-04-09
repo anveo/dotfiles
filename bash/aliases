@@ -261,3 +261,6 @@ alias blender-sensei="BLENDER_USER_CONFIG=~/.blender/blender-sensei/config BLEND
 alias blender="blender-2.73"
 
 alias hb="hub browse"
+
+alias vundle="vim +PluginInstall +qall"
+
