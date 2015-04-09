@@ -9,3 +9,9 @@ vimfiles/bundle/*
 
 # Misc
 iTerm2-Color-Schemes
+
+extras/blender/default/cache
+extras/blender/default/config/userpref.blend
+extras/blender/default/config/bookmarks.txt
+extras/blender/default/config/recent-files.txt
+
