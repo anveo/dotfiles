@@ -263,5 +263,5 @@ alias blender="blender-2.74"
 
 alias hb="hub browse"
 
-alias vundle="vim +PluginInstall +qall"
+alias vundle="vim -c VundleUpdate -c quitall"
 
