@@ -3,8 +3,10 @@
 set nocompatible
 
 " Set mapleader
-let mapleader = ","
-let g:mapleader = ","
+"let mapleader = ","
+"let g:mapleader = ","
+let mapleader = "\<Space>"
+let g:mapleader = "\<Space>"
 
 filetype off
 
@@ -30,6 +32,7 @@ Plugin 'gregsexton/gitv'
 Plugin 'jelera/vim-javascript-syntax'
 Plugin 'jlanzarotta/bufexplorer'
 Plugin 'junegunn/vim-easy-align'
+Plugin 'kana/vim-textobj-user'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'kien/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
@@ -41,6 +44,7 @@ Plugin 'motemen/git-vim'
 Plugin 'msanders/snipmate.vim'
 Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'mxw/vim-jsx'
+Plugin 'nelstrom/vim-textobj-rubyblock'
 Plugin 'regedarek/ZoomWin'
 Plugin 'rizzatti/dash.vim'
 Plugin 'rodjek/vim-puppet'
@@ -50,6 +54,7 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
 Plugin 'sjl/gundo.vim'
 Plugin 'sophacles/vim-processing'
+Plugin 'terryma/vim-expand-region'
 Plugin 'tpope/vim-abolish'
 Plugin 'tpope/vim-bundler'
 "Plugin 'tpope/vim-cucumber'
@@ -63,14 +68,13 @@ Plugin 'tpope/vim-ragtag'
 Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-rbenv'
 Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-rsi'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-unimpaired'
 Plugin 'tpope/vim-vividchalk'
 Plugin 'vim-ruby/vim-ruby'
 Plugin 'vim-scripts/YankRing.vim'
 Plugin 'vim-scripts/taglist.vim'
-"get_repo "kana" "vim-textobj-user"
-"get_repo "nelstrom" "vim-textobj-rubyblock"
 
 call vundle#end()
 

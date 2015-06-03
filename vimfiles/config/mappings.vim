@@ -1,5 +1,11 @@
-" Easier non-interactive command insertion
-nnoremap <Space> :
+" easier non-interactive command prompt
+map ; :
+
+" quick saving
+nnoremap <Leader>w :w<CR>
+
+" quick visual mode
+nmap <Leader><Leader> V
 
 " Make it easy to update/reload .vimrc
 nmap <leader>s :source ~/.vimrc<CR>
@@ -164,3 +170,14 @@ nmap <silent> <leader>fc <ESC>/\v^[<=>]{7}( .*\|$)<CR>
 
 " Toggle hlsearch with <leader>hs
 nmap <leader>hs :set hlsearch! hlsearch?<CR>
+
+vmap <Leader>y "+y
+vmap <Leader>d "+d
+nmap <Leader>p "+p
+nmap <Leader>P "+P
+vmap <Leader>p "+p
+vmap <Leader>P "+P
+
+" select text just pasted
+noremap gV `[v`]
+
