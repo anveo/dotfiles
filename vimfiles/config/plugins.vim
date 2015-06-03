@@ -177,3 +177,6 @@ omap / <Plug>(easymotion-tn)
 
 " Dash
 nmap <silent> <leader>gg <Plug>DashSearch
+" powerline
+let g:airline_powerline_fonts = 1
+
