@@ -94,9 +94,9 @@ let g:user_emmet_leader_key='<C-e>'
 
 " Rails
 " Leader shortcuts for Rails commands
-map <Leader>m :Rmodel
-map <Leader>c :Rcontroller
-map <Leader>v :Rview
+map <Leader>m :Emodel<Space>
+map <Leader>c :Econtroller<Space>
+map <Leader>v :Eview<Space>
 "map <Leader>u :Runittest
 "map <Leader>f :Rfunctionaltest
 "map <Leader>tm :RTmodel
