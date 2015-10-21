@@ -11,6 +11,8 @@
     # Install homebrew package
     $ brew bundle
 
+    $ brew tap thoughtbot/formulae
+
     # Setup dotfile aliases
     $ rake install
 
