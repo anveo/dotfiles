@@ -258,8 +258,10 @@ alias blender-2.71="BLENDER_USER_CONFIG=~/.blender/default/config BLENDER_USER_S
 alias blender-2.72="BLENDER_USER_CONFIG=~/.blender/default/config BLENDER_USER_SCRIPTS=~/.blender/default/scripts /Applications/Blender/2.7.2/blender.app/Contents/MacOS/blender &"
 alias blender-2.73="BLENDER_USER_CONFIG=~/.blender/default/config BLENDER_USER_SCRIPTS=~/.blender/default/scripts /Applications/Blender/2.7.3/blender.app/Contents/MacOS/blender &"
 alias blender-2.74="BLENDER_USER_CONFIG=~/.blender/default/config BLENDER_USER_SCRIPTS=~/.blender/default/scripts /Applications/Blender/2.7.4/blender.app/Contents/MacOS/blender &"
+alias blender-2.75="BLENDER_USER_CONFIG=~/.blender/default/config BLENDER_USER_SCRIPTS=~/.blender/default/scripts /Applications/Blender/2.7.5/blender.app/Contents/MacOS/blender &"
+alias blender-2.76="BLENDER_USER_CONFIG=~/.blender/default/config BLENDER_USER_SCRIPTS=~/.blender/default/scripts /Applications/Blender/2.7.6/blender.app/Contents/MacOS/blender &"
 alias blender-sensei="BLENDER_USER_CONFIG=~/.blender/blender-sensei/config BLENDER_USER_SCRIPTS=~/.blender/blender-sensei/scripts /Applications/Blender/2.7.1/blender.app/Contents/MacOS/blender &"
-alias blender="blender-2.74"
+alias blender="blender-2.76"
 
 alias hb="hub browse"
 
