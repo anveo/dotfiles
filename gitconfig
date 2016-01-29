@@ -28,6 +28,7 @@
         st = status
         type = cat-file -t
         unstage = reset HEAD --
+        undo = reset --soft HEAD^
 
 [apply]
         whitespace = nowarn
@@ -92,7 +93,7 @@
 	keepBackup = true
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
+	path =
 [mergetool "sourcetree"]
 	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
