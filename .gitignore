@@ -5,7 +5,9 @@
 
 # bundler
 .bundle
+vimfiles/autoload/plug.vim.old
 vimfiles/bundle/*
+vimfiles/plugged/
 
 # Misc
 iTerm2-Color-Schemes
