@@ -198,7 +198,7 @@ else
   # Or
   # alias pbcopy='xsel --clipboard --input'
   # alias pbcopy='xsel --clipboard --output'
-  
+
   # OSX like `open` command, alternatives might be xdg-open and see
   alias open='gnome-open'
   alias ']'='gnome-open'

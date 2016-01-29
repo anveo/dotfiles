@@ -3,6 +3,6 @@ if [ -f $HOME/.bashrc ]; then
 fi
 
 # Not working sourcing from bashrc?
-#if [ -f ~/perl5/perlbrew/etc/bashrc ]; then
-source $HOME/perl5/perlbrew/etc/bashrc
-#fi
+if [ -f $HOME/perl5/perlbrew/etc/bashrc ]; then
+  source $HOME/perl5/perlbrew/etc/bashrc
+fi
