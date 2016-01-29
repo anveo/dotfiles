@@ -40,6 +40,9 @@ if has("autocmd")
   " For JSON
   autocmd BufNewFile,BufRead *.json set ft=javascript
 
+  " For JS ES6
+  autocmd BufNewFile,BufRead *.es6 set ft=javascript
+
   " <Leader>r or <D-r> to render Markdown in browser.
   au FileType markdown map <buffer> <Leader>r :Mm<CR>
   au FileType markdown map <buffer> <D-r> :Mm<CR>
