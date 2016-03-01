@@ -4,6 +4,7 @@ install bash
 install bash-completion
 install ctags
 install cowsay
+install diff-so-fancy
 install figlet
 install gawk
 install git
