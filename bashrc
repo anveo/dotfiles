@@ -38,24 +38,35 @@ source ~/.bash/paths
 source ~/.bash/functions
 source ~/.bash/prompt
 
-if [ -f ~/.localrc ]; then
-  . ~/.localrc
-fi
-
 # https://github.com/rupa/z
 #. "$HOME/dotfiles/bash/scripts/z.sh"
 
 #[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.
 #PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 
-export RBENV_ROOT=/usr/local/var/rbenv
-if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
-#if [ -d $HOME/.rbenv ]; then
-#  export PATH="$HOME/.rbenv/bin:$PATH"
-#  eval "$(rbenv init -)"
-#fi
-
-if [ -f $(brew --prefix nvm)/nvm.sh ]; then
-  export NVM_DIR=~/.nvm
-  source $(brew --prefix nvm)/nvm.sh
+if [ `uname` == 'Darwin' ]; then
+  export RBENV_ROOT=/usr/local/var/rbenv
+  if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+else
+  if [ -d $HOME/.rbenv ]; then
+    export PATH="$HOME/.rbenv/bin:$PATH"
+    eval "$(rbenv init -)"
+  fi
 fi
+
+if [ `uname` == 'Darwin' ]; then
+  if [ -f $(brew --prefix nvm)/nvm.sh ]; then
+    export NVM_DIR=~/.nvm
+    source $(brew --prefix nvm)/nvm.sh
+  fi
+else
+  if [ -d $HOME/.nvm ]; then
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
+  fi
+fi
+
+if [ -f ~/.localrc ]; then
+  . ~/.localrc
+fi
+
