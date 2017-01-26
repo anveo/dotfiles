@@ -21,18 +21,11 @@ if [ -d "$HOME/Library/Android/sdk" ]; then
   export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
 fi
 
-# node path
-#export NODE_PATH=/usr/local/lib/node_modules
-
-# npm bin
-#export PATH=/usr/local/share/npm/bin:$PATH
-export PATH="./node_modules/.bin:$PATH"
-
 export NVM_DIR=~/.nvm
 source $(brew --prefix nvm)/nvm.sh
 
-#clojure
-export CLASSPATH=$CLASSPATH:/usr/local/Cellar/clojure-contrib/1.2.0/clojure-contrib.jar
+# npm bin
+export PATH="./node_modules/.bin:$PATH"
 
 # brew install autojump
 # https://github.com/joelthelion/autojump
