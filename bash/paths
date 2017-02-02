@@ -21,6 +21,8 @@ if [ -d "$HOME/Library/Android/sdk" ]; then
   export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
 fi
 
+export GRADLE_OPTS="$GRADLE_OPTS -Dorg.gradle.daemon=true"
+
 export NVM_DIR=~/.nvm
 source $(brew --prefix nvm)/nvm.sh
 
