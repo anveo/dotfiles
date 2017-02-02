@@ -1,0 +1,56 @@
+"*":
+  "atom-beautify":
+    general:
+      _analyticsUserId: "6dcc45b7-0cf6-4770-ae9c-e3ccd455f9ff"
+  "autocomplete-elixir":
+    elixirPath: "/usr/local/bin/elixir"
+    erlangHome: "/usr/local/bin/"
+  core:
+    disabledPackages: [
+      "linter-ansible-linting"
+      "icon-fonts"
+      "minimap"
+    ]
+    telemetryConsent: "no"
+  editor:
+    fontSize: 16
+    invisibles: {}
+    preferredLineLength: 120
+    showIndentGuide: true
+    softWrap: true
+  "exception-reporting":
+    userId: "82cf5965-144e-9658-af78-38dd1fb264a3"
+  "git-plus":
+    general:
+      _analyticsUserId: "c096cb1d-c3dd-4a5c-a49f-eb1e35c90179"
+  linter: {}
+  "linter-ansible-linting": {}
+  "linter-elixirc":
+    elixircPath: "/usr/local/bin/elixirc"
+    mixPath: "/usr/local/bin/mix"
+  "markdown-preview":
+    useGitHubStyle: true
+  metrics:
+    userId: "f79066f06ca3e6c914809c54f953a84a4ceb4130"
+  minimap:
+    absoluteMode: true
+  "release-notes":
+    viewedVersion: "0.95.0"
+  "split-diff":
+    diffWords: true
+    ignoreWhitespace: true
+    leftEditorColor: "red"
+    rightEditorColor: "green"
+    syncHorizontalScroll: true
+  "tree-view": {}
+  welcome:
+    showOnStartup: false
+".elixir.html.text":
+  editor:
+    preferredLineLength: 120
+".elixir.source":
+  editor:
+    preferredLineLength: 120
+".elixir.text":
+  editor:
+    preferredLineLength: 120

@@ -77,6 +77,13 @@ task :install do
   system %Q{ln -fs "$PWD/scripts/vcprompt.py" "$HOME/local/bin/vcprompt.py"}
   system %Q{ln -fs "$PWD/scripts/phpm/phpm" "$HOME/local/bin/phpm"}
 
+  # link atom configs
+  system %Q{mkdir -p "$HOME/.atom"}
+  system %Q{ln -fs "$PWD/atom/config.cson" "$HOME/.atom/config.cson"}
+  system %Q{ln -fs "$PWD/atom/init.coffee" "$HOME/.atom/init.coffee"}
+  system %Q{ln -fs "$PWD/atom/keymap.cson" "$HOME/.atom/keymap.cson"}
+  system %Q{ln -fs "$PWD/atom/styles.less" "$HOME/.atom/styles.less"}
+
   # link vimfiles
   system %Q{ln -nfs "$PWD/vimfiles" "$HOME/.vim"}
   system %Q{ln -fs "$PWD/vimfiles/.vimrc" "$HOME/.vimrc"}
