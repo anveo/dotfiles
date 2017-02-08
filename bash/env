@@ -65,19 +65,3 @@ export RUBY_GC_MALLOC_LIMIT=60000000
 #export RUBY_FREE_MIN=200000
 export RUBY_GC_HEAP_FREE_SLOTS=200000
 
-# Don't use bundler for the following command. See https://github.com/mpapis/rubygems-bundler#disabling-executables
-export NOEXEC_EXCLUDE="zeus"
-
-# boot2docker
-#if [ `uname` == 'Darwin' ]; then
-  #export DOCKER_CERT_PATH=$HOME/.boot2docker/certs/boot2docker-vm
-  #export DOCKER_TLS_VERIFY=1
-  #export DOCKER_HOST=tcp://192.168.59.103:2376
-#
-  #eval $(docker-machine env default)
-#fi
-
-#if [ -f /usr/local/bin/dinghy ]; then
-  #eval $(dinghy env)
-#fi
-
