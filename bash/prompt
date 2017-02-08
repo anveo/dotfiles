@@ -59,6 +59,12 @@ __rbenv_ps1 ()
   printf $rbenv_ruby_version
 }
 
+__node_ps1 ()
+{
+  node_version=`node --version | sed -e 's/ .*//'`
+  printf $node_version
+}
+
 #function __git_prompt {
 #  branch=$(git symbolic-ref -q HEAD 2>/dev/null) || return 0 # Not in git repo.
 #
@@ -105,7 +111,14 @@ bash_prompt() {
   # reset
   local RESET="\[\033[0;37m\]"
 
-  PS1="\n\t$RESET $EMAGENTA\w \[$EBLACK\]$(__rbenv_ps1) $(__ps1_git)$RESET \n∴ "
+  if [ "$PWD" != "$PREV_PWD" ]; then
+    PREV_PWD="$PWD";
+    if [ -e ".nvmrc" ]; then
+      nvm use;
+    fi
+  fi
+
+  PS1="\n\t$RESET $EMAGENTA\w \[$EBLACK\]$(__rbenv_ps1) $(__node_ps1) $(__ps1_git)$RESET \n∴ "
 }
 
 # iTerm2 title/tab stuff
