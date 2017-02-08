@@ -1,6 +1,6 @@
 # homebrew needs /usr/local/sbin and /usr/local/share/python
 if [ `uname` == 'Darwin' ]; then
-  export PATH=/usr/local/share/python:/usr/local/bin:/usr/local/sbin:$PATH
+  export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 fi
 
 # $HOME/local paths
