@@ -64,6 +64,13 @@ else
   fi
 fi
 
+export FZF_COMPLETION_TRIGGER='~~'
+export FZF_CTRL_R_OPTS='--sort --exact'
+_fzf_compgen_path() {
+  ag -g "" "$1"
+}
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
 if [ -f ~/.localrc ]; then
   . ~/.localrc
 fi
