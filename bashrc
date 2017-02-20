@@ -28,8 +28,6 @@ if [[ "${COLORTERM}" == "gnome-terminal" ]]; then
     unset COLORTERM
 fi
 
-export GHI_TOKEN="<.replace github-token>"
-
 source ~/.bash/env
 source ~/.bash/config
 source ~/.bash/aliases
@@ -38,20 +36,20 @@ source ~/.bash/paths
 source ~/.bash/functions
 source ~/.bash/prompt
 
-# https://github.com/rupa/z
-#. "$HOME/dotfiles/bash/scripts/z.sh"
+if [ -f /usr/local/etc/profile.d/z.sh ]; then
+  . /usr/local/etc/profile.d/z.sh
+else
+  # https://github.com/rupa/z
+  . "$HOME/dotfiles/bash/scripts/z.sh"
+fi
 
-#[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"  # This loads RVM into a shell session.
-#PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-
-if [ `uname` == 'Darwin' ]; then
+if [ -d /usr/local/var/rbenv ]; then
   export RBENV_ROOT=/usr/local/var/rbenv
   if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
-else
-  if [ -d $HOME/.rbenv ]; then
-    export PATH="$HOME/.rbenv/bin:$PATH"
-    eval "$(rbenv init -)"
-  fi
+fi
+if [ -d $HOME/.rbenv ]; then
+  export RBENV_ROOT=$HOME/.rbenv/bin
+  if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 fi
 
 if [ `uname` == 'Darwin' ]; then
