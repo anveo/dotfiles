@@ -267,3 +267,12 @@ alias hb="hub browse"
 
 alias vundle="vim -c VundleUpdate -c quitall"
 
+# send shake guesture to android emulator
+alias shake="adb shell input keyevent 82"
+
+# ¯\_(ツ)_/¯
+alias tflip="tmux new -s '🖕 🙃 🖕'"
+
+# search hidden files
+alias ag='ag --hidden '
+
