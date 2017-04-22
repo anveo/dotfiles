@@ -47,12 +47,8 @@ vnoremap ? ?\v
 " http://vimcasts.org/episodes/bubbling-text/
 nmap gV `[v`]
 
-" Disabled for vim-tmux-navigator
-" Smart way to move between windows
-nmap <S-j> <C-W>j
-nmap <S-k> <C-W>k
-nmap <S-h> <C-W>h
-nmap <S-l> <C-W>l
+" Fix for neovim https://github.com/christoomey/vim-tmux-navigator#it-doesnt-work-in-neovim-specifically-c-h
+nnoremap <silent> <BS> :TmuxNavigateLeft<cr>
 
 " No Help, please
 nmap <F1> <Esc>
