@@ -1,6 +1,9 @@
 " easier non-interactive command prompt
 map ; :
 
+" quick escape
+imap jj <Esc>
+
 " quick saving
 nnoremap <Leader>w :w<CR>
 
