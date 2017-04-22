@@ -10,10 +10,16 @@
       "linter-ansible-linting"
       "icon-fonts"
       "minimap"
+      "react"
     ]
     telemetryConsent: "no"
+    themes: [
+      "one-dark-ui"
+      "atom-dark-syntax"
+    ]
+    titleBar: "custom-inset"
   editor:
-    fontSize: 16
+    fontSize: 15
     invisibles: {}
     preferredLineLength: 120
     showIndentGuide: true
@@ -28,6 +34,9 @@
   "linter-elixirc":
     elixircPath: "/usr/local/bin/elixirc"
     mixPath: "/usr/local/bin/mix"
+  "linter-ui-default":
+    panelHeight: 264
+    showPanel: true
   "markdown-preview":
     useGitHubStyle: true
   metrics:
