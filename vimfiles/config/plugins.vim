@@ -50,6 +50,9 @@ let NERDTreeShowBookmarks = 1
 let NERDTreeShowHidden = 1
 let NERDTreeIgnore = ['\~$', '.svn$', '\.git$', '.DS_Store', '.sass-cache']
 
+" NERDCommenter
+let NERDSpaceDelims=1
+
 " BuffExplorer
 nnoremap <C-B> :BufExplorer<cr>
 let g:bufExplorerShowRelativePath=1
