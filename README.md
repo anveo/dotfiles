@@ -25,6 +25,11 @@
     # for js linting
     $ npm install -g jshint
 
+## Tmux
+
+    brew install reattach-to-user-namespace
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
 ### iTerm Themes
 
     git clone git@github.com:mbadolato/iTerm2-Color-Schemes.git
