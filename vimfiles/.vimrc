@@ -13,19 +13,18 @@ filetype off
 call plug#begin('~/.vim/plugged')
 
 " Make sure you use single quotes
-Plug 'Lokaltog/vim-easymotion'
-Plug 'Nemo157/glsl.vim'
-Plug 'Raimondi/delimitMate'
 "Plug 'Rykka/riv.vim'
-Plug 'Rykka/InstantRst'
 "Plug 'Shougo/neomru.vim'
 "Plug 'Shougo/unite.vim'
 "Plug 'Valloric/YouCompleteMe'
+"Plug 'tpope/vim-cucumber'
+Plug 'Lokaltog/vim-easymotion'
+Plug 'Nemo157/glsl.vim'
+Plug 'Raimondi/delimitMate'
+Plug 'Rykka/InstantRst'
 Plug 'airblade/vim-gitgutter'
 Plug 'altercation/vim-colors-solarized'
 Plug 'ap/vim-css-color'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'chrisbra/csv.vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'ecomba/vim-ruby-refactoring'
@@ -63,12 +62,12 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/syntastic'
 Plug 'sjl/gundo.vim'
+Plug 'slashmili/alchemist.vim'
 Plug 'sophacles/vim-processing'
 Plug 'terryma/vim-expand-region'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-bundler'
 Plug 'tpope/vim-commentary'
-"Plug 'tpope/vim-cucumber'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-fugitive'
@@ -84,10 +83,22 @@ Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vividchalk'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-ruby/vim-ruby'
 Plug 'vim-scripts/YankRing.vim'
 Plug 'vim-scripts/taglist.vim'
 "Plugin 'wincent/ferret'
+
+" neovim specific
+"if has('nvim')
+Plug 'slashmili/alchemist.vim'
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'neomake/neomake'
+  Plug 'c-brenn/phoenix.vim'
+  Plug 'tpope/vim-projectionist' " required for some navigation features
+  Plug 'powerman/vim-plugin-AnsiEsc'
+"endif
 
 " Add plugins to &runtimepath
 call plug#end()
