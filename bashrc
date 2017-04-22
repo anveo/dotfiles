@@ -66,6 +66,13 @@ fi
 
 export FZF_COMPLETION_TRIGGER='~~'
 export FZF_CTRL_R_OPTS='--sort --exact'
+
+# Setting ag as the default source for fzf
+export FZF_DEFAULT_COMMAND='ag -g ""'
+
+# To apply the command to CTRL-T as well
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
 _fzf_compgen_path() {
   ag -g "" "$1"
 }
