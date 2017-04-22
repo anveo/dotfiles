@@ -132,7 +132,7 @@ elif ls -G -d . >/dev/null 2>&1; then
   alias ls='ls -G'  # BSD/OS X
 fi
 alias l="ls -lAh"
-alias ll="ls -l"
+alias ll="ls -la"
 alias la="ls -A"
 alias sl="ls"
 
