@@ -185,8 +185,17 @@ if [ `uname` == 'Darwin' ]; then
   # We need gui support for plugins
 
   # don't need these with `brew install vim --replace-system`
-  alias vi='mvim -v'
-  alias vim='mvim -v'
+  #alias vi='mvim -v'
+  #alias vim='mvim -v'
+  #function vi
+    #nvim $argv
+  #end
+
+  #function vim
+    #nvim $argv
+  #end
+  alias vi='/usr/local/bin/nvim'
+  alias vim='/usr/local/bin/nvim'
 
   # no --color option
   alias ls="ls -F -G"
@@ -260,8 +269,9 @@ alias blender-2.73="BLENDER_USER_CONFIG=~/.blender/default/config BLENDER_USER_S
 alias blender-2.74="BLENDER_USER_CONFIG=~/.blender/default/config BLENDER_USER_SCRIPTS=~/.blender/default/scripts /Applications/Blender/2.7.4/blender.app/Contents/MacOS/blender &"
 alias blender-2.75="BLENDER_USER_CONFIG=~/.blender/default/config BLENDER_USER_SCRIPTS=~/.blender/default/scripts /Applications/Blender/2.7.5/blender.app/Contents/MacOS/blender &"
 alias blender-2.76="BLENDER_USER_CONFIG=~/.blender/default/config BLENDER_USER_SCRIPTS=~/.blender/default/scripts /Applications/Blender/2.7.6/blender.app/Contents/MacOS/blender &"
+alias blender-2.78="BLENDER_USER_CONFIG=~/.blender/default/config BLENDER_USER_SCRIPTS=~/.blender/default/scripts /Applications/Blender/2.7.8/blender.app/Contents/MacOS/blender &"
 alias blender-sensei="BLENDER_USER_CONFIG=~/.blender/blender-sensei/config BLENDER_USER_SCRIPTS=~/.blender/blender-sensei/scripts /Applications/Blender/2.7.1/blender.app/Contents/MacOS/blender &"
-alias blender="blender-2.76"
+alias blender="blender-2.78"
 
 alias hb="hub browse"
 
