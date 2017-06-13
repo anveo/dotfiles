@@ -2,6 +2,8 @@
   "atom-beautify":
     general:
       _analyticsUserId: "6dcc45b7-0cf6-4770-ae9c-e3ccd455f9ff"
+  "atom-package-deps":
+    ignored: []
   "autocomplete-elixir":
     elixirPath: "/usr/local/bin/elixir"
     erlangHome: "/usr/local/bin/"
@@ -11,6 +13,9 @@
       "icon-fonts"
       "minimap"
       "react"
+      "standard-formatter"
+      "linter-js-standard"
+      "prettier-atom"
     ]
     telemetryConsent: "no"
     themes: [
@@ -19,13 +24,15 @@
     ]
     titleBar: "custom-inset"
   editor:
-    fontSize: 15
+    fontSize: 17
     invisibles: {}
     preferredLineLength: 120
     showIndentGuide: true
     softWrap: true
   "exception-reporting":
     userId: "82cf5965-144e-9658-af78-38dd1fb264a3"
+  "git-blame":
+    columnWidth: 446
   "git-plus":
     general:
       _analyticsUserId: "c096cb1d-c3dd-4a5c-a49f-eb1e35c90179"
@@ -34,6 +41,11 @@
   "linter-elixirc":
     elixircPath: "/usr/local/bin/elixirc"
     mixPath: "/usr/local/bin/mix"
+  "linter-eslint":
+    fixOnSave: true
+  "linter-js-standard":
+    checkStyleDevDependencies: true
+    showEslintRules: true
   "linter-ui-default":
     panelHeight: 264
     showPanel: true
@@ -43,6 +55,15 @@
     userId: "f79066f06ca3e6c914809c54f953a84a4ceb4130"
   minimap:
     absoluteMode: true
+  "prettier-atom":
+    formatOnSaveOptions:
+      enabled: true
+    prettierOptions:
+      printWidth: 120
+      semi: false
+      singleQuote: true
+    silenceErrors: true
+    useEslint: true
   "release-notes":
     viewedVersion: "0.95.0"
   "split-diff":
