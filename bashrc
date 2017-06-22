@@ -44,11 +44,11 @@ else
 fi
 
 if [ -d /usr/local/var/rbenv ]; then
-  export RBENV_ROOT=/usr/local/var/rbenv
+  #export RBENV_ROOT=/usr/local/var/rbenv
   if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 fi
 if [ -d $HOME/.rbenv ]; then
-  export RBENV_ROOT=$HOME/.rbenv/bin
+  #export RBENV_ROOT=$HOME/.rbenv/bin
   if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 fi
 
