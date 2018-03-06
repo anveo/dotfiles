@@ -160,6 +160,8 @@ bash_prompt() {
   local BC="\[\033[1;36m\]"
   local BW="\[\033[1;37m\]"
 
+  local BG_R='\e[48;5;203m'
+
   # reset
   local RESET="\[\033[0;37m\]"
 
@@ -170,7 +172,7 @@ bash_prompt() {
     fi
   fi
 
-  PS1="\n\t$RESET $EMAGENTA\w \[$EBLACK\]$(__rbenv_ps1) $(__node_ps1) $(__ps1_git)$BR$(__ps1_notice)$RESET \n∴ "
+  PS1="\n\t$RESET $EMAGENTA\w \[$EBLACK\]$(__rbenv_ps1) $(__node_ps1) $(__ps1_git)$BG_R$BW$(__ps1_notice)$RESET \n∴ "
 }
 
 # iTerm2 title/tab stuff

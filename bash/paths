@@ -12,10 +12,6 @@ export CPPFLAGS="-I${HOME}/local/include"
 export CXXFLAGS=$CPPFLAGS
 export CFLAGS=$CPPFLAGS
 
-if [ -d /usr/local/opt/android-sdk ]; then
-  export ANDROID_HOME=/usr/local/opt/android-sdk
-fi
-
 if [ -d "$HOME/Library/Android/sdk" ]; then
   export ANDROID_HOME="$HOME/Library/Android/sdk"
   export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools
