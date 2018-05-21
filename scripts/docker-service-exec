@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+
+set -e
+set -o pipefail
+set -u
+
+# --------------------------------------------------------------------------------------
+# parse parameters 
+
+if [[ $# < 2 ]] ; then
+	echo ""
+	echo "Usage:"
+	echo "$0 <SERVICE_NAME> <EXEC_COMMAND>"
+	echo ""
+	echo "Examples:"
+	echo "$0 base_reverseproxy openresty -s reload"
+	echo "$0 base_reverseproxy bash"
+	echo ""
+	echo "Allows exec in a container running on another node in this swarm by using ssh."
+	exit 1
+else
+	SERVICE="$1"
+	shift
+	COMMAND="$@"
+fi
+
+# --------------------------------------------------------------------------------------
+# look for dependencies
+
+if ! which docker-node-ps > /dev/null ; then 
+	echo "dependency 'docker-node-ps' not found in PATH. exiting."
+	exit 1
+fi
+
+# --------------------------------------------------------------------------------------
+
+if PAIR=$(docker-node-ps $SERVICE) ; then
+  NODE=${PAIR%%:*}
+  CONTAINER=${PAIR#*:}
+else
+  exit 1
+fi
+
+# --------------------------------------------------------------------------------------
+
+# check if tty is present (because no tty is present when running from gitlab-deployment with gitlab-runner and docker-in-docker)
+if [ -t 0 ] ; then
+        set -x
+        ssh -t $NODE docker exec -it $CONTAINER $COMMAND
+else
+        set -x
+        echo ssh $NODE docker exec -i $CONTAINER $COMMAND
+        ssh $NODE docker exec -i $CONTAINER $COMMAND
+fi
