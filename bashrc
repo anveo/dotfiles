@@ -60,6 +60,7 @@ fi
 
 source ~/.bash/prompt
 
+# Use ~~ as the trigger sequence instead of the default **
 export FZF_COMPLETION_TRIGGER='~~'
 export FZF_CTRL_R_OPTS='--sort --exact'
 
@@ -69,11 +70,34 @@ export FZF_DEFAULT_COMMAND='ag -g ""'
 # To apply the command to CTRL-T as well
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
+# Options to fzf command
+export FZF_COMPLETION_OPTS='--color fg:-1,bg:-1,hl:230,fg+:3,bg+:233,hl+:229 --color info:150,prompt:110,spinner:150,pointer:167,marker:174 -x'
+
+# Use fd (https://github.com/sharkdp/fd) instead of the default find
+# command for listing path candidates.
+# - The first argument to the function ($1) is the base path to start traversal
+# - See the source code (completion.{bash,zsh}) for the details.
 _fzf_compgen_path() {
-  ag -g "" "$1"
+  fd --hidden --follow --exclude ".git" . "$1"
 }
+
+#_fzf_compgen_path() {
+#  ag -g "" "$1"
+#}
+
+# Use fd to generate the list for directory completion
+_fzf_compgen_dir() {
+  fd --type d --hidden --follow --exclude ".git" . "$1"
+}
+
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
+# direnv
+if [ -f $(brew --prefix direnv)/bin/direnv ]; then
+  eval "$(direnv hook bash)"
+fi
+
+# Put secret stuff in here
 if [ -f ~/.localrc ]; then
   . ~/.localrc
 fi
