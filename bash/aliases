@@ -24,9 +24,6 @@ alias sudo='sudo '
 # bundler
 alias be='bundle exec '
 
-# npm
-alias npm-exec='PATH=$(npm bin):$PATH'
-
 # IP addresses
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en0"
@@ -98,9 +95,6 @@ function take() {
 # for github
 alias wgets="wget --no-check-certificate "
 
-# for tower
-alias tower="gittower"
-
 # grep
 if which ack-grep 1>/dev/null
 then
@@ -164,22 +158,6 @@ function killnamed () {
     ps ax | grep $1 | cut -d ' ' -f 2 | xargs kill
 }
 
-# Clojure
-alias clj=clj-env-dir
-
-# Ruby
-alias r="rake"
-
-# rails
-alias sc='script/console'
-alias ss='script/server'
-alias sg='script/generate'
-alias a='autotest -rails'
-alias tlog='tail -f log/development.log'
-alias scaffold='script/generate nifty_scaffold'
-alias migrate='rake db:migrate db:test:clone'
-alias rst='touch tmp/restart.txt'
-
 # OSX specific
 if [ `uname` == 'Darwin' ]; then
   # We need gui support for plugins
@@ -199,8 +177,6 @@ if [ `uname` == 'Darwin' ]; then
 
   # no --color option
   alias ls="ls -F -G"
-
-  alias lamp='cd /Applications/XAMPP'
 else
   alias pbcopy='xclip -selection clipboard'
   alias pbpaste='xclip -selection clipboard -o'
@@ -219,11 +195,6 @@ alias diskspace="du -S | sort -n -r |more"
 
 # Show me the size (sorted) of only the folders in this directory
 alias folders="find . -maxdepth 1 -type d -print | xargs du -sk | sort -rn"
-
-# ctags for ruby projects
-tagit () {
-  ctags --extra=+f --exclude doc --exclude docs --exclude public --exclude .git -R `bundle show --paths` .
-}
 
 # Easy archive extraction
 extract () {
@@ -274,8 +245,6 @@ alias blender-sensei="BLENDER_USER_CONFIG=~/.blender/blender-sensei/config BLEND
 alias blender="blender-2.78"
 
 alias hb="hub browse"
-
-alias vundle="vim -c VundleUpdate -c quitall"
 
 # send shake guesture to android emulator
 alias shake="adb shell input keyevent 82"

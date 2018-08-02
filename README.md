@@ -9,21 +9,20 @@
 ## Installation
 
     # Install homebrew package
+    $ brew tap homebrew/cask-fonts
     $ brew bundle
-
-    $ brew tap thoughtbot/formulae
+    $(brew --prefix)/opt/fzf/install
 
     # Setup dotfile aliases
     $ rake install
 
     # Setup Vim
-    $ ./scripts/install_vim_files.sh
+    $ pip3 install neovim
+    $ vim
+    :PlugUpgrade
+    :PlugUpdate
+    :UpdateRemotePlugins # neovim
 
-    # Add cask path for Alfred
-    $ homebrew cask alfred link
-
-    # for js linting
-    $ npm install -g jshint
 
 ## Tmux
 

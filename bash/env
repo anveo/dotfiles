@@ -21,27 +21,6 @@ if [ `uname` == 'Darwin' ]; then
   export EDITOR="mvim -v"
 fi
 
-# homebrew hack for scons
-if [ `uname` == 'Darwin' ]; then
-  export SCONS_LIB_DIR=/usr/local/Cellar/scons/2.0.1/lib/scons
-  export PYTHONPATH=/usr/local/lib/scons/
-fi
-
-# Clojure stuff
-export CLOJURE_EXT=~/.clojure
-
-# CLOJURE_JAVA The command to launch a JVM instance for Clojure
-# default: java
-# example: /usr/local/bin/java6
-#
-# CLOJURE_OPTS Java options for this JVM instance
-# default:
-# example:"-Xms32M -Xmx128M -server"
-#
-# CLOJURE_MAIN The Java class to launch
-# default: clojure.main
-# example: clojure.contrib.repl_ln
-
 # Don’t clear the screen after quitting a manual page
 export MANPAGER="less -X"
 
@@ -64,4 +43,3 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 export RUBY_GC_MALLOC_LIMIT=60000000
 #export RUBY_FREE_MIN=200000
 export RUBY_GC_HEAP_FREE_SLOTS=200000
-
