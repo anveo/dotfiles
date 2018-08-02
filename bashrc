@@ -34,7 +34,6 @@ source ~/.bash/aliases
 source ~/.bash/completions
 source ~/.bash/paths
 source ~/.bash/functions
-source ~/.bash/prompt
 
 if [ -f /usr/local/etc/profile.d/z.sh ]; then
   . /usr/local/etc/profile.d/z.sh
@@ -54,15 +53,12 @@ fi
 
 if [ `uname` == 'Darwin' ]; then
   if [ -f $(brew --prefix nvm)/nvm.sh ]; then
-    export NVM_DIR=~/.nvm
+    export NVM_DIR=$HOME/.nvm
     source $(brew --prefix nvm)/nvm.sh
   fi
-else
-  if [ -d $HOME/.nvm ]; then
-    export NVM_DIR="$HOME/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
-  fi
 fi
+
+source ~/.bash/prompt
 
 export FZF_COMPLETION_TRIGGER='~~'
 export FZF_CTRL_R_OPTS='--sort --exact'
@@ -81,4 +77,3 @@ _fzf_compgen_path() {
 if [ -f ~/.localrc ]; then
   . ~/.localrc
 fi
-

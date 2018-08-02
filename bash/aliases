@@ -160,8 +160,8 @@ function gbt() {
 
 # Processes
 alias k9="killall -9"
-function killnamed () { 
-    ps ax | grep $1 | cut -d ' ' -f 2 | xargs kill 
+function killnamed () {
+    ps ax | grep $1 | cut -d ' ' -f 2 | xargs kill
 }
 
 # Clojure
@@ -287,6 +287,8 @@ alias tflip="tmux new -s '🖕 🙃 🖕'"
 alias ag='ag --hidden '
 
 # docker
+
+alias dc='docker-compose'
 
 denv () {
   eval "$(docker-machine env $1)"

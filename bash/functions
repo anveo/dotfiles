@@ -5,17 +5,6 @@
 #function grep { (tty -s && exec <&-; $(which grep) $@); }
 
 
-# cd gem
-#
-#     henrik@Nyx ~$ cdgem thor
-#     henrik@Nyx ~/.rvm/gems/ree-1.8.7-2010.02/gems/thor-0.14.6$
-
-#
-function cdgem {
-  cd `rvm gemdir`/gems; cd `ls|grep $1|sort|tail -1`
-}
-
-
 # All the dig info
 function digga() {
         dig +nocmd "$1" any +multiline +noall +answer
@@ -39,13 +28,6 @@ function codepoint() {
         echo # newline
 }
 
-function marked() {
-  if [ $1 ]
-  then
-    open -a marked.app $1
-  else
-    open -a marked.app
-  fi
 }
 
 hitch() {

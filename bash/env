@@ -48,7 +48,7 @@ export MANPAGER="less -X"
 # If output gets paged, repaint the screen.
 # This solved color codes from being displayed
 # in the rails console
-export LESS="-R"
+# export LESS="-R"
 
 # Colorful manpages
 export LESS_TERMCAP_mb=$'\E[01;31m'

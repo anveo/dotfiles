@@ -206,9 +206,9 @@ let g:deoplete#enable_at_startup = 1
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 
 " Run Neomake when I save any buffer
-augroup localneomake
-  autocmd! BufWritePost * Neomake
-augroup END
+" augroup localneomake
+  " autocmd! BufWritePost * Neomake
+" augroup END
 " Don't tell me to use smartquotes in markdown ok?
 let g:neomake_markdown_enabled_makers = []
 

@@ -4,6 +4,7 @@
 [alias]
         #l = log --pretty=oneline --graph --abbrev-commit
         br = branch
+        bs = branch --sort=committerdate
         #ci = checkin
         co = checkout
         diffi = diff --ignore-all-space
@@ -25,6 +26,7 @@
         rh = reset --hard
         rh1 = reset HEAD^ --hard
         rh2 = reset HEAD^^ --hard
+        recent = !git for-each-ref --sort=-committerdate refs/heads --format='%(HEAD)%(color:yellow)%(refname:short)|%(color:bold green)%(committerdate:relative)|%(color:blue)%(subject)|%(color:magenta)%(authorname)%(color:reset)'|column -ts'|'
         st = status
         type = cat-file -t
         unstage = reset HEAD --
@@ -53,7 +55,7 @@
 [pager]
 	color = true
 	diff = diff-so-fancy | less --tabs=4 -RFX
-	show = diff-so-fancy | less --tabs=4 -RFX
+        #show = diff-so-fancy | less --tabs=4 -RFX
 
 [merge]
 	stat = true

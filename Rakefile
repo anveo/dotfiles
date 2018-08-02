@@ -59,14 +59,10 @@ task :install do
   # link scripts
   system %Q{ln -nfs "$PWD/scripts" "$HOME/scripts"}
 
-  # link atom configs
-  # system %Q{mkdir -p "$HOME/.atom"}
-  # system %Q{ln -fs "$PWD/atom/config.cson" "$HOME/.atom/config.cson"}
-  # system %Q{ln -fs "$PWD/atom/init.coffee" "$HOME/.atom/init.coffee"}
-  # system %Q{ln -fs "$PWD/atom/keymap.cson" "$HOME/.atom/keymap.cson"}
-  # system %Q{ln -fs "$PWD/atom/styles.less" "$HOME/.atom/styles.less"}
-
   # link vimfiles
   system %Q{ln -nfs "$PWD/vimfiles" "$HOME/.vim"}
   system %Q{ln -fs "$PWD/vimfiles/.vimrc" "$HOME/.vimrc"}
+  # neovim
+  system %Q{mkdir -p "$HOME/.config}
+  system %Q{ln -fs "$PWD/.config/nvim" "$HOME/.vim"}
 end

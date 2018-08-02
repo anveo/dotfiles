@@ -19,9 +19,6 @@ fi
 
 export GRADLE_OPTS="$GRADLE_OPTS -Dorg.gradle.daemon=true"
 
-export NVM_DIR=~/.nvm
-source $(brew --prefix nvm)/nvm.sh
-
 # npm bin
 export PATH="./node_modules/.bin:$PATH"
 
@@ -29,7 +26,6 @@ export PATH="./node_modules/.bin:$PATH"
 # https://github.com/joelthelion/autojump
 [[ -s `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
 
-export PATH=$PATH:/usr/local/opt/go/libexec/bin
+export PATH=/usr/local/opt/go/libexec/bin:$PATH
 export GOPATH=$HOME/go
-export PATH=$PATH:$GOPATH/bin
-
+export PATH=$GOPATH/bin:$PATH

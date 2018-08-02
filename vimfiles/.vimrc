@@ -40,9 +40,9 @@ Plug 'jlanzarotta/bufexplorer'
 Plug 'junegunn/vim-easy-align'
 Plug 'kana/vim-textobj-entire'
 Plug 'kana/vim-textobj-user'
-Plug 'kchmck/vim-coffee-script'
+" Plug 'kchmck/vim-coffee-script'
 Plug 'kien/ctrlp.vim'
-Plug 'leafgarland/typescript-vim'
+" Plug 'leafgarland/typescript-vim'
 Plug 'majutsushi/tagbar'
 Plug 'markcornick/vim-terraform'
 Plug 'mattn/emmet-vim'
@@ -94,11 +94,11 @@ Plug 'vim-scripts/taglist.vim'
 " neovim specific
 "if has('nvim')
 Plug 'slashmili/alchemist.vim'
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  Plug 'neomake/neomake'
-  Plug 'c-brenn/phoenix.vim'
-  Plug 'tpope/vim-projectionist' " required for some navigation features
-  Plug 'powerman/vim-plugin-AnsiEsc'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'neomake/neomake'
+Plug 'c-brenn/phoenix.vim'
+Plug 'tpope/vim-projectionist' " required for some navigation features
+Plug 'powerman/vim-plugin-AnsiEsc'
 "endif
 
 " Add plugins to &runtimepath
