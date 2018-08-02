@@ -11,7 +11,7 @@
     # Install homebrew package
     $ brew tap homebrew/cask-fonts
     $ brew bundle
-    $(brew --prefix)/opt/fzf/install
+    $ $(brew --prefix)/opt/fzf/install
 
     # Setup dotfile aliases
     $ rake install
@@ -28,6 +28,10 @@
 
     brew install reattach-to-user-namespace
     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
+### Generate Brewfile
+
+    $ brew bundle dump
 
 ### iTerm Themes
 

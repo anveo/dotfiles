@@ -1,48 +1,66 @@
-install ack
-install autojump
-install bash
-install bash-completion
-install ctags
-install cowsay
-install diff-so-fancy
-install figlet
-install gawk
-install git
-install grc
-install hub
-install imagemagick
-install macvim --override-system-vim
-install markdown
-install ncdu
-install nmap
-install node
-install rbenv
-install rbenv-binstubs
-install rbenv-bundler
-install rbenv-gem-rehash
-install rbenv-readline
-install ruby-build
-install reattach-to-user-namespace
-install ssh-copy-id
-install the_silver_searcher
-install tmux
-install tree
-install wget
-install zsh
-
-# quicklook plugins
-#cask install qlcolorcode
-#cask install qlstephen
-#cask install qlmarkdown
-#cask install quicklook-json
-#cask install qlprettypatch
-#cask install quicklook-csv
-#cask install betterzipql
-#cask install webp-quicklook
-
-#cask install adium
-#cask install gitx-rowanj
-#cask install vagrant
-#cask install virtualbox
-
-update
+tap "goreleaser/tap"
+tap "homebrew/bundle"
+tap "homebrew/cask"
+tap "homebrew/cask-fonts"
+tap "homebrew/cask-versions"
+tap "homebrew/core"
+tap "homebrew/services"
+brew "ansible"
+brew "awscli"
+brew "bash"
+brew "bash-completion"
+brew "cfssl"
+brew "coreutils"
+brew "go"
+brew "dep"
+brew "diff-so-fancy"
+brew "direnv"
+brew "dnsmasq", restart_service: true
+brew "fd"
+brew "fzf"
+brew "git"
+brew "graphviz"
+brew "grc"
+brew "htop"
+brew "httpie"
+brew "hub"
+brew "imagemagick"
+brew "jq"
+brew "kubernetes-cli"
+brew "macvim", args: ["with-override-system-vim"]
+brew "ncdu"
+brew "neovim"
+brew "nmap"
+brew "nvm"
+brew "pgcli"
+brew "qcachegrind", args: ["with-graphviz"]
+brew "qt@5.5"
+brew "rbenv"
+brew "reattach-to-user-namespace"
+brew "terraform"
+brew "the_silver_searcher"
+brew "tig"
+brew "tmux"
+brew "tree"
+brew "watchman"
+brew "wget"
+brew "yarn"
+brew "goreleaser/tap/goreleaser"
+cask "atom"
+cask "blender"
+cask "calibre"
+cask "dash"
+cask "firefox"
+cask "firefoxdeveloperedition"
+cask "font-hack"
+cask "font-source-code-pro"
+cask "google-cloud-sdk"
+cask "keepingyouawake"
+cask "ngrok"
+cask "sketch"
+cask "transmission"
+cask "transmit"
+cask "vagrant"
+cask "viscosity"
+cask "visual-studio-code"
+cask "wireshark"
