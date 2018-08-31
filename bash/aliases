@@ -1,6 +1,8 @@
 # Utility
 alias reload='source ~/dotfiles/bash/aliases'
 
+alias cat='bat'
+alias help='tldr'
 # Easier navigation
 alias ..='cd ..'
 alias ...='cd ..; cd ..'
