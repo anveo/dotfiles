@@ -42,20 +42,9 @@ else
   . "$HOME/dotfiles/bash/scripts/z.sh"
 fi
 
-if [ -d /usr/local/var/rbenv ]; then
-  #export RBENV_ROOT=/usr/local/var/rbenv
-  if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
-fi
-if [ -d $HOME/.rbenv ]; then
-  #export RBENV_ROOT=$HOME/.rbenv/bin
-  if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
-fi
-
-if [ `uname` == 'Darwin' ]; then
-  if [ -f $(brew --prefix nvm)/nvm.sh ]; then
-    export NVM_DIR=$HOME/.nvm
-    source $(brew --prefix nvm)/nvm.sh
-  fi
+if [ -d /usr/local/opt/asdf ]; then
+  export NODEJS_CHECK_SIGNATURES=no
+  source /usr/local/opt/asdf/asdf.sh
 fi
 
 source ~/.bash/prompt

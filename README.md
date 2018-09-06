@@ -23,6 +23,9 @@
     :PlugUpdate
     :UpdateRemotePlugins # neovim
 
+    $ asdf plugin-add ruby
+    $ asdf plugin-add nodejs
+    $ bash /usr/local/Cellar/asdf/0.5.1/plugins/nodejs/bin/import-release-team-keyring
 
 ## Tmux
 

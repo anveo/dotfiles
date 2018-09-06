@@ -101,16 +101,17 @@ git_prompt_info () {
   fi
 }
 
-__rbenv_ps1 ()
+__ruby_ps1 ()
 {
-  rbenv_ruby_version=`rbenv version | sed -e 's/ .*//'`
-  printf $rbenv_ruby_version
+  ruby_version=`ruby --version | cut -f2 -d ' '`
+  printf $ruby_version
 }
 
 __node_ps1 ()
 {
-  node_version=`node --version | sed -e 's/ .*//'`
-  printf $node_version
+  local br
+  br=$(node -v)
+  test -n "$br" && printf %s "$br" || :
 }
 
 __ps1_notice () {
@@ -165,14 +166,14 @@ bash_prompt() {
   # reset
   local RESET="\[\033[0;37m\]"
 
-  if [ "$PWD" != "$PREV_PWD" ]; then
-    PREV_PWD="$PWD";
-    if [ -e ".nvmrc" ]; then
-      nvm use;
-    fi
-  fi
+  # if [ "$PWD" != "$PREV_PWD" ]; then
+    # PREV_PWD="$PWD";
+    # if [ -e ".nvmrc" ]; then
+      # nvm use;
+    # fi
+  # fi
 
-  PS1="\n\t$RESET $EMAGENTA\w \[$EBLACK\]$(__rbenv_ps1) $(__node_ps1) $(__ps1_git)$BG_R$BW$(__ps1_notice)$RESET \n∴ "
+  PS1="\n\t$RESET $EMAGENTA\w \[$EBLACK\]$(__ruby_ps1) $(__node_ps1) $(__ps1_git)$BG_R$BW$(__ps1_notice)$RESET \n∴ "
 }
 
 # iTerm2 title/tab stuff
