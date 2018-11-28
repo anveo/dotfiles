@@ -36,6 +36,7 @@ brew "nmap"
 brew "parallel"
 brew "pgcli"
 brew "prettyping"
+brew "pwgen"
 brew "qcachegrind", args: ["with-graphviz"]
 brew "qt@5.5"
 brew "reattach-to-user-namespace"

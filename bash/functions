@@ -61,3 +61,11 @@ function proxy-off(){
   unset HTTP_PROXY HTTPS_PROXY http_proxy https_proxy ftp_proxy rsync_proxy ALL_PROXY NO_PROXY no_proxy
   proxy-show
 }
+
+function pw(){
+  pwgen --capitalize --numerals 16 4
+}
+
+function pw2(){
+  pwgen --capitalize --numerals --symbols 16 8
+}
