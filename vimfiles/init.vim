@@ -1,1 +1,1 @@
-/Users/bracer/.vimrc
+.vimrc
