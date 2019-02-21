@@ -17,7 +17,7 @@
     $ rake install
 
     # Setup Vim
-    $ pip3 install neovim
+    $ pip3 install --user --upgrade pynvim
     $ vim
     :PlugUpgrade
     :PlugUpdate
