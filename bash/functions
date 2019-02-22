@@ -3,6 +3,9 @@
 
 # this current breaks osx for some reason
 #function grep { (tty -s && exec <&-; $(which grep) $@); }
+function serv() {
+        python -m SimpleHTTPServer 8000
+}
 
 
 # All the dig info

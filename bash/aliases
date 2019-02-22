@@ -243,6 +243,9 @@ alias hb="hub browse"
 # send shake guesture to android emulator
 alias shake="adb shell input keyevent 82"
 
+# https://stackoverflow.com/questions/42554337/cannot-launch-avd-in-emulatorqt-library-not-found/42581852#42581852
+alias emu="$ANDROID_HOME/tools/emulator"
+
 # ¯\_(ツ)_/¯
 alias tflip="tmux new -s '🖕 🙃 🖕'"
 
@@ -265,3 +268,5 @@ dunset () {
   unset PS1_NOTICE
 }
 # alias dunset='unset DOCKER_TLS_VERIFY; unset DOCKER_CERT_PATH; unset DOCKER_MACHINE_NAME; unset DOCKER_HOST'
+
+alias tmux='direnv exec / tmux'

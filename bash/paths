@@ -29,3 +29,5 @@ export PATH="./node_modules/.bin:$PATH"
 export PATH=/usr/local/opt/go/libexec/bin:$PATH
 export GOPATH=$HOME/go
 export PATH=$GOPATH/bin:$PATH
+
+export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
