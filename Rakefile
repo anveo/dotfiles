@@ -1,6 +1,6 @@
 require 'rake'
 
-IGNORE_FILES = %w[Gemfile Rakefile README LICENSE extras scripts vimfiles default.gems]
+IGNORE_FILES = %w[Brewfile Gemfile Rakefile README.md README.linux.md LICENSE extras scripts vimfiles default.gems]
 
 def error(text) STDERR.puts "!  #{text}" end
 def info(text, prefix="*") STDOUT.puts "#{prefix}  #{text}" end
@@ -31,38 +31,20 @@ task :install do
       end
     end
 
-    contents = File.read(source) rescue ""
-
-    if contents.include?('<.replace ')
-      info "#{source} has <.replace> placeholders."
-
-      contents.gsub!(/<\.replace (.+?)>/) {
-        begin
-          File.read(File.expand_path("~/.#{$1}"))
-        rescue => e
-          error "Could not replace `#{$&}`: #{e.message}"
-          ""
-        end
-      }
-
-      File.open(destination, 'w') {|f| f.write contents }
-      info_cmd "wrote file #{destination}"
-    else
-      FileUtils.ln_s(source, destination)
-      info_cmd "ln -s #{source} #{destination}"
-    end
+    FileUtils.ln_s(source, destination)
+    info_cmd "ln -s #{source} #{destination}"
   end
 
   # link blender configs
-  system %Q{ln -fs "$PWD/extras/blender" "$HOME/.blender"}
+  #system %Q{ln -fs "$PWD/extras/blender" "$HOME/.blender"}
 
   # link scripts
-  system %Q{ln -nfs "$PWD/scripts" "$HOME/scripts"}
+  info_cmd 'ln -nfs "$PWD/scripts" "$HOME/scripts"'
 
   # link vimfiles
-  system %Q{ln -nfs "$PWD/vimfiles" "$HOME/.vim"}
-  system %Q{ln -fs "$PWD/vimfiles/.vimrc" "$HOME/.vimrc"}
-  # neovim
-  system %Q{mkdir -p "$HOME/.config}
-  system %Q{ln -fs "$PWD/.config/nvim" "$HOME/.vim"}
+  info_cmd 'ln -nfs "$PWD/vimfiles" "$HOME/.vim"'
+  info_cmd 'ln -fs "$PWD/vimfiles/.vimrc" "$HOME/.vimrc"'
+  ## neovim
+  info_cmd 'mkdir -p "$HOME/.config'
+  info_cmd 'ln -fs "$HOME/.config/nvim" "$HOME/.vim"'
 end
