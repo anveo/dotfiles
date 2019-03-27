@@ -72,3 +72,7 @@ function pw(){
 function pw2(){
   pwgen --capitalize --numerals --symbols 16 8
 }
+
+function w(){
+  curl wttr.in
+}
