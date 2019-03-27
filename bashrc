@@ -50,7 +50,7 @@ fi
 source ~/.bash/prompt
 
 # Use ~~ as the trigger sequence instead of the default **
-export FZF_COMPLETION_TRIGGER='~~'
+export FZF_COMPLETION_TRIGGER='jj'
 export FZF_CTRL_R_OPTS='--sort --exact'
 
 # Setting ag as the default source for fzf
