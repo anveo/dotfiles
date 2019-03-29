@@ -3,6 +3,10 @@ if [ `uname` == 'Darwin' ]; then
   export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 fi
 
+if [ -d "/usr/local/opt/postgresql@10/bin" ]; then
+  export PATH="/usr/local/opt/postgresql@10/bin:$PATH"
+fi
+
 # $HOME/local paths
 export PATH="${HOME}/bin:${HOME}/local/bin:${PATH}"
 export MANPATH="${HOME}/local/share/man:${MANPATH}"

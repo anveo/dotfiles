@@ -49,7 +49,7 @@ fi
 
 source ~/.bash/prompt
 
-# Use ~~ as the trigger sequence instead of the default **
+# Use jj as the trigger sequence instead of the default **
 export FZF_COMPLETION_TRIGGER='jj'
 export FZF_CTRL_R_OPTS='--sort --exact'
 

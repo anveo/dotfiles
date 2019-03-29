@@ -92,14 +92,14 @@ Plug 'vim-scripts/taglist.vim'
 "Plugin 'wincent/ferret'
 
 " neovim specific
-"if has('nvim')
+if has('nvim')
 Plug 'slashmili/alchemist.vim'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'neomake/neomake'
-Plug 'c-brenn/phoenix.vim'
+"Plug 'c-brenn/phoenix.vim'
 Plug 'tpope/vim-projectionist' " required for some navigation features
 Plug 'powerman/vim-plugin-AnsiEsc'
-"endif
+endif
 
 " Add plugins to &runtimepath
 call plug#end()

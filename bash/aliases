@@ -134,6 +134,7 @@ alias sl="ls"
 
 # git
 alias gl='git pull'
+alias gpr='git pull --rebase'
 alias gp='git push'
 alias gd='git diff'
 alias gc='git commit'
