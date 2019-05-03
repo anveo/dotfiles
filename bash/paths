@@ -35,3 +35,5 @@ export GOPATH=$HOME/go
 export PATH=$GOPATH/bin:$PATH
 
 export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+export PIPENV_VENV_IN_PROJECT=1
+

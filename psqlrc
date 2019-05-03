@@ -24,6 +24,11 @@
 \pset linestyle unicode
 \pset border 2
 
+-- Switch pagers with :x and :xx commands
+\set x '\\setenv PAGER less'
+\set xx '\\setenv PAGER \'pspg -bX --no-mouse\''
+:xx
+
 \timing
 
 -- \pset format wrapped

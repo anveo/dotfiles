@@ -114,6 +114,14 @@ __node_ps1 ()
   test -n "$br" && printf %s "$br" || :
 }
 
+__pipenv_ps1 ()
+{
+  if [ -n "$PIP_PYTHON_PATH" ]; then
+    python_version=`python --version | cut -f2 -d ' '`
+    printf "🐍 $python_version"
+  fi
+}
+
 __ps1_notice () {
   printf '%s' "${PS1_NOTICE}"
 }
@@ -173,7 +181,7 @@ bash_prompt() {
     # fi
   # fi
 
-  PS1="\n\t$RESET $EMAGENTA\w \[$EBLACK\]$(__ruby_ps1) $(__node_ps1) $(__ps1_git)$BG_R$BW$(__ps1_notice)$RESET \n∴ "
+  PS1="\n\t$RESET $EMAGENTA\w \[$EBLACK\]$(__ruby_ps1) $(__node_ps1) $(__pipenv_ps1) $(__ps1_git)$BG_R$BW$(__ps1_notice)$RESET \n∴ "
 }
 
 # iTerm2 title/tab stuff
