@@ -108,25 +108,6 @@ map <Leader>ts :let file_to_run = "<c-r>%"<cr>
 " above.
 " map <Leader>tt :exe '!ruby -I"test" -I"spec"' file_to_run<cr>
 
-" Edit routes
-command! Rroutes :e config/routes.rb
-command! RTroutes :tabe config/routes.rb
-
-" YankRing
-map <Leader>yy :YRShow<cr>
-
-" TagList
-nnoremap <silent> <F8> :TlistToggle<CR>
-let Tlist_Exit_OnlyWindow = 1     " exit if taglist is last window open
-let Tlist_Show_One_File = 1       " Only show tags for current buffer
-let Tlist_Enable_Fold_Column = 0  " no fold column (only showing one file)
-let Tlist_Use_Right_Window = 1
-let tlist_sql_settings = 'sql;P:package;t:table'
-let tlist_ant_settings = 'ant;p:Project;r:Property;t:Target'
-
-" Tagbar
-nmap <F9> :TagbarToggle<CR>
-
 " Processing
 let g:use_processing_java=1
 
@@ -144,9 +125,6 @@ nmap <leader>a <Plug>(EasyAlign)
 "nnoremap <silent> <C-k> :TmuxNavigateUp<cr>
 "nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
 "nnoremap <silent> <C-\> :TmuxNavigatePrevious<cr>
-
-" vim-mustache-handlebars
-let g:mustache_abbreviations = 1
 
 " easymotion
 let g:EasyMotion_do_mapping = 0 " Disable default mappings"
@@ -193,7 +171,7 @@ let g:airline_powerline_fonts = 1
 " Deoplete
 let g:deoplete#enable_at_startup = 1
 " use tab for completion
-inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+" inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 
 " Run Neomake when I save any buffer
 " augroup localneomake
@@ -202,7 +180,6 @@ inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 " Don't tell me to use smartquotes in markdown ok?
 let g:neomake_markdown_enabled_makers = []
 
-let g:neomake_elixir_enabled_makers = ['mix', 'credo']
 " Run Neomake when I save any buffer
 augroup neomake
   autocmd! BufWritePost * Neomake
@@ -210,55 +187,27 @@ augroup END
 " Don't tell me to use smartquotes in markdown ok?
 let g:neomake_markdown_enabled_makers = []
 
-" Configure a nice credo setup, courtesy https://github.com/neomake/neomake/pull/300
-let g:neomake_elixir_enabled_makers = ['mycredo']
-function! NeomakeCredoErrorType(entry)
-  if a:entry.type ==# 'F'      " Refactoring opportunities
-    let l:type = 'W'
-  elseif a:entry.type ==# 'D'  " Software design suggestions
-    let l:type = 'I'
-  elseif a:entry.type ==# 'W'  " Warnings
-    let l:type = 'W'
-  elseif a:entry.type ==# 'R'  " Readability suggestions
-    let l:type = 'I'
-  elseif a:entry.type ==# 'C'  " Convention violation
-    let l:type = 'W'
-  else
-    let l:type = 'M'           " Everything else is a message
-  endif
-  let a:entry.type = l:type
-endfunction
-
-let g:neomake_elixir_mycredo_maker = {
-      \ 'exe': 'mix',
-      \ 'args': ['credo', 'list', '%:p', '--format=oneline'],
-      \ 'errorformat': '[%t] %. %f:%l:%c %m,[%t] %. %f:%l %m',
-      \ 'postprocess': function('NeomakeCredoErrorType')
-      \ }
-
 " Snippets
 " Note: It must be "imap" and "smap".  It uses <Plug> mappings.
 imap <c-k> <Plug>(neosnippet_expand_or_jump)
 smap <c-k> <Plug>(neosnippet_expand_or_jump)
 xmap <c-k> <Plug>(neosnippet_expand_target)
+
+imap <c-o> <Plug>(neosnippet_expand_or_jump)
+smap <c-o> <Plug>(neosnippet_expand_or_jump)
+xmap <c-o> <Plug>(neosnippet_expand_target)
 " vmap <c-k> <Plug>(neosnippet_expand_target)
 
 " SuperTab like snippets behavior.
-" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
-imap <expr><TAB>
-\ pumvisible() ? "\<C-n>" :
-\ neosnippet#expandable_or_jumpable() ?
-\    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+      \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+      \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
 " disable all snippets
 let g:neosnippet#disable_runtime_snippets = {
 \   '_' : 1,
 \ }
-
-" Enable snipMate compatibility feature.
-" let g:neosnippet#enable_snipmate_compatibility = 1
 
 " Tell Neosnippet about the other snippets
 let g:neosnippet#snippets_directory='$HOME/.vim/_snippets'
@@ -267,3 +216,51 @@ let g:neosnippet#snippets_directory='$HOME/.vim/_snippets'
 if has('conceal')
   set conceallevel=2 concealcursor=niv
 endif
+
+" JSON
+let g:vim_json_syntax_conceal = 0
+
+" FZF
+" - down / up / left / right
+let g:fzf_layout = { 'down': '~40%' }
+
+" In Neovim, you can set up fzf window using a Vim command
+" let g:fzf_layout = { 'window': 'enew' }
+" let g:fzf_layout = { 'window': '-tabnew' }
+" let g:fzf_layout = { 'window': '10split' }
+
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
+" Enable per-command history.
+" CTRL-N and CTRL-P will be automatically bound to next-history and
+" previous-history instead of down and up. If you don't like the change,
+" explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
+let g:fzf_history_dir = '~/.local/share/fzf-history'
+
+" [Buffers] Jump to the existing window if possible
+let g:fzf_buffers_jump = 1
+
+" Mapping selecting mappings
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
+
+" Insert mode completion
+imap <c-x><c-k> <plug>(fzf-complete-word)
+imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+imap <c-x><c-l> <plug>(fzf-complete-line)
+

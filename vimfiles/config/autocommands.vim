@@ -2,7 +2,7 @@
 function! s:setupWrapping()
   set wrap
   set linebreak
-  set textwidth=72
+  set textwidth=80
   set nolist
 endfunction
 
@@ -33,30 +33,6 @@ if has("autocmd")
 
   " For Io
   au! BufRead,BufNewFile *.io setfiletype io
-
-  " jQuery
-  au BufRead,BufNewFile jquery.*.js set ft=javascript syntax=jquery
-
-  " For JSON
-  autocmd BufNewFile,BufRead *.json set ft=javascript
-
-  " For JS ES6
-  autocmd BufNewFile,BufRead *.es6 set ft=javascript
-
-  " <Leader>r or <D-r> to render Markdown in browser.
-  au FileType markdown map <buffer> <Leader>r :Mm<CR>
-  au FileType markdown map <buffer> <D-r> :Mm<CR>
-
-  " <Leader>r or <D-r> to run CoffeeScript.
-  au FileType coffee map <buffer> <Leader>r :CoffeeRun<CR>
-  au FileType coffee map <buffer> <D-r> :CoffeeRun<CR>
-  " <Leader>R or <D-R> to see CoffeeScript compiled.
-  au FileType coffee map <buffer> <Leader>R :CoffeeCompile<CR>
-  au FileType coffee map <buffer> <D-R> :CoffeeCompile<CR>
-
-  au FileType coffee map <buffer> <Leader>j :CoffeeCompile<cr>
-  au FileType coffee map <buffer> <Leader>h :CoffeeMake<cr>
-
 
   " Unbreak 'crontab -e' with Vim: http://drawohara.com/post/6344279/crontab-temp-file-must-be-edited-in-place
   au FileType crontab set nobackup nowritebackup

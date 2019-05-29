@@ -31,4 +31,12 @@ function! g:ToggleNuMode()
     set rnu
   endif
 endfunc
-nnoremap <C-G> :call g:ToggleNuMode()<cr>
+
+function! NumberToggle()
+  if(&relativenumber == 1)
+    set norelativenumber
+  else
+    set relativenumber
+  endif
+endfunc
+nnoremap <C-G> :call NumberToggle()<cr>

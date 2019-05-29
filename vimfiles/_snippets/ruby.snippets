@@ -1,15 +1,4 @@
-snippet #!
-abbr    #!/usr/bin/env ruby
-alias   shebang
-options head
-  #!/usr/bin/env ruby
-  ${0}
+snippet log
+abbr    logger.method
+  logger.${1:info} ${0:#:message}
 
-snippet pry
-abbr    binding.pry
-  require 'pry'
-  binding.pry${0}
-
-snippet bp
-abbr    binding.pry
-  binding.pry${0}
