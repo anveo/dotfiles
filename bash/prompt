@@ -7,6 +7,14 @@
 
 # 17:39:15 henrik@Nyx ~/project[ree-1.8.7@project master*]$ 
 
+__ps1_jobs_count()
+{
+  set -- $(jobs -rp)
+  set $# $(jobs -sp)
+  set $1 $(($#-1))
+
+  if [ $1 -ne 0 ] || [ $2 -ne 0 ]; then echo "jobs:${1}r/${2}s "; fi
+}
 
 __ps1_git_status()
 {
@@ -111,14 +119,14 @@ __node_ps1 ()
 {
   local br
   br=$(node -v)
-  test -n "$br" && printf %s "$br" || :
+  test -n "$br" && printf %s " $br " || :
 }
 
 __pipenv_ps1 ()
 {
   if [ -n "$PIP_PYTHON_PATH" ]; then
     python_version=`python --version | cut -f2 -d ' '`
-    printf "🐍 $python_version"
+    printf " 🐍 $python_version "
   fi
 }
 
@@ -181,7 +189,7 @@ bash_prompt() {
     # fi
   # fi
 
-  PS1="\n\t$RESET $EMAGENTA\w \[$EBLACK\]$(__ruby_ps1) $(__node_ps1) $(__pipenv_ps1) $(__ps1_git)$BG_R$BW$(__ps1_notice)$RESET \n∴ "
+  PS1="\n\t$RESET $EMAGENTA\w \[$EBLACK\]$(__ruby_ps1)$(__node_ps1)$(__pipenv_ps1)$(__ps1_git)\[$EBLACK\]$(__ps1_jobs_count)$BG_R$BW$(__ps1_notice)$RESET \n∴ "
 }
 
 # iTerm2 title/tab stuff
