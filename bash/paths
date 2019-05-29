@@ -37,3 +37,6 @@ export PATH=$GOPATH/bin:$PATH
 export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
 export PIPENV_VENV_IN_PROJECT=1
 
+export NVM_DIR="$HOME/.nvm"
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"  # This loads nvm bash_completion
