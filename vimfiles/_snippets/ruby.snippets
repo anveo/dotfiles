@@ -1,20 +1,15 @@
-snippet log
-	logger.${1:debug} ${2}
-snippet fl
-	flash[:${1:success}] = "${2}"
-snippet pa
-	params[:${1:id}]${2}
-snippet bp
-	binding.pry
+snippet #!
+abbr    #!/usr/bin/env ruby
+alias   shebang
+options head
+  #!/usr/bin/env ruby
+  ${0}
+
 snippet pry
-	binding.pry
-snippet 1h
-	${1:node}[:${2:key1}]${3}
-snippet 2h
-	${1:node}[:${2:key1}][:${3:key2}]${4}
-snippet 3h
-	${1:node}[:${2:key1}][:${3:key2}][:${4:key3}]${5}
-snippet 4h
-	${1:node}[:${2:key1}][:${3:key2}][:${4:key3}][:${5:key4}]${6}
-snippet end
-	<% end %>
+abbr    binding.pry
+  require 'pry'
+  binding.pry${0}
+
+snippet bp
+abbr    binding.pry
+  binding.pry${0}

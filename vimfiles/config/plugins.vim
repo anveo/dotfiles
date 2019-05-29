@@ -30,16 +30,6 @@ elseif executable("ag")
 else
 endif
 
-" Snippets
-let g:snippetsEmu_key = "<S-Tab>"
-let g:snippets_dir = '$HOME/.vim/_snippets/'
-map <Leader>snip :call ReloadAllSnippets()<CR>
-map <Leader>snipc :e ~/.vim/_snippets/coffee.snippets<CR>
-map <Leader>snipcc :e ~/.vim/_snippets/cpp.snippets<CR>
-map <Leader>snipr :e ~/.vim/_snippets/ruby.snippets<CR>
-map <Leader>snipj :e ~/.vim/_snippets/javascript.snippets<CR>
-map <Leader>snipa :e ~/.vim/_snippets/_.snippets<CR>
-
 " CSApprox
 let g:CSApprox_verbose_level = 0
 
@@ -246,3 +236,34 @@ let g:neomake_elixir_mycredo_maker = {
       \ 'postprocess': function('NeomakeCredoErrorType')
       \ }
 
+" Snippets
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+imap <c-k> <Plug>(neosnippet_expand_or_jump)
+smap <c-k> <Plug>(neosnippet_expand_or_jump)
+xmap <c-k> <Plug>(neosnippet_expand_target)
+" vmap <c-k> <Plug>(neosnippet_expand_target)
+
+" SuperTab like snippets behavior.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+imap <expr><TAB>
+\ pumvisible() ? "\<C-n>" :
+\ neosnippet#expandable_or_jumpable() ?
+\    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+" disable all snippets
+let g:neosnippet#disable_runtime_snippets = {
+\   '_' : 1,
+\ }
+
+" Enable snipMate compatibility feature.
+" let g:neosnippet#enable_snipmate_compatibility = 1
+
+" Tell Neosnippet about the other snippets
+let g:neosnippet#snippets_directory='$HOME/.vim/_snippets'
+
+" For conceal markers.
+if has('conceal')
+  set conceallevel=2 concealcursor=niv
+endif
