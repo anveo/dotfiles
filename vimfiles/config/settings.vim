@@ -90,5 +90,8 @@ else
   let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
 
+" enable incrementing/decrementing alpha as well
+set nrformats=bin,hex,alpha
+
 " load .bashrc
 "set shellcmdflag=-ic
