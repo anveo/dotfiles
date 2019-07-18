@@ -42,6 +42,7 @@ brew "pwgen"
 brew "qcachegrind", args: ["with-graphviz"]
 brew "qt@5.5"
 brew "reattach-to-user-namespace"
+brew "ripgrep"
 brew "terraform"
 brew "the_silver_searcher"
 brew "tig"
