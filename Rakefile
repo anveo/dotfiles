@@ -37,6 +37,8 @@ task :install do
 
   # link blender configs
   #system %Q{ln -fs "$PWD/extras/blender" "$HOME/.blender"}
+  #
+  info_cmd 'mkdir -p "$HOME/tmp'
 
   # link scripts
   info_cmd 'ln -nfs "$PWD/scripts" "$HOME/scripts"'
