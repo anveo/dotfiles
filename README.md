@@ -23,9 +23,9 @@
     :PlugUpdate
     :UpdateRemotePlugins # neovim
 
-    $ asdf plugin-add ruby
-    $ asdf plugin-add nodejs
-    $ bash /usr/local/Cellar/asdf/0.5.1/plugins/nodejs/bin/import-release-team-keyring
+    $ brew install openssl libyaml libffi
+    $ brew install rbenv ruby-build
+    $ brew install nvm
 
 ## Tmux
 
