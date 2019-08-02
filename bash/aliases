@@ -263,5 +263,5 @@ alias vimlite='vim -u NONE'
 
 alias rg='rg --hidden'
 alias rga='rg -uu --hidden' # ignore .gitignore
-alias rgaa="rg -uu --glob '!{.git,node_modules,dist,tmp}' --hidden"
+alias rgaa="rg -uu --glob '!{.git,node_modules,build,dist,tmp}' --hidden"
 
