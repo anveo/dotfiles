@@ -13,6 +13,7 @@ filetype off
 call plug#begin('~/.vim/plugged')
 
 " Make sure you use single quotes
+Plug 'ryanoasis/vim-devicons'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'Raimondi/delimitMate'
 Plug 'airblade/vim-gitgutter'
