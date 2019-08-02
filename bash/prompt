@@ -134,6 +134,13 @@ __ps1_notice () {
   printf '%s' "${PS1_NOTICE}"
 }
 
+__aws_ps1 ()
+{
+  if [ -n "$AWS_VAULT" ]; then
+    printf "$BG_R$BW   $AWS_VAULT $RESET"
+  fi
+}
+
 #function __git_prompt {
 #  branch=$(git symbolic-ref -q HEAD 2>/dev/null) || return 0 # Not in git repo.
 #
@@ -189,7 +196,7 @@ bash_prompt() {
     # fi
   # fi
 
-  PS1="\n\t$RESET $EMAGENTA\w \[$EBLACK\]$(__ruby_ps1)$(__node_ps1)$(__pipenv_ps1)$(__ps1_git)\[$EBLACK\]$(__ps1_jobs_count)$BG_R$BW$(__ps1_notice)$RESET \n∴ "
+  PS1="\n\t$RESET $EMAGENTA\w \[$EBLACK\]$(__ruby_ps1)$(__node_ps1)$(__pipenv_ps1)$(__ps1_git)$(__aws_ps1)\[$EBLACK\]$(__ps1_jobs_count)$BG_R$BW$(__ps1_notice)$RESET \n∴ "
 }
 
 # iTerm2 title/tab stuff
