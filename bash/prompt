@@ -112,21 +112,21 @@ git_prompt_info () {
 __ruby_ps1 ()
 {
   ruby_version=`ruby --version | cut -f2 -d ' '`
-  printf $ruby_version
+  printf "  $ruby_version "
 }
 
 __node_ps1 ()
 {
   local br
   br=$(node -v)
-  test -n "$br" && printf %s " $br " || :
+  test -n "$br" && printf %s " $br " || :
 }
 
 __pipenv_ps1 ()
 {
   if [ -n "$PIP_PYTHON_PATH" ]; then
     python_version=`python --version | cut -f2 -d ' '`
-    printf " 🐍 $python_version "
+    printf " $python_version "
   fi
 }
 
