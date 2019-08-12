@@ -141,6 +141,14 @@ __aws_ps1 ()
   fi
 }
 
+__aws_ps1 ()
+{
+  op_session=`env | grep '^OP_SESSION_' | cut -d'=' -f1 | sed -e's/OP_SESSION_//g' | tr -d '\n'`
+  if [ ${#op_session} -ge 1 ]; then
+    printf "$BG_G$BW  $op_session $RESET"
+  fi
+}
+
 #function __git_prompt {
 #  branch=$(git symbolic-ref -q HEAD 2>/dev/null) || return 0 # Not in git repo.
 #
@@ -185,6 +193,8 @@ bash_prompt() {
   local BW="\[\033[1;37m\]"
 
   local BG_R='\e[48;5;203m'
+  local BG_G='\e[48;5;41m'
+  local BG_B='\e[48;5;75m'
 
   # reset
   local RESET="\[\033[0;37m\]"
