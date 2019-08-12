@@ -141,11 +141,11 @@ __aws_ps1 ()
   fi
 }
 
-__aws_ps1 ()
+__op_ps1 ()
 {
   op_session=`env | grep '^OP_SESSION_' | cut -d'=' -f1 | sed -e's/OP_SESSION_//g' | tr -d '\n'`
   if [ ${#op_session} -ge 1 ]; then
-    printf "$BG_G$BW  $op_session $RESET"
+    printf "$BG_G$BW  $op_session $RESET "
   fi
 }
 
@@ -206,7 +206,7 @@ bash_prompt() {
     # fi
   # fi
 
-  PS1="\n\t$RESET $EMAGENTA\w \[$EBLACK\]$(__ruby_ps1)$(__node_ps1)$(__pipenv_ps1)$(__ps1_git)$(__aws_ps1)\[$EBLACK\]$(__ps1_jobs_count)$BG_R$BW$(__ps1_notice)$RESET \n∴ "
+  PS1="\n\t$RESET $EMAGENTA\w \[$EBLACK\]$(__ruby_ps1)$(__node_ps1)$(__pipenv_ps1)$(__ps1_git)$(__op_ps1)$(__aws_ps1)\[$EBLACK\]$(__ps1_jobs_count)$BG_R$BW$(__ps1_notice)$RESET \n∴ "
 }
 
 # iTerm2 title/tab stuff
