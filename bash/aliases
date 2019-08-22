@@ -234,10 +234,8 @@ ssh-reagent () {
   echo Cannot find ssh agent - maybe you should reconnect and forward it?
 }
 
-alias netlisteners='lsof -i -P | grep LISTEN'
-
-# blender
-alias blender="blender-2.79"
+# alias netlisteners='lsof -i -P | grep LISTEN'
+alias netlisteners='sudo lsof -PiTCP -sTCP:LISTEN'
 
 alias hb="hub browse"
 
