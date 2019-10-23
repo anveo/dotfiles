@@ -1,0 +1,13 @@
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' enable git
+precmd() {
+    vcs_info
+    print '${vcs_info_msg_0_}%# '
+}
+
+setopt prompt_subst
+#PROMPT='${vcs_info_msg_0_}%# '
+PROMPT='>'
+
+# precmd() { eval "$PROMPT_COMMAND" }
+RPROMPT='%*'
