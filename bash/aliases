@@ -162,7 +162,7 @@ function killnamed () {
 }
 
 # OSX specific
-if [ `uname` == 'Darwin' ]; then
+if [ `uname` = 'Darwin' ]; then
   # We need gui support for plugins
 
   # don't need these with `brew install vim --replace-system`
