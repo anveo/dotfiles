@@ -38,17 +38,13 @@ source ~/.bash/completions
 source ~/.bash/paths
 source ~/.bash/functions
 
-if [ -f /usr/local/etc/profile.d/z.sh ]; then
-  . /usr/local/etc/profile.d/z.sh
-else
-  # https://github.com/rupa/z
-  . "$HOME/dotfiles/bash/scripts/z.sh"
-fi
 
 if [ -d /usr/local/opt/asdf ]; then
   export NODEJS_CHECK_SIGNATURES=no
   source /usr/local/opt/asdf/asdf.sh
 fi
+# https://github.com/rupa/z
+source "$HOME/dotfiles/scripts/z.sh"
 
 source ~/.bash/prompt
 
