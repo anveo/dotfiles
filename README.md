@@ -8,6 +8,7 @@
 
 ## Installation
 
+
     # Install homebrew package
     $ brew tap homebrew/cask-fonts
     $ brew bundle
@@ -25,7 +26,20 @@
 
     $ brew install openssl libyaml libffi
     $ brew install rbenv ruby-build
-    $ brew install nvm
+    $ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.1/install.sh | bash
+
+    chsh -s /bin/bash
+    chsh -s /bin/zsh
+    # chsh -s /usr/local/bin/zsh
+    chsh -s $(which zsh)
+
+    # oh-my-zsh
+    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+    # in zsh
+    git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt"
+    ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
+
 
 ## Tmux
 

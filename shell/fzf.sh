@@ -1,19 +1,5 @@
-
-# if [ -f $HOME/.bashrc ]; then
-  # source $HOME/.bashrc
-# fi
-
-source ~/.bash/env
-source ~/.bash/config
-source ~/.bash/aliases
-# source ~/.bash/completions
-source ~/.bash/paths
-source ~/.bash/functions
-
-source ~/dotfiles/zsh/prompt
-
 # Use jj as the trigger sequence instead of the default **
-export FZF_COMPLETION_TRIGGER='jj'
+# export FZF_COMPLETION_TRIGGER='jj'
 export FZF_CTRL_R_OPTS='--sort --exact'
 
 # Setting ag as the default source for fzf
@@ -46,20 +32,9 @@ _fzf_compgen_dir() {
   fd --type d --hidden --follow --exclude ".git" . "$1"
 }
 
-# [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# direnv
-if [ -f $(brew --prefix direnv)/bin/direnv ]; then
-  eval "$(direnv hook bash)"
-fi
-
-# Put secret stuff in here
-if [ -f ~/.localrc ]; then
-  . ~/.localrc
-fi
-
-if [ -f /usr/local/bin/rbenv ]; then
-  eval "$(rbenv init -)"
+if [[ -z "${ZSH_VERSION}" ]]; then
+  [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# elif [[ -z "${BASH_VERSION}" ]]; then
+  # [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 fi
 
