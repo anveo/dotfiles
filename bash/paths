@@ -27,10 +27,6 @@ export GRADLE_OPTS="$GRADLE_OPTS -Dorg.gradle.daemon=true"
 # npm bin
 export PATH="./node_modules/.bin:$PATH"
 
-# brew install autojump
-# https://github.com/joelthelion/autojump
-[[ -s `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
-
 export PATH=/usr/local/opt/go/libexec/bin:$PATH
 export GOPATH=$HOME/go
 export PATH=$GOPATH/bin:$PATH
@@ -39,6 +35,3 @@ export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
 
 export PIPENV_VENV_IN_PROJECT=1
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"  # This loads nvm bash_completion
