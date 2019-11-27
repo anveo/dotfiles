@@ -18,3 +18,4 @@ extras/blender/default/config/bookmarks.txt
 extras/blender/default/config/recent-files.txt
 
 zsh/oh-my-zsh/themes/spaceship-prompt
+zsh/oh-my-zsh/themes/spaceship.zsh-theme
