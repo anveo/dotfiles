@@ -263,3 +263,6 @@ alias rg='rg --hidden'
 alias rga='rg -uu --hidden' # ignore .gitignore
 alias rgaa="rg -uu --glob '!{.git,node_modules,build,dist,tmp}' --hidden"
 
+# aws-vault
+alias av='aws-vault'
+alias ave='aws-vault exec'
