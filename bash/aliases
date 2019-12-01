@@ -12,6 +12,7 @@ alias ....='cd ..; cd ..; cd ..'
 alias .....='cd ../../../..'
 alias ......='cd ../../../../..'
 alias cdd='cd -'
+alias -- -="cd -"
 
 alias vst='cd ~/Library/Audio/Plug-Ins/'
 alias svst='cd /Library/Audio/Plug-Ins/'
@@ -265,3 +266,6 @@ alias rgaa="rg -uu --glob '!{.git,node_modules,build,dist,tmp}' --hidden"
 # aws-vault
 alias av='aws-vault'
 alias ave='aws-vault exec'
+
+# Print each PATH entry on a separate line
+alias path='echo -e ${PATH//:/\\n}'
