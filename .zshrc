@@ -1,8 +1,21 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+if [[ ! -d ~/.zplug ]];then
+  git clone https://github.com/b4b4r07/zplug ~/.zplug
+fi
+
+source ~/.zplug/init.zsh
+
+if type brew &>/dev/null; then
+  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+fi
+
+# oh-my-zsh
+# zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh"
+
+# spaceship-prompt
+zplug "denysdovhan/spaceship-prompt", use:spaceship.zsh, from:github, as:theme
 
 # Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
+# export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -10,63 +23,65 @@ export ZSH="$HOME/.oh-my-zsh"
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="spaceship"
 
-SPACESHIP_TIME_SHOW=true
-SPACESHIP_TIME_COLOR="250"
-SPACESHIP_CHAR_SYMBOL="∴"
-SPACESHIP_CHAR_SUFFIX=" "
-# SPACESHIP_PROMPT_DEFAULT_PREFIX=""
-SPACESHIP_PROMPT_PREFIXES_SHOW="false"
-SPACESHIP_DIR_PREFIX=""
-SPACESHIP_DIR_TRUNC="8"
-SPACESHIP_DIR_LOCK_SYMBOL="${SPACESHIP_DIR_LOCK_SYMBOL=" "}"
-SPACESHIP_GIT_PREFIX=""
-# SPACESHIP_KUBECONTEXT_SYMBOL=" "
-SPACESHIP_NODE_SYMBOL=" "
-SPACESHIP_PACKAGE_SHOW="false"
-SPACESHIP_RUBY_SYMBOL="  "
-SPACESHIP_EXIT_CODE_SHOW="true"
+if zplug check "denysdovhan/spaceship-prompt"; then
+  SPACESHIP_TIME_SHOW=true
+  SPACESHIP_TIME_COLOR="250"
+  SPACESHIP_CHAR_SYMBOL="∴"
+  SPACESHIP_CHAR_SUFFIX=" "
+  # SPACESHIP_PROMPT_DEFAULT_PREFIX=""
+  SPACESHIP_PROMPT_PREFIXES_SHOW="false"
+  SPACESHIP_DIR_PREFIX=""
+  SPACESHIP_DIR_TRUNC="8"
+  SPACESHIP_DIR_LOCK_SYMBOL="${SPACESHIP_DIR_LOCK_SYMBOL=" "}"
+  SPACESHIP_GIT_PREFIX=""
+  # SPACESHIP_KUBECONTEXT_SYMBOL=" "
+  SPACESHIP_NODE_SYMBOL=" "
+  SPACESHIP_PACKAGE_SHOW="false"
+  SPACESHIP_RUBY_SYMBOL="  "
+  SPACESHIP_EXIT_CODE_SHOW="true"
 
-SPACESHIP_PROMPT_ORDER=(
-  # time          # Time stamps section
-  # user          # Username section
-  dir           # Current directory section
-  # host          # Hostname section
-  git           # Git section (git_branch + git_status)
-  # hg            # Mercurial section (hg_branch  + hg_status)
-  # package       # Package version
-  node          # Node.js section
-  ruby          # Ruby section
-  elixir        # Elixir section
-  # xcode         # Xcode section
-  # swift         # Swift section
-  golang        # Go section
-  # php           # PHP section
-  rust          # Rust section
-  # haskell       # Haskell Stack section
-  # julia         # Julia section
-  docker        # Docker section
-  aws           # Amazon Web Services section
-  venv          # virtualenv section
-  conda         # conda virtualenv section
-  pyenv         # Pyenv section
-  # dotnet        # .NET section
-  # ember         # Ember.js section
-  kubecontext   # Kubectl context section
-  terraform     # Terraform workspace section
-  # exec_time     # Execution time
-  line_sep      # Line break
-  battery       # Battery level and status
-  vi_mode       # Vi-mode indicator
-  jobs          # Background jobs indicator
-  # exit_code     # Exit code section
-  char          # Prompt character
-)
+  SPACESHIP_PROMPT_ORDER=(
+    # time          # Time stamps section
+    # user          # Username section
+    dir           # Current directory section
+    # host          # Hostname section
+    git           # Git section (git_branch + git_status)
+    # hg            # Mercurial section (hg_branch  + hg_status)
+    # package       # Package version
+    node          # Node.js section
+    ruby          # Ruby section
+    elixir        # Elixir section
+    # xcode         # Xcode section
+    # swift         # Swift section
+    golang        # Go section
+    # php           # PHP section
+    rust          # Rust section
+    # haskell       # Haskell Stack section
+    # julia         # Julia section
+    docker        # Docker section
+    aws           # Amazon Web Services section
+    venv          # virtualenv section
+    conda         # conda virtualenv section
+    pyenv         # Pyenv section
+    # dotnet        # .NET section
+    # ember         # Ember.js section
+    kubecontext   # Kubectl context section
+    terraform     # Terraform workspace section
+    # exec_time     # Execution time
+    line_sep      # Line break
+    battery       # Battery level and status
+    vi_mode       # Vi-mode indicator
+    jobs          # Background jobs indicator
+    # exit_code     # Exit code section
+    char          # Prompt character
+  )
 
-SPACESHIP_RPROMPT_ORDER=(
-  exec_time     # Execution time
-  exit_code     # Exit code section
-  time          # Time stamps section
-)
+  SPACESHIP_RPROMPT_ORDER=(
+    exec_time     # Execution time
+    exit_code     # Exit code section
+    time          # Time stamps section
+  )
+fi
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -120,13 +135,14 @@ CASE_SENSITIVE="true"
 HIST_STAMPS="yyy/mm/dd"
 
 # Would you like to use another custom folder than $ZSH/custom?
-ZSH_CUSTOM=$HOME/dotfiles/zsh/oh-my-zsh
+# ZSH_CUSTOM=$HOME/dotfiles/zsh/oh-my-zsh
 
 # Which plugins would you like to load?
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
+
 plugins=(
   brew
   git
@@ -135,7 +151,14 @@ plugins=(
   rbenv
 )
 
-source $ZSH/oh-my-zsh.sh
+# source $ZSH/oh-my-zsh.sh
+
+# Make sure to use double quotes
+
+zplug "chrissicool/zsh-256color"
+zplug "mafredri/zsh-async", from:github, use:async.zsh
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
+zplug "zsh-users/zsh-history-substring-search", defer:3
 
 # User configuration
 
@@ -180,3 +203,11 @@ if [ -f ~/.localrc ]; then
   . ~/.localrc
 fi
 
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
+fi
+
+zplug load --verbose
