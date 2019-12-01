@@ -70,10 +70,11 @@ if has('nvim')
   "Plug 'c-brenn/phoenix.vim'
   Plug 'tpope/vim-projectionist' " required for some navigation features
   Plug 'powerman/vim-plugin-AnsiEsc'
+  let g:deoplete#enable_at_startup = 1
 else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
+  " Plug 'Shougo/deoplete.nvim'
+  " Plug 'roxma/nvim-yarp'
+  " Plug 'roxma/vim-hug-neovim-rpc'
 endif
 
 " Add plugins to &runtimepath
