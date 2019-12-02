@@ -1,3 +1,5 @@
+export DOTFILES=$HOME/dotfiles
+
 if [[ ! -d ~/.zplug ]];then
   git clone https://github.com/b4b4r07/zplug ~/.zplug
 fi
@@ -8,9 +10,62 @@ if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
 fi
 
-# oh-my-zsh
+# Make sure to use double quotes for zplug
+
 # zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh"
 zplug "lib/*", from:oh-my-zsh
+zplug "plugins/copydir",  from:oh-my-zsh
+zplug "plugins/copyfile", from:oh-my-zsh
+zplug "plugins/encode64", from:oh-my-zsh
+zplug "plugins/extract",  from:oh-my-zsh
+zplug "plugins/fzf",      from:oh-my-zsh
+zplug "plugins/nmap",     from:oh-my-zsh
+zplug "plugins/urltools", from:oh-my-zsh
+
+zplug "b4b4r07/enhancd", use:init.sh
+zplug "chrissicool/zsh-256color"
+zplug "mafredri/zsh-async", from:github, use:async.zsh
+zplug "supercrabtree/k"
+zplug "zsh-users/zsh-autosuggestions"
+zplug "zsh-users/zsh-completions"
+zplug "zsh-users/zsh-history-substring-search", defer:3
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
+
+# if [[ $OSTYPE = (linux)* ]]; then
+  # zplug "plugins/archlinux",            from:oh-my-zsh, if:"(( $+commands[pacman] ))"
+  # #zplug "plugins/debian",               from:oh-my-zsh
+  # zplug "plugins/dnf",                  from:oh-my-zsh, if:"(( $+commands[dnf] ))"
+  # #zplug "plugins/fedora",               from:oh-my-zsh
+  # zplug "plugins/mock",                 from:oh-my-zsh, if:"(( $+commands[mock] ))"
+  # #zplug "plugins/suse",                 from:oh-my-zsh
+  # #zplug "plugins/ubuntu",               from:oh-my-zsh
+# fi
+
+# if [[ $OSTYPE = (darwin)* ]]; then
+# # zplug "plugins/brew",                 from:oh-my-zsh, if:"(( $+commands[brew] ))"
+# fi
+
+zplug "mollifier/anyframe"
+if zplug check "mollifier/anyframe"; then
+    # expressly specify to use peco
+    #zstyle ":anyframe:selector:" use peco
+    # expressly specify to use percol
+    #zstyle ":anyframe:selector:" use percol
+    # expressly specify to use fzf-tmux
+    #zstyle ":anyframe:selector:" use fzf-tmux
+    # expressly specify to use fzf
+    zstyle ":anyframe:selector:" use fzf
+
+    # specify path and options for peco, percol, or fzf
+    #zstyle ":anyframe:selector:peco:" command 'peco --no-ignore-case'
+    #zstyle ":anyframe:selector:percol:" command 'percol --case-sensitive'
+    #zstyle ":anyframe:selector:fzf-tmux:" command 'fzf-tmux --extended'
+    #zstyle ":anyframe:selector:fzf:" command 'fzf --extended'
+    #zstyle ":anyframe:selector:fzf:" command 'fzf'
+
+    #bindkey '^@' anyframe-widget-cd-ghq-repository
+    #bindkey '^r' anyframe-widget-put-history
+fi
 
 # spaceship-prompt
 zplug "denysdovhan/spaceship-prompt", use:spaceship.zsh, from:github, as:theme
@@ -18,15 +73,6 @@ zplug "denysdovhan/spaceship-prompt", use:spaceship.zsh, from:github, as:theme
 source $HOME/dotfiles/zsh/spaceship-prompt/sections/aws_vault.zsh
 source $HOME/dotfiles/zsh/spaceship-prompt/sections/op.zsh
 source $HOME/dotfiles/zsh/spaceship-prompt/sections/subshell.zsh
-
-# Path to your oh-my-zsh installation.
-# export ZSH="$HOME/.oh-my-zsh"
-
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="spaceship"
 
 if zplug check "denysdovhan/spaceship-prompt"; then
   SPACESHIP_TIME_SHOW=true
@@ -64,7 +110,7 @@ if zplug check "denysdovhan/spaceship-prompt"; then
     rust          # Rust section
     # haskell       # Haskell Stack section
     # julia         # Julia section
-    docker        # Docker section
+    # docker        # Docker section
     aws           # Amazon Web Services section
     venv          # virtualenv section
     conda         # conda virtualenv section
@@ -91,120 +137,29 @@ if zplug check "denysdovhan/spaceship-prompt"; then
   )
 fi
 
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to automatically update without prompting.
-# DISABLE_UPDATE_PROMPT="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS=true
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-HIST_STAMPS="yyy/mm/dd"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=$HOME/dotfiles/zsh/oh-my-zsh
-
-# Which plugins would you like to load?
-# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-
-plugins=(
-  brew
-  git
-  nvm
-  pyenv
-  rbenv
-)
-
-# source $ZSH/oh-my-zsh.sh
-
-# Make sure to use double quotes
-
-zplug "chrissicool/zsh-256color"
-zplug "mafredri/zsh-async", from:github, use:async.zsh
-zplug "zsh-users/zsh-syntax-highlighting", defer:2
-zplug "zsh-users/zsh-history-substring-search", defer:3
-
-# User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+if zplug check "b4b4r07/enhancd"; then
+  ENHANCD_FILTER="fzf:peco:percol"
+  ENHANCD_COMMAND="c"
+fi
 
 source $HOME/dotfiles/bash/aliases
 source $HOME/dotfiles/bash/functions
 source $HOME/dotfiles/bash/env
 source $HOME/dotfiles/bash/paths
 
-# source $HOME/dotfiles/shell/autojump.sh
-source $HOME/dotfiles/shell/direnv.sh
-source $HOME/dotfiles/shell/fzf.sh
-source $HOME/dotfiles/shell/nvm.sh
-source $HOME/dotfiles/shell/rbenv.sh
-source $HOME/dotfiles/shell/z.sh
+for file in $DOTFILES/shell/*.sh; do
+  [ -r "$file" ] && [ -f "$file" ] && source "$file";
+done;
+unset file;
+
+setopt HIST_IGNORE_DUPS     # Ignore adjacent duplication command history list
+setopt HIST_IGNORE_SPACE    # Don't store commands with a leading space into history
+setopt INC_APPEND_HISTORY   # write history on each command
+# setopt SHARE_HISTORY        # share history across sessions
+setopt EXTENDED_HISTORY     # add more info
+export HISTFILE=~/.zsh_history
+export SAVEHIST=100000
+export HISTSIZE=100000
 
 # ignore that $EDITOR is vim and use emacs bindings
 bindkey -e

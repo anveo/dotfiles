@@ -173,3 +173,12 @@ function o() {
 function tre() {
 	tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
 }
+
+# Fix issues with zsh completion:
+function fixzsh() {
+  rm ~/.zcompdump*;
+  # rm ~/.antigen/.zcompdump*;
+  rm ~/.zplug/zcompdump*;
+  exec zsh;
+}
+
