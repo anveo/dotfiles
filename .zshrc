@@ -10,9 +10,14 @@ fi
 
 # oh-my-zsh
 # zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh"
+zplug "lib/*", from:oh-my-zsh
 
 # spaceship-prompt
 zplug "denysdovhan/spaceship-prompt", use:spaceship.zsh, from:github, as:theme
+
+source $HOME/dotfiles/zsh/spaceship-prompt/sections/aws_vault.zsh
+source $HOME/dotfiles/zsh/spaceship-prompt/sections/op.zsh
+source $HOME/dotfiles/zsh/spaceship-prompt/sections/subshell.zsh
 
 # Path to your oh-my-zsh installation.
 # export ZSH="$HOME/.oh-my-zsh"
@@ -41,6 +46,7 @@ if zplug check "denysdovhan/spaceship-prompt"; then
   SPACESHIP_EXIT_CODE_SHOW="true"
 
   SPACESHIP_PROMPT_ORDER=(
+    subshell
     # time          # Time stamps section
     # user          # Username section
     dir           # Current directory section
@@ -77,6 +83,8 @@ if zplug check "denysdovhan/spaceship-prompt"; then
   )
 
   SPACESHIP_RPROMPT_ORDER=(
+    awsvault
+    op
     exec_time     # Execution time
     exit_code     # Exit code section
     time          # Time stamps section
@@ -198,6 +206,9 @@ source $HOME/dotfiles/shell/nvm.sh
 source $HOME/dotfiles/shell/rbenv.sh
 source $HOME/dotfiles/shell/z.sh
 
+# ignore that $EDITOR is vim and use emacs bindings
+bindkey -e
+
 # Put secret stuff in here
 if [ -f ~/.localrc ]; then
   . ~/.localrc
@@ -210,4 +221,4 @@ if ! zplug check --verbose; then
     fi
 fi
 
-zplug load --verbose
+zplug load # --verbose
