@@ -14,7 +14,7 @@ SPACESHIP_SUBSHELL_COLOR="${SPACESHIP_SUBSHELL_COLOR="165"}"
 # Section
 # ------------------------------------------------------------------------------
 
-# Shows selected AWS-cli profile.
+# Shows nested subshell indicator
 spaceship_subshell() {
   [[ $SPACESHIP_SUBSHELL_SHOW == false ]] && return
 

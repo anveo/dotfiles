@@ -14,13 +14,13 @@ SPACESHIP_OP_COLOR="${SPACESHIP_OP_COLOR="blue"}"
 # Section
 # ------------------------------------------------------------------------------
 
-# Shows selected AWS-cli profile.
+# Shows selected 1password profile.
 spaceship_op() {
   [[ $SPACESHIP_OP_SHOW == false ]] && return
 
   op_session=`env | grep '^OP_SESSION_' | cut -d'=' -f1 | sed -e's/OP_SESSION_//g' | tr -d '\n'`
 
-  # Check to see if we're in an AWS VAULT section
+  # Check to see if a 1password session is active
   [[ -z $op_session ]] && return
 
   # Show prompt section
