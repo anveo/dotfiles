@@ -134,10 +134,10 @@ if zplug check "denysdovhan/spaceship-prompt"; then
   )
 
   SPACESHIP_RPROMPT_ORDER=(
+    exit_code     # Exit code section
+    exec_time     # Execution time
     awsvault
     op
-    exec_time     # Execution time
-    exit_code     # Exit code section
     time          # Time stamps section
   )
 fi
