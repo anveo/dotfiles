@@ -25,6 +25,7 @@ zplug "plugins/urltools", from:oh-my-zsh
 zplug "b4b4r07/enhancd", use:init.sh
 zplug "chrissicool/zsh-256color"
 zplug "mafredri/zsh-async", from:github, use:async.zsh
+zplug "MichaelAquilina/zsh-autoswitch-virtualenv"
 zplug "supercrabtree/k"
 zplug "zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-completions"
@@ -104,6 +105,9 @@ if zplug check "denysdovhan/spaceship-prompt"; then
   SPACESHIP_NODE_SYMBOL=" "
   SPACESHIP_PACKAGE_SHOW="false"
   SPACESHIP_PYENV_SYMBOL=" "
+  # SPACESHIP_VENV_SYMBOL=" "
+  # SPACESHIP_VENV_SYMBOL="v:"
+  SPACESHIP_VENV_COLOR="green"
   SPACESHIP_RUBY_SYMBOL="  "
   SPACESHIP_EXIT_CODE_SHOW="true"
 
@@ -132,9 +136,9 @@ if zplug check "denysdovhan/spaceship-prompt"; then
     # julia         # Julia section
     # docker        # Docker section
     aws           # Amazon Web Services section
+    pyenv         # Pyenv section
     venv          # virtualenv section
     conda         # conda virtualenv section
-    pyenv         # Pyenv section
     # dotnet        # .NET section
     # ember         # Ember.js section
     kubecontext   # Kubectl context section

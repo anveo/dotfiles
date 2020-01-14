@@ -51,3 +51,5 @@ export SSLKEYLOGFILE="$HOME/tmp/tlskey"
 #  https://bugs.ruby-lang.org/issues/14009
 #  https://github.com/puma/puma/issues/1421
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
