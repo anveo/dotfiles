@@ -15,8 +15,40 @@
     # Setup dotfile aliases
     make install
 
+    # Setup python
+    curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+    git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
+    exec $SHELL
+    pyenv install 2.7.17
+    pyenv install 3.8.1
+    pyenv global 3.8.1
+    pip3 install --upgrade pip
+
+    # (optional) Homebrew setup doctor
+    # set these env vars if `pyenv doctor` errors
+    # `brew info openssl` for more info
+    export LDFLAGS="-L/usr/local/opt/openssl/lib"
+    export CPPFLAGS="-I/usr/local/opt/openssl/include
+    pyenv doctor
+
     # Setup Vim
-    pip3 install --user --upgrade pynvim
+    pyenv virtualenv 2.7.17 neovim2
+    pyenv activate neovim2
+    pip install --upgrade pip
+    pip install --upgrade neovim
+    pip install --upgrade pynvim
+    pip install --upgrade flake8
+    pyenv which python # note path
+
+    pyenv virtualenv 3.8.1 neovim3
+    pyenv activate neovim3
+    pip install --upgrade pip
+    pip install --upgrade neovim
+    pip install --upgrade pynvim
+    pip install --upgrade flake8
+    pyenv which python # note path
+    ln -nfs `pyenv which flake8` ~/bin/flake8
+
     vim
     :PlugUpgrade
     :PlugUpdate

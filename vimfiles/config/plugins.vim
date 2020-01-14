@@ -72,8 +72,9 @@ let g:ctrlp_custom_ignore = {
 " Syntastic
 " mark syntax errors with :signs
 let g:syntastic_enable_signs=1
-"let g:syntastic_error_symbol='✗'
-"let g:syntastic_warning_symbol='⚠'
+let g:syntastic_error_symbol='✗'
+let g:syntastic_warning_symbol='⚠'
+let g:syntastic_python_checkers=['flake8']
 
 
 let g:syntastic_mode_map = { 'mode': 'active',
@@ -264,3 +265,9 @@ imap <c-x><c-f> <plug>(fzf-complete-path)
 imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 imap <c-x><c-l> <plug>(fzf-complete-line)
 
+" faster semshi highlights
+let g:deoplete#auto_complete_delay = 100
+let g:deoplete#enable_at_startup = 1
+
+let g:python_host_prog = expand('$HOME/.pyenv/versions/neovim2/bin/python')
+let g:python3_host_prog = expand('$HOME/.pyenv/versions/neovim3/bin/python')

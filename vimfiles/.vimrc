@@ -61,20 +61,21 @@ Plug 'Shougo/neosnippet.vim'
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'Shougo/neosnippet-snippets'
+Plug 'davidhalter/jedi-vim'
 
 " neovim specific
 if has('nvim')
   " Plug 'slashmili/alchemist.vim'
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
   Plug 'neomake/neomake'
   "Plug 'c-brenn/phoenix.vim'
   Plug 'tpope/vim-projectionist' " required for some navigation features
   Plug 'powerman/vim-plugin-AnsiEsc'
-  let g:deoplete#enable_at_startup = 1
 else
-  " Plug 'Shougo/deoplete.nvim'
-  " Plug 'roxma/nvim-yarp'
-  " Plug 'roxma/vim-hug-neovim-rpc'
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
 endif
 
 " Add plugins to &runtimepath
