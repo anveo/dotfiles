@@ -99,10 +99,6 @@ filetype indent on
 syntax on
 
 set encoding=utf8
-try
-    lang en_US
-catch
-endtry
 
 " ack
 set grepprg=ack
