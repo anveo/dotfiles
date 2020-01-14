@@ -13,7 +13,7 @@ fi
 # Make sure to use double quotes for zplug
 
 # zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh"
-zplug "lib/*", from:oh-my-zsh
+# zplug "lib/*", from:oh-my-zsh
 zplug "plugins/copydir",  from:oh-my-zsh
 zplug "plugins/copyfile", from:oh-my-zsh
 zplug "plugins/encode64", from:oh-my-zsh
