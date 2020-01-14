@@ -16,7 +16,7 @@ mkdir -p $HOME/.config
 ln -nfs $HOME/dotfiles/vimfiles $HOME/.config/nvim
 
 # zsh
-ln -nfs $HOME/dotfiles/.zshrc $HOME/.zshrc 
+ln -nfs $HOME/dotfiles/.zshrc $HOME/.zshrc
 
 symlinks=(
   .ackrc
