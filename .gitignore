@@ -18,5 +18,7 @@ extras/blender/default/config/bookmarks.txt
 extras/blender/default/config/recent-files.txt
 extras/iTerm2-Color-Schemes
 
+fonts/.uuid
+
 zsh/oh-my-zsh/themes/spaceship-prompt
 zsh/oh-my-zsh/themes/spaceship.zsh-theme
