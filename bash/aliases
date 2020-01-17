@@ -101,8 +101,7 @@ function take() {
 alias wgets="wget --no-check-certificate "
 
 # grep
-if which ack-grep 2>&1 > /dev/null
-then
+if [ -x $(type ack-grep &>/dev/null) ]; then
   alias ack="ack-grep"
 fi
 alias grep='grep --color=auto'
