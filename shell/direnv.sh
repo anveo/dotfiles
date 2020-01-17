@@ -1,4 +1,4 @@
-if [ -f $(brew --prefix direnv)/bin/direnv ]; then
+if type direnv &>/dev/null; then
   eval "$(direnv hook zsh)"
 fi
 

@@ -181,12 +181,14 @@ let g:deoplete#enable_at_startup = 1
 " Don't tell me to use smartquotes in markdown ok?
 let g:neomake_markdown_enabled_makers = []
 
-" Run Neomake when I save any buffer
-augroup neomake
-  autocmd! BufWritePost * Neomake
-augroup END
-" Don't tell me to use smartquotes in markdown ok?
-let g:neomake_markdown_enabled_makers = []
+if has('nvim')
+  " Run Neomake when I save any buffer
+  augroup neomake
+    autocmd! BufWritePost * Neomake
+  augroup END
+  " Don't tell me to use smartquotes in markdown ok?
+  let g:neomake_markdown_enabled_makers = []
+end
 
 " Snippets
 " Note: It must be "imap" and "smap".  It uses <Plug> mappings.

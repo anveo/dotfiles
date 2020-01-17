@@ -36,7 +36,9 @@ export PATH=/usr/local/opt/go/libexec/bin:$PATH
 export GOPATH=$HOME/go
 export PATH=$GOPATH/bin:$PATH
 
-export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+if [ `uname` = 'Darwin' ]; then
+  export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+fi
 
 export PIPENV_VENV_IN_PROJECT=1
 
