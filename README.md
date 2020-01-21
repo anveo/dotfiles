@@ -71,3 +71,4 @@ zplug install
 ## iTerm Themes
 
     git clone git@github.com:mbadolato/iTerm2-Color-Schemes.git extras/iTerm2-Color-Schemes
+    git clone https://github.com/martinlindhe/base16-iterm2.git extras/base16-iterm2

@@ -17,6 +17,7 @@ extras/blender/default/config/userpref.blend
 extras/blender/default/config/bookmarks.txt
 extras/blender/default/config/recent-files.txt
 extras/iTerm2-Color-Schemes
+extras/base16-iterm2
 
 fonts/.uuid
 
