@@ -74,7 +74,7 @@ noremap <S-Left> :tabp<CR>
 noremap <S-Right> :tabn<CR>
 
 if has("gui_macvim") && has("gui_running")
-" Map Command-# to switch tabs
+  " Map Command-# to switch tabs
   map  <D-0> 0gt
   imap <D-0> <Esc>0gt
   map  <D-1> 1gt
@@ -141,8 +141,8 @@ nnoremap Y y$
 "map <leader>u :call OpenURI()<CR>
 
 " Tab/shift-tab to indent/outdent in visual mode.
-vnoremap <Tab> >gv
-vnoremap <S-Tab> <gv
+" vnoremap <Tab> >gv
+" vnoremap <S-Tab> <gv
 " Keep selection when indenting/outdenting.
 vnoremap > >gv
 vnoremap < <gv
