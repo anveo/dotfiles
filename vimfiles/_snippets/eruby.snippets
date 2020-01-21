@@ -1,0 +1,43 @@
+# extends html
+
+snippet rc
+	<% ${0} %>
+snippet rce
+	<%= ${1} %>
+snippet %
+	<% ${0} %>
+snippet =
+	<%= ${1} %>
+snippet end
+	<% end %>
+snippet ead
+	<% ${1}.each do |${2}| %>
+		${0}
+	<% end %>
+
+snippet rp
+	<%= render partial: '${0:item}' %>
+snippet rpl
+	<%= render partial: '${1:item}', locals: { ${2:name}: '${3:value}'${0} } %>
+snippet rps
+	<%= render partial: '${1:item}', status: ${0:500} %>
+snippet rpc
+	<%= render partial: '${1:item}', collection: ${0:items} %>
+
+snippet conf
+	<% content_for :${1:head} do %>
+		${0}
+	<% end %>
+
+snippet if
+	<% if ${1} %>
+		${0:${VISUAL}}
+	<% end %>
+snippet ife
+	<% if ${1} %>
+		${2}
+	<% else %>
+		${0}
+	<% end %>
+snippet pry
+	<% require 'pry'; binding.pry %>

@@ -1,0 +1,20 @@
+snippet #!
+	#!/usr/bin/env sh
+
+snippet s#!
+	#!/usr/bin/env sh
+	set -eu
+
+snippet safe
+	set -eu
+
+snippet bash
+	#!/usr/bin/env bash
+
+snippet sbash
+	#!/usr/bin/env bash
+	set -euo pipefail
+	IFS=$'\n\t'
+
+snippet root
+	if [ \$(id -u) -ne 0 ]; then exec sudo \$0; fi

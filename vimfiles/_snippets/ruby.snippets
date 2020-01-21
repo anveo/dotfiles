@@ -1,4 +1,107 @@
 snippet log
 abbr    logger.method
-  logger.${1:info} ${0:#:message}
+  logger.${1:info} '${0:message}'
 
+snippet pa
+  params[:${0:param}]
+
+snippet pry
+  require 'pry'; binding.pry
+
+snippet #
+	# =>
+snippet case
+	case ${1:object}
+	when ${2:condition}
+		${0}
+	end
+snippet when
+	when ${1:condition}
+		${0:${VISUAL}}
+snippet def
+	def ${1:method_name}
+		${0}
+	end
+
+snippet lam
+	lambda { |${1:args}| ${0} }
+
+snippet :
+	${1:key}: ${2:'value'}
+
+# path_from_here()
+snippet fpath
+	File.join(File.dirname(__FILE__), *['${1:rel path here}'])
+
+##########################
+#     Rspec snippets     #
+##########################
+
+snippet desc
+	describe ${1:`substitute(substitute(vim_snippets#Filename(), '_spec$', '', ''), '\(_\|^\)\(.\)', '\u\2', 'g')`} do
+		${0}
+	end
+snippet rdesc
+	RSpec.describe ${1:`substitute(substitute(vim_snippets#Filename(), '_spec$', '', ''), '\(_\|^\)\(.\)', '\u\2', 'g')`} do
+		${0}
+	end
+snippet descm
+	describe '${1:#method}' do
+		${0:pending 'Not implemented'}
+	end
+snippet cont
+	context '${1:message}' do
+		${0}
+	end
+snippet bef
+	before :${1:each} do
+		${0}
+	end
+snippet aft
+	after :${1:each} do
+		${0}
+	end
+snippet let
+	let(:${1:object}) { ${0} }
+snippet let!
+	let!(:${1:object}) { ${0} }
+snippet subj
+	subject { ${0} }
+snippet s.
+	subject.${0:method}
+snippet spec
+	specify { subject.${0} }
+snippet exp
+	expect(${1:object}).to ${0}
+snippet expb
+	expect { ${1:object} }.to ${0}
+snippet experr
+	expect { ${1:object} }.to raise_error ${2:StandardError}, /${0:message_regex}/
+snippet allow
+	allow(${1:object}).to ${0}
+snippet shared
+	shared_examples ${0:'shared examples name'}
+snippet ibl
+	it_behaves_like ${0:'shared examples name'}
+snippet it
+	it '${1:spec_name}' do
+		${0}
+	end
+snippet its
+	its(:${1:method}) { should ${0} }
+snippet is
+	it { should ${0} }
+snippet isn
+	it { should_not ${0} }
+snippet iexp
+	it { expect(${1:object}).${2} ${0} }
+snippet iexpb
+	it { expect { ${1:object} }.${2} ${0} }
+snippet iiexp
+	it { is_expected.to ${0} }
+snippet iiexpn
+	it { is_expected.not_to ${0} }
+snippet agg
+	aggregate_failures '${1:message}' do
+		${0}
+	end
