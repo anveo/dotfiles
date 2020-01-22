@@ -1,3 +1,11 @@
+# https://superuser.com/a/583502/24703
+if [ -n "$TMUX" ]; then
+  if [ -f /etc/profile ]; then
+    PATH=""
+    source /etc/profile
+  fi
+fi
+
 export DOTFILES=$HOME/dotfiles
 
 if [[ ! -d ~/.zplug ]];then
@@ -201,6 +209,7 @@ if ! zplug check --verbose; then
 fi
 
 # remove dups, useful with subshells
+export PATH
 export PATH="$($HOME/dotfiles/scripts/consolidate-path)"
 
 zplug load # --verbose
