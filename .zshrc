@@ -200,4 +200,7 @@ if ! zplug check --verbose; then
     fi
 fi
 
+# remove dups, useful with subshells
+export PATH="$($HOME/dotfiles/scripts/consolidate-path)"
+
 zplug load # --verbose

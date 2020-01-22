@@ -3,7 +3,10 @@
 set -e
 
 # misc
+mkdir -p $HOME/bin
 mkdir -p $HOME/tmp
+
+ln -fs $HOME/dotfiles/scripts/consolidate-path $HOME/bin/consolidate-path
 
 ln -nfs $HOME/dotfiles/scripts $HOME/scripts
 
