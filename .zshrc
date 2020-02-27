@@ -208,6 +208,8 @@ if ! zplug check --verbose; then
     fi
 fi
 
+export PATH="./bin:$PATH"
+
 # remove dups, useful with subshells
 export PATH
 export PATH="$($HOME/dotfiles/scripts/consolidate-path)"
