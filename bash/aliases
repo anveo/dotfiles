@@ -165,7 +165,8 @@ fi
 # Processes
 alias k9="killall -9"
 function killnamed () {
-    ps ax | grep $1 | cut -d ' ' -f 2 | xargs kill
+    # ps ax | grep $1 | cut -d ' ' -f 2 | xargs kill
+    ps ax |grep $1 |grep -v grep | cut -d' ' -f1 |xargs kill
 }
 
 # OSX specific
