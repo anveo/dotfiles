@@ -264,3 +264,5 @@ alias ave='aws-vault exec'
 alias path='echo -e ${PATH//:/\\n}'
 
 alias tb="nc termbin.com 9999"
+
+alias ov="overmind"
