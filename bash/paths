@@ -8,6 +8,10 @@ if [ -d "$HOME/.local/bin" ]; then
   export PATH="$HOME/.local/bin:$PATH"
 fi
 
+if [ -d "$HOME/.poetry/bin" ]; then
+  export PATH="$HOME/.poetry/bin:$PATH"
+fi
+
 # rust
 if [ -d "$HOME/.cargo/bin" ]; then
   export PATH="$HOME/.cargo/bin:$PATH"
