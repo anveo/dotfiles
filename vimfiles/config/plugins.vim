@@ -268,8 +268,8 @@ imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 imap <c-x><c-l> <plug>(fzf-complete-line)
 
 " faster semshi highlights
-let g:deoplete#auto_complete_delay = 100
-let g:deoplete#enable_at_startup = 1
+let g:deoplete#custom#auto_complete_delay = 100
+let g:deoplete#custom#enable_at_startup = 1
 
 let g:python_host_prog = expand('$HOME/.pyenv/versions/neovim2/bin/python')
 let g:python3_host_prog = expand('$HOME/.pyenv/versions/neovim3/bin/python')
