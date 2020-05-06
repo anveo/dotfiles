@@ -54,12 +54,12 @@ iniGet() {
 # Initialize access keys
 
 if [ -z "${AWS_CONFIG_FILE:-}" ]; then
-  if [ -z "${AWS_ACCESS_KEY:-}" ]; then
-    echo 'AWS_CONFIG_FILE or AWS_ACCESS_KEY/AWS_SECRET_KEY envvars not set.'
+  if [ -z "${AWS_ACCESS_KEY_ID:-}" ]; then
+    echo 'AWS_CONFIG_FILE or AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY envvars not set.'
     exit 1
   else
-    awsAccess="${AWS_ACCESS_KEY}"
-    awsSecret="${AWS_SECRET_KEY}"
+    awsAccess="${AWS_ACCESS_KEY_ID}"
+    awsSecret="${AWS_SECRET_ACCESS_KEY}"
     awsRegion='us-east-1'
   fi
 else
