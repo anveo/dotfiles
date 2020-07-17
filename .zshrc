@@ -40,6 +40,7 @@ zplug "MichaelAquilina/zsh-autoswitch-virtualenv"
 zplug "supercrabtree/k"
 zplug "zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-completions"
+zplug "Aloxaf/fzf-tab"
 zplug "zsh-users/zsh-history-substring-search", defer:3
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
