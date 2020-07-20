@@ -50,7 +50,7 @@
 
 [core]
 	editor = vim
-	excludesfile = /Users/bracer/.gitignore
+	excludesfile = $HOME/.gitignore
 
 [pager]
 	color = true
