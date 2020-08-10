@@ -1,8 +1,10 @@
 # https://superuser.com/a/583502/24703
 if [ -n "$TMUX" ]; then
-  if [ -f /etc/profile ]; then
-    PATH=""
-    source /etc/profile
+  if [ `uname` = 'Darwin' ]; then
+    if [ -f /etc/profile ]; then
+      PATH=""
+      source /etc/profile
+    fi
   fi
 fi
 
@@ -17,8 +19,7 @@ source ~/.zplug/init.zsh
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
 
-  autoload -Uz compinit
-  compinit
+  autoload -Uz compinit && compinit
 fi
 
 # Make sure to use double quotes for zplug
@@ -41,6 +42,7 @@ zplug "supercrabtree/k"
 zplug "zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-completions"
 zplug "Aloxaf/fzf-tab"
+zplug "agkozak/zsh-z"
 zplug "zsh-users/zsh-history-substring-search", defer:3
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 

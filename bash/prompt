@@ -224,5 +224,5 @@ stt_title () { setTerminalText 2 $@; }
 
 export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND} bash_prompt"
 
-precmd() { eval "$PROMPT_COMMAND\n" }
+# precmd() { eval "$PROMPT_COMMAND\n" }
 RPROMPT='%*'
