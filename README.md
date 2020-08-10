@@ -19,9 +19,9 @@ make install
 # Setup python
 curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
 exec $SHELL
-pyenv install 2.7.17
-pyenv install 3.8.1
-pyenv global 3.8.1
+pyenv install 2.7.18
+pyenv install 3.8.5
+pyenv global 3.8.5
 pip3 install --upgrade pip
 
 # (optional) Homebrew setup doctor
@@ -32,12 +32,12 @@ export CPPFLAGS="-I/usr/local/opt/openssl/include"
 pyenv doctor
 
 # Setup Vim
-pyenv virtualenv 2.7.17 neovim2
+pyenv virtualenv 2.7.18 neovim2
 pyenv activate neovim2
 pip install --upgrade pip
 pip install --upgrade flake8 neovim pynvim
 
-pyenv virtualenv 3.8.1 neovim3
+pyenv virtualenv 3.8.5 neovim3
 pyenv activate neovim3
 pip install --upgrade pip
 pip install --upgrade flake8 neovim pynvim
