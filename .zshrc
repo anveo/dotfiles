@@ -100,12 +100,12 @@ fi
 # spaceship-prompt
 zplug "denysdovhan/spaceship-prompt", use:spaceship.zsh, from:github, as:theme
 
-source $HOME/dotfiles/zsh/spaceship-prompt/sections/aws_vault.zsh
-source $HOME/dotfiles/zsh/spaceship-prompt/sections/k8s.zsh
-source $HOME/dotfiles/zsh/spaceship-prompt/sections/op.zsh
-source $HOME/dotfiles/zsh/spaceship-prompt/sections/subshell.zsh
-
 if zplug check "denysdovhan/spaceship-prompt"; then
+  source $HOME/dotfiles/zsh/spaceship-prompt/sections/aws_vault.zsh
+  source $HOME/dotfiles/zsh/spaceship-prompt/sections/k8s.zsh
+  source $HOME/dotfiles/zsh/spaceship-prompt/sections/op.zsh
+  source $HOME/dotfiles/zsh/spaceship-prompt/sections/subshell.zsh
+
   SPACESHIP_TIME_SHOW=true
   SPACESHIP_TIME_COLOR="250"
   SPACESHIP_CHAR_SYMBOL="∴"

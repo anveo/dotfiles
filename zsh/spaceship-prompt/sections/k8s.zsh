@@ -21,7 +21,9 @@ SPACESHIP_KUBECTL_SYMBOL="${SPACESHIP_KUBECTL_SYMBOL="☸️  "}"
 # ------------------------------------------------------------------------------
 
 # source "$SPACESHIP_ROOT/sections/kubectl_version.zsh"
-source "$SPACESHIP_ROOT/sections/kubectl_context.zsh"
+# source "$SPACESHIP_ROOT/sections/kubectl_context.zsh"
+# HACK SPACESHIP_ROOT isn't available yet
+source "$HOME/.zplug/repos/denysdovhan/spaceship-prompt/sections/kubectl_context.zsh"
 
 # ------------------------------------------------------------------------------
 # Section
