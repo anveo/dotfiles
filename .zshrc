@@ -101,6 +101,7 @@ fi
 zplug "denysdovhan/spaceship-prompt", use:spaceship.zsh, from:github, as:theme
 
 source $HOME/dotfiles/zsh/spaceship-prompt/sections/aws_vault.zsh
+source $HOME/dotfiles/zsh/spaceship-prompt/sections/k8s.zsh
 source $HOME/dotfiles/zsh/spaceship-prompt/sections/op.zsh
 source $HOME/dotfiles/zsh/spaceship-prompt/sections/subshell.zsh
 
@@ -115,7 +116,6 @@ if zplug check "denysdovhan/spaceship-prompt"; then
   SPACESHIP_DIR_TRUNC="8"
   SPACESHIP_DIR_LOCK_SYMBOL="${SPACESHIP_DIR_LOCK_SYMBOL=" "}"
   SPACESHIP_GIT_PREFIX=""
-  # SPACESHIP_KUBECONTEXT_SYMBOL=" "
   SPACESHIP_NODE_SYMBOL=" "
   SPACESHIP_PACKAGE_SHOW="false"
   SPACESHIP_PYENV_SYMBOL=" "
@@ -128,6 +128,21 @@ if zplug check "denysdovhan/spaceship-prompt"; then
   SPACESHIP_BATTERY_SYMBOL_DISCHARGING="⇣   "
   SPACESHIP_BATTERY_SYMBOL_CHARGING="⇡   "
   SPACESHIP_BATTERY_THRESHOLD="20"
+
+  SPACESHIP_KUBECTL_SHOW="true"
+  SPACESHIP_KUBECTL_SYMBOL="k8s:"
+  SPACESHIP_KUBECTL_COLOR="magenta"
+  SPACESHIP_KUBECONTEXT_COLOR_GROUPS=(
+    # red if namespace is "kube-system"
+    red    '\(kube-system)$'
+    # else, green if "dev-01" is anywhere in the context or namespace
+    green  dev
+    # else, red if context name ends with ".k8s.local" _and_ namespace is "system"
+    red    '\.k8s\.local \(system)$'
+    red    'prod'
+    # else, yellow if the entire content is "test-" followed by digits, and no namespace is displayed
+    yellow '^test-[0-9]+$'
+  )
 
   SPACESHIP_PROMPT_ORDER=(
     subshell
@@ -155,7 +170,10 @@ if zplug check "denysdovhan/spaceship-prompt"; then
     conda         # conda virtualenv section
     # dotnet        # .NET section
     # ember         # Ember.js section
-    kubecontext   # Kubectl context section
+    k8s
+    # kubectl_context   # Kubectl context section
+    # kubectl_version
+    # kubectl
     terraform     # Terraform workspace section
     # exec_time     # Execution time
     line_sep      # Line break
