@@ -17,8 +17,9 @@ ln -fs $HOME/dotfiles/vimfiles/.vimrc $HOME/.vimrc
 
 # neovim
 mkdir -p $HOME/.config
-mkdir -p $HOME/.config/kitty
+mkdir -p $HOME/.config/kitty/themes
 ln -nfs $HOME/dotfiles/kitty.conf $HOME/.config/kitty/kitty.conf
+ln -nfs $HOME/dotfiles/extras/kitty/themes/brian.conf $HOME/.config/kitty/themes/brian.conf
 ln -nfs $HOME/dotfiles/vimfiles $HOME/.config/nvim
 
 # zsh
