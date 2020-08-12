@@ -35,6 +35,11 @@ if [ -d "$HOME/Library/Android/sdk" ]; then
   export PATH=$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH
 fi
 
+if [ -e "/usr/local/cuda" ]; then
+  export PATH=$PATH:/usr/local/cuda/bin
+  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64
+fi
+
 export GRADLE_OPTS="$GRADLE_OPTS -Dorg.gradle.daemon=true"
 
 # npm bin

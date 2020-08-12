@@ -4,6 +4,7 @@ set -e
 
 # misc
 mkdir -p $HOME/bin
+mkdir -p $HOME/local/include # gcc warning
 mkdir -p $HOME/tmp
 
 ln -fs $HOME/dotfiles/scripts/consolidate-path $HOME/bin/consolidate-path
@@ -16,6 +17,8 @@ ln -fs $HOME/dotfiles/vimfiles/.vimrc $HOME/.vimrc
 
 # neovim
 mkdir -p $HOME/.config
+mkdir -p $HOME/.config/kitty
+ln -nfs $HOME/dotfiles/kitty.conf $HOME/.config/kitty/kitty.conf
 ln -nfs $HOME/dotfiles/vimfiles $HOME/.config/nvim
 
 # zsh
