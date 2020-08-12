@@ -131,7 +131,7 @@ if zplug check "denysdovhan/spaceship-prompt"; then
 
   SPACESHIP_KUBECTL_SHOW="true"
   SPACESHIP_KUBECTL_SYMBOL="k8s:"
-  SPACESHIP_KUBECTL_COLOR="magenta"
+  SPACESHIP_KUBECTL_COLOR="025"
   SPACESHIP_KUBECONTEXT_COLOR_GROUPS=(
     # red if namespace is "kube-system"
     red    '\(kube-system)$'
