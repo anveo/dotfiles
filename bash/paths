@@ -21,6 +21,10 @@ if [ -d "$HOME/.krew" ]; then
   export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 fi
 
+if [ -d /home/linuxbrew ]; then
+  eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+fi
+
 # $HOME/local paths
 export PATH="${HOME}/bin:${HOME}/local/bin:${PATH}"
 export MANPATH="${HOME}/local/share/man:${MANPATH}"
