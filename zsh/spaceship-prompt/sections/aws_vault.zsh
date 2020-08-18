@@ -21,10 +21,18 @@ spaceship_awsvault() {
   # Check to see if we're in an AWS VAULT section
   [[ -z $AWS_VAULT ]] && return
 
+  # Check to see if the credentials are expired
+  EXPIRED=""
+  CURRENT_TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ") # `date --iso-8601=ns` does not work by default on MacOS
+
+  if [[ $CURRENT_TIMESTAMP > $AWS_SESSION_EXPIRATION ]]; then
+    EXPIRED=" (expired)"
+  fi
+
   # Show prompt section
   spaceship::section \
     "$SPACESHIP_AWSVAULT_COLOR" \
     "$SPACESHIP_AWSVAULT_PREFIX" \
-    "${SPACESHIP_AWSVAULT_SYMBOL}$AWS_VAULT" \
+    "${SPACESHIP_AWSVAULT_SYMBOL}$AWS_VAULT$EXPIRED" \
     "$SPACESHIP_AWSVAULT_SUFFIX"
 }
