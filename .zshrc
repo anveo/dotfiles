@@ -73,6 +73,8 @@ if zplug check "zsh-users/zsh-autosuggestions"; then
 
   zstyle :bracketed-paste-magic paste-init pasteinit
   zstyle :bracketed-paste-magic paste-finish pastefinish
+
+  bindkey '^ ' autosuggest-accept
 fi
 
 zplug "mollifier/anyframe"
@@ -124,6 +126,8 @@ if zplug check "denysdovhan/spaceship-prompt"; then
   SPACESHIP_VENV_COLOR="green"
   SPACESHIP_RUBY_SYMBOL="  "
   SPACESHIP_EXIT_CODE_SHOW="true"
+  SPACESHIP_RUST_SYMBOL=" "
+  SPACESHIP_RUST_VERBOSE_VERSION="true"
 
   SPACESHIP_BATTERY_SYMBOL_DISCHARGING="⇣   "
   SPACESHIP_BATTERY_SYMBOL_CHARGING="⇡   "

@@ -21,6 +21,8 @@ mkdir -p $HOME/.config/kitty/themes
 ln -nfs $HOME/dotfiles/kitty.conf $HOME/.config/kitty/kitty.conf
 ln -nfs $HOME/dotfiles/extras/kitty/themes/brian.conf $HOME/.config/kitty/themes/brian.conf
 ln -nfs $HOME/dotfiles/vimfiles $HOME/.config/nvim
+mkdir -p $HOME/.config/autokey/data
+ln -nfs $HOME/dotfiles/extras/autokey/emacs $HOME/.config/autokey/data/emacs
 
 # zsh
 ln -nfs $HOME/dotfiles/.zshrc $HOME/.zshrc

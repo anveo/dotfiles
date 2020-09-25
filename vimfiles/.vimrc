@@ -64,6 +64,7 @@ Plug 'Shougo/neosnippet-snippets'
 Plug 'davidhalter/jedi-vim'
 Plug 'chriskempson/base16-vim'
 Plug 'cespare/vim-toml'
+Plug 'rust-lang/rust.vim'
 
 " neovim specific
 if has('nvim')
