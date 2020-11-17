@@ -51,4 +51,3 @@ source $HOME/dotfiles/shell/z.sh
 if [ -f ~/.localrc ]; then
   . ~/.localrc
 fi
-

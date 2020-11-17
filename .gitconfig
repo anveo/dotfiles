@@ -45,9 +45,6 @@
 [github]
         user = anveo
 
-[credential]
-	helper = git-credential-osxkeychain
-
 [core]
 	editor = vim
 	excludesfile = $HOME/.gitignore
@@ -93,12 +90,6 @@
   mergeoptions = --no-ff
 [mergetool]
 	keepBackup = true
-[difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path =
-[mergetool "sourcetree"]
-	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
 [color "diff-highlight"]
 	oldNormal = red bold
 	oldHighlight = red bold 52
