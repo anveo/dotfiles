@@ -215,3 +215,25 @@ clearDockerLog() {
   screen -S dockerlogdelete -p 0 -X stuff $'\n'
   screen -S dockerlogdelete -X quit
 }
+
+# set OP_ACCOUNT in ~/.localrc or similar
+opon() {
+  if [[ -z $OP_SESSION ]]; then
+    eval $(op signin $OP_ACCOUNT)
+
+    OS_TYPE=$(uname -s)
+    if [ "$OS_TYPE" = Darwin ]; then # MacOS
+      OP_EXPIRATION_TIME=$(date -v +30M -u +"%Y-%m-%dT%H:%M:%SZ")
+    elif [ "$OS_TYPE" = Linux ]; then
+      OP_EXPIRATION_TIME=$(date -d '+30 min' -u +"%Y-%m-%dT%H:%M:%SZ")
+    fi
+
+    export OP_SESSION_EXPIRATION="$OP_EXPIRATION_TIME"
+  fi
+}
+
+opoff() {
+  op signout
+  unset OP_SESSION_$OP_ACCOUNT
+  unset OP_SESSION_EXPIRATION
+}
