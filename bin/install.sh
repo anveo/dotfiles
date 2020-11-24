@@ -6,6 +6,7 @@ set -e
 mkdir -p $HOME/bin
 mkdir -p $HOME/local/include # gcc warning
 mkdir -p $HOME/tmp
+touch $HOME/.gitsecrets
 
 ln -fs $HOME/dotfiles/scripts/consolidate-path $HOME/bin/consolidate-path
 
