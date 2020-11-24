@@ -64,10 +64,10 @@ else
 endif
 
 let g:ctrlp_custom_ignore = {
-	\ 'dir':  '\.git$\|\.hg$\|\.svn$|tmp$\|node_modules\|.kitchen',
-	\ 'file': '\.exe$\|\.so$\|\.dll$',
-	\ 'link': 'some_bad_symbolic_link',
-	\ }
+      \ 'dir':  '\.git$\|\.hg$\|\.svn$|tmp$\|node_modules\|.kitchen',
+      \ 'file': '\.exe$\|\.so$\|\.dll$',
+      \ 'link': 'some_bad_symbolic_link',
+      \ }
 
 " Syntastic
 " mark syntax errors with :signs
