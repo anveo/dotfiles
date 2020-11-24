@@ -234,6 +234,6 @@ opon() {
 
 opoff() {
   op signout
-  unset OP_SESSION_$OP_ACCOUNT
+  unset OP_SESSION
   unset OP_SESSION_EXPIRATION
 }
