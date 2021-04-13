@@ -229,6 +229,7 @@ ssh-reagent () {
 
 # alias netlisteners='lsof -i -P | grep LISTEN'
 alias netlisteners='sudo lsof -PiTCP -sTCP:LISTEN'
+alias ports='sudo netstat -tuplen'
 
 alias hb="hub browse"
 
