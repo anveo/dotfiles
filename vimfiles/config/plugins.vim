@@ -48,7 +48,7 @@ nnoremap <C-B> :BufExplorer<cr>
 let g:bufExplorerShowRelativePath=1
 
 " CtrlP
-let g:ctrlp_map = '<c-f>'
+let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 
 let g:ctrlp_use_caching = 0
@@ -225,7 +225,12 @@ let g:vim_json_syntax_conceal = 0
 
 " FZF
 " - down / up / left / right
-let g:fzf_layout = { 'down': '~40%' }
+" let g:fzf_layout = { 'down': '~40%' }
+if exists('$TMUX')
+  let g:fzf_layout = { 'tmux': '-p90%,90%' }
+else
+  let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9 } }
+endif
 
 " In Neovim, you can set up fzf window using a Vim command
 " let g:fzf_layout = { 'window': 'enew' }
@@ -261,11 +266,13 @@ nmap <leader><tab> <plug>(fzf-maps-n)
 xmap <leader><tab> <plug>(fzf-maps-x)
 omap <leader><tab> <plug>(fzf-maps-o)
 
-" Insert mode completion
+" Insert moce completion
 imap <c-x><c-k> <plug>(fzf-complete-word)
 imap <c-x><c-f> <plug>(fzf-complete-path)
 imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 imap <c-x><c-l> <plug>(fzf-complete-line)
+
+nmap <c-f> :GFiles<cr>
 
 " faster semshi highlights
 let g:deoplete#custom#auto_complete_delay = 100
