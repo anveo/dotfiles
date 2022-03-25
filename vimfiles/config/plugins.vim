@@ -278,5 +278,5 @@ nmap <c-f> :GFiles<cr>
 let g:deoplete#custom#auto_complete_delay = 100
 let g:deoplete#custom#enable_at_startup = 1
 
-let g:python_host_prog = expand('$HOME/.pyenv/versions/neovim2/bin/python')
+" let g:python_host_prog = expand('$HOME/.pyenv/versions/neovim2/bin/python')
 let g:python3_host_prog = expand('$HOME/.pyenv/versions/neovim3/bin/python')
