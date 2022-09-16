@@ -57,7 +57,14 @@ export GRADLE_OPTS="$GRADLE_OPTS -Dorg.gradle.daemon=true"
 # npm bin
 export PATH="./node_modules/.bin:$PATH"
 
-export PATH=/usr/local/opt/go/libexec/bin:$PATH
+if [ -d "/usr/local/opt/go/libexec/bin" ]; then
+  export PATH=/usr/local/opt/go/libexec/bin:$PATH
+fi
+
+if [ -d "/usr/local/go/bin" ]; then
+  export PATH=/usr/local/go/bin:$PATH
+fi
+
 export GOPATH=$HOME/go
 export PATH=$GOPATH/bin:$PATH
 
