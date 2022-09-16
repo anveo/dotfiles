@@ -181,7 +181,7 @@ else
   alias pbpaste='xclip -selection clipboard -o'
   # Or
   # alias pbcopy='xsel --clipboard --input'
-  # alias pbcopy='xsel --clipboard --output'
+  # alias pbpaste='xsel --clipboard --output'
 fi
 
 

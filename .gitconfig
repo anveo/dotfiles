@@ -117,3 +117,5 @@
 
 [include]
     path = .gitsecrets
+[init]
+	defaultBranch = main
