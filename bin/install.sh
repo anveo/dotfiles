@@ -16,6 +16,8 @@ ln -nfs $HOME/dotfiles/scripts $HOME/scripts
 ln -nfs $HOME/dotfiles/vimfiles $HOME/.vim
 ln -fs $HOME/dotfiles/vimfiles/.vimrc $HOME/.vimrc
 
+ln -nfs $HOME/dotfiles/.spaceshiprc.zsh $HOME/.spaceshiprc.zsh
+
 # neovim
 mkdir -p $HOME/.config
 mkdir -p $HOME/.config/kitty/themes

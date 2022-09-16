@@ -18,7 +18,10 @@ SPACESHIP_OP_COLOR="${SPACESHIP_OP_COLOR="blue"}"
 spaceship_op() {
   [[ $SPACESHIP_OP_SHOW == false ]] && return
 
-  op_session=`env | grep -v '^OP_SESSION_EXPIRATION' | grep '^OP_SESSION_' | cut -d'=' -f1 | sed -e's/OP_SESSION_//g' | tr -d '\n'`
+  # Check if op command is available for execution
+  spaceship::exists op || return
+
+  local op_session=`env | grep -v '^OP_SESSION_EXPIRATION' | grep '^OP_SESSION_' | cut -d'=' -f1 | sed -e's/OP_SESSION_//g' | tr -d '\n'`
 
   # Check to see if a 1password session is active
   [[ -z $op_session ]] && return
@@ -32,10 +35,10 @@ spaceship_op() {
   fi
 
   # Show prompt section
-  spaceship::section \
-    "$SPACESHIP_OP_COLOR" \
-    "$SPACESHIP_OP_PREFIX" \
-    "${SPACESHIP_OP_SYMBOL}$op_session$OP_EXPIRED" \
-    "$SPACESHIP_OP_SUFFIX"
+  spaceship::section::v4 \
+    --color "$SPACESHIP_OP_COLOR" \
+    --prefix "$SPACESHIP_OP_PREFIX" \
+    --suffix "$SPACESHIP_OP_SUFFIX" \
+    --symbol "$SPACESHIP_OP_SYMBOL" \
+    "$op_session$OP_EXPIRED"
 }
-

@@ -18,6 +18,9 @@ SPACESHIP_AWSVAULT_COLOR="${SPACESHIP_AWSVAULT_COLOR="208"}"
 spaceship_awsvault() {
   [[ $SPACESHIP_AWSVAULT_SHOW == false ]] && return
 
+  # Check if aws-vault command is available for execution
+  spaceship::exists aws-vault || return
+
   # Check to see if we're in an AWS VAULT section
   [[ -z $AWS_VAULT ]] && return
 
@@ -30,9 +33,10 @@ spaceship_awsvault() {
   fi
 
   # Show prompt section
-  spaceship::section \
-    "$SPACESHIP_AWSVAULT_COLOR" \
-    "$SPACESHIP_AWSVAULT_PREFIX" \
-    "${SPACESHIP_AWSVAULT_SYMBOL}$AWS_VAULT$EXPIRED" \
-    "$SPACESHIP_AWSVAULT_SUFFIX"
+  spaceship::section::v4 \
+    --color "$SPACESHIP_AWSVAULT_COLOR" \
+    --prefix "$SPACESHIP_AWSVAULT_PREFIX" \
+    --suffix "$SPACESHIP_AWSVAULT_SUFFIX" \
+    --symbol "$SPACESHIP_AWSVAULT_SYMBOL" \
+    "$AWS_VAULT$EXPIRED"
 }

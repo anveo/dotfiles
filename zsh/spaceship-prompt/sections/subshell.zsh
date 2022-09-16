@@ -33,10 +33,11 @@ spaceship_subshell() {
   done;
 
   # Show prompt section
-  spaceship::section \
-    "$SPACESHIP_SUBSHELL_COLOR" \
-    "$SPACESHIP_SUBSHELL_PREFIX" \
-    "${SPACESHIP_SUBSHELL_SYMBOL}$suffix" \
-    "$SPACESHIP_SUBSHELL_SUFFIX"
+  spaceship::section::v4 \
+    --color "$SPACESHIP_SUBSHELL_COLOR" \
+    --prefix "$SPACESHIP_SUBSHELL_PREFIX" \
+    --suffix "$SPACESHIP_SUBSHELL_SUFFIX" \
+    --symbol "$SPACESHIP_SUBSHELL_SYMBOL" \
+    "$suffix"
 }
 
