@@ -1,4 +1,5 @@
-local hyper = { "cmd", "alt", "ctrl", "shift" }
+-- local hyper = { "cmd", "alt", "ctrl", "shift" }
+local hyper = { "cmd", "alt", "ctrl" }
 
 hs.hotkey.bind(hyper, "0", function()
   hs.reload()
@@ -22,7 +23,7 @@ hs.grid.setMargins(hs.geometry.size(0, 0))
 hs.grid.setGrid(hs.geometry.size(4, 4))
 
 -- Show grid
-hs.hotkey.bind(hyper, "g", hs.grid.toggleShow)
+hs.hotkey.bind(hyper, "h", hs.grid.toggleShow)
 
 -- Use Karabiner-EventViewer->Frontmost application to find bundle identifiers
 hs.hotkey.bind(hyper, "1", focusApp("com.google.Chrome"))
