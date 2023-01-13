@@ -215,7 +215,7 @@ extract () {
 }
 alias xtract="extract"
 
-ssh-reagent () {
+function ssh-reagent () {
   for agent in /tmp/ssh-*/agent.*; do
     export SSH_AUTH_SOCK=$agent
     if ssh-add -l 2>&1 > /dev/null; then
@@ -267,3 +267,18 @@ alias path='echo -e ${PATH//:/\\n}'
 alias tb="nc termbin.com 9999"
 
 alias ov="overmind"
+
+function dmk () {
+  eval $(minikube -p minikube docker-env)
+}
+
+function undmk () {
+  unset DOCKER_TLS_VERIFY
+  unset DOCKER_HOST
+  unset DOCKER_CERT_PATH
+  unset MINIKUBE_ACTIVE_DOCKERD
+}
+
+alias mk="minikube"
+alias k="kubectl"
+
