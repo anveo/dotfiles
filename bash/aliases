@@ -246,7 +246,7 @@ alias tflip="tmux new -s '🖕 🙃 🖕'"
 alias ag='ag --hidden '
 
 # docker
-alias dc='docker-compose'
+alias dc='docker compose'
 
 alias tmux='direnv exec / tmux'
 
