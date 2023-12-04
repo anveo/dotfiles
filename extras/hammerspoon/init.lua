@@ -1,5 +1,5 @@
--- local hyper = { "cmd", "alt", "ctrl", "shift" }
-local hyper = { "cmd", "alt", "ctrl" }
+local hyper = { "cmd", "alt", "ctrl", "shift" }
+-- local hyper = { "cmd", "alt", "ctrl" }
 
 hs.hotkey.bind(hyper, "0", function()
   hs.reload()
@@ -40,6 +40,8 @@ hs.hotkey.bind(hyper, "7", focusApp("Figma"))
 hs.hotkey.bind(hyper, "f", focusApp("Figma"))
 hs.hotkey.bind(hyper, "m", focusApp("Miro"))
 hs.hotkey.bind(hyper, "g", focusApp("DataGrip"))
+hs.hotkey.bind(hyper, "z", focusApp("Zoom"))
+hs.hotkey.bind(hyper, "c", focusApp("ChatGPT"))
 
 hs.hotkey.bind(hyper, "k", function()
   local win = hs.window.focusedWindow();
