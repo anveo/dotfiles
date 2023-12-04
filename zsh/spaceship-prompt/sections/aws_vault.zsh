@@ -28,7 +28,7 @@ spaceship_awsvault() {
   EXPIRED=""
   CURRENT_TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ") # `date --iso-8601=ns` does not work by default on MacOS
 
-  if [[ $CURRENT_TIMESTAMP > $AWS_SESSION_EXPIRATION ]]; then
+  if [[ $CURRENT_TIMESTAMP > $AWS_CREDENTIAL_EXPIRATION ]]; then
     EXPIRED=" (expired)"
   fi
 

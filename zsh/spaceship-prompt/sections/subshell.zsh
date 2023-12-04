@@ -29,7 +29,7 @@ spaceship_subshell() {
 
   # Start at 1 since you can never have a subshell level of zero
   for (( i = 1; i < $lvl - 1; i++ )); do
-    suffix+="﬌ ";
+    suffix+=" ";
   done;
 
   # Show prompt section
