@@ -237,3 +237,9 @@ opoff() {
   unset OP_SESSION
   unset OP_SESSION_EXPIRATION
 }
+
+# Update version managers
+function updatevm() {
+  cd ~/.rbenv/ && git pull && cd -
+  cd ~/.rbenv/plugins/ruby-build/ && git pull && cd -
+}
