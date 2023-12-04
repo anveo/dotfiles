@@ -27,11 +27,21 @@ hs.hotkey.bind(hyper, "g", hs.grid.toggleShow)
 -- Use Karabiner-EventViewer->Frontmost application to find bundle identifiers
 hs.hotkey.bind(hyper, "1", focusApp("com.google.Chrome"))
 hs.hotkey.bind(hyper, "2", focusApp("com.googlecode.iterm2"))
+hs.hotkey.bind(hyper, "t", focusApp("com.googlecode.iterm2"))
 hs.hotkey.bind(hyper, "3", focusApp("Code")) -- com.microsoft.VSCode
+hs.hotkey.bind(hyper, "4", focusApp("Notion"))
+hs.hotkey.bind(hyper, "n", focusApp("Notion"))
+hs.hotkey.bind(hyper, "5", focusApp("Slack"))
+hs.hotkey.bind(hyper, "s", focusApp("Slack"))
+hs.hotkey.bind(hyper, "6", focusApp("Discord"))
+hs.hotkey.bind(hyper, "d", focusApp("Discord"))
+hs.hotkey.bind(hyper, "7", focusApp("Figma"))
+hs.hotkey.bind(hyper, "f", focusApp("Figma"))
+hs.hotkey.bind(hyper, "m", focusApp("Miro"))
+hs.hotkey.bind(hyper, "g", focusApp("DataGrip"))
 
 hs.hotkey.bind(hyper, "k", function()
   local win = hs.window.focusedWindow();
   if not win then return end
   win:moveToScreen(win:screen():next())
 end)
-
