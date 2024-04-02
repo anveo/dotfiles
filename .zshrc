@@ -1,3 +1,5 @@
+# zmodload zsh/zprof
+
 # https://superuser.com/a/583502/24703
 if [ -n "$TMUX" ]; then
   if [ `uname` = 'Darwin' ]; then
@@ -155,3 +157,5 @@ export PATH
 export PATH="$($HOME/dotfiles/scripts/consolidate-path)"
 
 zplug load # --verbose
+
+# zprof

@@ -48,8 +48,8 @@ vim
 :PlugUpdate
 :UpdateRemotePlugins # neovim
 
-# nvm
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.1/install.sh | bash
+# fnm
+curl -fsSL https://fnm.vercel.app/install | bash
 
 # set default shell
 chsh -s $(which zsh)

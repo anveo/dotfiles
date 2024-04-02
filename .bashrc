@@ -43,7 +43,8 @@ source $HOME/dotfiles/bash/prompt
 # source $HOME/dotfiles/shell/direnv.sh
 source $HOME/dotfiles/shell/adobe.sh
 source $HOME/dotfiles/shell/fzf.sh
-source $HOME/dotfiles/shell/nvm.sh
+# source $HOME/dotfiles/shell/nvm.sh
+source $HOME/dotfiles/shell/fnm.sh
 source $HOME/dotfiles/shell/rbenv.sh
 source $HOME/dotfiles/shell/z.sh
 

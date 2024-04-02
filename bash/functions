@@ -239,7 +239,9 @@ opoff() {
 }
 
 # Update version managers
-function updatevm() {
+updatevm() {
   cd ~/.rbenv/ && git pull && cd -
   cd ~/.rbenv/plugins/ruby-build/ && git pull && cd -
+  pyenv update
+  curl -fsSL https://fnm.vercel.app/install | bash -s -- --install-dir "./.fnm" --skip-shell
 }
