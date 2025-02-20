@@ -55,8 +55,7 @@
         #show = diff-so-fancy | less --tabs=4 -RFX
 
 [merge]
-	stat = true
-        diff = vimdiff
+	conflictstyle = zdiff3
 
 [branch]
   # When creating a new branch off a remote branch, always set it up to
@@ -88,8 +87,10 @@
   # the log.
   #mergeoptions = --no-commit --no-ff
   mergeoptions = --no-ff
+
 [mergetool]
 	keepBackup = true
+
 [color "diff-highlight"]
 	oldNormal = red bold
 	oldHighlight = red bold 52
@@ -103,6 +104,7 @@
     diffFilter = delta --color-only
 
 [delta]
+    navigate = true
     features = side-by-side line-numbers decorations
     whitespace-error-style = 22 reverse
     plus-color = "#012800"
