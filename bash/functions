@@ -238,6 +238,88 @@ opoff() {
   unset OP_SESSION_EXPIRATION
 }
 
+latestlang() {
+  for cmd in htmlq jq curl; do
+    if ! command -v $cmd &> /dev/null; then
+      echo "Error: $cmd is required but not installed."
+      exit 1
+    fi
+  done
+
+  ########################################
+  # Ruby
+  ########################################
+
+  RUBY_VERSION=$(curl -s https://www.ruby-lang.org/en/downloads/ | grep -oP 'The current stable version is \K[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+  if [ ! -z "$RUBY_VERSION" ]; then
+    # echo "Ruby: $RUBY_VERSION"
+  else
+    echo "Ruby: Failed to determine latest version"
+  fi
+
+  ########################################
+  # NodeJS
+  ########################################
+
+  NODE_DATA=$(curl -s https://nodejs.org/dist/index.json)
+
+  if [ -z "$NODE_DATA" ]; then
+    echo "Failed to fetch Node.js version data."
+    exit 1
+  fi
+
+  NODE_VERSION=$(echo "$NODE_DATA" | jq -r '.[0].version' | tr -d 'v')
+  NODE_LTS_VERSION=$(echo "$NODE_DATA" | jq -r '[.[] | select(.lts != false)] | .[0].version' | tr -d 'v')
+  NODE_LTS_NAME=$(echo "$NODE_DATA" | jq -r '[.[] | select(.lts != false)] | .[0].lts')
+
+  # echo "Node.js: $LATEST_VERSION"
+  # echo "LTS Node.js: $LATEST_LTS (codename: $LTS_NAME)"
+
+  ########################################
+  # Python
+  ########################################
+
+  PYTHON_VERSION=$(curl -s --compressed https://www.python.org/downloads/ |
+                  htmlq '.download-list-widget' --text |
+                  grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+' |
+                  sort -t. -k1,1n -k2,2n -k3,3n |
+                  tail -n1)
+
+  if [ -z "$PYTHON_VERSION" ]; then
+    echo "Failed to determine latest Python version."
+    exit 1
+  fi
+
+  # echo "Python: $PYTHON_VERSION"
+
+  ########################################
+  # Golang
+  ########################################
+
+  GOLANG_DATA=$(curl -s "https://go.dev/dl/?mode=json")
+
+  if [ -z "$GOLANG_DATA" ]; then
+    echo "Failed to fetch Golang version data."
+    exit 1
+  fi
+
+  GO_VERSION=$(echo "$GOLANG_DATA" | jq -r '[.[] | select(.stable == true)] | .[0].version' | sed 's/^go//')
+
+  if [ -z "$GO_VERSION" ] || [ "$GO_VERSION" = "null" ]; then
+    echo "Failed to extract latest stable Golang version."
+    exit 1
+  fi
+
+  # echo "Golang: $GO_VERSION"
+
+  column -t -s':' -o' | ' <(echo "LANGUAGE: VERSION";
+                            echo "Ruby: $RUBY_VERSION";
+                            echo "Node.js: $NODE_VERSION";
+                            echo "Node.js LTS: $NODE_LTS_VERSION ($NODE_LTS_NAME)";
+                            echo "Python: $PYTHON_VERSION";
+                            echo "Golang: $GO_VERSION")
+}
+
 # Update version managers
 updatevm() {
   cd ~/.rbenv/ && git pull && cd -
