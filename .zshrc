@@ -150,6 +150,17 @@ if ! zplug check --verbose; then
     fi
 fi
 
+# Emacs style
+# autoload -z edit-and-execute-command
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '^xe' edit-command-line
+bindkey '^x^e' edit-command-line
+
+# autoload edit-and-execute-command
+# zle -N edit-and-execute-command
+# bindkey '^Xe' edit-and-execute-command
+
 export PATH="./bin:$PATH"
 
 # remove dups, useful with subshells
