@@ -20,9 +20,9 @@ make install
 curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
 exec $SHELL
 pyenv install 2.7.18
-pyenv install 3.12.0
-pyenv global 3.12.0
-    pip3 install --upgrade pip
+pyenv install 3.12.3
+pyenv global 3.12.3
+pip3 install --upgrade pip
 
 # (optional) Homebrew setup doctor
 # set these env vars if `pyenv doctor` errors
@@ -49,7 +49,11 @@ vim
 :UpdateRemotePlugins # neovim
 
 # fnm
+brew install unzip
 curl -fsSL https://fnm.vercel.app/install | bash
+
+# WSL
+command -v zsh | sudo tee -a /etc/shells
 
 # set default shell
 chsh -s $(which zsh)
