@@ -46,6 +46,7 @@ source $HOME/dotfiles/shell/fzf.sh
 # source $HOME/dotfiles/shell/nvm.sh
 source $HOME/dotfiles/shell/fnm.sh
 source $HOME/dotfiles/shell/rbenv.sh
+source $HOME/dotfiles/shell/uv.sh
 source $HOME/dotfiles/shell/z.sh
 
 # Put secret stuff in here
