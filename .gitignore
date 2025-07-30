@@ -12,6 +12,9 @@ vimfiles/plugged/
 # Misc
 iTerm2-Color-Schemes
 
+# Git secrets
+.gitsecrets
+
 extras/blender/default/cache
 extras/blender/default/config/userpref.blend
 extras/blender/default/config/bookmarks.txt
