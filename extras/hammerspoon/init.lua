@@ -32,7 +32,7 @@ hs.hotkey.bind(hyper, "t", focusApp("com.googlecode.iterm2"))
 hs.hotkey.bind(hyper, "3", focusApp("Code")) -- com.microsoft.VSCode
 hs.hotkey.bind(hyper, "4", focusApp("Notion"))
 hs.hotkey.bind(hyper, "n", focusApp("Notion"))
-hs.hotkey.bind(hyper, "d", focusApp("Notion Calendar"))
+hs.hotkey.bind(hyper, "x", focusApp("Notion Calendar"))
 hs.hotkey.bind(hyper, "5", focusApp("Slack"))
 hs.hotkey.bind(hyper, "s", focusApp("Slack"))
 hs.hotkey.bind(hyper, "l", focusApp("Linear"))
