@@ -242,7 +242,7 @@ latestlang() {
   for cmd in htmlq jq curl; do
     if ! command -v $cmd &> /dev/null; then
       echo "Error: $cmd is required but not installed."
-      exit 1
+      return 1
     fi
   done
 
@@ -250,7 +250,7 @@ latestlang() {
   # Ruby
   ########################################
 
-  RUBY_VERSION=$(curl -s https://www.ruby-lang.org/en/downloads/ | grep -oP 'The current stable version is \K[0-9]+\.[0-9]+\.[0-9]+' | head -1)
+  RUBY_VERSION=$(curl -s https://www.ruby-lang.org/en/downloads/ | grep -o 'The current stable version is [0-9]\+\.[0-9]\+\.[0-9]\+' | sed 's/The current stable version is //' | head -1)
   if [ ! -z "$RUBY_VERSION" ]; then
     # echo "Ruby: $RUBY_VERSION"
   else
@@ -265,7 +265,7 @@ latestlang() {
 
   if [ -z "$NODE_DATA" ]; then
     echo "Failed to fetch Node.js version data."
-    exit 1
+    return 1
   fi
 
   NODE_VERSION=$(echo "$NODE_DATA" | jq -r '.[0].version' | tr -d 'v')
@@ -287,7 +287,7 @@ latestlang() {
 
   if [ -z "$PYTHON_VERSION" ]; then
     echo "Failed to determine latest Python version."
-    exit 1
+    return 1
   fi
 
   # echo "Python: $PYTHON_VERSION"
@@ -300,24 +300,25 @@ latestlang() {
 
   if [ -z "$GOLANG_DATA" ]; then
     echo "Failed to fetch Golang version data."
-    exit 1
+    return 1
   fi
 
   GO_VERSION=$(echo "$GOLANG_DATA" | jq -r '[.[] | select(.stable == true)] | .[0].version' | sed 's/^go//')
 
   if [ -z "$GO_VERSION" ] || [ "$GO_VERSION" = "null" ]; then
     echo "Failed to extract latest stable Golang version."
-    exit 1
+    return 1
   fi
 
-  # echo "Golang: $GO_VERSION"
+    # echo "Golang: $GO_VERSION"
 
-  column -t -s':' -o' | ' <(echo "LANGUAGE: VERSION";
-                            echo "Ruby: $RUBY_VERSION";
-                            echo "Node.js: $NODE_VERSION";
-                            echo "Node.js LTS: $NODE_LTS_VERSION ($NODE_LTS_NAME)";
-                            echo "Python: $PYTHON_VERSION";
-                            echo "Golang: $GO_VERSION")
+  # Format output without using column -o flag (not available on macOS)
+  printf "%-12s | %-20s | %s\n" "LANGUAGE" "VERSION" "INSTALL COMMAND"
+  printf "%-12s | %-20s | %s\n" "Ruby" "$RUBY_VERSION" "rbenv global \$(rbenv install -l | grep -v - | tail -1)"
+  printf "%-12s | %-20s | %s\n" "Node.js" "$NODE_VERSION" "fnm install node && fnm default node"
+  printf "%-12s | %-20s | %s\n" "Node.js LTS" "$NODE_LTS_VERSION ($NODE_LTS_NAME)" "fnm install --lts && fnm default lts-latest"
+  printf "%-12s | %-20s | %s\n" "Python" "$PYTHON_VERSION" "pyenv global \$(pyenv install -l | grep -v - | tail -1)"
+  printf "%-12s | %-20s | %s\n" "Golang" "$GO_VERSION" "go install latest"
 }
 
 # Update version managers
