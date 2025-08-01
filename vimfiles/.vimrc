@@ -62,7 +62,6 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 " Plug 'Shougo/neosnippet.vim'
 " Plug 'Shougo/neosnippet-snippets'
-Plug 'davidhalter/jedi-vim'
 Plug 'chriskempson/base16-vim'
 Plug 'cespare/vim-toml'
 Plug 'rust-lang/rust.vim'

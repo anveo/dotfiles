@@ -179,41 +179,41 @@ let g:deoplete#enable_at_startup = 1
   " autocmd! BufWritePost * Neomake
 " augroup END
 " Don't tell me to use smartquotes in markdown ok?
-let g:neomake_markdown_enabled_makers = []
+" let g:neomake_markdown_enabled_makers = []
 
-if has('nvim')
-  " Run Neomake when I save any buffer
-  augroup neomake
-    autocmd! BufWritePost * Neomake
-  augroup END
-  " Don't tell me to use smartquotes in markdown ok?
-  let g:neomake_markdown_enabled_makers = []
-end
+" if has('nvim')
+  " " Run Neomake when I save any buffer
+  " augroup neomake
+    " autocmd! BufWritePost * Neomake
+  " augroup END
+  " " Don't tell me to use smartquotes in markdown ok?
+  " let g:neomake_markdown_enabled_makers = []
+" end
 
 " Snippets
 " Note: It must be "imap" and "smap".  It uses <Plug> mappings.
-imap <c-k> <Plug>(neosnippet_expand_or_jump)
-smap <c-k> <Plug>(neosnippet_expand_or_jump)
-xmap <c-k> <Plug>(neosnippet_expand_target)
+" imap <c-k> <Plug>(neosnippet_expand_or_jump)
+" smap <c-k> <Plug>(neosnippet_expand_or_jump)
+" xmap <c-k> <Plug>(neosnippet_expand_target)
 
-imap <c-o> <Plug>(neosnippet_expand_or_jump)
-smap <c-o> <Plug>(neosnippet_expand_or_jump)
-xmap <c-o> <Plug>(neosnippet_expand_target)
-" vmap <c-k> <Plug>(neosnippet_expand_target)
+" imap <c-o> <Plug>(neosnippet_expand_or_jump)
+" smap <c-o> <Plug>(neosnippet_expand_or_jump)
+" xmap <c-o> <Plug>(neosnippet_expand_target)
+" " vmap <c-k> <Plug>(neosnippet_expand_target)
 
-" SuperTab like snippets behavior.
-imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-      \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-      \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+" " SuperTab like snippets behavior.
+" imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+      " \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+" smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+      " \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
-" disable all snippets
-let g:neosnippet#disable_runtime_snippets = {
-\   '_' : 1,
-\ }
+" " disable all snippets
+" let g:neosnippet#disable_runtime_snippets = {
+" \   '_' : 1,
+" \ }
 
-" Tell Neosnippet about the other snippets
-let g:neosnippet#snippets_directory='$HOME/.vim/_snippets'
+" " Tell Neosnippet about the other snippets
+" let g:neosnippet#snippets_directory='$HOME/.vim/_snippets'
 
 " For conceal markers.
 if has('conceal')
