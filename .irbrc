@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'irb/completion'
-require 'irb/ext/save-history'
 
 # For vim integration
 begin
@@ -71,7 +70,6 @@ IRB.conf[:USE_READLINE] = true
 IRB.conf[:AUTO_INDENT]=true
 
 # Save History between irb sessions
-require 'irb/ext/save-history'
 IRB.conf[:SAVE_HISTORY] = 100
 IRB.conf[:HISTORY_FILE] = "#{ENV['HOME']}/.irb-save-history"
 
@@ -105,7 +103,7 @@ def fl(file_name)
   @@recent = file_name
   load "#{file_name}"
 end
- 
+
 def rl
   fl(@@recent)
 end
@@ -203,4 +201,4 @@ def paste
   `pbpaste`
 end
 
-load File.dirname(__FILE__) + '/.railsrc' if $0 == 'irb' && ENV['RAILS_ENV']
+# load File.dirname(__FILE__) + '/.railsrc' if $0 == 'irb' && ENV['RAILS_ENV']
