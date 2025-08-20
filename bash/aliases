@@ -282,4 +282,4 @@ function undmk () {
 alias mk="minikube"
 alias k="kubectl"
 
-alias mkvenv="python3 -m venv .venv"
+alias mkvenv="python3 -m virtualenv -p python3 .venv"
