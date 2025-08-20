@@ -43,8 +43,8 @@ export CXXFLAGS=$CPPFLAGS
 export CFLAGS=$CPPFLAGS
 
 if [ -d "$HOME/Library/Android/sdk" ]; then
-  export PATH=$PATH:$ANDROID_HOME/emulator
   export ANDROID_HOME="$HOME/Library/Android/sdk"
+  export PATH=$PATH:$ANDROID_HOME/emulator
   export PATH=$PATH:$ANDROID_HOME/platform-tools
   # export PATH=$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH
 fi
