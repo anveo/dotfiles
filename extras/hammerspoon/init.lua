@@ -30,9 +30,9 @@ hs.hotkey.bind(hyper, "1", focusApp("com.google.Chrome"))
 hs.hotkey.bind(hyper, "2", focusApp("com.googlecode.iterm2"))
 hs.hotkey.bind(hyper, "t", focusApp("com.googlecode.iterm2"))
 hs.hotkey.bind(hyper, "3", focusApp("Code")) -- com.microsoft.VSCode
-hs.hotkey.bind(hyper, "4", focusApp("Notion"))
-hs.hotkey.bind(hyper, "n", focusApp("Notion"))
-hs.hotkey.bind(hyper, "x", focusApp("Notion Calendar"))
+hs.hotkey.bind(hyper, "4", focusApp("notion.id"))
+hs.hotkey.bind(hyper, "n", focusApp("notion.id"))
+hs.hotkey.bind(hyper, "x", focusApp("Notion Calendar")) -- com.cron.electron
 hs.hotkey.bind(hyper, "5", focusApp("Slack"))
 hs.hotkey.bind(hyper, "s", focusApp("Slack"))
 hs.hotkey.bind(hyper, "l", focusApp("Linear"))
