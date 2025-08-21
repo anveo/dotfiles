@@ -325,6 +325,6 @@ latestlang() {
 updatevm() {
   cd ~/.rbenv/ && git pull && cd -
   cd ~/.rbenv/plugins/ruby-build/ && git pull && cd -
-  pyenv update
+  cd ~/.pyenv && git pull && cd -
   curl -fsSL https://fnm.vercel.app/install | bash -s -- --install-dir "./.fnm" --skip-shell
 }
