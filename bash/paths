@@ -59,8 +59,10 @@ export GRADLE_OPTS="$GRADLE_OPTS -Dorg.gradle.daemon=true"
 # npm bin
 export PATH="./node_modules/.bin:$PATH"
 
-export GOPATH=$HOME/go
-export PATH=$GOPATH/bin:$PATH
+if [ -d "$HOME/go" ]; then
+  export GOPATH="$HOME/go"
+  export PATH="$GOPATH/bin:$PATH"
+fi
 
 # Get path to where cask was installed to double-click installer
 # brew info --cask zulu11
