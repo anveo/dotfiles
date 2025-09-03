@@ -70,4 +70,8 @@ if [ -d "/Library/Java/JavaVirtualMachines/zulu-17.jdk" ]; then
   export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
 fi
 
+if [ -d "$/opt/homebrew/opt/postgresql@17/bin" ]; then
+  export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
+fi
+
 export PIPENV_VENV_IN_PROJECT=1
