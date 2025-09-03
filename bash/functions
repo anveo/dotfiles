@@ -318,7 +318,7 @@ latestlang() {
   printf "%-12s | %-20s | %s\n" "Node.js" "$NODE_VERSION" "fnm install node && fnm default node"
   printf "%-12s | %-20s | %s\n" "Node.js LTS" "$NODE_LTS_VERSION ($NODE_LTS_NAME)" "fnm install --lts && fnm default lts-latest"
   printf "%-12s | %-20s | %s\n" "Python" "$PYTHON_VERSION" "pyenv global \$(pyenv install -l | grep -v - | tail -1)"
-  printf "%-12s | %-20s | %s\n" "Golang" "$GO_VERSION" "gvm install go$GO_VERSION && gvm use go$GO_VERSION --default"
+  printf "%-12s | %-20s | %s\n" "Golang" "$GO_VERSION" "gvm install go$GO_VERSION -B && gvm use go$GO_VERSION --default"
 }
 
 # Update version managers
