@@ -1,13 +1,13 @@
-if [ -f /usr/local/bin/rbenv ]; then
-  eval "$(rbenv init -)"
+# Add rbenv to PATH if installed locally
+if [ -f "$HOME/.rbenv/bin/rbenv" ]; then
+  export PATH="$HOME/.rbenv/bin:$PATH"
 fi
 
-if [ -f /opt/homebrew/bin/rbenv ]; then
-  eval "$(rbenv init -)"
+# Initialize rbenv if available
+if command -v rbenv >/dev/null 2>&1; then
+  if [ -n "$ZSH_VERSION" ]; then
+    eval "$(rbenv init - zsh)"
+  else
+    eval "$(rbenv init -)"
+  fi
 fi
-
-if [ -f $HOME/.rbenv/bin/rbenv ]; then
-  export PATH=$HOME/.rbenv/bin:$PATH
-  eval "$(rbenv init -)"
-fi
-
