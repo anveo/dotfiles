@@ -28,7 +28,7 @@ hs.hotkey.bind(hyper, "h", hs.grid.toggleShow)
 -- Use Karabiner-EventViewer->Frontmost application to find bundle identifiers
 hs.hotkey.bind(hyper, "1", focusApp("com.google.Chrome"))
 hs.hotkey.bind(hyper, "2", focusApp("Todoist"))
-hs.hotkey.bind(hyper, "3", focusApp("Code")) -- com.microsoft.VSCode
+hs.hotkey.bind(hyper, "3", focusApp("com.microsoft.VSCode"))
 
 hs.hotkey.bind(hyper, "t", focusApp("com.googlecode.iterm2"))
 
@@ -44,7 +44,7 @@ hs.hotkey.bind(hyper, "l", focusApp("Linear"))
 hs.hotkey.bind(hyper, "f", focusApp("Figma"))
 hs.hotkey.bind(hyper, "m", focusApp("com.electron.realtimeboard")) -- Miro
 hs.hotkey.bind(hyper, "p", focusApp("1Password"))
-hs.hotkey.bind(hyper, "g", focusApp("DataGrip"))
+hs.hotkey.bind(hyper, "j", focusApp("com.jetbrains.datagrip"))
 hs.hotkey.bind(hyper, "z", focusApp("Zoom"))
 hs.hotkey.bind(hyper, "c", focusApp("Claude"))
 hs.hotkey.bind(hyper, "g", focusApp("ChatGPT"))
