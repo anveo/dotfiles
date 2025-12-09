@@ -64,3 +64,6 @@ if [ `uname` = 'Darwin' ]; then
 
   $HOME/dotfiles/extras/macos_defaults.sh
 fi
+
+mkdir -p $HOME/.claude/{plans,plugins}
+ln -nfs $HOME/dotfiles/extras/claude/commands $HOME/.claude/commands

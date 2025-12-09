@@ -61,6 +61,9 @@ chsh -s $(which zsh)
 # zplug
 curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
 zplug install
+
+# Claude Code (optional)
+curl -fsSL https://claude.ai/install.sh | bash
 ```
 
 ## Tmux
