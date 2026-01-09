@@ -30,7 +30,13 @@ if [[ -d "$docker_completions" ]]; then
 fi
 
 # Initialize completions once after all paths are set
-autoload -Uz compinit && compinit
+# Cache compinit to speed up startup (only rebuild once per day)
+autoload -Uz compinit
+if [[ -n ${HOME}/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
 
 # Make sure to use double quotes for zplug
 
