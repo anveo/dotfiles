@@ -12,6 +12,11 @@ fi
 
 export DOTFILES=$HOME/dotfiles
 
+# Cache brew prefix once to avoid slow subshells (~100-200ms each)
+if type brew &>/dev/null; then
+  export HOMEBREW_PREFIX="${HOMEBREW_PREFIX:-$(brew --prefix)}"
+fi
+
 if [[ ! -d ~/.zplug ]];then
   git clone https://github.com/b4b4r07/zplug ~/.zplug
 fi
@@ -19,8 +24,8 @@ fi
 source ~/.zplug/init.zsh
 
 # Setup completion paths
-if type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+if [[ -n "$HOMEBREW_PREFIX" ]]; then
+  FPATH=$HOMEBREW_PREFIX/share/zsh/site-functions:$FPATH
 fi
 
 # Add Docker completions if they exist

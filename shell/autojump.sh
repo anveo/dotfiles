@@ -1,6 +1,8 @@
 # brew install autojump
 # https://github.com/joelthelion/autojump
-if type brew &>/dev/null; then
-  [[ -s `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
-fi
 
+if [[ ! -z "${BASH}" ]]; then
+  if [[ -n "$HOMEBREW_PREFIX" ]]; then
+    [[ -s $HOMEBREW_PREFIX/etc/autojump.sh ]] && . $HOMEBREW_PREFIX/etc/autojump.sh
+  fi
+fi

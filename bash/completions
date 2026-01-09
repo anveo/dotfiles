@@ -2,8 +2,7 @@ if [ -f /etc/bash_completion ]; then
   . /etc/bash_completion
 fi
 
-if type brew &>/dev/null; then
-  HOMEBREW_PREFIX="$(brew --prefix)"
+if [[ -n "$HOMEBREW_PREFIX" ]]; then
   if [[ -r "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh" ]]; then
     source "${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh"
   else
