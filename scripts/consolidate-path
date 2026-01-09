@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+# NOTE probably don't use this. Instead if using zsh use "typeset -U path"
+
 # Remove duplicate entries from PATH
 
 typeset -a paths result

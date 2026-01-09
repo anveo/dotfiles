@@ -177,9 +177,8 @@ bindkey '^x^e' edit-command-line
 
 export PATH="./bin:$PATH"
 
-# remove dups, useful with subshells
-export PATH
-export PATH="$($HOME/dotfiles/scripts/consolidate-path)"
+# Remove dups using zsh built-in
+typeset -U path
 
 zplug load # --verbose
 
