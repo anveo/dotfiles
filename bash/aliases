@@ -248,8 +248,6 @@ alias ag='ag --hidden '
 # docker
 alias dc='docker compose'
 
-alias tmux='direnv exec / tmux'
-
 # vim with no plugins
 alias vimlite='vim -u NONE'
 
