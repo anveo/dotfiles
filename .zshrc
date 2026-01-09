@@ -18,11 +18,19 @@ fi
 
 source ~/.zplug/init.zsh
 
+# Setup completion paths
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
-
-  autoload -Uz compinit && compinit
 fi
+
+# Add Docker completions if they exist
+docker_completions="$HOME/.docker/completions"
+if [[ -d "$docker_completions" ]]; then
+  fpath=($docker_completions $fpath)
+fi
+
+# Initialize completions once after all paths are set
+autoload -Uz compinit && compinit
 
 # Make sure to use double quotes for zplug
 
