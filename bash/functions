@@ -251,10 +251,9 @@ latestlang() {
   ########################################
 
   RUBY_VERSION=$(curl -s https://www.ruby-lang.org/en/downloads/ | grep -o 'The current stable version is [0-9]\+\.[0-9]\+\.[0-9]\+' | sed 's/The current stable version is //' | head -1)
-  if [ ! -z "$RUBY_VERSION" ]; then
-    # echo "Ruby: $RUBY_VERSION"
-  else
+  if [ -z "$RUBY_VERSION" ]; then
     echo "Ruby: Failed to determine latest version"
+    return 1
   fi
 
   ########################################
@@ -272,9 +271,6 @@ latestlang() {
   NODE_LTS_VERSION=$(echo "$NODE_DATA" | jq -r '[.[] | select(.lts != false)] | .[0].version' | tr -d 'v')
   NODE_LTS_NAME=$(echo "$NODE_DATA" | jq -r '[.[] | select(.lts != false)] | .[0].lts')
 
-  # echo "Node.js: $LATEST_VERSION"
-  # echo "LTS Node.js: $LATEST_LTS (codename: $LTS_NAME)"
-
   ########################################
   # Python
   ########################################
@@ -289,8 +285,6 @@ latestlang() {
     echo "Failed to determine latest Python version."
     return 1
   fi
-
-  # echo "Python: $PYTHON_VERSION"
 
   ########################################
   # Golang
@@ -310,8 +304,6 @@ latestlang() {
     return 1
   fi
 
-    # echo "Golang: $GO_VERSION"
-
   # Format output without using column -o flag (not available on macOS)
   printf "%-12s | %-20s | %s\n" "LANGUAGE" "VERSION" "INSTALL COMMAND"
   printf "%-12s | %-20s | %s\n" "Ruby" "$RUBY_VERSION" "rbenv global \$(rbenv install -l | grep -v - | tail -1)"
@@ -323,11 +315,11 @@ latestlang() {
 
 # Update version managers
 updatevm() {
-  cd ~/.rbenv/ && git pull && cd -
-  cd ~/.rbenv/plugins/ruby-build/ && git pull && cd -
-  cd ~/.pyenv && git pull && cd -
+  git -C ~/.rbenv pull
+  git -C ~/.rbenv/plugins/ruby-build pull
+  git -C ~/.pyenv pull
   if [ -d "$HOME/.gvm" ]; then
-    cd "$HOME/.gvm" && git pull && cd -
+    gvm get
   fi
-  curl -fsSL https://fnm.vercel.app/install | bash -s -- --install-dir "./.fnm" --skip-shell
+  (curl -fsSL https://fnm.vercel.app/install | bash -s -- --install-dir "./.fnm" --skip-shell)
 }
