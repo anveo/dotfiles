@@ -2,8 +2,8 @@
 export FZF_COMPLETION_TRIGGER='jj'
 export FZF_CTRL_R_OPTS='--sort --exact'
 
-# Setting ag as the default source for fzf
-export FZF_DEFAULT_COMMAND='ag -g ""'
+# Setting rg as the default source for fzf
+export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
 
 # To apply the command to CTRL-T as well
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
