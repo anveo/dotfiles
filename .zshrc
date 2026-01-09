@@ -177,4 +177,5 @@ export PATH="$($HOME/dotfiles/scripts/consolidate-path)"
 
 zplug load # --verbose
 
+# uncomment zmodload on line 1 to use profiling
 # zprof
