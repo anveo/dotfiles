@@ -322,4 +322,7 @@ updatevm() {
     gvm get
   fi
   (curl -fsSL https://fnm.vercel.app/install | bash -s -- --install-dir "./.fnm" --skip-shell)
+  if [ -f "$HOME/.local/bin/uv" ]; then
+    uv self update
+  fi
 }

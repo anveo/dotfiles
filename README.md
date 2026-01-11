@@ -48,6 +48,9 @@ vim
 :PlugUpdate
 :UpdateRemotePlugins # neovim
 
+# uv
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
 # fnm
 brew install unzip
 curl -fsSL https://fnm.vercel.app/install | bash
