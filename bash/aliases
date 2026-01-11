@@ -279,6 +279,7 @@ function undmk () {
 
 alias mk="minikube"
 alias k="kubectl"
+alias kk="kubectl krew"
 alias kctx="kubectl ctx"
 alias kns="kubectl ns"
 
