@@ -326,3 +326,8 @@ updatevm() {
     uv self update
   fi
 }
+
+# Kick CI by amending and force pushing
+gkick() {
+  git commit --amend --no-edit && git push --force-with-lease
+}
