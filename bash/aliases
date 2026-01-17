@@ -233,14 +233,12 @@ function ssh-reagent () {
 # Columns: COMMAND, PID, USER, TYPE, NAME
 ports() {
   if [ "$(uname)" = 'Darwin' ]; then
-    printf "%-35s %7s %-12s %-6s %s\n" "COMMAND" "PID" "USER" "TYPE" "NAME"
     sudo lsof +c 0 -iTCP -sTCP:LISTEN -n -P -FcpLtPn 2>/dev/null | \
       awk '
         /^c/ { cmd = substr($0, 2) }
         /^p/ { pid = substr($0, 2) }
         /^L/ { user = substr($0, 2) }
         /^t/ { type = substr($0, 2) }
-        /^P/ { proto = substr($0, 2) }
         /^n/ {
           name = substr($0, 2)
           gsub(/\\x20/, " ", cmd)
@@ -248,12 +246,80 @@ ports() {
           gsub(/.*:/, "", port)
           gsub(/[^0-9]/, "", port)
           if (port != "") {
-            printf "%05d %-35s %7s %-12s %-6s %s\n", port, cmd, pid, user, type, name
+            n++
+            data[n] = port "\t" cmd "\t" pid "\t" user "\t" type "\t" name
+            if (length(cmd) > maxcmd) maxcmd = length(cmd)
+            if (length(pid) > maxpid) maxpid = length(pid)
+            if (length(user) > maxuser) maxuser = length(user)
+            if (length(type) > maxtype) maxtype = length(type)
           }
         }
-      ' | sort -n | cut -c7-
+        END {
+          if (maxcmd < 7) maxcmd = 7
+          if (maxpid < 3) maxpid = 3
+          if (maxuser < 4) maxuser = 4
+          if (maxtype < 4) maxtype = 4
+          fmt = "%-" maxcmd "s  %" maxpid "s  %-" maxuser "s  %-" maxtype "s  %s\n"
+          printf "00000" fmt, "COMMAND", "PID", "USER", "TYPE", "NAME"
+          for (i = 1; i <= n; i++) {
+            split(data[i], f, "\t")
+            printf "%05d" fmt, f[1], f[2], f[3], f[4], f[5], f[6]
+          }
+        }
+      ' | sort -n | cut -c6-
   else
-    sudo netstat -tuplen
+    sudo ss -tlnpH 2>/dev/null | \
+      awk '{
+        # Parse Local Address:Port
+        name = $4
+        gsub(/%[^:]*/, "", name)
+        port = name
+        gsub(/.*:/, "", port)
+
+        # Parse process info: users:(("name",pid=123,fd=4))
+        proc = $6
+        gsub(/.*\(\("/, "", proc)
+        gsub(/",pid=.*/, "", proc)
+        cmd = proc
+
+        gsub(/.*pid=/, "", $6)
+        gsub(/,fd=.*/, "", $6)
+        pid = $6
+
+        # Get username from pid
+        user = "-"
+        if (pid != "") {
+          cmd_getent = "getent passwd $(stat -c %u /proc/" pid " 2>/dev/null) 2>/dev/null | cut -d: -f1"
+          cmd_getent | getline user
+          close(cmd_getent)
+          if (user == "") user = "-"
+        }
+
+        # Determine IPv4 vs IPv6
+        type = "IPv4"
+        if (name ~ /^\[/ || name ~ /^::/) type = "IPv6"
+
+        if (port != "" && cmd != "") {
+          n++
+          data[n] = port "\t" cmd "\t" pid "\t" user "\t" type "\t" name
+          if (length(cmd) > maxcmd) maxcmd = length(cmd)
+          if (length(pid) > maxpid) maxpid = length(pid)
+          if (length(user) > maxuser) maxuser = length(user)
+          if (length(type) > maxtype) maxtype = length(type)
+        }
+      }
+      END {
+        if (maxcmd < 7) maxcmd = 7
+        if (maxpid < 3) maxpid = 3
+        if (maxuser < 4) maxuser = 4
+        if (maxtype < 4) maxtype = 4
+        fmt = "%-" maxcmd "s  %" maxpid "s  %-" maxuser "s  %-" maxtype "s  %s\n"
+        printf "00000" fmt, "COMMAND", "PID", "USER", "TYPE", "NAME"
+        for (i = 1; i <= n; i++) {
+          split(data[i], f, "\t")
+          printf "%05d" fmt, f[1], f[2], f[3], f[4], f[5], f[6]
+        }
+      }' | sort -n | cut -c6-
   fi
 }
 alias netlisteners='ports'
