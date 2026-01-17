@@ -149,6 +149,8 @@ alias gst='git status'
 alias grm="git status | grep deleted | awk '{print \$3}' | xargs git rm"
 alias gg="gitg&"
 #alias gae="for i in $(find . -type d -regex ``./[^.].*'' -empty); do touch $i\"/.gitignore\"; done;"
+gcm() { git commit -m "$*"; }
+
 # fat fingers
 alias got='git '
 
@@ -227,9 +229,34 @@ function ssh-reagent () {
   echo Cannot find ssh agent - maybe you should reconnect and forward it?
 }
 
-# alias netlisteners='lsof -i -P | grep LISTEN'
-alias netlisteners='sudo lsof -PiTCP -sTCP:LISTEN'
-alias ports='sudo netstat -tuplen'
+# Show listening TCP ports (sorted by port number)
+# Columns: COMMAND, PID, USER, TYPE, NAME
+ports() {
+  if [ "$(uname)" = 'Darwin' ]; then
+    printf "%-35s %7s %-12s %-6s %s\n" "COMMAND" "PID" "USER" "TYPE" "NAME"
+    sudo lsof +c 0 -iTCP -sTCP:LISTEN -n -P -FcpLtPn 2>/dev/null | \
+      awk '
+        /^c/ { cmd = substr($0, 2) }
+        /^p/ { pid = substr($0, 2) }
+        /^L/ { user = substr($0, 2) }
+        /^t/ { type = substr($0, 2) }
+        /^P/ { proto = substr($0, 2) }
+        /^n/ {
+          name = substr($0, 2)
+          gsub(/\\x20/, " ", cmd)
+          port = name
+          gsub(/.*:/, "", port)
+          gsub(/[^0-9]/, "", port)
+          if (port != "") {
+            printf "%05d %-35s %7s %-12s %-6s %s\n", port, cmd, pid, user, type, name
+          }
+        }
+      ' | sort -n | cut -c7-
+  else
+    sudo netstat -tuplen
+  fi
+}
+alias netlisteners='ports'
 
 alias hb="hub browse"
 
