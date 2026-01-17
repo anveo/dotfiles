@@ -232,9 +232,13 @@ function ssh-reagent () {
 # Show listening TCP ports (sorted by port number)
 # Columns: COMMAND, PID, USER, TYPE, NAME
 ports() {
+  # ANSI codes: bold=1, cyan=36, reset=0
+  local bold_cyan=$'\033[1;36m'
+  local reset=$'\033[0m'
+
   if [ "$(uname)" = 'Darwin' ]; then
     sudo lsof +c 0 -iTCP -sTCP:LISTEN -n -P -FcpLtPn 2>/dev/null | \
-      awk '
+      awk -v bc="$bold_cyan" -v rs="$reset" '
         /^c/ { cmd = substr($0, 2) }
         /^p/ { pid = substr($0, 2) }
         /^L/ { user = substr($0, 2) }
@@ -246,8 +250,11 @@ ports() {
           gsub(/.*:/, "", port)
           gsub(/[^0-9]/, "", port)
           if (port != "") {
+            # Colorize port in name
+            colorname = name
+            gsub(/:([0-9]+)/, ":" bc port rs, colorname)
             n++
-            data[n] = port "\t" cmd "\t" pid "\t" user "\t" type "\t" name
+            data[n] = port "\t" cmd "\t" pid "\t" user "\t" type "\t" colorname
             if (length(cmd) > maxcmd) maxcmd = length(cmd)
             if (length(pid) > maxpid) maxpid = length(pid)
             if (length(user) > maxuser) maxuser = length(user)
@@ -269,7 +276,7 @@ ports() {
       ' | sort -n | cut -c6-
   else
     sudo ss -tlnpH 2>/dev/null | \
-      awk '{
+      awk -v bc="$bold_cyan" -v rs="$reset" '{
         # Parse Local Address:Port
         name = $4
         gsub(/%[^:]*/, "", name)
@@ -300,8 +307,11 @@ ports() {
         if (name ~ /^\[/ || name ~ /^::/) type = "IPv6"
 
         if (port != "" && cmd != "") {
+          # Colorize port in name
+          colorname = name
+          gsub(/:([0-9]+)$/, ":" bc port rs, colorname)
           n++
-          data[n] = port "\t" cmd "\t" pid "\t" user "\t" type "\t" name
+          data[n] = port "\t" cmd "\t" pid "\t" user "\t" type "\t" colorname
           if (length(cmd) > maxcmd) maxcmd = length(cmd)
           if (length(pid) > maxpid) maxpid = length(pid)
           if (length(user) > maxuser) maxuser = length(user)
