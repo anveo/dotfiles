@@ -150,7 +150,7 @@ alias grm="git status | grep deleted | awk '{print \$3}' | xargs git rm"
 alias gg="gitg&"
 #alias gae="for i in $(find . -type d -regex ``./[^.].*'' -empty); do touch $i\"/.gitignore\"; done;"
 gcm() { git commit -m "$*"; }
-
+qc() { git add . && git commit -m "$1"; }
 # fat fingers
 alias got='git '
 
