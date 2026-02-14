@@ -78,5 +78,9 @@ if [ `uname` = 'Darwin' ]; then
   $HOME/dotfiles/extras/macos_defaults.sh
 fi
 
+echo "Setting up Claude configs..."
 mkdir -p $HOME/.claude/{plans,plugins}
+echo "ln -nfs $HOME/dotfiles/extras/claude/commands $HOME/.claude/commands"
 ln -nfs $HOME/dotfiles/extras/claude/commands $HOME/.claude/commands
+echo "ln -nfs $HOME/dotfiles/extras/claude/CLAUDE.md $HOME/.claude/CLAUDE.md"
+ln -nfs $HOME/dotfiles/extras/claude/CLAUDE.md $HOME/.claude/CLAUDE.md
