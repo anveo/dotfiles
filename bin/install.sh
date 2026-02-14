@@ -55,13 +55,26 @@ do
   ln -nfs $HOME/dotfiles/${file} $HOME/${file}
 done
 
+echo "ln -nfs $HOME/dotfiles/.gitignore.global $HOME/.gitignore"
 ln -nfs $HOME/dotfiles/.gitignore.global $HOME/.gitignore
 
 if [ `uname` = 'Darwin' ]; then
+  echo "Setting up macOS-specific configs..."
   mkdir -p $HOME/.config/karabiner
+  echo "ln -nfs $HOME/dotfiles/extras/karabiner.json $HOME/.config/karabiner/karabiner.json"
   ln -nfs $HOME/dotfiles/extras/karabiner.json $HOME/.config/karabiner/karabiner.json
+  echo "ln -nfs $HOME/dotfiles/extras/hammerspoon $HOME/.hammerspoon"
   ln -nfs $HOME/dotfiles/extras/hammerspoon $HOME/.hammerspoon
 
+  mkdir -p $HOME/.config/ghostty
+  # Remove macOS-specific default config to use XDG location instead
+  rm -f "$HOME/Library/Application Support/com.mitchellh.ghostty/config"
+  echo "ln -nfs $HOME/dotfiles/extras/ghostty/config $HOME/.config/ghostty/config"
+  ln -nfs $HOME/dotfiles/extras/ghostty/config $HOME/.config/ghostty/config
+  echo "ln -nfs $HOME/dotfiles/extras/ghostty/themes $HOME/.config/ghostty/themes"
+  ln -nfs $HOME/dotfiles/extras/ghostty/themes $HOME/.config/ghostty/themes
+
+  echo "Running macOS defaults script..."
   $HOME/dotfiles/extras/macos_defaults.sh
 fi
 

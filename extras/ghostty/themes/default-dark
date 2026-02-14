@@ -1,0 +1,33 @@
+# Default Dark Theme - Converted from iTerm2
+
+# Background and Foreground
+background = #000000
+foreground = #bbbbbb
+
+# Cursor
+cursor-color = #c662f0
+cursor-text = #ffffff
+
+# Selection
+selection-background = #35d483
+selection-foreground = #000000
+
+# ANSI Colors (0-7) - Dark Mode
+palette = 0=#4f4f4f
+palette = 1=#ff6c60
+palette = 2=#a8ff60
+palette = 3=#ffffb6
+palette = 4=#96cbfe
+palette = 5=#ff73fd
+palette = 6=#c6c5fe
+palette = 7=#eeeeee
+
+# Bright ANSI Colors (8-15) - Dark Mode
+palette = 8=#7c7c7c
+palette = 9=#ffb6b0
+palette = 10=#ceffab
+palette = 11=#ffffcc
+palette = 12=#b5dcff
+palette = 13=#ff9cfe
+palette = 14=#ddfbff
+palette = 15=#ffffff

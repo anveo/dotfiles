@@ -1,0 +1,57 @@
+# Ghostty Configuration
+
+# Font Configuration
+font-family = FiraCode Nerd Font
+font-size = 14
+font-feature = -calt  # Disable contextual alternates if needed
+font-feature = +liga  # Enable ligatures (ASCII Ligatures: true in iTerm)
+
+# Window Configuration
+window-width = 120
+window-height = 40
+window-padding-x = 2
+window-padding-y = 2
+
+# Terminal Configuration
+term = xterm-256color
+shell-integration = none
+
+# Cursor Configuration
+cursor-style = block
+cursor-style-blink = false
+
+# Mouse
+mouse-hide-while-typing = true
+mouse-scroll-multiplier = discrete:5
+mouse-shift-capture = true
+
+# Theme - Automatic light/dark mode switching
+# Ghostty will automatically switch between light and dark themes based on system appearance
+theme = light:default-light,dark:default-dark
+
+# UI Settings
+window-theme = dark
+macos-titlebar-style = native
+window-vsync = true
+
+# Performance
+resize-overlay = never
+
+# Working directory
+working-directory = /Users/bracer
+window-inherit-working-directory = false
+
+# Shell
+# command = /bin/zsh
+
+# Bell
+# Note: Ghostty doesn't have visual-bell or audible-bell options
+
+# Clipboard
+clipboard-read = allow
+clipboard-write = allow
+clipboard-paste-protection = false
+
+# Misc
+confirm-close-surface = false
+quit-after-last-window-closed = false
