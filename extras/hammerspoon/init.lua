@@ -30,7 +30,7 @@ hs.hotkey.bind(hyper, "1", focusApp("com.google.Chrome"))
 hs.hotkey.bind(hyper, "2", focusApp("Todoist"))
 hs.hotkey.bind(hyper, "3", focusApp("com.microsoft.VSCode"))
 
-hs.hotkey.bind(hyper, "t", focusApp("com.googlecode.iterm2"))
+hs.hotkey.bind(hyper, "t", focusApp("ghostty"))
 
 hs.hotkey.bind(hyper, "o", focusApp("Todoist"))
 
