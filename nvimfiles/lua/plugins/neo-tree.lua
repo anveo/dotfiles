@@ -34,6 +34,12 @@ return {
         window = {
           position = "left",
           width = 35,
+          mappings = {
+            ["s"] = "none",           -- free up for flash.nvim
+            ["S"] = "none",           -- free up for flash.nvim
+            ["<C-v>"] = "open_vsplit",
+            ["<C-x>"] = "open_split",
+          },
         },
         git_status = {
           symbols = {
