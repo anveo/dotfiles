@@ -37,6 +37,9 @@ return {
       vim.api.nvim_set_hl(0, "TechWordsToAvoid", { bg = "#902020", fg = "#ffffff" })
       vim.api.nvim_set_hl(0, "SpecialKey", { fg = "#ffffff", bg = "#902020" })
       vim.api.nvim_set_hl(0, "NonText", { fg = "#222222" })
+
+      -- Flash labels
+      vim.api.nvim_set_hl(0, "FlashLabel", { fg = "#ffffff", bg = "#ff007c", bold = true })
     end,
   },
 
