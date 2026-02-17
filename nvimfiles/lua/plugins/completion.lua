@@ -74,8 +74,17 @@ return {
       })
 
       -- Cmdline completion
+      -- Navigate with <Tab>/<S-Tab>, confirm selection with <C-y> or <C-l>, submit with <CR>
       cmp.setup.cmdline(":", {
-        mapping = cmp.mapping.preset.cmdline(),
+        mapping = cmp.mapping.preset.cmdline({
+          ["<C-l>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.confirm({ select = false })
+            else
+              fallback()
+            end
+          end, { "c" }),
+        }),
         sources = cmp.config.sources({
           { name = "path" },
         }, {

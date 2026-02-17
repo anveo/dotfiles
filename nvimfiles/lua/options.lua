@@ -81,3 +81,6 @@ vim.opt.encoding = "utf8"
 -- Grep program
 vim.opt.grepprg = "rg --vimgrep --smart-case"
 vim.opt.grepformat = "%f:%l:%c:%m"
+
+-- Project-local config (.nvim.lua in project root)
+vim.opt.exrc = true

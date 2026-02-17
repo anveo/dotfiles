@@ -20,3 +20,15 @@ end, { buffer = true, expr = true })
 if vim.g.loaded_surround then
   vim.b["surround_" .. string.byte("#")] = "#{\\r}"
 end
+
+-- Dispatch default: rspec for spec files, ruby for others
+if not vim.b.dispatch then
+  local file = vim.fn.expand("%:t")
+  if file:match("_spec%.rb$") then
+    vim.b.dispatch = "bundle exec rspec %"
+  elseif file:match("_test%.rb$") then
+    vim.b.dispatch = "bundle exec ruby -Itest %"
+  else
+    vim.b.dispatch = "bundle exec ruby %"
+  end
+end
