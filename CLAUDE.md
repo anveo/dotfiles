@@ -33,13 +33,25 @@ nvimfiles/
 - Per-language settings (indent, dispatch commands) go in `after/ftplugin/{lang}.lua`
 - Projectionist heuristics are global in `editing.lua`; per-project overrides go in `.projections.json` at project root
 - Project-local neovim config uses `.nvim.lua` at project root (`exrc` is enabled)
-- Reference docs live in `docs/neovim-reference/` -- keep them in sync when changing keymaps or plugins
+- Reference docs live in `docs/neovim-reference/` and `docs/tmux-reference/` -- keep them in sync when changing configs or plugins
 
 ## Known Issues
 
 - `<Leader>hs` is mapped twice: toggle hlsearch (keymaps.lua) and stage hunk (gitsigns, buffer-local). Gitsigns wins in git-tracked buffers. Intentional.
 - `ai`/`ii` conflict: treesitter textobjects (`@conditional`) override vim-indent-object. Use `aI`/`iI` (capital I) for strict indent matching.
 - which-key group label `<Leader>s` says "treesitter selection" but is actually "Source config" -- stale label in ui.lua.
+
+## Terminal & Multiplexer
+
+- **Ghostty** is the terminal emulator; config lives at `extras/ghostty/config` (symlinked to `~/.config/ghostty/config`)
+  - Custom themes in `extras/ghostty/themes/`
+  - `mouse-shift-capture = false` — hold Shift to bypass tmux mouse capture for native text selection
+- **tmux** config is `.tmux.conf` at repo root
+  - Prefix: `C-Space`
+  - Mouse enabled (`mouse on`), focus events enabled
+  - vim-tmux-navigator for seamless pane navigation with `C-h/j/k/l`
+  - vi copy mode with pbcopy integration
+  - TPM plugins: tpm, tmux-continuum, tmux-yank
 
 ## Other Dotfiles
 
