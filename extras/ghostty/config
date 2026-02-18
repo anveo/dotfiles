@@ -23,7 +23,7 @@ cursor-style-blink = false
 # Mouse
 mouse-hide-while-typing = true
 mouse-scroll-multiplier = discrete:5
-mouse-shift-capture = true
+mouse-shift-capture = false
 
 # Theme - Automatic light/dark mode switching
 # Ghostty will automatically switch between light and dark themes based on system appearance
