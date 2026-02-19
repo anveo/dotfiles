@@ -188,4 +188,8 @@ typeset -U path
 zplug load # --verbose
 
 # uncomment zmodload on line 1 to use profiling
-# zprof
+# {
+#   echo "=== $(date) ==="
+#   zprof
+#   echo ""
+# } >> ~/zsh_profile.log

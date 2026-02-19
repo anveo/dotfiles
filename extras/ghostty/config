@@ -38,7 +38,7 @@ window-vsync = true
 resize-overlay = never
 
 # Working directory
-working-directory = /Users/bracer
+# New tabs/splits always start in home directory (Ghostty default)
 window-inherit-working-directory = false
 
 # Shell
