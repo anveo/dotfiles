@@ -77,17 +77,6 @@ function w() {
   curl wttr.in
 }
 
-# 1password
-opon() {
-  if [[ -z $OP_SESSION_my ]]; then
-    eval $(op signin my)
-  fi
-}
-opoff() {
-  op signout
-  unset OP_SESSION_my
-}
-
 # Change working directory to the top-most Finder window location
 function cdfinder() { # short for `cdfinder`
   cd "$(osascript -e 'tell app "Finder" to POSIX path of (insertion location as alias)')";
