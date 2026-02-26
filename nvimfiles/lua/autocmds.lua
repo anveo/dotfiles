@@ -116,13 +116,12 @@ autocmd({ "WinEnter", "BufWinEnter" }, {
   group = proximity_group,
   callback = function()
     pcall(vim.fn.clearmatches)
+    if vim.bo.buftype ~= "" then return end
     vim.fn.matchadd("LineProximity", [[\%<121v.\%>116v]], -1)
     vim.fn.matchadd("LineOverflow", [[\%>120v.\+]], -1)
-    if vim.bo.buftype == "" then
-      vim.fn.matchadd(
-        "TechWordsToAvoid",
-        [[\cobviously\|basically\|simply\|of\scourse\|clearly\|just\|everyone\sknows\|however,\|so,\|easy]]
-      )
-    end
+    vim.fn.matchadd(
+      "TechWordsToAvoid",
+      [[\cobviously\|basically\|simply\|of\scourse\|clearly\|just\|everyone\sknows\|however,\|so,\|easy]]
+    )
   end,
 })
