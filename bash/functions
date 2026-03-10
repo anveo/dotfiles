@@ -314,6 +314,9 @@ updatevm() {
   if [ -f "$HOME/.local/bin/uv" ]; then
     uv self update
   fi
+  if command -v tldr &> /dev/null; then
+    tldr --update
+  fi
 }
 
 # Kick CI by amending and force pushing
