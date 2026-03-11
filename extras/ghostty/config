@@ -12,8 +12,9 @@ window-padding-x = 2
 window-padding-y = 2
 
 # Terminal Configuration
-term = xterm-256color
+term = xterm-ghostty
 shell-integration = detect
+shell-integration-features = no-title
 
 # Cursor Configuration
 cursor-style = block
