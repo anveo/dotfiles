@@ -7,8 +7,7 @@ font-feature = -calt  # Disable contextual alternates if needed
 font-feature = +liga  # Enable ligatures (ASCII Ligatures: true in iTerm)
 
 # Window Configuration
-window-width = 120
-window-height = 40
+window-save-state = always
 window-padding-x = 2
 window-padding-y = 2
 
@@ -38,8 +37,10 @@ window-vsync = true
 resize-overlay = never
 
 # Working directory
-# New tabs/splits always start in home directory (Ghostty default)
+# New tabs/splits always start in home directory
+working-directory = home
 window-inherit-working-directory = false
+tab-inherit-working-directory = false
 
 # Shell
 # command = /bin/zsh
