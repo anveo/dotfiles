@@ -78,6 +78,11 @@ if [ `uname` = 'Darwin' ]; then
   $HOME/dotfiles/extras/macos_defaults.sh
 fi
 
+echo "Setting up VisiData configs..."
+mkdir -p $HOME/.visidata
+echo "ln -nfs $HOME/dotfiles/extras/visidata/config.py $HOME/.visidata/config.py"
+ln -nfs $HOME/dotfiles/extras/visidata/config.py $HOME/.visidata/config.py
+
 echo "Setting up Claude configs..."
 mkdir -p $HOME/.claude/{plans,plugins}
 echo "ln -nfs $HOME/dotfiles/extras/claude/commands $HOME/.claude/commands"
