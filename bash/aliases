@@ -135,6 +135,7 @@ alias la="ls -A"
 alias sl="ls"
 
 # git
+alias lg='lazygit'
 alias gl='git pull'
 alias gpr='git pull --rebase'
 alias gp='git push'
