@@ -89,3 +89,5 @@ echo "ln -nfs $HOME/dotfiles/extras/claude/commands $HOME/.claude/commands"
 ln -nfs $HOME/dotfiles/extras/claude/commands $HOME/.claude/commands
 echo "ln -nfs $HOME/dotfiles/extras/claude/CLAUDE.md $HOME/.claude/CLAUDE.md"
 ln -nfs $HOME/dotfiles/extras/claude/CLAUDE.md $HOME/.claude/CLAUDE.md
+echo "ln -nfs $HOME/dotfiles/extras/claude/statusline-command.sh $HOME/.claude/statusline-command.sh"
+ln -nfs $HOME/dotfiles/extras/claude/statusline-command.sh $HOME/.claude/statusline-command.sh
