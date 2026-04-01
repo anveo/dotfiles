@@ -52,6 +52,27 @@ hs.hotkey.bind(hyper, "g", focusApp("ChatGPT"))
 hs.hotkey.bind(hyper, "b", focusApp("Blender"))
 hs.hotkey.bind(hyper, "a", focusApp("com.ableton.live"))
 
+-- Right option + number -> tmux window
+local rightOptDown = false
+
+local flagWatcher = hs.eventtap.new({hs.eventtap.event.types.flagsChanged}, function(e)
+  local flags = e:getRawEventData().CGEventData.flags
+  -- 0x40 confirmed on Logitech MX Keys (right option doubles as right ctrl)
+  -- may differ on other keyboards, e.g. MacBook — verify with flag logging
+  rightOptDown = (flags & 0x40) ~= 0
+end)
+flagWatcher:start()
+
+local keyWatcher = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(e)
+  if not rightOptDown then return false end
+  local n = tonumber(hs.keycodes.map[e:getKeyCode()])
+  if n and n >= 1 and n <= 9 then
+    hs.execute("/opt/homebrew/bin/tmux select-window -t " .. tostring(n))
+    return true
+  end
+end)
+keyWatcher:start()
+
 hs.hotkey.bind(hyper, "k", function()
   local win = hs.window.focusedWindow();
   if not win then return end
