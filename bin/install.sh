@@ -83,6 +83,10 @@ mkdir -p $HOME/.visidata
 echo "ln -nfs $HOME/dotfiles/extras/visidata/config.py $HOME/.visidata/config.py"
 ln -nfs $HOME/dotfiles/extras/visidata/config.py $HOME/.visidata/config.py
 
+echo "Setting up tig configs..."
+echo "ln -nfs $HOME/dotfiles/extras/tig/config $HOME/.tigrc"
+ln -nfs $HOME/dotfiles/extras/tig/config $HOME/.tigrc
+
 echo "Setting up Claude configs..."
 mkdir -p $HOME/.claude/{plans,plugins}
 echo "ln -nfs $HOME/dotfiles/extras/claude/commands $HOME/.claude/commands"

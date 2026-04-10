@@ -1,0 +1,35 @@
+# Tig color configuration
+# Subtle theme inspired by modern diff viewers
+
+# Cursor line
+color cursor         white color236 bold
+
+# Diff colors: tinted backgrounds, readable text
+color diff-header    yellow  default bold
+color diff-index     cyan    default
+color diff-chunk     magenta default
+color diff-add       green   color22
+color diff-del       red     color52
+color diff-add2      green   color22
+color diff-del2      red     color52
+
+# Main view commit list
+color main-commit  default default
+color main-head    magenta default bold
+color main-remote  cyan    default
+color main-tracked cyan    default bold
+color main-tag     yellow  default
+color main-local-tag yellow default
+color main-ref     green   default
+color author        cyan   default
+color date          yellow default
+color graph-commit  magenta default
+color id            magenta default
+color overflow      red    default
+color title-focus   white  color236 bold
+color title-blur    white  color234
+
+# Status and general
+color status      green   default
+color delimiter   magenta default
+color line-number yellow  default
