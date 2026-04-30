@@ -1,3 +1,8 @@
+# Open a GitHub PR in the browser, auto-detecting the base branch and title from the current branch
+function ghpr() {
+	"$DOTFILES/scripts/ghpr" "$@"
+}
+
 # Start an HTTP server from a directory, optionally specifying the port
 function server() {
 	local port="${1:-8000}";

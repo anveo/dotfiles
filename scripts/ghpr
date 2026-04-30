@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+set -e
+
+if ! command -v gh &>/dev/null; then
+  echo "Error: gh CLI not installed. Install with: brew install gh" >&2
+  exit 1
+fi
+
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+# --- Title ---
+# Extract Linear issue key from the full branch name (e.g. mon-145 or MON-145)
+KEY=$(echo "$BRANCH" | grep -oiE '[a-z]+-[0-9]+' | head -1 | tr '[:lower:]' '[:upper:]')
+
+# Strip user/project prefix (e.g. anveo/mon-145-feature → mon-145-feature)
+SLUG="${BRANCH##*/}"
+
+# Convert hyphens to spaces to get the description
+DESC=$(echo "$SLUG" | tr '-' ' ')
+
+if [ -n "$KEY" ]; then
+  KEY_LETTERS=$(echo "$KEY" | grep -oE '[A-Z]+' | tr '[:upper:]' '[:lower:]')
+  KEY_NUMBERS=$(echo "$KEY" | grep -oE '[0-9]+')
+  # Remove the key tokens from anywhere in the description
+  DESC=$(echo "$DESC" | sed "s/${KEY_LETTERS} ${KEY_NUMBERS}[[:space:]]*//" | sed 's/^[[:space:]]*//')
+fi
+
+# Title-case each word in the description
+DESC=$(echo "$DESC" | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) tolower(substr($i,2)); print}')
+
+TITLE="${KEY:+${KEY} }${DESC}"
+
+# --- Base branch ---
+# Try reflog first — records "branch: Created from <branch>" at creation time
+BASE=$(git reflog show "$BRANCH" 2>/dev/null \
+  | grep "branch: Created from" \
+  | head -1 \
+  | sed 's/.*Created from //' \
+  | sed 's|^.*/||')
+
+# Discard "HEAD" or same as current branch (branch created from detached HEAD or reflog unclear)
+if [ "$BASE" = "HEAD" ] || [ "$BASE" = "$BRANCH" ] || [ -z "$BASE" ]; then
+  # Fallback: remote branch with the fewest commits not yet on it
+  # (i.e. the branch we diverged from most recently)
+  BASE=$(git for-each-ref --format='%(refname:short)' refs/remotes/origin/ \
+    | grep -vE "^origin/HEAD$|^origin/${BRANCH}$" \
+    | while read -r ref; do
+        count=$(git rev-list --count HEAD "^${ref}" 2>/dev/null || echo 99999)
+        printf '%s %s\n' "$count" "${ref#origin/}"
+      done \
+    | sort -n \
+    | awk 'NR==1{print $2}')
+fi
+
+printf 'Branch: %s\nBase:   %s\nTitle:  %s\n\n' "$BRANCH" "$BASE" "$TITLE"
+
+if [ -n "$BASE" ]; then
+  gh pr create --web --base "$BASE" --title "$TITLE"
+else
+  gh pr create --web --title "$TITLE"
+fi
