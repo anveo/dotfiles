@@ -1,0 +1,5 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/espanso/espanso/dev/schemas/config.schema.json
+
+# toggle_key: ALT
+# backend: Clipboard
+# auto_restart: false

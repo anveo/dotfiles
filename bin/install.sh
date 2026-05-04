@@ -60,6 +60,15 @@ ln -nfs $HOME/dotfiles/.gitignore.global $HOME/.gitignore
 
 if [ `uname` = 'Darwin' ]; then
   echo "Setting up macOS-specific configs..."
+
+  echo "Setting up espanso configs..."
+  ESPANSO_DIR="$HOME/Library/Application Support/espanso"
+  mkdir -p "$ESPANSO_DIR/config" "$ESPANSO_DIR/match"
+  echo "ln -fs $HOME/dotfiles/extras/espanso/config/default.yml $ESPANSO_DIR/config/default.yml"
+  ln -fs "$HOME/dotfiles/extras/espanso/config/default.yml" "$ESPANSO_DIR/config/default.yml"
+  echo "ln -fs $HOME/dotfiles/extras/espanso/match/base.yml $ESPANSO_DIR/match/base.yml"
+  ln -fs "$HOME/dotfiles/extras/espanso/match/base.yml" "$ESPANSO_DIR/match/base.yml"
+
   mkdir -p $HOME/.config/karabiner
   echo "ln -nfs $HOME/dotfiles/extras/karabiner.json $HOME/.config/karabiner/karabiner.json"
   ln -nfs $HOME/dotfiles/extras/karabiner.json $HOME/.config/karabiner/karabiner.json
@@ -76,6 +85,14 @@ if [ `uname` = 'Darwin' ]; then
 
   echo "Running macOS defaults script..."
   $HOME/dotfiles/extras/macos_defaults.sh
+elif [ `uname` = 'Linux' ]; then
+  echo "Setting up Linux-specific configs..."
+
+  # echo "Setting up espanso configs..."
+  # ESPANSO_DIR="$HOME/.config/espanso"
+  # mkdir -p "$ESPANSO_DIR/config" "$ESPANSO_DIR/match"
+  # ln -fs "$HOME/dotfiles/extras/espanso/config/default.yml" "$ESPANSO_DIR/config/default.yml"
+  # ln -fs "$HOME/dotfiles/extras/espanso/match/base.yml" "$ESPANSO_DIR/match/base.yml"
 fi
 
 echo "Setting up VisiData configs..."
