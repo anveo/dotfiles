@@ -4,6 +4,9 @@ matches:
   - trigger: ":i"
     replace: "Issue"
 
+  - trigger: ";i"
+    replace: "Issue "
+
   - trigger: ":date"
     replace: "{{mydate}}"
     vars:
