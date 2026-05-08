@@ -35,7 +35,7 @@ $appxPackages = @(
     'Microsoft.ZuneVideo',             # Movies & TV
     'MicrosoftTeams',                  # Teams (personal, not work Teams)
     'Clipchamp.Clipchamp',             # Video editor
-    'Disney.37853D22215B2',            # Disney+ if pre-installed
+    'Disney.37853D22215B2'             # Disney+ if pre-installed
 )
 
 Write-Host "Removing Appx packages..." -ForegroundColor Cyan
@@ -55,7 +55,7 @@ foreach ($pkg in $appxPackages) {
 $wingetPackages = @(
     # 'Microsoft.OneDrive',            # Using OneDrive for shared save game files
     'Microsoft.Cortana',
-    'Microsoft.549981C3F5F10',         # Cortana (Store version, different ID)
+    'Microsoft.549981C3F5F10'          # Cortana (Store version, different ID)
     # 'Microsoft.Xbox.TCUI',           # Keeping Xbox packages
     # 'Microsoft.XboxApp',
     # 'Microsoft.XboxGameOverlay',

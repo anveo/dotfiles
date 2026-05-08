@@ -45,7 +45,7 @@ $folderTypes = @(
     '{885a186e-a440-4ada-812b-db871b942259}',  # Downloads
     '{94d6ddcc-4a68-4175-a374-bd584a510b78}',  # Music
     '{b3690e58-e961-423b-b687-386ebfd83239}',  # Pictures
-    '{0b2baaeb-0042-4dca-aa4d-3ee8648d03e5}',  # Videos
+    '{0b2baaeb-0042-4dca-aa4d-3ee8648d03e5}'   # Videos
 )
 foreach ($guid in $folderTypes) {
     $viewPath = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$guid\TopViews\{00000000-0000-0000-0000-000000000000}"
