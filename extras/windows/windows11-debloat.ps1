@@ -54,7 +54,7 @@ foreach ($pkg in $appxPackages) {
     $found = Get-AppxPackage -Name $pkg -AllUsers -ErrorAction SilentlyContinue
     if ($found) {
         Write-Host "  [-] $pkg"
-        Remove-AppxPackage -Package $found.PackageFullName -AllUsers -ErrorAction SilentlyContinue
+        $found | Remove-AppxPackage -AllUsers -ErrorAction SilentlyContinue
     } else {
         Write-Host "  [~] $pkg (not found, skipping)"
     }
