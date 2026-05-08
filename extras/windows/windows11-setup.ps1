@@ -1,5 +1,5 @@
 # windows11-setup.ps1
-# Run from an elevated PowerShell prompt for full effect.
+# Runs as current user — no elevation needed. All changes are HKCU.
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
@@ -75,17 +75,12 @@ Set-RegistryValue "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDelive
 
 Write-Host "  [+] Privacy settings tightened"
 
-# ── Telemetry (requires admin) ────────────────────────────────────────────────
-$isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole(
-    [Security.Principal.WindowsBuiltInRole]::Administrator)
+# ── Appearance ────────────────────────────────────────────────────────────────
+$personalize = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"
+Set-RegistryValue $personalize 'AppsUseLightTheme' 0
+Set-RegistryValue $personalize 'SystemUsesLightTheme' 0
 
-if ($isAdmin) {
-    # Minimum telemetry level (Security = 0, but 1 is the lowest most editions allow)
-    Set-RegistryValue "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection" 'AllowTelemetry' 1
-    Write-Host "  [+] Telemetry minimized"
-} else {
-    Write-Host "  [!] Skipped telemetry (not admin)" -ForegroundColor Yellow
-}
+Write-Host "  [+] Dark mode enabled"
 
 # ── Restart Explorer to apply changes ─────────────────────────────────────────
 Write-Host "`nRestarting Explorer..." -ForegroundColor Cyan

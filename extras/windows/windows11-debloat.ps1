@@ -12,6 +12,17 @@ if (-not $isAdmin) {
     Write-Warning "Not running as admin — some removals may fail."
 }
 
+# ── Telemetry (HKLM, requires admin) ─────────────────────────────────────────
+if ($isAdmin) {
+    $dataCollection = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection"
+    if (-not (Test-Path $dataCollection)) { New-Item -Path $dataCollection -Force | Out-Null }
+    # Lowest level most editions allow (0 = Security is Enterprise-only)
+    Set-ItemProperty -Path $dataCollection -Name 'AllowTelemetry' -Value 1 -Type DWord
+    Write-Host "  [+] Telemetry minimized" -ForegroundColor Cyan
+} else {
+    Write-Warning "Skipped telemetry (not admin)"
+}
+
 # ── Appx packages (built-in, no winget ID) ────────────────────────────────────
 # These use Get-AppxPackage; failures are non-fatal (package may already be gone).
 

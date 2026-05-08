@@ -24,7 +24,7 @@ Run via: **`run-setup.bat`**
 | Advertising ID disabled | Decouples app telemetry from a personal ad profile |
 | App launch tracking off | Windows stops tracking which apps you open |
 | Suggested content off | Removes ads/tips from the Settings app |
-| Telemetry minimized | Set to lowest level (requires admin, skipped otherwise) |
+| Dark mode | Sets both app and system theme to dark |
 
 A restart of Explorer is triggered automatically at the end. Some Start Menu changes
 require a sign-out/sign-in to take full effect.
@@ -35,7 +35,7 @@ require a sign-out/sign-in to take full effect.
 
 Run via: **`run-debloat.bat`**
 
-Removes apps via `winget` and `Remove-AppxPackage`. Missing packages are skipped silently.
+Removes apps via `winget` and `Remove-AppxPackage`. Missing packages are skipped silently. Also sets telemetry to the minimum level (requires admin, which `run-debloat.bat` provides).
 
 **Removed:**
 
@@ -65,6 +65,38 @@ Removes apps via `winget` and `Remove-AppxPackage`. Missing packages are skipped
 | Xbox packages | Keeping for potential Game Bar use |
 
 To remove a kept package, uncomment its line in `windows11-debloat.ps1` and re-run.
+
+---
+
+## Manual Recommended Steps
+
+Things that can't be scripted cleanly or are too personal to automate.
+
+**Settings app**
+
+- **Default browser** — Apps → Default apps → set your browser for http/https (Windows 11 blocks automating this)
+- **Night light** — System → Display → Night light — set schedule if wanted
+- **Focus sessions off** — System → Focus → uncheck "Show Focus in Clock app" if you don't use it
+
+**File Explorer**
+
+- **Details view for existing folders** — The script sets the default for new folders only. To reset all previously visited folders: open Registry Editor, delete `HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Streams`, then restart Explorer. Your folders will open in Details view going forward.
+- **Remove pinned folders from navigation pane** — right-click any you don't want (Desktop, Pictures, etc.) → Unpin from Quick access
+
+**Taskbar**
+
+- **Move taskbar icons to the left** — Settings → Personalization → Taskbar → Taskbar behaviors → Taskbar alignment → Left
+- **Remove Search bar** — right-click taskbar → Taskbar settings → Search → Hide
+
+**Microsoft account**
+
+- **Disable syncing** if you don't want settings roamed — Accounts → Windows backup → uncheck what you don't want synced
+
+**PowerToys** (since you already have it)
+
+- Run at startup — General → Launch at startup
+- PowerToys Run: set activation shortcut (`Alt+Space` is common, frees up Start Menu search entirely)
+- FancyZones: configure your preferred layout per monitor
 
 ---
 
