@@ -16,7 +16,7 @@ Run via: **`run-setup.bat`**
 | File extensions visible | Explorer shows `.txt`, `.exe`, etc. |
 | Hidden files visible | Explorer shows dotfiles and system-hidden files |
 | Explorer opens to This PC | Default view is drives, not Quick Access |
-| Taskbar cleaned up | Removes Widgets, Task View, and Chat buttons |
+| Taskbar cleaned up | Removes Task View and Chat buttons; centers icons. Widgets button requires Settings -- see Manual Steps |
 | Full path in title bar | Explorer title bar shows the complete folder path |
 | Details view as default | All folder types default to Details view for unvisited folders. Folders with saved view state are unaffected — delete `HKCU\...\Explorer\Streams` to reset all per-folder overrides |
 | Bing search disabled | Start Menu search stays local; no web results |
@@ -85,7 +85,7 @@ Things that can't be scripted cleanly or are too personal to automate.
 
 **Taskbar**
 
-- **Move taskbar icons to the left** — Settings → Personalization → Taskbar → Taskbar behaviors → Taskbar alignment → Left
+- **Widgets button** — Settings → Personalization → Taskbar → toggle Widgets off (registry write is blocked on some machines)
 - **Remove Search bar** — right-click taskbar → Taskbar settings → Search → Hide
 
 **Microsoft account**
