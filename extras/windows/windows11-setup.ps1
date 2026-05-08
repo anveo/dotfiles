@@ -23,9 +23,9 @@ $adv = "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
 reg-add $adv 'HideFileExt'               'REG_DWORD' '0'
 reg-add $adv 'Hidden'                    'REG_DWORD' '1'
 reg-add $adv 'LaunchTo'                  'REG_DWORD' '1'
-reg-add $adv 'TaskbarDa'                 'REG_DWORD' '0'
 reg-add $adv 'ShowTaskViewButton'        'REG_DWORD' '0'
 reg-add $adv 'TaskbarMn'                 'REG_DWORD' '0'
+reg-add $adv 'TaskbarAl'                 'REG_DWORD' '1'  # 1 = center, 0 = left
 reg-add $adv 'Start_IrisRecommendations' 'REG_DWORD' '0'
 reg-add $adv 'Start_TrackProgs'          'REG_DWORD' '0'
 
