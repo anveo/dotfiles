@@ -9,7 +9,7 @@ $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIden
     [Security.Principal.WindowsBuiltInRole]::Administrator)
 
 if (-not $isAdmin) {
-    Write-Warning "Not running as admin — some removals may fail."
+    Write-Warning "Not running as admin - some removals may fail."
 }
 
 # ── Telemetry (HKLM, requires admin) ─────────────────────────────────────────
