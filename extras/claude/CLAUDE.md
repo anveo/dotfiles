@@ -1,4 +1,3 @@
-
 # Global Configuration
 
 Criticism is welcome.
@@ -15,3 +14,9 @@ At the end of each plan, give me a list of unresolved questions to answer, if an
 ## Inclusive Terminology
 
 Use: allowlist/blocklist, primary/replica, placeholder/example, main branch, conflict-free, concurrent/parallel
+
+## Environment
+
+- Node version manager: **fnm** (not nvm). Use `fnm use <version>` to switch Node versions.
+
+@RTK.md
