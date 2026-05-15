@@ -31,6 +31,7 @@
         type = cat-file -t
         unstage = reset HEAD --
         undo = reset --soft HEAD^
+        dft = difftool
 
 [apply]
         whitespace = nowarn
@@ -51,8 +52,7 @@
 
 [pager]
 	color = true
-        #diff = diff-so-fancy | less --tabs=4 -RFX
-        #show = diff-so-fancy | less --tabs=4 -RFX
+	difftool = true
 
 [merge]
 	conflictstyle = zdiff3
@@ -97,25 +97,15 @@
 	newNormal = green bold
 	newHighlight = green bold 22
 
-[core]
-    pager = delta
+[diff]
+    tool = difftastic
+    external = "sh -c 'if command -v difft >/dev/null 2>&1; then difft \"$@\"; else diff -u \"$2\" \"$5\"; fi' --"
 
-[interactive]
-    diffFilter = delta --color-only
+[difftool]
+    prompt = false
 
-[delta]
-    navigate = true
-    features = side-by-side line-numbers decorations
-    whitespace-error-style = 22 reverse
-    plus-color = "#012800"
-    minus-color = "#340001"
-    syntax-theme = Monokai Extended
-    side-by-side = true
-
-[delta "decorations"]
-    commit-decoration-style = bold yellow box ul
-    file-style = bold yellow ul
-    file-decoration-style = none
+[difftool "difftastic"]
+    cmd = difft "$LOCAL" "$REMOTE"
 
 [include]
     path = .gitsecrets
