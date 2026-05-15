@@ -52,7 +52,8 @@
 
 [pager]
 	color = true
-	difftool = true
+	diff = false
+	difftool = false
 
 [merge]
 	conflictstyle = zdiff3
@@ -99,7 +100,7 @@
 
 [diff]
     tool = difftastic
-    external = "sh -c 'if command -v difft >/dev/null 2>&1; then difft \"$@\"; else diff -u \"$2\" \"$5\"; fi' --"
+    external = difft --color always
 
 [difftool]
     prompt = false
