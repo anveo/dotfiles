@@ -328,3 +328,86 @@ updatevm() {
 gkick() {
   git commit --amend --no-edit && git push --force-with-lease
 }
+
+_reddit_fetch() {
+  local url
+  url=$(echo "$1" | sed 's|/$||' | sed 's|\?.*||')
+  url="${url}.json"
+
+  curl -sf \
+    -H "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36" \
+    -H "Accept: application/json" \
+    "$url"
+}
+
+_reddit_jq_filter='
+  def extract_comments:
+    map(
+      select(.kind == "t1") | .data |
+      {
+        author,
+        score,
+        body,
+        replies: (
+          if (.replies | type) == "object"
+          then (.replies.data.children | extract_comments)
+          else []
+          end
+        )
+      }
+    );
+
+  {
+    post: (.[0].data.children[0].data | {
+      title,
+      author,
+      score,
+      selftext,
+      url,
+      num_comments,
+      created_utc
+    }),
+    comments: (.[1].data.children | extract_comments)
+  }
+'
+
+r2json() {
+  if [[ -z "$1" ]]; then
+    echo "Usage: r2json <reddit_thread_url>"
+    return 1
+  fi
+  _reddit_fetch "$1" | jq "$_reddit_jq_filter"
+}
+
+r2text() {
+  if [[ -z "$1" ]]; then
+    echo "Usage: r2text <reddit_thread_url>"
+    return 1
+  fi
+
+  _reddit_fetch "$1" | jq -r "$_reddit_jq_filter |
+
+    # Print post header
+    \"=== POST ===\",
+    \"Title: \" + .post.title,
+    \"Author: u/\" + .post.author,
+    \"Score: \" + (.post.score | tostring),
+    \"Comments: \" + (.post.num_comments | tostring),
+    \"\",
+    (if .post.selftext != \"\" then \"Body:\", .post.selftext, \"\" else \"\" end),
+
+    \"=== COMMENTS ===\",
+
+    (def render_comment(depth):
+      . as \$c |
+      (\"  \" * depth) + \"[u/\" + \$c.author + \" | score: \" + (\$c.score | tostring) + \"]\",
+      ((\$c.body // \"\") | split(\"\n\") | map((\"  \" * depth) + .) | .[]),
+      \"\",
+      (if (\$c.replies | length) > 0
+       then (\$c.replies[] | render_comment(depth + 1))
+       else empty
+       end);
+
+    .comments[] | render_comment(0))
+  "
+}
