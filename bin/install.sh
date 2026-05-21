@@ -112,3 +112,5 @@ echo "ln -nfs $HOME/dotfiles/extras/claude/CLAUDE.md $HOME/.claude/CLAUDE.md"
 ln -nfs $HOME/dotfiles/extras/claude/CLAUDE.md $HOME/.claude/CLAUDE.md
 echo "ln -nfs $HOME/dotfiles/extras/claude/statusline-command.sh $HOME/.claude/statusline-command.sh"
 ln -nfs $HOME/dotfiles/extras/claude/statusline-command.sh $HOME/.claude/statusline-command.sh
+echo "ln -nfs $HOME/dotfiles/extras/claude/RTK.md $HOME/.claude/RTK.md"
+ln -nfs $HOME/dotfiles/extras/claude/RTK.md $HOME/.claude/RTK.md
