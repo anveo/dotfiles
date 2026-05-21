@@ -12,6 +12,9 @@ defaults write com.apple.dock show-recents -bool false
 
 defaults write com.apple.Dock appswitcher-all-displays -bool true
 
+# Position the Dock on the left side of the screen
+defaults write com.apple.dock orientation -string left
+
 # Spacers
 # defaults write com.apple.dock persistent-apps -array-add '{"tile-type"="small-spacer-tile";}'; killall Dock
 # defaults write com.apple.dock persistent-apps -array-add '{"tile-type"="spacer-tile";}'; killall Dock
