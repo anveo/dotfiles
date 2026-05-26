@@ -27,6 +27,7 @@ return {
         },
         char = {
           enabled = true,
+          jump_labels = true,
         },
       },
     },
