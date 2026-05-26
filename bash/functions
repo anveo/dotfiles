@@ -411,3 +411,19 @@ r2text() {
     .comments[] | render_comment(0))
   "
 }
+
+ecr-latest() {
+    local repo="$1"
+    local count="${2:-5}"
+    local region="${AWS_DEFAULT_REGION:-us-east-1}"
+
+    if [[ "$repo" != */* ]] && [[ -n "$ECR_ORG" ]]; then
+      repo="$ECR_ORG/$repo"
+    fi
+
+    aws ecr describe-images \
+      --repository-name "$repo" \
+      --region "$region" \
+      --query "reverse(sort_by(imageDetails, &imagePushedAt))[:${count}].[imageTags[0],imagePushedAt]" \
+      --output table
+  }
