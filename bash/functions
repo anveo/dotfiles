@@ -421,9 +421,15 @@ ecr-latest() {
       repo="$ECR_ORG/$repo"
     fi
 
+    local registry_args=()
+    if [[ -n "$ECR_REGISTRY_ID" ]]; then
+      registry_args=(--registry-id "$ECR_REGISTRY_ID")
+    fi
+
     aws ecr describe-images \
       --repository-name "$repo" \
       --region "$region" \
+      "${registry_args[@]}" \
       --query "reverse(sort_by(imageDetails, &imagePushedAt))[:${count}].[imageTags[0],imagePushedAt]" \
       --output table
   }
