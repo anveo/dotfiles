@@ -136,6 +136,7 @@ alias sl="ls"
 
 # git
 alias lg='lazygit'
+alias ldo='lazydocker'
 alias gl='git pull'
 alias gpr='git pull --rebase'
 alias gp='git push'
@@ -386,6 +387,6 @@ alias k="kubectl"
 alias kk="kubectl krew"
 alias kctx="kubectl ctx"
 alias kns="kubectl ns"
-
+alias ks="k9s"
 
 alias mkvenv="python3 -m virtualenv -p python3 .venv"
