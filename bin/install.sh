@@ -21,7 +21,7 @@ ln -nfs $HOME/dotfiles/.spaceshiprc.zsh $HOME/.spaceshiprc.zsh
 # neovim
 mkdir -p $HOME/.config
 mkdir -p $HOME/.config/kitty/themes
-ln -nfs $HOME/dotfiles/kitty.conf $HOME/.config/kitty/kitty.conf
+ln -nfs $HOME/dotfiles/extras/kitty/kitty.conf $HOME/.config/kitty/kitty.conf
 ln -nfs $HOME/dotfiles/extras/kitty/themes/brian.conf $HOME/.config/kitty/themes/brian.conf
 ln -nfs $HOME/dotfiles/nvimfiles $HOME/.config/nvim
 mkdir -p $HOME/.config/autokey/data
