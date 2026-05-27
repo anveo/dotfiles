@@ -11,6 +11,7 @@ if [ -n "$TMUX" ]; then
 fi
 
 export DOTFILES=$HOME/dotfiles
+export XDG_CONFIG_HOME="$HOME/.config"
 
 # Cache brew prefix once to avoid slow subshells (~100-200ms each)
 if type brew &>/dev/null; then

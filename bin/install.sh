@@ -83,6 +83,11 @@ if [ `uname` = 'Darwin' ]; then
   echo "ln -nfs $HOME/dotfiles/extras/ghostty/themes $HOME/.config/ghostty/themes"
   ln -nfs $HOME/dotfiles/extras/ghostty/themes $HOME/.config/ghostty/themes
 
+  LAZYGIT_LIB_DIR="$HOME/Library/Application Support/lazygit"
+  mkdir -p "$LAZYGIT_LIB_DIR"
+  echo "ln -fs $HOME/dotfiles/extras/lazygit/config.yml $LAZYGIT_LIB_DIR/config.yml"
+  ln -fs "$HOME/dotfiles/extras/lazygit/config.yml" "$LAZYGIT_LIB_DIR/config.yml"
+
   echo "Running macOS defaults script..."
   $HOME/dotfiles/extras/macos_defaults.sh
 elif [ `uname` = 'Linux' ]; then
@@ -99,6 +104,11 @@ echo "Setting up VisiData configs..."
 mkdir -p $HOME/.visidata
 echo "ln -nfs $HOME/dotfiles/extras/visidata/config.py $HOME/.visidata/config.py"
 ln -nfs $HOME/dotfiles/extras/visidata/config.py $HOME/.visidata/config.py
+
+echo "Setting up lazygit configs..."
+mkdir -p "$HOME/.config/lazygit"
+echo "ln -fs $HOME/dotfiles/extras/lazygit/config.yml $HOME/.config/lazygit/config.yml"
+ln -fs "$HOME/dotfiles/extras/lazygit/config.yml" "$HOME/.config/lazygit/config.yml"
 
 echo "Setting up tig configs..."
 echo "ln -nfs $HOME/dotfiles/extras/tig/config $HOME/.tigrc"
