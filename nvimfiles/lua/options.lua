@@ -5,6 +5,7 @@ vim.g.maplocalleader = "\\"
 vim.opt.number = true
 vim.opt.relativenumber = false
 vim.opt.numberwidth = 3
+vim.opt.signcolumn = "yes" -- always show gutter (marks, git signs) so text doesn't jump
 
 -- Indentation (4-space default; Ruby overridden in after/ftplugin/ruby.lua)
 vim.opt.expandtab = true

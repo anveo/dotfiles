@@ -11,6 +11,18 @@ return {
   -- Indent text object
   { "michaeljsmith/vim-indent-object" },
 
+  -- Show marks in the sign column (gutter)
+  {
+    "chentoast/marks.nvim",
+    event = "VeryLazy",
+    opts = {
+      default_mappings = true,
+      builtin_marks = { ".", "<", ">", "^" },
+      refresh_interval = 250,
+      sign_priority = { lower = 10, upper = 15, builtin = 8, bookmark = 20 },
+    },
+  },
+
   -- Unimpaired: ]q, [q, ]b, [b, etc.
   { "tpope/vim-unimpaired" },
 

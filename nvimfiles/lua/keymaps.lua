@@ -31,6 +31,11 @@ map("n", "QW", "<cmd>windo bd<CR>", { desc = "Close tab" })
 map("n", "QA", "<cmd>qa<CR>", { desc = "Close all" })
 map("n", "Q!", "<cmd>q!<CR>", { desc = "Force close" })
 
+-- Folds: treesitter computes folds (foldmethod=expr), so the built-in `zf`
+-- (create fold) only errors with E350. Alias it to `za` (toggle fold) so muscle
+-- memory works: put the cursor in a method/class and press zf to fold/unfold it.
+map({ "n", "x" }, "zf", "za", { desc = "Toggle fold (alias for za)" })
+
 -- Clipboard (system)
 map({ "n", "v" }, "<Leader>y", '"+y', { desc = "Yank to clipboard" })
 map({ "n", "v" }, "<Leader>p", '"+p', { desc = "Paste from clipboard" })
