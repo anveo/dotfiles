@@ -40,6 +40,26 @@ return {
 
       -- Flash labels
       vim.api.nvim_set_hl(0, "FlashLabel", { fg = "#ffffff", bg = "#ff007c", bold = true })
+
+      -- Telescope: make the picker stand out from the editor background.
+      -- jellybeans defines the per-window border groups separately, so each one
+      -- (results / preview / prompt) must be set explicitly -- overriding only
+      -- the base TelescopeBorder leaves results/preview borders invisible.
+      -- Elevated body bg + bright accent borders on every window so the whole
+      -- picker reads as one outlined surface.
+      local ts_bg = "#1e1e1e"
+      local ts_prompt_bg = "#2a2a2a"
+      local ts_accent = "#ffb964"
+      vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = ts_bg })
+      vim.api.nvim_set_hl(0, "TelescopeBorder", { fg = ts_accent, bg = ts_bg })
+      vim.api.nvim_set_hl(0, "TelescopeResultsNormal", { bg = ts_bg })
+      vim.api.nvim_set_hl(0, "TelescopeResultsBorder", { fg = ts_accent, bg = ts_bg })
+      vim.api.nvim_set_hl(0, "TelescopePreviewNormal", { bg = ts_bg })
+      vim.api.nvim_set_hl(0, "TelescopePreviewBorder", { fg = ts_accent, bg = ts_bg })
+      vim.api.nvim_set_hl(0, "TelescopePromptNormal", { bg = ts_prompt_bg })
+      vim.api.nvim_set_hl(0, "TelescopePromptBorder", { fg = ts_accent, bg = ts_prompt_bg })
+      vim.api.nvim_set_hl(0, "TelescopeSelection", { bg = "#383838", bold = true })
+      vim.api.nvim_set_hl(0, "TelescopeMatching", { fg = ts_accent, bold = true })
     end,
   },
 
