@@ -2,7 +2,8 @@
 # Subtle theme inspired by modern diff viewers
 
 # Cursor line
-color cursor         white color236 bold
+color cursor         white color22
+color cursor-blur    white color22
 
 # Diff colors: tinted backgrounds, readable text
 color diff-header    yellow  default bold
