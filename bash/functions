@@ -414,7 +414,7 @@ r2text() {
 
 ecr-latest() {
     local repo="$1"
-    local count="${2:-5}"
+    local count="${2:-10}"
     local region="${AWS_DEFAULT_REGION:-us-east-1}"
 
     if [[ "$repo" != */* ]] && [[ -n "$ECR_ORG" ]]; then
