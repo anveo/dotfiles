@@ -1,6 +1,12 @@
 gui:
   theme:
     selectedLineBgColor:
-      - '#1e3a5f'
+      - "#1e3a5f"
     selectedRangeBgColor:
-      - '#1e3a5f'
+      - "#1e3a5f"
+
+customCommands:
+  - key: "<c-p>"
+    context: "commits"
+    command: 'gh browse "$(gh api "repos/{owner}/{repo}/commits/{{.SelectedCommit.Hash}}/pulls" --jq ".[0].number")"'
+    description: "Open PR for selected commit"
