@@ -26,3 +26,4 @@ fonts/.uuid
 
 zsh/oh-my-zsh/themes/spaceship-prompt
 zsh/oh-my-zsh/themes/spaceship.zsh-theme
+/.claude/settings.local.json

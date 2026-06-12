@@ -433,3 +433,30 @@ ecr-latest() {
       --query "reverse(sort_by(imageDetails, &imagePushedAt))[:${count}].[imageTags[0],imagePushedAt]" \
       --output table
   }
+
+adb_photo() {
+  local file="$1"
+
+  if [[ -z "$file" ]]; then
+    echo "Usage: adb_photo <path-to-image>" >&2
+    return 1
+  fi
+
+  if [[ ! -f "$file" ]]; then
+    echo "Error: file not found: $file" >&2
+    return 1
+  fi
+
+  local filename=$(basename "$file")
+  local dest="/sdcard/Pictures/$filename"
+
+  adb push "$file" "$dest" || { echo "Push failed" >&2; return 1; }
+
+  # Try modern method, fall back to broadcast
+  if ! adb shell cmd media scan-file "$dest" 2>/dev/null; then
+    adb shell am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE \
+      -d "file://$dest"
+  fi
+
+  echo "✓ $filename added to emulator Photos"
+}
