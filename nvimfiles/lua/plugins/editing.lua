@@ -181,6 +181,8 @@ return {
     cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
     ft = { "markdown" },
     build = function()
+      local plugin_root = require("lazy.core.config").options.root
+      vim.opt.rtp:append(plugin_root .. "/markdown-preview.nvim")
       vim.fn["mkdp#util#install"]()
     end,
   },
