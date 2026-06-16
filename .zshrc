@@ -194,3 +194,4 @@ zplug load # --verbose
 #   zprof
 #   echo ""
 # } >> ~/zsh_profile.log
+

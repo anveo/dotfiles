@@ -68,3 +68,8 @@ fi
 if [ -d "$HOME/.antigravity/antigravity/bin" ]; then
   export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 fi
+
+# LM Studio CLI (lms)
+if [ -d "$HOME/.lmstudio/bin" ]; then
+  export PATH="$PATH:$HOME/.lmstudio/bin"
+fi
