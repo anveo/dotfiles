@@ -175,6 +175,16 @@ return {
   -- CSV
   { "chrisbra/csv.vim", ft = "csv" },
 
+  -- Markdown live preview in the browser (install without yarn or npm)
+  {
+    "iamcco/markdown-preview.nvim",
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+    ft = { "markdown" },
+    build = function()
+      vim.fn["mkdp#util#install"]()
+    end,
+  },
+
   -- Database client
   {
     "tpope/vim-dadbod",

@@ -96,6 +96,7 @@ What's in the box. Grouped by category.
 | [vim-rails](https://github.com/tpope/vim-rails) | Rails navigation, generators, `gf` on partials/models | `:Econtroller`, `:Emodel`, `:A`, `gf` |
 | [vim-bundler](https://github.com/tpope/vim-bundler) | Bundler integration, `gf` on gem names in Gemfile | `gf` on gem name |
 | [csv.vim](https://github.com/chrisbra/csv.vim) | CSV column highlighting, filtering, sorting | `:CSVTable`, column navigation |
+| [markdown-preview.nvim](https://github.com/iamcco/markdown-preview.nvim) | Live markdown preview in the browser (synced scroll) | `<Leader>mp`, `:MarkdownPreviewToggle` |
 
 ## Database
 

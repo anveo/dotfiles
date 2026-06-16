@@ -345,6 +345,19 @@ Dispatch auto-detects the right command per file:
 
 Projectionist `dispatch` key takes priority when defined.
 
+### Markdown (markdown-preview.nvim)
+
+| Key / Command | Action |
+|---------------|--------|
+| `<Leader>mp` | Toggle live browser preview (buffer-local, markdown only) |
+| `:MarkdownPreview` | Start preview |
+| `:MarkdownPreviewStop` | Stop preview |
+
+Opens a synced-scroll live preview in your default browser. The plugin's README
+default mapping (`<C-p>`) is **not** used here -- it collides with Telescope
+`find_files`. First use builds a prebuilt server binary (no yarn/npm needed); if
+it doesn't auto-build, run `:Lazy build markdown-preview.nvim`.
+
 ### Database (vim-dadbod)
 
 | Key / Command | Action |

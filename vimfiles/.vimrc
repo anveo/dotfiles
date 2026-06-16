@@ -88,6 +88,8 @@ if has('nvim')
   Plug 'hrsh7th/cmp-vsnip'
   Plug 'hrsh7th/vim-vsnip'
 
+  Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+
   " For luasnip users.
   " Plug 'L3MON4D3/LuaSnip'
   " Plug 'saadparwaiz1/cmp_luasnip'

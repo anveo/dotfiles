@@ -72,6 +72,7 @@ return {
         { "<Leader>f", group = "find/files" },
         { "<Leader>g", group = "git" },
         { "<Leader>h", group = "hunks" },
+        { "<Leader>m", group = "markdown" },
         { "<Leader>t", group = "tabs" },
         { "<Leader>s", group = "treesitter selection" },
       },
