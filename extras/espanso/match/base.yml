@@ -7,6 +7,9 @@ matches:
   - trigger: ";i"
     replace: "Issue "
 
+  - trigger: ";qme"
+    replace: "What questions do you have for me?"
+
   - trigger: ":date"
     replace: "{{mydate}}"
     vars:
