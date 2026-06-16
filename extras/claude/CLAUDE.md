@@ -19,4 +19,14 @@ Use: allowlist/blocklist, primary/replica, placeholder/example, main branch, con
 
 - Node version manager: **fnm** (not nvm). Use `fnm use <version>` to switch Node versions.
 
+## Shell Commands (keep them auto-allowable)
+
+I auto-allow commands by **stable prefix**, so run them in a form that can be allowlisted. Chained or wrapped commands defeat this and force a manual approval each time.
+
+- **One command per Bash call.** Don't join steps with `;`, `&&`, or `||`. Separate steps = separate tool calls.
+- **Don't wrap in pipes to trim output** (`| tail`, `| head`, `| grep`). Let output return raw; pipe only when the filtering is the actual goal.
+- **Prefer dedicated tools over the shell** for reading/searching: Read / Grep / Glob instead of `cat` / `grep` / `find` / `ls` / `sed` / `head` / `tail`. If Grep/Glob aren't available, run a single bare `grep`/`rg`.
+- **Use canonical, stable prefixes.** Don't insert inline env assignments mid-prefix (`env RAILS_ENV=test bundle …`). RSpec already runs in the test env; isolate the rare runner-in-test case.
+- **No `echo` separators** between steps, and **no heredocs** (`cat <<EOF`) — create scratch files with the Write tool, then run them in one command.
+
 @RTK.md
