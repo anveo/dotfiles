@@ -20,6 +20,14 @@
         #last = log -1 HEAD
         #log1 = log --pretty=oneline --abbrev-commit
         news = log -p HEAD@{1}..HEAD@{0}
+        # Pickaxe: find commits that added/removed a literal string (with diffs)
+        #   git pik foobar              commits where foobar was added/removed
+        #   git pik foobar -- src/      scope to a path
+        pik = "!f() { git log -p -S\"$1\" \"${@:2}\"; }; f"
+        # Pickaxe regex variant: commits whose diff has a line matching a regex
+        #   git pikr 'foo.*bar'         commits touching lines matching the regex
+        #   git pikr 'foo.*bar' -- src/ scope to a path
+        pikr = "!f() { git log -p -G\"$1\" \"${@:2}\"; }; f"
         r = reset
         r1 = reset HEAD^
         r2 = reset HEAD^^
