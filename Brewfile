@@ -1,7 +1,7 @@
-tap "datadog-labs/pack"
-tap "getagentseal/codeburn"
-tap "heroku/brew"
-tap "peonping/tap"
+tap "datadog-labs/pack", trusted: true
+tap "getagentseal/codeburn", trusted: true
+tap "heroku/brew", trusted: true
+tap "peonping/tap", "https://github.com/PeonPing/homebrew-tap", trusted: true
 # Processes triangulated solid meshes
 brew "admesh"
 # YAML Parser
@@ -58,6 +58,8 @@ brew "gh"
 brew "git"
 # Syntax-highlighting pager for git and diff output
 brew "git-delta"
+# Render markdown on the CLI
+brew "glow"
 # Kubernetes package manager
 brew "helm"
 # Process manager for Procfile-based applications
@@ -172,6 +174,14 @@ brew "yt-dlp"
 brew "zlib"
 # UNIX shell (command interpreter)
 brew "zsh"
+# Go-based command-line wrapper for easy interaction with Datadog APIs
+brew "datadog-labs/pack/pup"
+# See where your AI coding tokens go - by task, tool, model, and project
+brew "getagentseal/codeburn/codeburn"
+# Everything you need to get started with Heroku
+brew "heroku/brew/heroku"
+# Sound effects and desktop notifications for AI coding agents
+brew "peonping/tap/peon-ping"
 # Command-line interface for 1Password
 cask "1password-cli"
 # 3D creation suite
@@ -226,6 +236,7 @@ vscode "bierner.markdown-mermaid"
 vscode "bradgashler.htmltagwrap"
 vscode "bradlc.vscode-tailwindcss"
 vscode "britesnow.vscode-toggle-quotes"
+vscode "buenon.scratchpads"
 vscode "bung87.rails"
 vscode "bung87.vscode-gemfile"
 vscode "castwide.solargraph"
