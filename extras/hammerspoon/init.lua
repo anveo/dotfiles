@@ -78,3 +78,6 @@ hs.hotkey.bind(hyper, "k", function()
   if not win then return end
   win:moveToScreen(win:screen():next())
 end)
+
+-- Toggle Chrome's vertical tab sidebar (see chrome-sidebar.lua)
+hs.hotkey.bind(hyper, "v", require("chrome-sidebar"))
