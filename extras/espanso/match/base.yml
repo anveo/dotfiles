@@ -17,3 +17,6 @@ matches:
         type: date
         params:
           format: "%Y-%m-%d"
+
+  - trigger: ";shrug"
+    replace: '¯\_(ツ)_/¯'
