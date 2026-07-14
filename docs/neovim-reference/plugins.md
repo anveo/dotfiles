@@ -103,7 +103,7 @@ What's in the box. Grouped by category.
 | Plugin | What it does | Key commands |
 |--------|-------------|--------------|
 | [vim-dadbod](https://github.com/tpope/vim-dadbod) | Database client -- run SQL queries from neovim | `:DB {query}` |
-| [vim-dadbod-ui](https://github.com/kristijanhusak/vim-dadbod-ui) | Database explorer UI with table browsing and saved queries | `<Leader>db`, `:DBUI` |
+| [vim-dadbod-ui](https://github.com/kristijanhusak/vim-dadbod-ui) | Database explorer UI with table browsing and saved queries | `<Leader>bd`, `:DBUI` |
 | [vim-dadbod-completion](https://github.com/kristijanhusak/vim-dadbod-completion) | SQL autocompletion against your actual schema (via nvim-cmp) | (automatic in SQL buffers) |
 
 ## Infrastructure

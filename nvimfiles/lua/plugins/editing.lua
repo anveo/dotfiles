@@ -197,7 +197,7 @@ return {
     dependencies = { "tpope/vim-dadbod" },
     cmd = { "DBUI", "DBUIToggle" },
     keys = {
-      { "<Leader>db", "<cmd>DBUIToggle<CR>", desc = "Toggle database UI" },
+      { "<Leader>bd", "<cmd>DBUIToggle<CR>", desc = "Toggle database UI" },
     },
     init = function()
       vim.g.db_ui_use_nerd_fonts = 1

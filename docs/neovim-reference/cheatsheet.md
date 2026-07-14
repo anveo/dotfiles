@@ -362,13 +362,13 @@ it doesn't auto-build, run `:Lazy build markdown-preview.nvim`.
 
 | Key / Command | Action |
 |---------------|--------|
-| `<Leader>db` | Toggle database UI sidebar |
+| `<Leader>bd` | Toggle database UI sidebar |
 | `:DB {query}` | Run a one-off SQL query |
 | `:DB select * from users limit 5` | Example: quick table peek |
 
 #### Using the Database UI
 
-`<Leader>db` opens a sidebar with your database connections. Workflow:
+`<Leader>bd` opens a sidebar with your database connections. Workflow:
 
 1. **Expand a connection** to browse tables, views, and schemas
 2. **Press `<CR>`** on a table to see its contents
