@@ -434,6 +434,115 @@ ecr-latest() {
       --output table
   }
 
+# Clean up branches whose PRs have been merged.
+#
+#   gbclean                 # DRY RUN: preview local branches whose upstream is gone
+#   gbclean --apply         # actually delete them (safe -d)
+#   gbclean --remote        # also include REMOTE branches merged into the default branch
+#   gbclean --force         # use -D locally (catches squash/rebase-merged branches -d refuses)
+#
+# Dry run by default -- nothing is deleted unless you pass --apply (or --force).
+# Local deletes use `git branch -d`, which refuses branches git doesn't consider
+# merged; squash/rebase-merged branches are reported but skipped -- add --force.
+gbclean() {
+  if ! git rev-parse --is-inside-work-tree &>/dev/null; then
+    echo "Error: not inside a git repository." >&2
+    return 1
+  fi
+
+  local dry_run=1 do_remote=0 del_flag="-d"
+  local arg
+  for arg in "$@"; do
+    case "$arg" in
+      --apply|-y)   dry_run=0 ;;
+      --remote|-r)  do_remote=1 ;;
+      --force|-D)   del_flag="-D"; dry_run=0 ;;
+      --dry-run|-n) dry_run=1 ;;
+      *) echo "gbclean: unknown option '$arg'" >&2; return 1 ;;
+    esac
+  done
+
+  # Protected branches that must never be deleted.
+  local protected="HEAD main master develop trunk"
+  local current
+  current=$(git symbolic-ref --short -q HEAD)
+  local found=0
+
+  echo "Fetching and pruning stale remote-tracking refs..."
+  git fetch --prune || return 1
+
+  # --- Local branches whose upstream is gone ---
+  local gone
+  gone=$(git for-each-ref --format '%(refname:short) %(upstream:track)' refs/heads \
+    | awk '$2 == "[gone]" { print $1 }')
+
+  if [ -z "$gone" ]; then
+    echo "No local branches with a gone upstream."
+  else
+    local b
+    for b in $gone; do
+      if [ "$b" = "$current" ]; then
+        echo "skip (current branch): $b"
+        continue
+      fi
+      found=1
+      if [ "$dry_run" = 1 ]; then
+        echo "would delete local: $b"
+      else
+        git branch "$del_flag" "$b"
+      fi
+    done
+  fi
+
+  # --- Remote branches merged into the default branch ---
+  if [ "$do_remote" = 1 ]; then
+    local remote_head default
+    remote_head=$(git symbolic-ref --short -q refs/remotes/origin/HEAD)
+    default="${remote_head#origin/}"
+    [ -z "$default" ] && default="main"
+
+    local skip_re
+    skip_re=$(echo "$protected $default" | tr ' ' '\n' | grep -v '^$' | paste -sd'|' -)
+
+    local merged
+    merged=$(git branch -r --merged "origin/$default" 2>/dev/null \
+      | sed 's|^[* ]*origin/||' \
+      | grep -vE "^($skip_re)$")
+
+    if [ -z "$merged" ]; then
+      echo "No remote branches merged into origin/$default."
+    elif [ "$dry_run" = 1 ]; then
+      found=1
+      local rb
+      for rb in $merged; do echo "would delete remote: origin/$rb"; done
+    else
+      echo ""
+      echo "Remote branches merged into origin/$default:"
+      local rb
+      for rb in $merged; do echo "  origin/$rb"; done
+      printf "Delete these %s remote branch(es)? [y/N] " "$(echo "$merged" | wc -w | tr -d ' ')"
+      local reply
+      read -r reply
+      if [ "$reply" = y ] || [ "$reply" = Y ]; then
+        for rb in $merged; do
+          git push origin --delete "$rb"
+        done
+      else
+        echo "Aborted remote deletion."
+      fi
+    fi
+  fi
+
+  # Remind how to actually mutate after a dry run.
+  if [ "$dry_run" = 1 ] && [ "$found" = 1 ]; then
+    echo ""
+    echo "Dry run -- nothing deleted. To apply:"
+    echo "  gbclean --apply           delete local (safe -d)"
+    echo "  gbclean --apply --force   also remove squash/rebase-merged branches (-D)"
+    [ "$do_remote" = 1 ] && echo "  gbclean --apply --remote  include remote branches (prompts first)"
+  fi
+}
+
 adb_photo() {
   local file="$1"
 

@@ -5,6 +5,9 @@
         #l = log --pretty=oneline --graph --abbrev-commit
         br = branch
         bs = branch --sort=committerdate
+        # Delete local branches whose upstream is gone (merged & remote-deleted).
+        # Safe: uses -d, so squash-merged branches are skipped -- use `gbclean --force` for those.
+        gone = "!f() { git fetch --prune && b=$(git for-each-ref --format '%(refname:short) %(upstream:track)' refs/heads | awk '$2 == \"[gone]\" { print $1 }'); [ -z \"$b\" ] && echo 'No branches with a gone upstream.' || echo \"$b\" | xargs -n1 git branch -d; }; f"
         #ci = checkin
         co = checkout
         diffi = diff --ignore-all-space
