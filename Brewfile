@@ -1,4 +1,5 @@
 tap "datadog-labs/pack", trusted: true
+tap "facebook/fb", trusted: true
 tap "getagentseal/codeburn", trusted: true
 tap "heroku/brew", trusted: true
 tap "peonping/tap", "https://github.com/PeonPing/homebrew-tap", trusted: true
@@ -22,6 +23,8 @@ brew "awscli"
 brew "bat"
 # Yet another cross-platform graphical process/system monitor
 brew "bottom"
+# Incredibly fast JavaScript runtime, bundler, test runner, and package manager
+brew "bun"
 # CloudFlare's PKI toolkit
 brew "cfssl"
 # Cloudflare Tunnel client (formerly Argo Tunnel)
@@ -176,6 +179,8 @@ brew "zlib"
 brew "zsh"
 # Go-based command-line wrapper for easy interaction with Datadog APIs
 brew "datadog-labs/pack/pup"
+# A Powerful Command Line for automating iOS Simulators
+brew "facebook/fb/idb-companion"
 # See where your AI coding tokens go - by task, tool, model, and project
 brew "getagentseal/codeburn/codeburn"
 # Everything you need to get started with Heroku
@@ -328,6 +333,7 @@ vscode "xabikos.javascriptsnippets"
 vscode "zhuangtongfa.material-theme"
 go "golang.org/x/tools/gopls"
 go "honnef.co/go/tools/cmd/staticcheck"
+uv "fb-idb"
 krew "ctx"
 krew "krew"
 krew "ns"
