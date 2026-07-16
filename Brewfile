@@ -153,6 +153,8 @@ brew "tfenv"
 brew "tig"
 # Simplified and community-driven man pages
 brew "tldr"
+# Drop-in replacement for tmux-plugin-manager (tpm) with a TUI
+brew "tpack"
 # Lightweight BitTorrent client
 brew "transmission-cli"
 # Parser generator tool

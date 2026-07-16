@@ -48,8 +48,14 @@ See `docs/neovim-reference/` for keybinding cheatsheet and plugin inventory.
 
 ## Tmux
 
-    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-    # start tmux session and run prefix-I
+Plugins are managed by [tpack](https://github.com/tmuxpack/tpack), a
+TPM-compatible plugin manager installed via Homebrew (included in the Brewfile):
+
+    brew install tpack
+
+Then start a tmux session and press `prefix + I` to install the plugins
+declared in `.tmux.conf`. tpack clones them into `~/.tmux/plugins/` (not
+tracked in this repo). Use `prefix + T` for the interactive TUI.
 
 ## Generate Brewfile
 

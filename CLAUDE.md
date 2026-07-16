@@ -51,7 +51,8 @@ nvimfiles/
   - Mouse enabled (`mouse on`), focus events enabled
   - vim-tmux-navigator for seamless pane navigation with `C-h/j/k/l`
   - vi copy mode with pbcopy integration
-  - TPM plugins: tpm, tmux-continuum, tmux-yank
+  - Plugin manager: **tpack** (`brew install tpack`), a TPM-compatible rewrite. Install it via the Brewfile, not by git-cloning TPM. Plugins are declared with `set -g @plugin` lines (all before `run 'tpack init'`, which stays at the bottom of `.tmux.conf`); tpack clones them into `~/.tmux/plugins/` (not tracked). Install/update via `prefix + I` or the TUI (`prefix + T`).
+  - Plugins: tmux-sensible, tmux-resurrect, tmux-continuum, tmux-yank
 
 ## Other Dotfiles
 
