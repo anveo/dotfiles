@@ -19,7 +19,17 @@ defaults write com.apple.dock orientation -string left
 # defaults write com.apple.dock persistent-apps -array-add '{"tile-type"="small-spacer-tile";}'; killall Dock
 # defaults write com.apple.dock persistent-apps -array-add '{"tile-type"="spacer-tile";}'; killall Dock
 
-mkdir  ~/Documents/Screenshots
+mkdir -p ~/Documents/Screenshots
 defaults write com.apple.screencapture location ~/Documents/Screenshots
+
+# Disable Spotlight keyboard shortcuts (Keyboard > Keyboard Shortcuts > Spotlight)
+# 64 = Show Spotlight search (^⌘Space), 65 = Show Finder search window (⌥⌘Space)
+# value block preserves the key binding so only the enabled flag is flipped
+defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 64 \
+  '{ enabled = 0; value = { parameters = (32, 49, 1310720); type = standard; }; }'
+defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 65 \
+  '{ enabled = 0; value = { parameters = (32, 49, 1572864); type = standard; }; }'
+# Reload the symbolic hotkeys service so the change takes effect without logout
+/System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
 
 killall Dock
