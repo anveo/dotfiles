@@ -28,7 +28,14 @@ return {
     lazy = false,
     priority = 1000,
     config = function()
-      require("jellybeans").setup({})
+      require("jellybeans").setup({
+        -- Darken the editor background toward black (default is #151515).
+        -- on_colors overrides the palette so all derived groups (SignColumn,
+        -- floats, EndOfBuffer, etc.) follow without leaving seams.
+        on_colors = function(colors)
+          colors.background = "#060606"
+        end,
+      })
       vim.cmd.colorscheme("jellybeans")
 
       vim.api.nvim_set_hl(0, "ColorColumn", { bg = "#261e1e" })
@@ -47,8 +54,8 @@ return {
       -- the base TelescopeBorder leaves results/preview borders invisible.
       -- Elevated body bg + bright accent borders on every window so the whole
       -- picker reads as one outlined surface.
-      local ts_bg = "#1e1e1e"
-      local ts_prompt_bg = "#2a2a2a"
+      local ts_bg = "#141414"
+      local ts_prompt_bg = "#202020"
       local ts_accent = "#ffb964"
       vim.api.nvim_set_hl(0, "TelescopeNormal", { bg = ts_bg })
       vim.api.nvim_set_hl(0, "TelescopeBorder", { fg = ts_accent, bg = ts_bg })
