@@ -6,8 +6,11 @@ export LANG="en_US"
 export LC_ALL="en_US.UTF-8"
 export LANGUAGE="en_US.UTF-8"
 
-# Make tmux look good.
-export TERM='xterm-256color'
+# Deliberately do NOT export TERM here. This file is sourced by every
+# interactive shell, so setting TERM clobbered it in two places at once:
+# outside tmux it hid Ghostty's xterm-ghostty (killing the extkeys and RGB
+# terminal-features in .tmux.conf), and inside tmux it overrode tmux's own
+# tmux-256color. Let the terminal and tmux each advertise themselves.
 
 # Larger bash history (allow 32³ entries; default is 500)
 export HISTSIZE=32768
