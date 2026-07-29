@@ -10,6 +10,9 @@ matches:
   - trigger: ";qme"
     replace: "What questions do you have for me?"
 
+  - trigger: ";pine"
+    replace: "What's your opinion?"
+
   - trigger: ":date"
     replace: "{{mydate}}"
     vars:
