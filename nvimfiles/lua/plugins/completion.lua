@@ -35,12 +35,20 @@ return {
           completeopt = "menu,menuone,noinsert",
         },
         mapping = cmp.mapping.preset.insert({
-          ["<C-n>"] = cmp.mapping.select_next_item(),
+          -- C-n does double duty: open the menu if closed (matching native vim
+          -- insert-mode keyword completion), otherwise advance. The usual
+          -- trigger, C-Space, is unreachable inside tmux -- it's the tmux prefix.
+          ["<C-n>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_next_item()
+            else
+              cmp.complete()
+            end
+          end, { "i" }),
           ["<C-p>"] = cmp.mapping.select_prev_item(),
           ["<C-b>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<CR>"] = cmp.mapping.confirm({ select = true }),
-          ["<C-Space>"] = cmp.mapping.complete(),
           ["<C-e>"] = cmp.mapping.abort(),
           ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
