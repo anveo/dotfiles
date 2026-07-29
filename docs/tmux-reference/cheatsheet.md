@@ -22,8 +22,8 @@ Quick reference for the tmux config. Prefix is `C-Space`.
 
 | Key | Action |
 |-----|--------|
-| `prefix \|` / `prefix h` | Split vertically (top/bottom) |
-| `prefix -` / `prefix v` | Split horizontally (left/right) |
+| `prefix \|` / `prefix v` | Split into panes side by side (vertical divider) |
+| `prefix -` / `prefix h` | Split into stacked panes (horizontal divider) |
 | `C-h/j/k/l` | Navigate panes (vim-tmux-navigator -- works across nvim splits) |
 | `prefix H/J/K/L` | Resize pane by 5 cells (repeatable) |
 | `prefix Up` / `prefix Down` | Toggle zoom on current pane |
