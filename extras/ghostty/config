@@ -1,9 +1,9 @@
 # Ghostty Configuration
 
 # Font Configuration
-font-family = FiraCode Nerd Font
+font-family = JetBrainsMono Nerd Font Mono
 font-size = 14
-font-feature = -calt  # Disable contextual alternates if needed
+font-feature = +calt  # Enable contextual alternates (extended ligatures)
 font-feature = +liga  # Enable ligatures (ASCII Ligatures: true in iTerm)
 
 # Window Configuration

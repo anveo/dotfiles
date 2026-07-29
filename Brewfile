@@ -204,6 +204,7 @@ cask "espanso"
 # Web browser
 cask "firefox"
 cask "font-fira-code-nerd-font"
+cask "font-jetbrains-mono-nerd-font"
 # Set of tools to manage resources and applications hosted on Google Cloud
 cask "gcloud-cli"
 # Terminal emulator that uses platform-native UI and GPU acceleration
@@ -266,7 +267,6 @@ vscode "geequlim.godot-tools"
 vscode "github.remotehub"
 vscode "github.vscode-pull-request-github"
 vscode "golang.go"
-vscode "gruntfuggly.todo-tree"
 vscode "hashicorp.terraform"
 vscode "hwencc.html-tag-wrapper"
 vscode "jacqueslucke.blender-development"
