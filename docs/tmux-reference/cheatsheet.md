@@ -43,7 +43,8 @@ Quick reference for the tmux config. Prefix is `C-Space`.
 
 ## Copy Mode (vi)
 
-Enter with `prefix Space` or `prefix C-Space`.
+Enter with `prefix Space`. (`prefix C-Space` was deliberately unbound — since the
+prefix is itself `C-Space`, an accidental double-tap dropped you into copy mode.)
 
 | Key | Mode | Action |
 |-----|------|--------|
