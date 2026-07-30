@@ -3,8 +3,10 @@
 # Font Configuration
 font-family = JetBrainsMono Nerd Font Mono
 font-size = 14
-font-feature = +calt  # Enable contextual alternates (extended ligatures)
-font-feature = +liga  # Enable ligatures (ASCII Ligatures: true in iTerm)
+# Enable contextual alternates + ligatures (extended ligature set)
+# Note: Ghostty has no trailing-comment syntax; a value must be alone on its line
+font-feature = +calt
+font-feature = +liga
 
 # Window Configuration
 window-save-state = always
