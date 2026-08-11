@@ -91,8 +91,10 @@ Do not fix or reply unprompted. Posting to a PR is outward-facing and needs to b
 When asked to reply, address the finding's *substance*: what is right, what is wrong, and what you changed and why. Taking a fix while rejecting its reasoning is a legitimate and useful outcome — say both. Reply to the specific thread:
 
 ```bash
-gh api repos/{owner}/{repo}/pulls/comments/{comment_id}/replies -F body=@/tmp/reply.md
+gh api repos/{owner}/{repo}/pulls/{n}/comments/{comment_id}/replies -F body=@/tmp/reply.md
 ```
+
+The PR number is required. `repos/{owner}/{repo}/pulls/comments/{comment_id}` is a valid path for *reading* a single review comment, so it looks plausible, but the `/replies` sub-resource only exists under the numbered form and the short version 404s.
 
 Write the body with a file rather than inline shell quoting; review replies contain backticks and code fences that will not survive `-f body='...'`.
 
