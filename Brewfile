@@ -27,6 +27,8 @@ brew "bottom"
 brew "bun"
 # CloudFlare's PKI toolkit
 brew "cfssl"
+# Statistics utility to count lines of code
+brew "cloc"
 # Cloudflare Tunnel client (formerly Argo Tunnel)
 brew "cloudflared"
 # Cross-platform make
@@ -159,6 +161,8 @@ brew "tpack"
 brew "transmission-cli"
 # Parser generator tool
 brew "tree-sitter-cli"
+# Vulnerability scanner for container images, file systems, and Git repos
+brew "trivy"
 # Terminal spreadsheet multitool for discovering and arranging data
 brew "visidata"
 # Execute commands when watched files change
@@ -191,6 +195,8 @@ brew "heroku/brew/heroku"
 brew "peonping/tap/peon-ping"
 # Command-line interface for 1Password
 cask "1password-cli"
+# Sends audio from computer to outputs
+cask "airfoil"
 # 3D creation suite
 cask "blender"
 # Open source IDE for exploring and testing APIs
