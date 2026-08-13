@@ -124,3 +124,8 @@ echo "ln -nfs $HOME/dotfiles/extras/claude/statusline-command.sh $HOME/.claude/s
 ln -nfs $HOME/dotfiles/extras/claude/statusline-command.sh $HOME/.claude/statusline-command.sh
 echo "ln -nfs $HOME/dotfiles/extras/claude/RTK.md $HOME/.claude/RTK.md"
 ln -nfs $HOME/dotfiles/extras/claude/RTK.md $HOME/.claude/RTK.md
+mkdir -p $HOME/.claude/skills
+for skill in $HOME/dotfiles/extras/claude/skills/*/; do
+  echo "ln -nfs ${skill%/} $HOME/.claude/skills/$(basename $skill)"
+  ln -nfs "${skill%/}" "$HOME/.claude/skills/$(basename $skill)"
+done
