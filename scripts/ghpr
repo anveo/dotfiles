@@ -6,6 +6,11 @@ if ! command -v gh &>/dev/null; then
   exit 1
 fi
 
+DRY_RUN=false
+if [ "${1:-}" = "-n" ] || [ "${1:-}" = "--dry-run" ]; then
+  DRY_RUN=true
+fi
+
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 # --- Title ---
@@ -31,28 +36,61 @@ DESC=$(echo "$DESC" | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) tolowe
 TITLE="${KEY:+${KEY} }${DESC}"
 
 # --- Base branch ---
-# Try reflog first — records "branch: Created from <branch>" at creation time
+# 1. An explicit start point, if there was one. `git checkout -b foo main` records
+#    "Created from main"; a bare `git checkout -b foo` records the literal string
+#    "Created from HEAD", which tells us nothing and falls through to step 2.
 BASE=$(git reflog show "$BRANCH" 2>/dev/null \
   | grep "branch: Created from" \
   | head -1 \
   | sed 's/.*Created from //' \
-  | sed 's|^.*/||')
+  | sed 's|^origin/||')
 
-# Discard "HEAD" or same as current branch (branch created from detached HEAD or reflog unclear)
-if [ "$BASE" = "HEAD" ] || [ "$BASE" = "$BRANCH" ] || [ -z "$BASE" ]; then
-  # Fallback: remote branch with the fewest commits not yet on it
-  # (i.e. the branch we diverged from most recently)
-  BASE=$(git for-each-ref --format='%(refname:short)' refs/remotes/origin/ \
+# Reject "HEAD", self-references, and names that no longer exist on the remote.
+# Deliberately not requiring the base to still be an ancestor of HEAD — a parent
+# feature branch may have moved on since we forked, and it is still the right base.
+if [ "$BASE" = "HEAD" ] || [ "$BASE" = "$BRANCH" ] || [ -z "$BASE" ] \
+  || ! git rev-parse --verify --quiet "refs/remotes/origin/$BASE" >/dev/null; then
+  BASE=""
+fi
+
+if [ -z "$BASE" ]; then
+  # 2. The repo's default branch is the base for an ordinary feature branch.
+  DEFAULT=$(gh repo view --json defaultBranchRef --jq .defaultBranchRef.name 2>/dev/null || true)
+
+  # 3. Detect a stacked branch: score every remote ref by how many commits HEAD
+  #    has that it doesn't — i.e. the distance back to their merge base — closest
+  #    first. A sibling forked from the same commit scores identically to the
+  #    default branch, which is why step 4 demands a *strict* win before
+  #    overriding the default. Sorting alone would hand ties to whichever name
+  #    happens to sort first.
+  CANDIDATES=$(git for-each-ref --format='%(refname:short)' refs/remotes/origin/ \
     | grep -vE "^origin/HEAD$|^origin/${BRANCH}$" \
     | while read -r ref; do
-        count=$(git rev-list --count HEAD "^${ref}" 2>/dev/null || echo 99999)
-        printf '%s %s\n' "$count" "${ref#origin/}"
+        printf '%s %s\n' "$(git rev-list --count HEAD "^${ref}" 2>/dev/null || echo 99999)" "${ref#origin/}"
       done \
-    | sort -n \
-    | awk 'NR==1{print $2}')
+    | sort -n)
+
+  CLOSEST_N=$(printf '%s\n' "$CANDIDATES" | awk 'NR==1{print $1}')
+  CLOSEST=$(printf '%s\n' "$CANDIDATES" | awk 'NR==1{print $2}')
+
+  if [ -n "$DEFAULT" ] && git rev-parse --verify --quiet "refs/remotes/origin/$DEFAULT" >/dev/null; then
+    DEFAULT_N=$(git rev-list --count HEAD "^origin/$DEFAULT")
+    # 4. Only prefer a stacked branch when it is strictly closer than the default.
+    if [ -n "$CLOSEST_N" ] && [ "$CLOSEST_N" -lt "$DEFAULT_N" ]; then
+      BASE="$CLOSEST"
+    else
+      BASE="$DEFAULT"
+    fi
+  else
+    BASE="${DEFAULT:-$CLOSEST}"
+  fi
 fi
 
 printf 'Branch: %s\nBase:   %s\nTitle:  %s\n\n' "$BRANCH" "$BASE" "$TITLE"
+
+if [ "$DRY_RUN" = true ]; then
+  exit 0
+fi
 
 if [ -n "$BASE" ]; then
   gh pr create --web --base "$BASE" --title "$TITLE"
