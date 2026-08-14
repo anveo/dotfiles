@@ -6,6 +6,10 @@ export LANG="en_US"
 export LC_ALL="en_US.UTF-8"
 export LANGUAGE="en_US.UTF-8"
 
+# Claude Code caps itself to 256 colors inside tmux unless told the terminal
+# chain supports truecolor (ours does: tmux-256color + RGB overrides in .tmux.conf)
+export CLAUDE_CODE_TMUX_TRUECOLOR=1
+
 # Deliberately do NOT export TERM here. This file is sourced by every
 # interactive shell, so setting TERM clobbered it in two places at once:
 # outside tmux it hid Ghostty's xterm-ghostty (killing the extkeys and RGB
