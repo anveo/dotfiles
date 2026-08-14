@@ -43,6 +43,8 @@ brew "difftastic"
 brew "direnv"
 # Modern, maintained replacement for ls
 brew "eza"
+# Easiest way to build and release mobile apps
+brew "fastlane"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
 # Play, record, convert, and stream select audio and video codecs
