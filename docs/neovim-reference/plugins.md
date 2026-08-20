@@ -69,9 +69,9 @@ What's in the box. Grouped by category.
 
 | Plugin | What it does | Key commands |
 |--------|-------------|--------------|
-| [vim-fugitive](https://github.com/tpope/vim-fugitive) | Git wrapper -- staging, committing, blaming, browsing | `:G`, `:G blame`, `:G log` |
+| [vim-fugitive](https://github.com/tpope/vim-fugitive) | Git wrapper -- staging, committing, blaming, browsing | `:G`, `:G blame` (`<Leader>gb`), `:G log` |
 | [vim-rhubarb](https://github.com/tpope/vim-rhubarb) | GitHub integration for fugitive (`:GBrowse` opens GitHub) | `:GBrowse` |
-| [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim) | Git hunk signs, stage/reset hunks, line blame | `]h`, `<Leader>hs`, `<Leader>gb` |
+| [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim) | Git hunk signs, stage/reset hunks, blame | `]h`, `<Leader>hs`, `<Leader>gB`, `<Leader>gl` |
 | [diffview.nvim](https://github.com/sindrets/diffview.nvim) | Side-by-side diff viewer and file history browser | `<Leader>gd`, `<Leader>gh` |
 
 ## UI & Appearance

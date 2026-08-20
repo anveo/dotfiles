@@ -1,6 +1,12 @@
 return {
   -- Fugitive: the git plugin
-  { "tpope/vim-fugitive" },
+  {
+    "tpope/vim-fugitive",
+    lazy = false, -- keys would otherwise make this lazy; :G etc. need it eager
+    keys = {
+      { "<Leader>gb", "<cmd>Git blame<CR>", desc = "Git blame (fugitive)" },
+    },
+  },
 
   -- GitHub integration for :GBrowse
   { "tpope/vim-rhubarb" },
@@ -39,7 +45,8 @@ return {
         map("n", "<Leader>hR", gs.reset_buffer, "Reset buffer")
         map("n", "<Leader>hu", gs.undo_stage_hunk, "Undo stage hunk")
         map("n", "<Leader>hp", gs.preview_hunk, "Preview hunk")
-        map("n", "<Leader>gb", gs.toggle_current_line_blame, "Toggle line blame")
+        map("n", "<Leader>gB", function() gs.blame() end, "Git blame (gitsigns)")
+        map("n", "<Leader>gl", gs.toggle_current_line_blame, "Toggle line blame")
         map("n", "<Leader>hd", gs.diffthis, "Diff this file")
         map("n", "<Leader>hD", function() gs.diffthis("~") end, "Diff against HEAD~")
 

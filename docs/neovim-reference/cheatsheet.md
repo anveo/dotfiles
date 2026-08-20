@@ -204,7 +204,7 @@ jsonls, yamlls, dockerls, ruff
 | Command | Action |
 |---------|--------|
 | `:G` | Git status (interactive staging, like `git add -p`) |
-| `:G blame` | Git blame |
+| `:G blame` (`<Leader>gb`) | Git blame (fugitive sidebar; `-` reblames at commit) |
 | `:G log` | Git log |
 | `:GBrowse` | Open file on GitHub (via vim-rhubarb) |
 
@@ -221,7 +221,8 @@ jsonls, yamlls, dockerls, ruff
 | `<Leader>hp` | Preview hunk |
 | `<Leader>hd` | Diff this file |
 | `<Leader>hD` | Diff against HEAD~ |
-| `<Leader>gb` | Toggle line blame |
+| `<Leader>gB` | Git blame sidebar (`:Gitsigns blame`) |
+| `<Leader>gl` | Toggle current-line blame (VSCode-style virtual text) |
 | `ih` (textobject) | Select hunk (visual/operator) |
 
 Visual mode: `<Leader>hs` and `<Leader>hr` work on selected lines.
