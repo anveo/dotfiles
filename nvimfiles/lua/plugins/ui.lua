@@ -45,7 +45,7 @@ return {
       vim.api.nvim_set_hl(0, "SpecialKey", { fg = "#ffffff", bg = "#902020" })
       vim.api.nvim_set_hl(0, "NonText", { fg = "#222222" })
       -- Inline blame links to NonText by default, which is too dim to read
-      vim.api.nvim_set_hl(0, "GitSignsCurrentLineBlame", { fg = "#8a8a8a", italic = true })
+      vim.api.nvim_set_hl(0, "GitSignsCurrentLineBlame", { fg = "#666666", italic = true })
 
       -- Flash labels
       vim.api.nvim_set_hl(0, "FlashLabel", { fg = "#ffffff", bg = "#ff007c", bold = true })
