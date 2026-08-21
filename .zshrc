@@ -129,6 +129,8 @@ if zplug check "denysdovhan/spaceship-prompt"; then
   # source $HOME/dotfiles/zsh/spaceship-prompt/sections/k8s.zsh
   source $HOME/dotfiles/zsh/spaceship-prompt/sections/op.zsh
   source $HOME/dotfiles/zsh/spaceship-prompt/sections/subshell.zsh
+  # Overrides the stock dir section (shortens paths inside git worktrees)
+  source $HOME/dotfiles/zsh/spaceship-prompt/sections/dir.zsh
 fi
 
 if zplug check "b4b4r07/enhancd"; then
