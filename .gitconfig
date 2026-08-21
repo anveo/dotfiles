@@ -43,6 +43,12 @@
         unstage = reset HEAD --
         undo = reset --soft HEAD^
         dft = difftool
+        # Worktrees live in a sibling dir named <repo>.worktrees/<branch>.
+        # --git-common-dir (not --show-toplevel) so they resolve to the main
+        # repo even when run from inside another worktree.
+        wta = "!f() { root=$(dirname \"$(git rev-parse --path-format=absolute --git-common-dir)\"); git worktree add -b \"$1\" \"$root.worktrees/$1\"; }; f"
+        wtr = "!f() { root=$(dirname \"$(git rev-parse --path-format=absolute --git-common-dir)\"); git worktree remove \"$root.worktrees/$1\"; }; f"
+        wtl = worktree list
 
 [apply]
         whitespace = nowarn
