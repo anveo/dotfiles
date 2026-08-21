@@ -569,3 +569,15 @@ adb_photo() {
 
   echo "✓ $filename added to emulator Photos"
 }
+
+# Create a worktree via `git wta` and cd into it. Has to be a shell function:
+# git aliases run in a child process, so a cd inside one can't stick.
+wta() {
+  if [[ -z "$1" ]]; then
+    echo "Usage: wta <branch>" >&2
+    return 1
+  fi
+
+  git wta "$1" || return
+  cd "$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)").worktrees/$1"
+}
