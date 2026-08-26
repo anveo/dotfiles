@@ -18,10 +18,15 @@ Where this sits: `preflight` orients before the work, `approach` submits it, `cr
 Use the number if given, otherwise the current branch's PR:
 
 ```bash
-gh pr view --json number,title,url,state,isDraft,baseRefName,headRefName,mergeable,mergeStateStatus,reviewDecision,commits
+gh pr view --json number,title,url,state,isDraft,baseRefName,headRefName,mergeable,mergeStateStatus,reviewDecision,mergedAt,commits
+git rev-parse --git-dir --git-common-dir
 ```
 
-Stop and say so if there is no PR (the work has not been through `approach`), if it is already `MERGED` or `CLOSED`, or if it is still a **draft** — a draft PR is an explicit signal the author was not finished, and marking it ready is their call, not yours.
+Stop and say so if there is no PR (the work has not been through `approach`), if it is `CLOSED`, or if it is still a **draft** — a draft PR is an explicit signal the author was not finished, and marking it ready is their call, not yours.
+
+**`MERGED` is not a dead end.** A PR merged from the GitHub UI, by automerge, or by someone else is routine, and the cleanup half of this skill still applies and is still the useful part. Say the merge already happened, name the merge commit and time from `mergedAt`, and **skip to step 4**. Do not re-merge and do not run step 2 — there is nothing left to gate.
+
+**Detect a worktree here, not in step 4.** The two paths differ from `git rev-parse`: in a linked worktree `--git-dir` and `--git-common-dir` disagree (`…/.git/worktrees/<name>` versus `…/.git`), while in a normal checkout they are the same. This has to be known before step 3, because a worktree changes what steps 3 and 4 can attempt at all — `gh pr merge --delete-branch` only half-works, and step 4's `git switch` cannot run. `git worktree list` gives the fuller picture when you need the paths.
 
 ## 2. Check before committing to it
 
@@ -56,6 +61,14 @@ The second command is the more honest answer. A history of `Merge pull request #
 
 `--delete-branch` also deletes the local branch and is worth passing explicitly: `deleteBranchOnMerge` is off by default on GitHub, so without it the remote accumulates every branch ever merged.
 
+**From a linked worktree, `--delete-branch` only does half the job.** `gh` does not recognize a linked worktree as a git repository for local-branch operations and skips that half with a warning that reads like an error about something else entirely:
+
+```
+! Skipped deleting the local branch since current directory is not a git repository
+```
+
+The remote branch *is* deleted; the local one is not. Do not read that line as a failure, and do not read its absence as success — check with `git branch --list <name>` and hand the deletion over per step 4.
+
 ## 4. Sync local state
 
 The merge happened on the remote; the local checkout still thinks it is on a branch that no longer exists.
@@ -68,25 +81,45 @@ git fetch --prune
 
 `--ff-only` is deliberate. A plain `git pull` on a default branch that has diverged will create a merge commit nobody intended; failing loudly is better.
 
-**If the work was in a worktree**, `gh pr merge --delete-branch` cannot remove the branch while a worktree holds it checked out. Move out first, then `git worktree remove <path>` and `git worktree prune`. Report the path rather than deleting a worktree that may hold unrelated scratch work.
+**In a worktree, those first two commands cannot run at all.** The default branch is checked out in the primary repository, and git refuses to check out one branch in two places — `git switch main` fails with `fatal: 'main' is already checked out at '/path/to/repo'`, and `git pull --ff-only` therefore never happens either. (`git fetch origin main:main` fails for the same reason.) From a worktree the sync step is only:
+
+```bash
+git fetch --prune
+```
+
+Then verify rather than assume: `git log --oneline -1 main` against `origin/main` will often already match, because the primary checkout may have been updated independently. The fast-forward itself belongs to that checkout, not this one.
+
+**Branch and worktree removal have to be handed over.** A worktree cannot remove itself, and the branch cannot be deleted while checked out here. Note also that the repo's own `CLAUDE.md` may forbid `cd`-ing to the primary checkout from a worktree — the monicur repo does — so "move out first" is not available to you. Give the user the two commands to run from the primary checkout and stop:
+
+```bash
+git worktree remove <path>
+git branch -d <branch>
+```
+
+Report the path rather than deleting a worktree that may hold unrelated scratch work.
 
 ## 5. Close out the ticket
 
-If the branch carried a Linear identifier, offer to move the issue to Done. **Offer, do not do it** — it is outward-facing and visible to the whole workspace, and a merged PR does not always mean a finished ticket. One offer; if declined, drop it.
-
-The Linear tools are namespaced per workspace, so discover rather than assume the name:
+If the branch carried a Linear identifier, **read the issue's status before saying anything about it.**
 
 ```
-ToolSearch: "linear save issue"
+ToolSearch: "linear get issue save issue"
+get_issue(id: "APP-225")
 ```
 
-Two things worth mentioning alongside the offer, when true: follow-up issues that this work created and left open, and anything the PR body flagged as deliberately deferred. That is the moment those are cheapest to remember.
+A workspace with the Linear↔GitHub integration enabled moves the issue on its own, and this is the common case, not the exception. On a recent run the `stateHistory` showed In Progress → In Review the moment the PR was marked ready → Done the moment it merged, twenty-two seconds later, with no human involved. Offering to set an already-`Done` issue to Done is noise, and offering it twice trains the user to skim.
+
+So: if `statusType` is already `completed`, say so in a clause and move on — no offer. Only when the issue is genuinely still open does the offer apply, and then **offer, do not do it** — it is outward-facing and visible to the whole workspace, and a merged PR does not always mean a finished ticket. One offer; if declined, drop it.
+
+Two things worth mentioning either way, when true: follow-up issues that this work created and left open, and anything the PR body flagged as deliberately deferred. That is the moment those are cheapest to remember.
 
 ## 6. Report
 
-Short. What merged, by which method, into which branch, with the PR number and URL. Then the cleanup: branch deleted, local synced, worktree removed if it was.
+Short. What merged, by which method, into which branch, with the PR number and URL — or, when the merge had already happened, that it had, with the commit and time.
 
-**Name anything left open** — a follow-up issue, a check that was failing and got merged anyway on instruction, a ticket the user declined to close. The value of this step is that it is the last moment anyone is paying attention to this branch.
+Then the cleanup, split honestly into **what you did** and **what is left for the user**. In a normal checkout those are the same list: branch deleted, local synced. From a worktree they are not — the sync was a `fetch --prune`, and the branch and worktree deletions are commands you handed over and cannot confirm. Do not write "worktree removed" when what happened is "here are the two commands to remove it." A handoff reported as a completed action is how a stale worktree survives for a month.
+
+**Name anything left open** — a follow-up issue, a check that was failing and got merged anyway on instruction, a ticket the user declined to close, cleanup that is now waiting on them. The value of this step is that it is the last moment anyone is paying attention to this branch.
 
 ## Go-around
 
