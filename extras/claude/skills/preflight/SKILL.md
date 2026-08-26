@@ -104,9 +104,29 @@ Format: plain `1.` `2.` `3.`, no circled numerals. Terse — sacrifice grammar f
 
 **If you genuinely have no questions, say so.** A manufactured question is worse than none; it trains the user to skim.
 
-## 7. Then, and only then
+## 7. Write the preflight back to the issue
 
-Once the questions are answered:
+The preflight just produced the context the ticket was missing. That context currently exists only in a terminal session nobody else can open, and it evaporates when the session ends. Put it on the issue.
+
+**Always offer this. Do it without asking only when the description is empty** — there is nothing to overwrite, so the only risk is that the issue becomes more useful. When a description already exists, say what you would change and wait; the wording may be deliberate, and rewriting someone's ticket under them is not yours to decide.
+
+What belongs in the updated description:
+
+- **The goal**, stated plainly — what "done" means, not a transcript of how you worked it out.
+- **What the code actually turned out to be**, where step 4 disagreed with or added detail to the ticket. This is usually the highest-value part: it is the finding that cost the most to establish and is cheapest to lose.
+- **The decisions from step 6** — the question and the answer, folded into prose. "Surgical lockfile edit rather than blanket `yarn upgrade`, because there is no CI to catch churn" is worth more in six months than either half alone.
+- **Scope boundaries**, explicitly, including anything deliberately carded off into another issue. Link the issue you cut.
+- **Verification** — how anyone will know it worked.
+
+Write it per the user's shared-artifact style: flowing prose for humans, load-bearing specifics (exact commands, versions, file paths, identifiers) kept explicit for agents. Self-contained — the author should be able to read it cold six months later without this conversation. Do not paste the Q&A as a numbered list, and do not include the parts of the brief that git already records.
+
+Prefer editing the description over adding a comment. A comment is a good place for a decision that arrives *later*; the preflight is the ticket's own premise, and it belongs where someone reads first. `save_issue(id: "APP-225", description: "…")` replaces the description wholesale, so compose the full replacement text rather than a fragment.
+
+If the interrogation also produced work that is out of scope, create those issues now, while the reasoning is still in hand — and link them from the description you just wrote.
+
+## 8. Then, and only then
+
+Once the questions are answered and the issue is current:
 
 - **Offer the Linear status change.** If the issue is not already started, offer to move it to In Progress and assign it. Ask — this is outward-facing and visible to anyone else in the workspace. One offer; if declined, do not raise it again this session.
 - **Enter plan mode** with the answers folded in, using `EnterPlanMode`. The brief plus the answers is the input to the plan; do not restate them at length inside it.
