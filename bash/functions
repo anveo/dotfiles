@@ -578,8 +578,29 @@ wta() {
     return 1
   fi
 
+  local root dest f
+  root=$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)") || return
+
   git wta "$1" || return
-  cd "$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)").worktrees/$1"
+  dest="$root.worktrees/$1"
+
+  # Gitignored files the worktree still needs: `git worktree add` only brings
+  # tracked files, so secrets and machine-local config get left behind. Copy
+  # them from the main worktree. Add to this list as new ones show up; the
+  # existence checks keep it harmless when a repo has none of them.
+  for f in .env .env.local .env.development .env.test .envrc .nvim.lua .claude/settings.local.json config/master.key; do
+    [[ -e "$root/$f" ]] || continue
+    [[ -e "$dest/$f" ]] && continue
+    mkdir -p "$dest/$(dirname "$f")" || continue
+    cp -Rp "$root/$f" "$dest/$f" && echo "wta: copied $f"
+  done
+
+  cd "$dest" || return
+
+  # direnv trusts a .envrc by path, so the fresh copy needs its own allow.
+  if [[ -e .envrc ]] && command -v direnv >/dev/null 2>&1; then
+    direnv allow
+  fi
 }
 
 # k8s connect/disconnect, in the spirit of opon/opoff above. A live cluster is
