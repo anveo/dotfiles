@@ -18,15 +18,17 @@ for skill in $HOME/dotfiles/extras/claude/skills/*/; do
   ln -nfs "${skill%/}" "$HOME/.claude/skills/$(basename $skill)"
 done
 
-# RTK's global instructions are placed by `rtk install -g`, not by this repo.
-# A stale symlink from when they lived here would shadow the real file.
+# RTK's global instructions (~/.claude/RTK.md) and the hook wiring in
+# settings.json are placed by `rtk init -g`, not by this repo. A stale symlink
+# from when RTK.md lived here would shadow the real file.
 if [ -L "$HOME/.claude/RTK.md" ] && [ ! -e "$HOME/.claude/RTK.md" ]; then
   echo "Removing dangling $HOME/.claude/RTK.md symlink"
   rm -f "$HOME/.claude/RTK.md"
 fi
 
-if ! command -v rtk >/dev/null 2>&1; then
-  echo "WARNING: rtk not found on PATH -- install it, then run: rtk install -g"
-elif [ ! -e "$HOME/.claude/RTK.md" ]; then
-  echo "WARNING: $HOME/.claude/RTK.md missing -- run: rtk install -g"
+if command -v rtk >/dev/null 2>&1; then
+  echo "rtk init -g"
+  rtk init -g || echo "WARNING: rtk init -g failed"
+else
+  echo "WARNING: rtk not found on PATH -- install it, then run: rtk init -g"
 fi
