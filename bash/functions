@@ -581,3 +581,71 @@ wta() {
   git wta "$1" || return
   cd "$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)").worktrees/$1"
 }
+
+# k8s connect/disconnect, in the spirit of opon/opoff above. A live cluster is
+# the exception rather than the rule, so koff unsets the current context in
+# ~/.kube/config -- globally, so every shell and every new one goes inert --
+# and kon puts it back. Disconnecting this way also hides the spaceship kubectl
+# prompt section for free: both kubectl_version and kubectl_context bail out
+# when `kubectl config current-context` is empty. That dodges the
+# _worktree_kubectl_hide precmd hook in zsh/spaceship-prompt/sections/dir.zsh,
+# which force-sets SPACESHIP_KUBECTL_SHOW on every prompt and would undo a
+# toggle built on that variable. The namespace needs no stashing: it lives on
+# the context itself, so it comes back with it.
+KUBE_CTX_STASH="${KUBE_CTX_STASH:-$HOME/.kube/.disconnected}"
+
+koff() {
+  command -v kubectl >/dev/null 2>&1 || { echo "koff: kubectl not found" >&2; return 1; }
+
+  local ctx
+  ctx=$(kubectl config current-context 2>/dev/null)
+
+  if [ -z "$ctx" ]; then
+    if [ -r "$KUBE_CTX_STASH" ]; then
+      local stashed
+      IFS= read -r stashed < "$KUBE_CTX_STASH"
+      echo "k8s already disconnected (stashed: $stashed)"
+    else
+      echo "k8s already disconnected (nothing stashed)"
+    fi
+    return 0
+  fi
+
+  mkdir -p "$(dirname "$KUBE_CTX_STASH")" || return 1
+  printf '%s\n' "$ctx" > "$KUBE_CTX_STASH" || return 1
+
+  if ! kubectl config unset current-context >/dev/null; then
+    rm -f "$KUBE_CTX_STASH"
+    return 1
+  fi
+
+  echo "k8s disconnected (was: $ctx)"
+}
+
+kon() {
+  command -v kubectl >/dev/null 2>&1 || { echo "kon: kubectl not found" >&2; return 1; }
+
+  local ctx cur ns
+  cur=$(kubectl config current-context 2>/dev/null)
+  if [ -n "$cur" ]; then
+    echo "k8s already connected: $cur"
+    return 0
+  fi
+
+  if [ ! -r "$KUBE_CTX_STASH" ]; then
+    echo "kon: nothing stashed in $KUBE_CTX_STASH -- pick a context with kctx" >&2
+    return 1
+  fi
+  IFS= read -r ctx < "$KUBE_CTX_STASH"
+
+  if ! kubectl config get-contexts -o name 2>/dev/null | grep -qxF "$ctx"; then
+    echo "kon: stashed context '$ctx' no longer exists -- pick one with kctx" >&2
+    return 1
+  fi
+
+  kubectl config use-context "$ctx" >/dev/null || return 1
+  rm -f "$KUBE_CTX_STASH"
+
+  ns=$(kubectl config view --minify --output 'jsonpath={..namespace}' 2>/dev/null)
+  echo "k8s restored: $ctx${ns:+ (namespace: $ns)}"
+}
