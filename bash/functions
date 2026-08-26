@@ -588,7 +588,7 @@ wta() {
   # tracked files, so secrets and machine-local config get left behind. Copy
   # them from the main worktree. Add to this list as new ones show up; the
   # existence checks keep it harmless when a repo has none of them.
-  for f in .env .env.local .env.development .env.test .envrc .nvim.lua .claude/settings.local.json config/master.key; do
+  for f in .env .env.local .env.development .env.test .envrc .envrc.private .nvim.lua .claude/settings.local.json config/master.key; do
     [[ -e "$root/$f" ]] || continue
     [[ -e "$dest/$f" ]] && continue
     mkdir -p "$dest/$(dirname "$f")" || continue
@@ -601,6 +601,36 @@ wta() {
   if [[ -e .envrc ]] && command -v direnv >/dev/null 2>&1; then
     direnv allow
   fi
+
+  # Repo-specific worktree provisioning (ports, hostnames, databases, ...)
+  # lives in the repo, not here. May be interactive.
+  if [[ -x bin/worktree-setup ]]; then
+    bin/worktree-setup
+  fi
+}
+
+# Remove a worktree created with wta, running the repo's teardown hook first
+# so hostnames, routes, and cloned databases don't leak.
+wtr() {
+  if [[ -z "$1" ]]; then
+    echo "Usage: wtr <branch>" >&2
+    return 1
+  fi
+
+  local root dest
+  root=$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)") || return
+  dest="$root.worktrees/$1"
+
+  if [[ -x "$dest/bin/worktree-teardown" ]]; then
+    (cd "$dest" && bin/worktree-teardown) || return
+  fi
+
+  # git refuses to remove the worktree you're standing in.
+  if [[ "$PWD" == "$dest"* ]]; then
+    cd "$root" || return
+  fi
+
+  git wtr "$1"
 }
 
 # k8s connect/disconnect, in the spirit of opon/opoff above. A live cluster is
