@@ -1,6 +1,6 @@
 ---
 name: approach
-description: Put finished work on final approach — read the working tree, split it into a logical series of commits, push the branch, and open a prefilled GitHub PR form for a human to send. Use when work is complete and ready for review, or when asked to "land this", "commit and push", "open a PR", "ship it", or "wrap this up".
+description: Put finished work on final approach — read the working tree, split it into a logical series of commits, push the branch, and open a draft GitHub PR for a human to add reviewers and mark ready. Use when work is complete and ready for review, or when asked to "land this", "commit and push", "open a PR", "ship it", or "wrap this up".
 ---
 
 # approach
@@ -11,7 +11,7 @@ Nothing here is irreversible. A branch can be force-pushed, a PR closed, an appr
 
 **The failure mode this skill exists to prevent is shipping a diff nobody has read** — one commit named after the ticket, carrying whatever happened to be in the working tree. That commit is unreviewable, unrevertable in parts, and it is how scratch files and stray credentials reach a remote.
 
-This skill commits and pushes by design. Invoking it *is* the authorization; do not ask again at each step. It stops short of creating the PR, deliberately — see step 6.
+This skill commits, pushes, and opens a draft PR by design. Invoking it *is* the authorization; do not ask again at each step. It stops short of marking that PR ready for review, deliberately — see step 6.
 
 Where this sits in the pattern: `preflight` orients before the work, `approach` submits it, `crosscheck` verifies the review that comes back, `land` merges.
 
@@ -28,7 +28,7 @@ Stop and say so, rather than improvising, if:
 
 - **You are on the default branch.** Offer to create a branch from the work instead. Never commit directly to `main`.
 - **There is nothing to submit** — clean tree, nothing ahead of upstream. Say it plainly.
-- **A PR already exists.** Then this is a follow-up push, not a first approach: commit, push, and report the existing URL. Do not open a second form.
+- **A PR already exists.** Then this is a follow-up push, not a first approach: commit, push, and report the existing URL. Do not open a second one.
 
 If the tree is clean but commits are unpushed, skip to step 5.
 
@@ -99,28 +99,35 @@ git push -u origin HEAD
 
 If the push is rejected as non-fast-forward, **stop and report it.** Do not force-push and do not rebase on the user's behalf — someone else's commits may be involved, and that decision is theirs.
 
-## 6. Open the PR form — prefilled, not created
+## 6. Open the PR as a draft
 
-`gh pr create --web` opens GitHub's PR form in a browser with the fields filled in and **creates nothing**. That is the point: reviewers, labels, and draft status stay a human decision made on the page.
-
-Derive the title and base from `ghpr` rather than reimplementing them — it lives in the dotfiles repo's `scripts/` (on `PATH`) and already handles Linear key extraction, title-casing, and the base-branch walk that makes a stacked branch target its parent instead of `main`:
+Create it through the API as a **draft**, then open it in the browser:
 
 ```bash
 ghpr --dry-run     # prints Branch / Base / Title, creates nothing
+gh pr create --draft --base "<Base>" --title "<Title>" --body-file /tmp/pr-body.md
+gh pr view --web
 ```
 
-Read the three values from that output, then open the form with a body of your own:
+Read Branch / Base / Title from the `ghpr` output. Derive them from `ghpr` rather than reimplementing them — it lives in the dotfiles repo's `scripts/` (on `PATH`) and already handles Linear key extraction, title-casing, and the base-branch walk that makes a stacked branch target its parent instead of `main`.
 
-```bash
-gh pr create --web --base "<Base>" --title "<Title>" --body-file /tmp/pr-body.md
-```
+**Always take this path. Do not use `gh pr create --web`,** which prefills the form via URL parameters. It looks appealing because it creates nothing, but **GitHub truncates a long body silently** — a 2,489-byte body became 3,477 characters once percent-encoded and was cut off with no error and no warning, the form simply rendering a short body. Percent-encoding inflates prose about 1.4x and code-heavy text more, since every newline, backtick, and space becomes three characters. Since `gh pr view --web` opens the browser anyway, the URL route buys nothing and risks submitting a PR whose reasoning has been quietly amputated.
 
-Four things to get right:
+A draft preserves what actually matters about a "not submitted" state: **it cannot be reviewed or merged until a human clicks Ready for review**, and reviewers and labels are still chosen by them on the page. The gesture moves from a form button to a PR button.
+
+Three things to get right:
 
 - **Title format is `UPPERCASE-ISSUENUM Brief Description`** — e.g. `LNK-41 Expo Drift`. `ghpr` derives it from the branch slug, so a terse branch yields a terse title. If the result is genuinely uninformative, propose a better description from the Linear issue title, show what `ghpr` would have produced, and let the user choose. Keep the format identical either way and stay under roughly eight words.
 - **Use `--body-file`, not `--body`.** PR bodies contain backticks, code fences, and newlines that do not survive inline shell quoting.
-- **`--web` puts the body in a URL,** which browsers and GitHub cap at roughly 8KB. An over-long body will be truncated or rejected. This is a hard reason to keep it short, on top of the good one.
-- **If `ghpr` is missing** (it is only on `PATH` where the dotfiles repo is checked out), fall back to `gh pr create --web --title ...`, deriving the key from the branch name yourself, and say that you did.
+- **If `ghpr` is missing** (it is only on `PATH` where the dotfiles repo is checked out), derive the key and base yourself from the branch name and the repo's default branch, and say that you did.
+
+Verify the body survived — a one-line check that would have caught the truncation above:
+
+```bash
+gh pr view <n> --json body --jq '.body' | wc -c   # compare against wc -c on the source
+```
+
+Note that a draft PR does **not** auto-request Copilot, so `crosscheck` will find nothing until the PR is marked ready for review. Mention that rather than letting it look like a missing review.
 
 ### Writing the body
 
@@ -135,13 +142,13 @@ Cover, in about this order and only where there is something to say:
 
 Keep load-bearing facts explicit — exact commands, versions, identifiers, file paths — because those are the parts a reader cannot infer. Cut everything else. If a fact is already obvious from the diff, leave it out.
 
-Link the Linear issue when there is one. Do not restate the ticket; the reviewer can open it.
+Link the Linear issue when there is one, as a real markdown link with its full URL — `[LNK-41](https://linear.app/…)` — not a bare identifier. A reader outside Linear cannot resolve `LNK-41` on its own, and a reviewer should reach the ticket in one click. Link each issue on first mention only, including any follow-ups the work spawned; `get_issue` returns the canonical `url` field. Do not restate the ticket's contents.
 
 ## 7. Report
 
-State what happened, briefly: the commits made (subject lines, in order), that the branch is pushed, and that the PR form is open in the browser awaiting reviewer selection — or the URL, if the browser could not be opened.
+State what happened, briefly: the commits made (subject lines, in order), that the branch is pushed, and the draft PR's number and URL.
 
-**Say clearly that no PR exists yet.** Nothing is submitted until the human sends that form, and reporting it as "PR opened" when it is a prefilled form is the kind of small inaccuracy that gets a review forgotten for a day.
+**Say clearly that it is a draft and nobody has been asked to review it.** Reporting it as "PR opened" when it is a draft awaiting reviewers is the kind of small inaccuracy that gets a review forgotten for a day — and the author is the only one who can move it, since a draft sends no notifications.
 
 Then stop. Do not wait for review from here — that is `crosscheck`, and it is a separate invocation because the wait is measured in minutes and belongs to the user's attention, not yours.
 
