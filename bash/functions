@@ -633,6 +633,59 @@ wtr() {
   git wtr "$1"
 }
 
+# Overmind instances run private tmux servers (-L overmind-<session>-<hash>),
+# so they never show in `tmux ls`, and an instance whose ./.overmind.sock was
+# deleted can't be reached by `ov stop` / `ov kill` -- it has to be signaled
+# by pid. ovls shows every instance and whether its socket survives; ovclean
+# TERMs the orphans (overmind traps it and tears down its tmux and children)
+# plus any overmind tmux server whose overmind is already gone.
+ovls() {
+  local pid dir sock
+  for pid in $(pgrep -x overmind); do
+    dir=$(lsof -a -p "$pid" -d cwd -Fn 2>/dev/null | sed -n 's/^n//p')
+    sock="ORPHAN (no .overmind.sock)"
+    [[ -S "$dir/.overmind.sock" ]] && sock="ok"
+    echo "$pid  $dir  $sock"
+  done
+}
+
+ovclean() {
+  local pid dir any=0
+  for pid in $(pgrep -x overmind); do
+    dir=$(lsof -a -p "$pid" -d cwd -Fn 2>/dev/null | sed -n 's/^n//p')
+    if [[ ! -S "$dir/.overmind.sock" ]]; then
+      echo "ovclean: killing orphaned overmind $pid ($dir)"
+      kill "$pid" && any=1
+    fi
+  done
+
+  # A tmux server whose overmind died gets reparented to launchd (ppid 1);
+  # its panes may still hold ports (rdbg-wrapped puma survives in particular).
+  for pid in $(pgrep -f 'tmux -C -L overmind-'); do
+    if [[ "$(ps -o ppid= -p "$pid" | tr -d ' ')" == 1 ]]; then
+      echo "ovclean: killing stale overmind tmux server $pid"
+      kill "$pid" && any=1
+    fi
+  done
+
+  [[ "$any" == 0 ]] && echo "ovclean: nothing to clean"
+}
+
+# Kill whatever is listening on a TCP port: killport 3328 [signal]
+killport() {
+  if [[ -z "$1" ]]; then
+    echo "Usage: killport <port> [signal]" >&2
+    return 1
+  fi
+  local pids
+  pids=$(lsof -nP -tiTCP:"$1" -sTCP:LISTEN)
+  if [[ -z "$pids" ]]; then
+    echo "killport: nothing listening on :$1"
+    return 0
+  fi
+  echo "$pids" | xargs kill ${2:+-$2}
+}
+
 # k8s connect/disconnect, in the spirit of opon/opoff above. A live cluster is
 # the exception rather than the rule, so koff unsets the current context in
 # ~/.kube/config -- globally, so every shell and every new one goes inert --
