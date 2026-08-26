@@ -114,18 +114,4 @@ echo "Setting up tig configs..."
 echo "ln -nfs $HOME/dotfiles/extras/tig/config $HOME/.tigrc"
 ln -nfs $HOME/dotfiles/extras/tig/config $HOME/.tigrc
 
-echo "Setting up Claude configs..."
-mkdir -p $HOME/.claude/{plans,plugins}
-echo "ln -nfs $HOME/dotfiles/extras/claude/commands $HOME/.claude/commands"
-ln -nfs $HOME/dotfiles/extras/claude/commands $HOME/.claude/commands
-echo "ln -nfs $HOME/dotfiles/extras/claude/CLAUDE.md $HOME/.claude/CLAUDE.md"
-ln -nfs $HOME/dotfiles/extras/claude/CLAUDE.md $HOME/.claude/CLAUDE.md
-echo "ln -nfs $HOME/dotfiles/extras/claude/statusline-command.sh $HOME/.claude/statusline-command.sh"
-ln -nfs $HOME/dotfiles/extras/claude/statusline-command.sh $HOME/.claude/statusline-command.sh
-echo "ln -nfs $HOME/dotfiles/extras/claude/RTK.md $HOME/.claude/RTK.md"
-ln -nfs $HOME/dotfiles/extras/claude/RTK.md $HOME/.claude/RTK.md
-mkdir -p $HOME/.claude/skills
-for skill in $HOME/dotfiles/extras/claude/skills/*/; do
-  echo "ln -nfs ${skill%/} $HOME/.claude/skills/$(basename $skill)"
-  ln -nfs "${skill%/}" "$HOME/.claude/skills/$(basename $skill)"
-done
+$HOME/dotfiles/bin/install-ai.sh
