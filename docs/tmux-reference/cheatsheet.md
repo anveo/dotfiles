@@ -10,13 +10,31 @@ Quick reference for the tmux config. Prefix is `C-Space`.
 
 | Key | Action |
 |-----|--------|
-| `prefix c` / `prefix C-c` | New window |
-| `prefix e` | Previous window |
-| `prefix f` | Next window |
-| `prefix C-h` | Previous window (repeatable) |
-| `prefix C-l` | Next window (repeatable) |
+| `prefix c` | New window |
+| `prefix q` | Previous window |
+| `prefix e` | Next window |
+| `prefix Tab` | Last window (most recently used) |
 | `prefix 1-9` | Jump to window by number |
+| `prefix w` | Fuzzy window switcher (fzf popup, current session) |
 | Click status bar tab | Switch to that window (mouse) |
+
+**Reordering and naming**
+
+| Key | Action |
+|-----|--------|
+| `prefix C-q` | Move current window left in the list (repeatable, wraps) |
+| `prefix C-e` | Move current window right in the list (repeatable, wraps) |
+| `prefix <` | tmux window menu -- includes Swap Left (`l`) / Swap Right (`r`) |
+| `prefix ,` | Rename window (the name sticks -- this turns `automatic-rename` off) |
+| `prefix N` | Undo a manual rename -- back to automatic naming (takes a beat) |
+
+`C-q` / `C-e` are `C-` of the window nav keys because uppercase `Q`/`E` are taken
+(`E` is "spread panes evenly"). They use `swap-window -t :-1` / `:+1`, which wrap
+at the ends, so overshooting cycles round rather than erroring mid-repeat.
+
+The `wta` shell function renames the window to the Linear ticket it parses out of
+the branch (`app-230-fix-binstubs` becomes `APP-230`); `wtr` restores automatic
+naming when it removes the worktree.
 
 ### Panes
 
@@ -83,24 +101,21 @@ prefix is itself `C-Space`, an accidental double-tap dropped you into copy mode.
 
 ## Installed Plugins
 
-Managed by [TPM](https://github.com/tmux-plugins/tpm). Install with `prefix I`, update with `prefix U`.
+Managed by [tpack](https://github.com/tmuxpack/tpack) (`brew install tpack`), a
+TPM-compatible rewrite. Plugins are declared with `set -g @plugin` lines, all before
+`run 'tpack init'` at the bottom of `.tmux.conf`. Install/update with `prefix I` or
+the TUI (`prefix T`).
 
 | Plugin | What it does | Status |
 |--------|-------------|--------|
+| [tmux-sensible](https://github.com/tmux-plugins/tmux-sensible) | Baseline option defaults most configs want. | Active |
 | [tmux-yank](https://github.com/tmux-plugins/tmux-yank) | System clipboard integration for copy mode. Adds `y` to yank to clipboard, `Y` to put selection on command line. Supplements manual pbcopy bindings. | Active |
-| [tmux-continuum](https://github.com/tmux-plugins/tmux-continuum) | Auto-saves tmux environment every 15 min. Auto-restores on tmux start. **Depends on tmux-resurrect.** | Active, but see note below |
+| [tmux-resurrect](https://github.com/tmux-plugins/tmux-resurrect) | Saves/restores sessions, windows, panes. Save `prefix C-s`, restore `prefix C-r`. Configured with `@resurrect-strategy-nvim 'session'`. | Active |
+| [tmux-continuum](https://github.com/tmux-plugins/tmux-continuum) | Auto-saves tmux environment every 15 min. Auto-restores on tmux start. **Depends on tmux-resurrect.** | Active |
 
 ### vim-tmux-navigator (built into tmux.conf)
 
-Not a TPM plugin -- the logic is inlined in `.tmux.conf`. Enables seamless `C-h/j/k/l` navigation between tmux panes and neovim splits. Also handles fzf panes correctly (C-j/C-k pass through to fzf).
-
-### Note: tmux-resurrect
-
-The resurrect strategy is configured (`@resurrect-strategy-nvim 'session'`) but the plugin itself is **commented out** in the TPM list. tmux-continuum depends on resurrect to do anything, so continuum is currently a no-op.
-
-Options:
-1. **Re-enable resurrect** -- uncomment it in the TPM plugins list, run `prefix I` to install. Save with `prefix C-s`, restore with `prefix C-r`.
-2. **Remove continuum** -- if you don't want session persistence, drop both.
+Not a plugin -- the logic is inlined in `.tmux.conf`. Enables seamless `C-h/j/k/l` navigation between tmux panes and neovim splits. Also handles fzf panes correctly (C-j/C-k pass through to fzf).
 
 ---
 
@@ -172,7 +187,6 @@ These are in the commented-out section of `.tmux.conf`. All are outdated.
 | tmux-fpp | Facebook PathPicker -- rarely maintained. extrakto/thumbs are better. |
 | tmux-urlview | Requires external `urlview` tool. extrakto or tmux-fzf-url are better. |
 | tmux-scroll-copy-mode | Unnecessary since tmux 2.1 -- scroll-to-copy-mode is built in. |
-| tmux-sensible | Redundant -- every option it sets is already in this config. |
 | tmux-sidebar | Directory tree in tmux. neo-tree in neovim is better. |
 | tmux-sessionist | Session keybindings. Superseded by tmux-sessionx or tmux-fzf. |
 | tmux-fingers | Original hint-mode yanker (Bash). Superseded by tmux-thumbs (Rust). |
