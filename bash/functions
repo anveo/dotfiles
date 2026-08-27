@@ -578,7 +578,7 @@ wta() {
     return 1
   fi
 
-  local root dest f
+  local root dest f ticket
   root=$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)") || return
 
   git wta "$1" || return
@@ -596,6 +596,14 @@ wta() {
   done
 
   cd "$dest" || return
+
+  # Branches are named per Linear's convention (app-230-fix-binstubs, APP-230),
+  # so the leading TEAM-123 is the useful window label. tmux turns
+  # automatic-rename off for a manually renamed window; `prefix N` restores it.
+  if [[ -n "$TMUX" ]]; then
+    ticket=$(printf '%s' "$1" | sed -n 's|^\([A-Za-z][A-Za-z0-9]*-[0-9][0-9]*\).*|\1|p' | tr '[:lower:]' '[:upper:]')
+    [[ -n "$ticket" ]] && tmux rename-window "$ticket"
+  fi
 
   # direnv trusts a .envrc by path, so the fresh copy needs its own allow.
   if [[ -e .envrc ]] && command -v direnv >/dev/null 2>&1; then
@@ -617,7 +625,7 @@ wtr() {
     return 1
   fi
 
-  local root dest
+  local root dest ticket
   root=$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)") || return
   dest="$root.worktrees/$1"
 
@@ -631,6 +639,15 @@ wtr() {
   fi
 
   git wtr "$1"
+
+  # Undo the rename wta did, but only if the window still carries this branch's
+  # ticket -- a window renamed for some other reason isn't ours to reset.
+  if [[ -n "$TMUX" ]]; then
+    ticket=$(printf '%s' "$1" | sed -n 's|^\([A-Za-z][A-Za-z0-9]*-[0-9][0-9]*\).*|\1|p' | tr '[:lower:]' '[:upper:]')
+    if [[ -n "$ticket" && "$(tmux display-message -p '#W')" == "$ticket" ]]; then
+      tmux set-option -w -u automatic-rename
+    fi
+  fi
 }
 
 # Overmind instances run private tmux servers (-L overmind-<session>-<hash>),
