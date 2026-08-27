@@ -371,6 +371,11 @@ alias tb="nc termbin.com 9999"
 
 alias ov="overmind"
 
+# claude code -- `cc` is the C compiler, `c` is enhancd's cd
+alias cl='claude'
+alias clc='claude --continue'  # most recent conversation in this directory
+alias clr='claude --resume'    # interactive picker over past sessions
+
 function dmk () {
   eval $(minikube -p minikube docker-env)
 }
