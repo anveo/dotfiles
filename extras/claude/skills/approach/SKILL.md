@@ -1,6 +1,6 @@
 ---
 name: approach
-description: Put finished work on final approach — read the working tree, split it into a logical series of commits, push the branch, and open a draft GitHub PR for a human to add reviewers and mark ready. Use when work is complete and ready for review, or when asked to "land this", "commit and push", "open a PR", "ship it", or "wrap this up".
+description: Put finished work on final approach — read the working tree, split it into a logical series of commits, push the branch, and open a draft GitHub PR for a human to add reviewers and mark ready. Use when work is complete and ready for review, or when asked to "commit and push", "open a PR", "ship it", or "wrap this up".
 ---
 
 # approach
