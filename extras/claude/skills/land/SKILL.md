@@ -109,7 +109,10 @@ get_issue(id: "APP-225")
 
 A workspace with the Linear↔GitHub integration enabled moves the issue on its own, and this is the common case, not the exception. On a recent run the `stateHistory` showed In Progress → In Review the moment the PR was marked ready → Done the moment it merged, twenty-two seconds later, with no human involved. Offering to set an already-`Done` issue to Done is noise, and offering it twice trains the user to skim.
 
-So: if `statusType` is already `completed`, say so in a clause and move on — no offer. Only when the issue is genuinely still open does the offer apply, and then **offer, do not do it** — it is outward-facing and visible to the whole workspace, and a merged PR does not always mean a finished ticket. One offer; if declined, drop it.
+So: if `statusType` is already `completed`, say so in a clause and move on. Only when the issue is genuinely still open does the rest apply, and it splits on why it is still open:
+
+- **The merge finished the work** — the PR carried the whole ticket, its "done when" is met, and nothing in the PR body was deferred. Set the issue to Done via `save_issue` and report that you did. This is the normal case in workspaces without the GitHub integration.
+- **The merge was partial** — the ticket has open sub-issues, the PR body deferred something, or the "done when" needs a step that has not happened. Say what is outstanding and leave the issue open; offer the close only if the gap is genuinely ambiguous. A merged PR does not always mean a finished ticket, and closing over unfinished work is worse than the extra offer.
 
 Two things worth mentioning either way, when true: follow-up issues that this work created and left open, and anything the PR body flagged as deliberately deferred. That is the moment those are cheapest to remember.
 
