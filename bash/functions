@@ -572,9 +572,22 @@ adb_photo() {
 
 # Create a worktree via `git wta` and cd into it. Has to be a shell function:
 # git aliases run in a child process, so a cd inside one can't stick.
+#
+# With -w the worktree gets its own tmux window instead, and this shell stays
+# where it is -- the form /dispatch uses, since renaming the current window
+# once per issue would leave you cd'd in whichever worktree came last.
 wta() {
+  local new_window=0
+  case "$1" in
+    -w) new_window=1; shift ;;
+    # Reject unknown flags rather than treating them as a branch name: an agent
+    # running against a stale copy of this function would otherwise try to
+    # create a worktree literally named "-w".
+    -*) echo "wta: unknown option $1" >&2; return 1 ;;
+  esac
+
   if [[ -z "$1" ]]; then
-    echo "Usage: wta <branch>" >&2
+    echo "Usage: wta [-w] <branch>" >&2
     return 1
   fi
 
@@ -583,6 +596,12 @@ wta() {
 
   git wta "$1" || return
   dest="$root.worktrees/$1"
+
+  # Branches are named per Linear's convention (app-230-fix-binstubs, APP-230),
+  # so the leading TEAM-123 is the useful label; fall back to the branch when
+  # there is no ticket in it.
+  ticket=$(printf '%s' "$1" | sed -n 's|^\([A-Za-z][A-Za-z0-9]*-[0-9][0-9]*\).*|\1|p' | tr '[:lower:]' '[:upper:]')
+  [[ -z "$ticket" ]] && ticket="$1"
 
   # Gitignored files the worktree still needs: `git worktree add` only brings
   # tracked files, so secrets and machine-local config get left behind. Copy
@@ -595,15 +614,45 @@ wta() {
     cp -Rp "$root/$f" "$dest/$f" && echo "wta: copied $f"
   done
 
+  if (( new_window )); then
+    # Provision from here rather than inside the new window: worktree-setup is
+    # interactive (the database prompt), so it belongs in the window you are
+    # actually looking at, and finishing before the window opens means the
+    # summary in it is the real one. It also keeps concurrent dispatches from
+    # racing over the port scan and traefik config dir.
+    ( cd "$dest" || exit 1
+      [[ -e .envrc ]] && command -v direnv >/dev/null 2>&1 && direnv allow
+      [[ -x bin/worktree-setup ]] && bin/worktree-setup
+    ) || return
+
+    if [[ -z "$TMUX" ]]; then
+      echo "wta: prepared $dest (not inside tmux, so no window opened)"
+      ( cd "$dest" && wtinfo )
+      return
+    fi
+
+    # -d: don't follow the new window, so dispatching several in a row leaves
+    # you where you started. -P -F returns the new window's unique id (@23);
+    # target by that, never by name -- a bare name target resolves within the
+    # *current* session, and an agent's shell is routinely attached to a
+    # different session than the one it just created a window in.
+    local win
+    win=$(tmux new-window -d -P -F '#{window_id}' -n "$ticket" -c "$dest") || return
+    # Flags a window gone quiet: as close as tmux gets to "that agent finished".
+    tmux set-option -w -t "$win" monitor-silence 60
+    # Best-effort: this can lose the race against a slow shell startup, which is
+    # why the summary is printed here too -- and here is where you're looking.
+    tmux send-keys -t "$win" wtinfo Enter
+    echo "wta: $ticket ($win) -> $dest"
+    ( cd "$dest" && wtinfo )
+    return
+  fi
+
   cd "$dest" || return
 
-  # Branches are named per Linear's convention (app-230-fix-binstubs, APP-230),
-  # so the leading TEAM-123 is the useful window label. tmux turns
-  # automatic-rename off for a manually renamed window; `prefix N` restores it.
-  if [[ -n "$TMUX" ]]; then
-    ticket=$(printf '%s' "$1" | sed -n 's|^\([A-Za-z][A-Za-z0-9]*-[0-9][0-9]*\).*|\1|p' | tr '[:lower:]' '[:upper:]')
-    [[ -n "$ticket" ]] && tmux rename-window "$ticket"
-  fi
+  # tmux turns automatic-rename off for a manually renamed window; `prefix N`
+  # (or wtr) restores it.
+  [[ -n "$TMUX" ]] && tmux rename-window "$ticket"
 
   # direnv trusts a .envrc by path, so the fresh copy needs its own allow.
   if [[ -e .envrc ]] && command -v direnv >/dev/null 2>&1; then
@@ -614,6 +663,52 @@ wta() {
   # lives in the repo, not here. May be interactive.
   if [[ -x bin/worktree-setup ]]; then
     bin/worktree-setup
+  fi
+
+  wtinfo
+}
+
+# What worktree-setup assigned for the worktree you're standing in. The values
+# live in .envrc.worktree; this is the reminder you'd otherwise reconstruct by
+# hand every time you came back to a branch.
+wtinfo() {
+  # A nested helper would leak into the global namespace ("get" is too likely a
+  # collision), so keep the lookup inline.
+  local f=.envrc.worktree slug host port vite db suffix
+  _wtinfo_get() { sed -n "s|^export $1=||p" "$f" 2>/dev/null; }
+
+  if [[ ! -f "$f" ]]; then
+    if [[ "$(git rev-parse --git-dir 2>/dev/null)" == */worktrees/* ]]; then
+      echo "wtinfo: no .envrc.worktree here -- run bin/worktree-setup" >&2
+      return 1
+    fi
+    echo "wtinfo: not a provisioned worktree ($PWD)"
+    return 0
+  fi
+
+  slug=$(_wtinfo_get WORKTREE_SLUG); host=$(_wtinfo_get APP_HOST); port=$(_wtinfo_get PORT)
+  vite=$(_wtinfo_get VITE_RUBY_PORT); suffix=$(_wtinfo_get TEST_DB_SUFFIX); db=$(_wtinfo_get DATABASE_URL)
+
+  # Ports are what setup *assigned*, which is not the same as what is *serving*
+  # -- an assigned port with nothing behind it means the URL 502s. Say which.
+  _wtinfo_state() {
+    [[ -z "$1" ]] && return
+    if lsof -nP -iTCP:"$1" -sTCP:LISTEN >/dev/null 2>&1; then printf ' up'; else printf ' down'; fi
+  }
+
+  echo "${slug:-$(basename "$PWD")}  $PWD"
+  [[ -n "$host" ]] && echo "  url    https://$host"
+  if [[ -n "$port$vite" ]]; then
+    echo "  ports  puma ${port:-?}$(_wtinfo_state "$port")${vite:+ · vite $vite$(_wtinfo_state "$vite")}"
+  fi
+  if [[ -n "$db" ]]; then
+    echo "  db     cloned: ${db##*/}"
+  elif [[ -n "$suffix" ]]; then
+    echo "  db     shared dev, private test (suffix $suffix)"
+  fi
+
+  if [[ -n "$port" ]] && ! lsof -nP -iTCP:"$port" -sTCP:LISTEN >/dev/null 2>&1; then
+    echo "  start  overmind start   (nothing serving $host yet)"
   fi
 }
 
