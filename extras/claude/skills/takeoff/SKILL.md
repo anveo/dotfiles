@@ -9,7 +9,7 @@ Takeoff is the moment the flight commits to the runway. `preflight` ended in a p
 
 **The failure mode this skill exists to prevent is starting on assumption** — building on an environment nobody verified, against a plan whose open questions were never answered, on top of a test suite that was already red. Every one of those is checkable in the first five minutes and unattributable after the first hour.
 
-Where this sits in the pattern: `preflight` orients, `takeoff` begins the work, `approach` submits it, `crosscheck` verifies the review, `land` merges.
+Where this sits in the pattern: `preflight` orients (or `dispatch` does it across several issues at once, worktrees and all), `takeoff` begins the work, `approach` submits it, `crosscheck` verifies the review, `land` merges.
 
 ## 1. Line-up check — settle the briefing
 
@@ -29,7 +29,7 @@ Every item here is a query, not a guess:
 
 ## 3. Open the ticket
 
-Move the Linear issue to In Progress (`save_issue`), and assign it if unassigned. This is the state transition the GitHub integration never covers — it fires on PRs, not on intent — so takeoff is where the board starts telling the truth.
+Move the Linear issue to In Progress (`save_issue`), and assign it if unassigned. This is the state transition the GitHub integration never covers — it fires on PRs, not on intent — so takeoff is where the board starts telling the truth. `preflight` and `dispatch` deliberately leave the status alone, so this is the only place it happens; do it without asking, since by this point the user has committed to the work.
 
 ## 4. Fly the plan
 

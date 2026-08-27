@@ -126,9 +126,8 @@ If the interrogation also produced work that is out of scope, create those issue
 
 ## 8. Then, and only then
 
-Once the questions are answered and the issue is current:
+Once the questions are answered and the issue is current, **enter plan mode** with the answers folded in, using `EnterPlanMode`. The brief plus the answers is the input to the plan; do not restate them at length inside it.
 
-- **Offer the Linear status change.** If the issue is not already started, offer to move it to In Progress and assign it. Ask — this is outward-facing and visible to anyone else in the workspace. One offer; if declined, do not raise it again this session.
-- **Enter plan mode** with the answers folded in, using `EnterPlanMode`. The brief plus the answers is the input to the plan; do not restate them at length inside it.
+Leave the Linear status alone. `takeoff` moves the issue to In Progress when work actually starts — a briefing is not a commitment to build, and two skills offering the same outward-facing change trains the user to skim the prompt. (When `dispatch` is driving, it also asks you to skip plan mode: the brief and the questions are the handoff artifact, and a plan-mode gate would park every parallel runway on an approval prompt.)
 
 Do not begin implementing from within preflight, even when the work looks trivial. The whole value of the checklist is that it finishes before the roll starts.
