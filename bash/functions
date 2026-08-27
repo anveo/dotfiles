@@ -724,6 +724,14 @@ wtr() {
   root=$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)") || return
   dest="$root.worktrees/$1"
 
+  # overmind keeps its own tmux server per instance, so removing the directory
+  # out from under a running one orphans it (see ovls/ovclean) -- and with a
+  # worktree per issue there can be several. Stop it while its socket still
+  # resolves. `quit` is the graceful form; the socket is gone if it isn't up.
+  if [[ -S "$dest/.overmind.sock" ]]; then
+    (cd "$dest" && overmind quit) && echo "wtr: stopped overmind"
+  fi
+
   if [[ -x "$dest/bin/worktree-teardown" ]]; then
     (cd "$dest" && bin/worktree-teardown) || return
   fi
@@ -735,12 +743,18 @@ wtr() {
 
   git wtr "$1"
 
-  # Undo the rename wta did, but only if the window still carries this branch's
-  # ticket -- a window renamed for some other reason isn't ours to reset.
+  # Clean up whichever window wta left behind, but only when it still carries
+  # this branch's ticket -- a window renamed for some other reason isn't ours.
+  # If that's the window we're typing in, restoring automatic-rename is all we
+  # can do; killing it would take this shell with it. A ticket window elsewhere
+  # (wta -w) gets killed, since its directory no longer exists.
   if [[ -n "$TMUX" ]]; then
     ticket=$(printf '%s' "$1" | sed -n 's|^\([A-Za-z][A-Za-z0-9]*-[0-9][0-9]*\).*|\1|p' | tr '[:lower:]' '[:upper:]')
-    if [[ -n "$ticket" && "$(tmux display-message -p '#W')" == "$ticket" ]]; then
+    [[ -z "$ticket" ]] && ticket="$1"
+    if [[ "$(tmux display-message -p '#W')" == "$ticket" ]]; then
       tmux set-option -w -u automatic-rename
+    elif tmux list-windows -F '#W' | grep -qxF "$ticket"; then
+      tmux kill-window -t "=$ticket" && echo "wtr: closed window $ticket"
     fi
   fi
 }
