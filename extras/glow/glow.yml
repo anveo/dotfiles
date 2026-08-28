@@ -1,0 +1,18 @@
+# glow -- markdown renderer. Symlinked to ~/.config/glow/glow.yml.
+# Key list comes from the file `glow config` generates; `glow -h` shows the
+# matching flags, and a flag always overrides the value set here.
+
+# style name or JSON path (default "auto" -- follows the terminal's light/dark)
+style: "auto"
+
+# mouse support (TUI-mode only -- has no effect in pager or plain output)
+mouse: true
+
+# use pager to display markdown
+pager: true
+
+# word-wrap at width (0 disables)
+width: 80
+
+# show all files, including hidden and ignored.
+all: false

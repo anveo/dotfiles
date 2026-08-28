@@ -114,4 +114,9 @@ echo "Setting up tig configs..."
 echo "ln -nfs $HOME/dotfiles/extras/tig/config $HOME/.tigrc"
 ln -nfs $HOME/dotfiles/extras/tig/config $HOME/.tigrc
 
+echo "Setting up glow configs..."
+mkdir -p "$HOME/.config/glow"
+echo "ln -fs $HOME/dotfiles/extras/glow/glow.yml $HOME/.config/glow/glow.yml"
+ln -fs "$HOME/dotfiles/extras/glow/glow.yml" "$HOME/.config/glow/glow.yml"
+
 $HOME/dotfiles/bin/install-ai.sh
