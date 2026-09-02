@@ -24,6 +24,7 @@ Quick reference for the tmux config. Prefix is `C-Space`.
 |-----|--------|
 | `prefix C-q` | Move current window left in the list (repeatable, wraps) |
 | `prefix C-e` | Move current window right in the list (repeatable, wraps) |
+| `prefix m` `<digit>` | Move current window to that index, shifting the others over |
 | `prefix <` | tmux window menu -- includes Swap Left (`l`) / Swap Right (`r`) |
 | `prefix ,` | Rename window (the name sticks -- this turns `automatic-rename` off) |
 | `prefix N` | Undo a manual rename -- back to automatic naming (takes a beat) |
@@ -31,6 +32,14 @@ Quick reference for the tmux config. Prefix is `C-Space`.
 `C-q` / `C-e` are `C-` of the window nav keys because uppercase `Q`/`E` are taken
 (`E` is "spread panes evenly"). They use `swap-window -t :-1` / `:+1`, which wrap
 at the ends, so overshooting cycles round rather than erroring mid-repeat.
+
+`prefix m` is the jump-straight-there version: it prompts for one digit and
+inserts the window at that index, sliding the old occupant right. tmux's
+built-in `prefix .` refuses when the index is taken; this uses `move-window -b`
+(insert before) when moving left and `-a` (insert after) when moving right --
+moving right, the vacated slot collapses under `renumber-windows on`, so `-b`
+would land one index short. Digits 1-9 only, since the prompt reads a single
+keypress. It takes over tmux's default `m` (mark pane).
 
 The `wta` shell function renames the window to the Linear ticket it parses out of
 the branch (`app-230-fix-binstubs` becomes `APP-230`); `wtr` restores automatic
