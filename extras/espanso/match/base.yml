@@ -13,6 +13,9 @@ matches:
   - trigger: ";pine"
     replace: "What's your opinion?"
 
+  - trigger: ";cpr"
+    replace: "@claude review this PR"
+
   - trigger: ":date"
     replace: "{{mydate}}"
     vars:
