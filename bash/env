@@ -46,14 +46,6 @@ export RUBY_GC_MALLOC_LIMIT=60000000
 #export RUBY_FREE_MIN=200000
 export RUBY_GC_HEAP_FREE_SLOTS=200000
 
-export SSLKEYLOGFILE="$HOME/tmp/tlskey"
-
-# Not ideal but it works
-#  https://blog.phusion.nl/2017/10/13/why-ruby-app-servers-break-on-macos-high-sierra-and-what-can-be-done-about-it/
-#  https://bugs.ruby-lang.org/issues/14009
-#  https://github.com/puma/puma/issues/1421
-export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 
 export AWS_PAGER=""

@@ -911,3 +911,55 @@ kon() {
   ns=$(kubectl config view --minify --output 'jsonpath={..namespace}' 2>/dev/null)
   echo "k8s restored: $ctx${ns:+ (namespace: $ns)}"
 }
+
+# TLS key logging on/off, in the spirit of opon/opoff and kon/koff above.
+# Everything that honours SSLKEYLOGFILE -- Chrome, curl, anything built on
+# OpenSSL or NSS -- appends its TLS pre-master secrets to it, which is exactly
+# what Wireshark needs to decrypt a capture and exactly what someone else needs
+# to decrypt yours. bash/env used to export it unconditionally, so the log grew
+# in every session with nothing ever truncating it and reached 97MB at mode 644
+# before anyone thought to look. Decrypting traffic is a once-a-year thing, so
+# it is opt-in now: tlson creates the log fresh at 600, tlsoff deletes it.
+TLS_KEYLOG="${TLS_KEYLOG:-$HOME/tmp/tlskey}"
+
+tlson() {
+  if [ -n "$SSLKEYLOGFILE" ]; then
+    echo "tls key logging already on: $SSLKEYLOGFILE"
+    return 0
+  fi
+
+  mkdir -p "$(dirname "$TLS_KEYLOG")" || return 1
+  # rm first so a log left at 644 by an older shell cannot survive the
+  # truncate; the umask then makes the fresh one 600 from the moment it exists,
+  # rather than 644-then-chmod with a window in between.
+  rm -f "$TLS_KEYLOG" || return 1
+  ( umask 077 && : > "$TLS_KEYLOG" ) || return 1
+
+  export SSLKEYLOGFILE="$TLS_KEYLOG"
+  echo "tls key logging on: $SSLKEYLOGFILE"
+  echo "  only processes launched from this shell inherit it -- start the browser here"
+  echo "  run tlsoff when done; it deletes the log"
+}
+
+tlsoff() {
+  local log size
+
+  if [ -z "$SSLKEYLOGFILE" ] && [ ! -e "$TLS_KEYLOG" ]; then
+    echo "tls key logging already off"
+    return 0
+  fi
+
+  log="${SSLKEYLOGFILE:-$TLS_KEYLOG}"
+  unset SSLKEYLOGFILE
+
+  if [ ! -e "$log" ]; then
+    echo "tls key logging off"
+    return 0
+  fi
+
+  size=$(du -h "$log" | cut -f1)
+  rm -f "$log" || return 1
+  echo "tls key logging off -- deleted $log ($size)"
+  echo "  copy it first next time if you still need it; anything started while"
+  echo "  it was on keeps writing to the deleted file until it restarts"
+}
