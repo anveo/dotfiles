@@ -6,7 +6,21 @@ set -e
 mkdir -p $HOME/bin
 mkdir -p $HOME/local/include # gcc warning
 mkdir -p $HOME/tmp
-touch $HOME/.gitsecrets
+
+# Files that hold tokens or credentials. Create them if missing so a new machine's
+# first write is already private, and enforce 600 on every run -- ~/.localrc is
+# sourced into every shell's environment, so a world-readable copy leaks whatever
+# it exports.
+private_files=(
+  .gitsecrets
+  .localrc
+)
+
+for file in "${private_files[@]}"
+do
+  touch "$HOME/${file}"
+  chmod 600 "$HOME/${file}"
+done
 
 ln -fs $HOME/dotfiles/scripts/consolidate-path $HOME/bin/consolidate-path
 
