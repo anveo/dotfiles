@@ -1,6 +1,6 @@
 ---
 name: dispatch
-description: Prepare one or more Linear issues for work — create a branch for each (in a provisioned worktree where the repo asks for one, or where --worktree forces it), read the ticket and the code it names, and report a brief plus the questions that need answering. Stops before any code is written. Use when starting work on an issue by identifier, or when asked to "dispatch DOT-26", "set up these issues", "prepare a worktree for", or "get these ready to work on". Accepts --worktree / --branch to override the repo's default mode.
+description: Prepare one or more Linear issues for work — create a branch for each (in a provisioned worktree where the repo asks for one, or where --worktree forces it), read the ticket and the code it names, and report a brief plus the questions that need answering. Stops before any code is written. Use when starting work on an issue by identifier, or when asked to "dispatch DOT-26", "set up these issues", "prepare a worktree for", or "get these ready to work on". Accepts --worktree / --branch to override the repo's default mode, and --db reuse|clone to pick the worktree's database.
 ---
 
 # dispatch
@@ -43,6 +43,8 @@ In a symlinked repo that inverts the warning above rather than contradicting it.
 
 `--branch` on a provisioning repo is the cheaper direction: skip ports, hostname, and database for a change that needs none of them — a README line, a comment fix, a version bump. It inherits branch mode's single-issue rule.
 
+**Choosing the database.** `--db reuse|clone` relays straight through to the repo's `bin/worktree-setup`, which is what makes the choice without stopping to ask. Non-interactive setup defaults to `reuse` — the right answer nearly always, since a worktree that only reads the dev database wants the data that is already in it. Reach for `--db clone` when the branch will *write*: a destructive migration, a backfill, a seed rewrite — anything you would not want landing in the database the main checkout is pointed at. It applies to every issue in the invocation, and it is ignored on a re-run, where the mode already recorded in `.envrc.worktree` wins. In branch mode there is no provisioning to configure, so passing it there is an error worth naming rather than dropping.
+
 ## 2. Name the branch
 
 Fetch each issue (the Linear tools are namespaced per workspace — `ToolSearch: "linear get issue"` rather than assuming) and derive a branch as `<KEY>-<short-slug>`: the uppercase identifier, then two to four words from the title.
@@ -57,7 +59,7 @@ If the branch or its worktree already exists, reuse it and say so. Dispatch is i
 
 ```bash
 source "$HOME/dotfiles/bash/functions"   # see below — do not skip this
-wta -w <branch>
+wta -w <branch>                          # add --db clone when the ticket asked for it
 ```
 
 **The `source` is load-bearing.** Claude Code's Bash tool loads shell functions from a snapshot taken when the session started, so a session that began before the last dotfiles change is holding a stale `wta` — and the failure is silent rather than loud: an older copy has no `-w`, so it either errors or treats the flag as a branch name. Sourcing the file first guarantees the current definitions of `wta`, `wtr`, and `wtinfo` regardless of session age.

@@ -577,19 +577,67 @@ adb_photo() {
 # where it is -- the form /dispatch uses, since renaming the current window
 # once per issue would leave you cd'd in whichever worktree came last.
 wta() {
-  local new_window=0
-  case "$1" in
-    -w) new_window=1; shift ;;
-    # Reject unknown flags rather than treating them as a branch name: an agent
-    # running against a stale copy of this function would otherwise try to
-    # create a worktree literally named "-w".
-    -*) echo "wta: unknown option $1" >&2; return 1 ;;
-  esac
+  local new_window=0 db_mode=""
+  local usage='usage: wta [-w] [--db reuse|clone] <branch>'
+
+  # A loop rather than a single case: there are three flags now, and the one
+  # this forwards to (worktree-setup) parses the same way, so the two read
+  # alike. Order among flags stops mattering as a side effect.
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -w) new_window=1; shift ;;
+      # Both spellings, because muscle memory supplies whichever. Forwarded
+      # space-separated below -- worktree-setup takes only that form.
+      --db)
+        if [[ $# -lt 2 || -z "$2" ]]; then
+          echo "wta: --db needs a value" >&2; echo "$usage" >&2; return 1
+        fi
+        db_mode=$2; shift 2 ;;
+      --db=*)
+        db_mode=${1#--db=}
+        if [[ -z "$db_mode" ]]; then
+          echo "wta: --db needs a value" >&2; echo "$usage" >&2; return 1
+        fi
+        shift ;;
+      -h|--help)
+        echo "$usage"
+        echo "  -w      provision in a new detached tmux window, leaving this shell put."
+        echo "  --db    database mode for repos with a bin/worktree-setup; skips its"
+        echo "          prompt. Ignored on a re-run, which keeps the mode already set."
+        return 0 ;;
+      # Reject unknown flags rather than treating them as a branch name: an agent
+      # running against a stale copy of this function would otherwise try to
+      # create a worktree literally named "-w".
+      -*) echo "wta: unknown option $1" >&2; echo "$usage" >&2; return 1 ;;
+      *) break ;;
+    esac
+  done
 
   if [[ -z "$1" ]]; then
-    echo "Usage: wta [-w] <branch>" >&2
+    echo "$usage" >&2
     return 1
   fi
+
+  # Flags after the branch name would otherwise be dropped in silence, which is
+  # worse than refusing them: --db in particular looks like it took effect.
+  if [[ $# -gt 1 ]]; then
+    echo "wta: unexpected argument '$2' -- flags go before the branch" >&2
+    echo "$usage" >&2
+    return 1
+  fi
+
+  # Validated here rather than left to worktree-setup, which runs only after
+  # `git wta` has already created the worktree: a typo caught there leaves a
+  # checkout behind with no ports, no route and (under -w) no window.
+  case "$db_mode" in
+    ""|reuse|clone) ;;
+    *) echo "wta: --db must be reuse or clone (got '$db_mode')" >&2; return 1 ;;
+  esac
+
+  # An array, not a string: this file is sourced by zsh, where an unquoted
+  # "--db clone" stays one word and arrives as a single bogus argument.
+  local -a setup_args=()
+  [[ -n "$db_mode" ]] && setup_args=(--db "$db_mode")
 
   local root dest f ticket
   root=$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)") || return
@@ -632,7 +680,7 @@ wta() {
         direnv allow || exit
       fi
       if [[ -x bin/worktree-setup ]]; then
-        bin/worktree-setup || exit
+        bin/worktree-setup "${setup_args[@]}" || exit
       fi
     ) || return
 
@@ -685,9 +733,10 @@ wta() {
   fi
 
   # Repo-specific worktree provisioning (ports, hostnames, databases, ...)
-  # lives in the repo, not here. May be interactive.
+  # lives in the repo, not here. May be interactive -- --db is how you skip
+  # the part of it that asks.
   if [[ -x bin/worktree-setup ]]; then
-    bin/worktree-setup
+    bin/worktree-setup "${setup_args[@]}"
   fi
 
   wtinfo
