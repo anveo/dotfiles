@@ -795,11 +795,73 @@ wtinfo() {
 
 # Remove a worktree created with wta, running the repo's teardown hook first
 # so hostnames, routes, and cloned databases don't leak.
+#
+# --db decides the cloned database's fate without the hook stopping to ask --
+# the teardown-side counterpart of wta's --db, and what makes an unattended
+# `wtr` possible on a worktree provisioned in clone mode.
 wtr() {
+  local db_mode=""
+  local usage='usage: wtr [--db keep|drop] <branch>'
+
+  # Mirrors wta's parser, which in turn mirrors worktree-setup's: the four
+  # scripts in this chain should read alike rather than each inventing a
+  # convention. Order among flags stops mattering as a side effect.
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      # Both spellings, because muscle memory supplies whichever. Forwarded
+      # space-separated below -- worktree-teardown takes only that form.
+      --db)
+        if [[ $# -lt 2 || -z "$2" ]]; then
+          echo "wtr: --db needs a value" >&2; echo "$usage" >&2; return 1
+        fi
+        db_mode=$2; shift 2 ;;
+      --db=*)
+        db_mode=${1#--db=}
+        if [[ -z "$db_mode" ]]; then
+          echo "wtr: --db needs a value" >&2; echo "$usage" >&2; return 1
+        fi
+        shift ;;
+      -h|--help)
+        echo "$usage"
+        echo "  --db    what becomes of a clone-mode worktree's database, for repos"
+        echo "          with a bin/worktree-teardown; skips its prompt. Without a"
+        echo "          terminal and without this, teardown keeps the clone."
+        echo "          A reuse-mode worktree has no clone, so the flag is a no-op."
+        return 0 ;;
+      # Reject unknown flags rather than treating them as a branch name: an agent
+      # running against a stale copy of this function would otherwise try to
+      # remove a worktree literally named "--db".
+      -*) echo "wtr: unknown option $1" >&2; echo "$usage" >&2; return 1 ;;
+      *) break ;;
+    esac
+  done
+
   if [[ -z "$1" ]]; then
-    echo "Usage: wtr <branch>" >&2
+    echo "$usage" >&2
     return 1
   fi
+
+  # Flags after the branch name would otherwise be dropped in silence, which is
+  # worse than refusing them: --db in particular looks like it took effect.
+  if [[ $# -gt 1 ]]; then
+    echo "wtr: unexpected argument '$2' -- flags go before the branch" >&2
+    echo "$usage" >&2
+    return 1
+  fi
+
+  # bin/worktree-teardown is the authority on this list -- change it there
+  # first. Duplicated here because wtr does work either side of the teardown
+  # call: a typo caught by teardown alone would land after overmind is already
+  # stopped. Teardown keeps validating regardless, since it is also run by hand.
+  case "$db_mode" in
+    ""|keep|drop) ;;
+    *) echo "wtr: --db must be keep or drop (got '$db_mode')" >&2; return 1 ;;
+  esac
+
+  # An array, not a string: this file is sourced by zsh, where an unquoted
+  # "--db drop" stays one word and arrives as a single bogus argument.
+  local -a teardown_args=()
+  [[ -n "$db_mode" ]] && teardown_args=(--db "$db_mode")
 
   local root dest ticket
   root=$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)") || return
@@ -813,8 +875,12 @@ wtr() {
     (cd "$dest" && overmind quit) && echo "wtr: stopped overmind"
   fi
 
+  # A repo with no teardown script is a branch predating it, or one that never
+  # had one -- there is still a worktree to remove, so a --db passed here is
+  # ignored rather than fatal. It can only have been "keep" or "drop", and
+  # dropping nothing is the safe way to be wrong.
   if [[ -x "$dest/bin/worktree-teardown" ]]; then
-    (cd "$dest" && bin/worktree-teardown) || return
+    (cd "$dest" && bin/worktree-teardown "${teardown_args[@]}") || return
   fi
 
   # git refuses to remove the worktree you're standing in.
