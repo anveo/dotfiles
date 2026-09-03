@@ -17,7 +17,7 @@ Six skills, in order. Each is the source of truth for its own step.
 | `/preflight` | Standing in a branch | Reads the ticket, comments, relations, and the code it names; briefs; interrogates | No |
 | `/takeoff` | Questions answered | Verifies env, captures a green baseline, ticket → In Progress, builds to the plan | Yes |
 | `/approach` | Work done | Splits the tree into a commit series, pushes, opens a **draft** PR | Commits |
-| `/crosscheck` | PR is up | Verifies each bot finding against the code; reports which hold up | Only if asked |
+| `/crosscheck` | PR is up | Verifies each bot finding against the code; reports which hold up. Use `/code-review --comment` instead if the PR bots' agent spend is used up | Only if asked |
 | `/land` | PR approved | Merges preserving the series, deletes branch, syncs main, closes the issue | Merges |
 
 Two invariants worth remembering:
@@ -166,7 +166,7 @@ overmind start    # foreground, output visible
 ```
 
 These splits carry `-c "#{pane_current_path}"`, so the new pane starts in the
-worktree. tmux's default `"` and `%` are unbound in `.tmux.conf` -- and would
+worktree. tmux's default `"` and `%` are unbound in `.tmux.conf` — and would
 have opened in the session's start directory, i.e. the main checkout.
 
 `overmind start -D` daemonizes (`overmind echo` for logs, `overmind quit` to
