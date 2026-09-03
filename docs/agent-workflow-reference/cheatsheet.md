@@ -1,8 +1,9 @@
 # Agent Workflow Cheatsheet
 
-Quick reference for running coding agents on tracked issues: one issue, one git
-worktree, one tmux window. Skills live in `extras/claude/skills/`; the shell
-functions in `bash/functions`.
+Quick reference for running coding agents on tracked issues: one issue, one
+checkout, one tmux window — a git worktree where the repo has per-checkout state
+worth isolating, the branch in place where it does not. Skills live in
+`extras/claude/skills/`; the shell functions in `bash/functions`.
 
 ---
 
@@ -12,7 +13,7 @@ Six skills, in order. Each is the source of truth for its own step.
 
 | Skill | When | What it does | Writes code? |
 |-------|------|--------------|--------------|
-| `/dispatch` | Front of everything | Resolves issues, creates + provisions a worktree and tmux window each, runs the read, reports briefs and questions | No |
+| `/dispatch` | Front of everything | Resolves issues, creates each branch — in a provisioned worktree and tmux window where the repo wants one — runs the read, reports briefs and questions | No |
 | `/preflight` | Standing in a branch | Reads the ticket, comments, relations, and the code it names; briefs; interrogates | No |
 | `/takeoff` | Questions answered | Verifies env, captures a green baseline, ticket → In Progress, builds to the plan | Yes |
 | `/approach` | Work done | Splits the tree into a commit series, pushes, opens a **draft** PR | Commits |
@@ -31,6 +32,57 @@ the branch.
 
 ---
 
+## Worktree mode and branch mode
+
+`/dispatch` asks the repo which one it wants:
+
+```bash
+test -x bin/worktree-setup && echo worktree || echo branch
+```
+
+That script is what assigns ports, hostname, and database, so its presence is the
+repo's own statement that a parallel checkout buys something here. Without it —
+this dotfiles repo, a docs repo, anything with no per-checkout state — dispatch
+works in **branch mode**: `git switch -c <branch>` in place, no worktree, no
+window, nothing to provision or tear down. The test is `-x` rather than `-f`
+because `wta` runs the script only when it is executable, and keying on the same
+bit keeps the two from ever disagreeing about which mode a repo is in. A repo that
+wants isolated checkouts but has nothing to provision opts in with an executable
+empty file.
+
+Branch mode is single-issue by construction, since one checkout holds one branch.
+`/dispatch` takes one identifier there, against as many as you like in worktree
+mode.
+
+**Overriding the default.** `--worktree` and `--branch` force a mode for the whole
+invocation and beat the test. Position does not matter; anything that is not a flag
+is an identifier.
+
+| Invocation | Effect |
+|------------|--------|
+| `/dispatch DOT-30` | The repo decides |
+| `/dispatch DOT-30 --worktree` | Isolated checkout even where the repo asks for none |
+| `/dispatch DOT-30 --branch` | Branch in place, skipping provisioning this change does not need |
+
+`--worktree` is the one that earns its keep. Branch mode assumes the live checkout
+is free, and sometimes it is not: a long-running branch mid-test, a bisect, a
+config you are actively living in and would rather not disturb. Forcing a worktree
+gives a second issue somewhere to happen that cannot perturb any of it.
+
+**In a symlinked repo, forced-worktree edits are inert — and that is the point.**
+The symlinks in `$HOME` still point at the main checkout, so nothing reads the
+worktree's copy: a shell rc edited there changes no new shell, a Neovim config
+edited there changes no Neovim. That is exactly what makes such a change safe to
+eyeball and diff before it takes effect anywhere. It reaches the live environment
+when the branch merges into the checkout the symlinks point at, and not before.
+Worth saying out loud every time, because the alternative is losing an hour to
+"why did nothing change?"
+
+`--branch` is the cheaper direction: skip ports, hostname, and database for a
+README line or a comment fix in a repo that would otherwise provision all three.
+
+---
+
 ## Worktree commands
 
 | Command | Action |
@@ -38,7 +90,7 @@ the branch.
 | `wta <branch>` | Create worktree, `cd` into it, rename the current window |
 | `wta -w <branch>` | Same, but give it its own tmux window running a Claude session named for the ticket, and stay put — the `/dispatch` form |
 | `wtr <branch>` | Stop overmind, run teardown, remove worktree, close its window |
-| `wtinfo` | What setup assigned here: URL, ports (with up/down), database mode |
+| `wtinfo` | What setup assigned here: URL, ports (with up/down), database mode — or `unprovisioned worktree` in a repo that has no `bin/worktree-setup` |
 | `ovls` | Every running overmind, with its directory and whether its socket survives |
 | `ovclean` | Kill orphaned overminds and stale overmind tmux servers |
 | `killport <port> [sig]` | Kill whatever is listening on a TCP port |
@@ -93,10 +145,15 @@ Three env layers, last one wins:
 | `.envrc.private` | No | Secrets, machine-local overrides (template: `.envrc.example`) |
 | `.envrc.worktree` | No | Ports, hostname, database — written by `bin/worktree-setup` |
 
-A repo opts into the workflow by providing two executables, which `wta`/`wtr` run:
+A repo opts into worktree mode by providing two executables, which `wta`/`wtr`
+run — and whose presence is what `/dispatch` tests for:
 
 - `bin/worktree-setup` — idempotent; assigns ports, hostname, database; writes `.envrc.worktree`
 - `bin/worktree-teardown` — removes routes, disposable databases, whatever setup created
+
+A `--worktree` dispatch of a repo with neither still gets its own checkout and
+window; there is simply nothing to write into `.envrc.worktree`, which is what
+`wtinfo` reports there.
 
 **The app URL is `https://$APP_HOST`**, read from the environment. Never assume
 `localhost:3000` — in a worktree that belongs to the main checkout.
@@ -189,3 +246,7 @@ Mark the PR ready, then:
 ```bash
 wtr APP-191-track-llm-tokens          # teardown when finished or abandoning
 ```
+
+In branch mode there is no second window and no teardown: `/takeoff` onward run in
+the session you dispatched from, and cleaning up is `git switch main` plus
+`git branch -d <branch>`.
