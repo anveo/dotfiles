@@ -21,9 +21,10 @@ Leader is `<Space>`.
 | Key | Action |
 |-----|--------|
 | `<C-p>` | Find files (respects .gitignore, includes hidden) |
-| `<C-f>` | Git files only |
+| `<C-f>` | Live grep (ripgrep) |
+| `<C-g>` | Git files only |
 | `<C-b>` | Open buffers (MRU order) |
-| `<Leader>f` / `<Leader>ff` | Live grep (ripgrep) |
+| `<Leader>f` | Live grep (ripgrep) |
 | `<Leader>F` | Grep word under cursor |
 | `<Leader>fr` | Recent files |
 | `<Leader>fg` | Git status files |

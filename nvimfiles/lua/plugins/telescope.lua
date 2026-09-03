@@ -13,9 +13,9 @@ return {
     cmd = "Telescope",
     keys = {
       { "<C-P>", "<cmd>Telescope find_files<CR>", desc = "Find files" },
-      { "<C-F>", "<cmd>Telescope git_files<CR>", desc = "Git files" },
+      { "<C-F>", "<cmd>Telescope live_grep<CR>", desc = "Live grep" },
+      { "<C-G>", "<cmd>Telescope git_files<CR>", desc = "Git files" },
       { "<Leader>f", "<cmd>Telescope live_grep<CR>", desc = "Live grep" },
-      { "<Leader>ff", "<cmd>Telescope live_grep<CR>", desc = "Live grep" },
       { "<Leader>F", "<cmd>Telescope grep_string<CR>", desc = "Grep word under cursor" },
       { "<C-B>", "<cmd>Telescope buffers<CR>", desc = "Buffers" },
       { "<Leader><Tab>", "<cmd>Telescope keymaps<CR>", desc = "Keymaps" },
