@@ -41,6 +41,8 @@ brew "coreutils"
 brew "difftastic"
 # Load/unload environment variables based on $PWD
 brew "direnv"
+# Lightweight DNS forwarder and DHCP server
+brew "dnsmasq"
 # Modern, maintained replacement for ls
 brew "eza"
 # Easiest way to build and release mobile apps
@@ -57,8 +59,6 @@ brew "fzf"
 brew "gdtoolkit"
 # WebDriver <-> Marionette proxy
 brew "geckodriver"
-# Interact with Google Gemini AI models from the command-line
-brew "gemini-cli"
 # GitHub command-line tool
 brew "gh"
 # Distributed revision control system
@@ -131,6 +131,8 @@ brew "poppler"
 brew "postgresql@16"
 # Object-relational database system
 brew "postgresql@17"
+# Modern replacement for ps written in Rust
+brew "procs"
 # Unix pager optimized for psql
 brew "pspg"
 # Password generator
@@ -165,6 +167,8 @@ brew "transmission-cli"
 brew "tree-sitter-cli"
 # Vulnerability scanner for container images, file systems, and Git repos
 brew "trivy"
+# Image processing library
+brew "vips"
 # Terminal spreadsheet multitool for discovering and arranging data
 brew "visidata"
 # Execute commands when watched files change
@@ -187,7 +191,7 @@ brew "zlib"
 brew "zsh"
 # Go-based command-line wrapper for easy interaction with Datadog APIs
 brew "datadog-labs/pack/pup"
-# A Powerful Command Line for automating iOS Simulators
+# Companion server for automating iOS Simulators
 brew "facebook/fb/idb-companion"
 # See where your AI coding tokens go - by task, tool, model, and project
 brew "getagentseal/codeburn/codeburn"
@@ -205,8 +209,6 @@ cask "blender"
 cask "bruno"
 # E-books management software
 cask "calibre"
-# Automated testing of webapps for Google Chrome
-cask "chromedriver"
 # Cross-platform Text Expander written in Rust
 cask "espanso"
 # Web browser
@@ -277,6 +279,7 @@ vscode "github.vscode-pull-request-github"
 vscode "golang.go"
 vscode "hashicorp.terraform"
 vscode "hwencc.html-tag-wrapper"
+vscode "jackiotyu.git-worktree-manager"
 vscode "jacqueslucke.blender-development"
 vscode "james-ni.openshadinglanguage"
 vscode "johnpapa.vscode-peacock"
@@ -347,5 +350,6 @@ uv "fb-idb"
 krew "ctx"
 krew "krew"
 krew "ns"
+npm "@google/gemini-cli"
 npm "corepack"
 npm "wrangler"
