@@ -1,0 +1,97 @@
+#!/usr/bin/env python3
+"""Cases for worktree-guard.
+
+Paths are fictional -- nothing here has to exist on disk, since the guard
+reasons about strings and cwd rather than touching the tree. The one exception
+is the interpreted-script case, which writes a real temp file because reading
+that file is the whole point of it.
+
+Run it directly: ./worktree-guard-test
+"""
+
+import json
+import os
+import subprocess
+import sys
+import tempfile
+
+GUARD = os.path.join(os.path.dirname(os.path.abspath(__file__)), "worktree-guard")
+MAIN = "/tmp/repo"
+TREE = "/tmp/repo.worktrees/feature-alpha"
+
+# A stand-in for a scratch patch script that rewrites a worktree from the main
+# checkout -- the case a scan of the command text alone cannot see, because the
+# path appears only inside the script.
+SCRIPT = tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False)
+SCRIPT.write(f'import pathlib\nROOT = pathlib.Path("{TREE}")\nROOT.joinpath("x").write_text("y")\n')
+SCRIPT.close()
+
+BENIGN = tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False)
+BENIGN.write("print('nothing to do with worktrees')\n")
+BENIGN.close()
+
+CASES = [
+    # (label, tool, tool_input, cwd, expect_denied)
+    ("bash: test run in a worktree from the main checkout", "Bash",
+     {"command": f"cd {TREE} && direnv exec . bundle exec rspec spec/"}, MAIN, True),
+    ("bash: git add via -C from the main checkout", "Bash",
+     {"command": f"git -C {TREE} add app/models/thing.rb"}, MAIN, True),
+    ("bash: git commit via -C from the main checkout", "Bash",
+     {"command": f"git -C {TREE} commit -F /tmp/msg.txt"}, MAIN, True),
+    ("bash: patch script naming the worktree only inside itself", "Bash",
+     {"command": f"python3 {SCRIPT.name}"}, MAIN, True),
+    ("bash: same test run from inside the worktree", "Bash",
+     {"command": f"cd {TREE} && direnv exec . bundle exec rspec spec/"}, TREE, False),
+    ("bash: reading a worktree's code while briefing", "Bash",
+     {"command": f"grep -rn 'Thing' {TREE}/app"}, MAIN, False),
+    ("bash: read-only git against a worktree", "Bash",
+     {"command": f"git -C {TREE} status --short"}, MAIN, False),
+    ("bash: provisioning a worktree from the main checkout", "Bash",
+     {"command": f"cd {TREE} && bin/worktree-setup"}, MAIN, False),
+    ("bash: wta itself", "Bash",
+     {"command": "source ~/dotfiles/bash/functions && wta -w feature-beta"}, MAIN, False),
+    ("bash: interpreter on a script that touches no worktree", "Bash",
+     {"command": f"python3 {BENIGN.name}"}, MAIN, False),
+    ("bash: rm inside a branch slug is not a deletion", "Bash",
+     {"command": f"grep -rn foo {MAIN}.worktrees/cleanup-rm-dead-code/app"}, MAIN, False),
+    ("bash: ordinary work in the main checkout", "Bash",
+     {"command": f"cd {MAIN} && bundle exec rspec spec/"}, MAIN, False),
+    # Prose about the convention is not a path into a worktree. Documenting this
+    # guard, or editing the guard itself, must not trip it.
+    ("bash: a glob pattern in documentation is not a real path", "Bash",
+     {"command": "python3 -c \"print('denies writes under *.worktrees/<branch>/')\""}, MAIN, False),
+    ("edit: writing into a worktree from the main checkout", "Edit",
+     {"file_path": f"{TREE}/app/models/thing.rb"}, MAIN, True),
+    ("write: writing into a worktree from inside it", "Write",
+     {"file_path": f"{TREE}/app/models/thing.rb"}, TREE, False),
+    ("edit: a file outside any worktree", "Edit",
+     {"file_path": f"{MAIN}/app/models/thing.rb"}, MAIN, False),
+    ("read tool is never our business", "Read",
+     {"file_path": f"{TREE}/app/models/thing.rb"}, MAIN, False),
+]
+
+
+def run(tool, tool_input, cwd):
+    event = {"tool_name": tool, "tool_input": tool_input, "cwd": cwd}
+    out = subprocess.run(
+        [GUARD], input=json.dumps(event), capture_output=True, text=True, check=False
+    ).stdout.strip()
+    if not out:
+        return False, ""
+    decision = json.loads(out)["hookSpecificOutput"]
+    return decision["permissionDecision"] == "deny", decision["permissionDecisionReason"]
+
+
+failures = 0
+for label, tool, tool_input, cwd, expect_denied in CASES:
+    denied, _ = run(tool, tool_input, cwd)
+    ok = denied == expect_denied
+    failures += not ok
+    want = "deny" if expect_denied else "allow"
+    got = "deny" if denied else "allow"
+    print(f"{'ok  ' if ok else 'FAIL'}  {label}  (want {want}, got {got})")
+
+os.unlink(SCRIPT.name)
+os.unlink(BENIGN.name)
+print(f"\n{len(CASES) - failures}/{len(CASES)} passed")
+sys.exit(1 if failures else 0)

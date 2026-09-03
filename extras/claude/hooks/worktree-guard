@@ -1,0 +1,177 @@
+#!/usr/bin/env python3
+"""PreToolUse guard: keep a session out of somebody else's worktree.
+
+`wta -w` gives every dispatched ticket its own worktree and its own tmux window,
+and the point of that is one Claude session per runway. Nothing enforced it: the
+dispatching session, sitting in the main checkout, could reach into a worktree
+with `git -C` or `cd <worktree> && ...` and implement the whole ticket from the
+wrong place. That session resolves the wrong .envrc (ports, hostname, database),
+runs against whatever branch the main checkout has checked out, and has to
+re-specify the path on every single call -- one omission and the edit or the
+commit lands in the main checkout instead.
+
+So: if a tool call names a path inside `*.worktrees/<name>/` and this session's
+cwd is not inside that same worktree, deny it and say where the work belongs.
+
+Reads stay allowed. `dispatch` legitimately reads a worktree's code from the main
+checkout while briefing, and its per-issue subagents inherit that cwd. What gets
+denied is writing and running -- editing files, committing, and executing the
+project's own tooling. That is a denylist rather than an allowlist on purpose:
+this is a workflow guard, not a security boundary, and an allowlist would block
+unfamiliar-but-harmless recon far more often than it would catch anything.
+
+Contract: PreToolUse JSON on stdin, JSON permission decision on stdout.
+Registered in ~/.claude/settings.json against `Bash|Edit|Write|NotebookEdit`.
+"""
+
+import json
+import os
+import re
+import sys
+
+# `~/code/repo.worktrees/feature-alpha` -> that whole prefix. Stops at
+# the branch segment: everything below it belongs to the same worktree.
+#
+# Anchored on `/` or `~/` and refusing glob and placeholder characters, so that
+# prose about the convention is not mistaken for a path into a real worktree.
+# Writing documentation that mentions `*.worktrees/<branch>/` -- or a hook that
+# matches it -- must not trip the hook.
+WORKTREE_RE = re.compile(r"""(?:/|~/)[^\s'"|;&()*<>`]*\.worktrees/[^\s'"|;&()/*<>`]+""")
+
+# Bash commands that write to the tree, change git state, or run the project's
+# own tooling. Matched case-sensitively against the whole command string, so a
+# path that merely contains one of these words is not enough -- each pattern
+# anchors on a word boundary and, where it matters, on the git subcommand.
+WRITE_PATTERNS = [
+    r"\bgit\s+(-C\s+\S+\s+)?(add|commit|push|checkout|switch|restore|reset|rm|mv|stash|merge|rebase|cherry-pick|apply|am|tag|branch\s+-[dDmM])\b",
+    r"\bgh\s+(pr|release|issue)\s+(create|edit|merge|close|comment)\b",
+    r"\b(bundle|rspec|rubocop|rake|rails|make|npm|yarn|pnpm|bun|vite|overmind|foreman)\b",
+    r"\b(python3?|ruby|node|perl)\s+\S+",
+    r"\bsed\s+-i\b",
+    # Anchored at a command position, unlike the tool names above: `rm`, `mv` and
+    # friends are short enough to appear inside a branch slug, and
+    # `cleanup-rm-dead-code` is not a deletion.
+    r"(^|[;&|]\s*|\bsudo\s+)(rm|mv|cp|mkdir|touch|chmod|chown|ln|tee|patch|install)\s",
+    r">>?\s*\S*\.worktrees/",
+]
+
+# `python3 /tmp/patch.py` names no worktree, but the script it runs may rewrite
+# half of one -- which is exactly how this session edited a worktree it was not
+# standing in. Scanning the command text alone misses that entirely, so when the
+# command hands a script to an interpreter, the script itself gets read too.
+INTERPRETED_SCRIPT_RE = re.compile(
+    r"\b(?:python3?|ruby|node|perl|bash|zsh|sh)\s+(?P<path>[^\s'\";|&]+\.(?:py|rb|js|mjs|sh|pl))\b"
+)
+MAX_SCRIPT_BYTES = 512 * 1024
+
+READ_ONLY_GIT = re.compile(
+    r"\bgit\s+(-C\s+\S+\s+)?(status|log|diff|show|rev-parse|ls-files|blame|worktree|branch|remote|config\s+--get)\b"
+)
+
+# Provisioning and teardown are exactly the things the dispatching session is
+# supposed to run against a worktree it is not standing in.
+PROVISIONING = re.compile(r"\b(wta|wtr|wtinfo|bin/worktree-setup)\b")
+
+
+def deny(reason):
+    json.dump(
+        {
+            "hookSpecificOutput": {
+                "hookEventName": "PreToolUse",
+                "permissionDecision": "deny",
+                "permissionDecisionReason": reason,
+            }
+        },
+        sys.stdout,
+    )
+    sys.exit(0)
+
+
+def allow():
+    sys.exit(0)
+
+
+def worktrees_named(text):
+    """Distinct worktree roots referenced by a string, as absolute paths."""
+    roots = []
+    for match in WORKTREE_RE.findall(text or ""):
+        root = os.path.abspath(os.path.expanduser(match))
+        if root not in roots:
+            roots.append(root)
+    return roots
+
+
+def inside(path, root):
+    return path == root or path.startswith(root + os.sep)
+
+
+def window_name(root):
+    """The tmux window `wta` names for a worktree.
+
+    Mirrors wta's own extraction: the leading TEAM-123 of the branch where there
+    is one, the whole branch otherwise. Splitting on the first dash instead
+    would name the window FEATURE for `feature-alpha`.
+    """
+    branch = os.path.basename(root)
+    match = re.match(r"([A-Za-z][A-Za-z0-9]*-[0-9]+)", branch)
+    return match.group(1).upper() if match else branch
+
+
+def interpreted_script(command):
+    """Contents of a script the command hands to an interpreter, if readable."""
+    match = INTERPRETED_SCRIPT_RE.search(command or "")
+    if not match:
+        return ""
+    path = os.path.abspath(os.path.expanduser(match.group("path")))
+    try:
+        if os.path.getsize(path) > MAX_SCRIPT_BYTES:
+            return ""
+        with open(path, encoding="utf-8", errors="replace") as handle:
+            return handle.read()
+    except OSError:
+        return ""  # Not there yet, or not ours to read. Nothing to judge.
+
+
+def main():
+    try:
+        event = json.load(sys.stdin)
+    except (json.JSONDecodeError, ValueError):
+        allow()  # Never let a malformed event block the session.
+
+    tool = event.get("tool_name", "")
+    tool_input = event.get("tool_input") or {}
+    cwd = os.path.abspath(event.get("cwd") or os.getcwd())
+
+    if tool in ("Edit", "Write", "NotebookEdit"):
+        target = tool_input.get("file_path") or tool_input.get("notebook_path") or ""
+        roots = worktrees_named(target)
+        verb = "Editing"
+    elif tool == "Bash":
+        command = tool_input.get("command", "")
+        if PROVISIONING.search(command) or READ_ONLY_GIT.search(command):
+            allow()
+        roots = worktrees_named(command) + worktrees_named(interpreted_script(command))
+        if roots and not any(re.search(p, command) for p in WRITE_PATTERNS):
+            allow()  # A read. Briefing from the main checkout is fine.
+        verb = "Running this"
+    else:
+        allow()
+
+    for root in roots:
+        if not inside(cwd, root):
+            deny(
+                f"{verb} in {root} from a session rooted at {cwd}.\n\n"
+                "That worktree has its own tmux window, ports, hostname and "
+                "database, and none of them are loaded here. Start a Claude "
+                "session in its window instead:\n\n"
+                f"    tmux select-window -t ={window_name(root)}\n\n"
+                "Reads are allowed from here; writing and running are not. "
+                "If this session genuinely should own the worktree, "
+                "EnterWorktree({path: \"" + root + "\"}) moves it there properly."
+            )
+
+    allow()
+
+
+if __name__ == "__main__":
+    main()
