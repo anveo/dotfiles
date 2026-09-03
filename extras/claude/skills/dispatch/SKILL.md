@@ -1,6 +1,6 @@
 ---
 name: dispatch
-description: Prepare one or more Linear issues for work — create and provision a worktree for each, read the ticket and the code it names, and report a brief plus the questions that need answering. Stops before any code is written. Use when starting work on an issue by identifier, or when asked to "dispatch DOT-26", "set up these issues", "prepare a worktree for", or "get these ready to work on".
+description: Prepare one or more Linear issues for work — create a branch for each (in a provisioned worktree where the repo asks for one), read the ticket and the code it names, and report a brief plus the questions that need answering. Stops before any code is written. Use when starting work on an issue by identifier, or when asked to "dispatch DOT-26", "set up these issues", "prepare a worktree for", or "get these ready to work on".
 ---
 
 # dispatch
@@ -23,6 +23,18 @@ git rev-parse --show-toplevel
 
 Stop if that fails, or if the current directory is a linked worktree — dispatch creates worktrees and should run from the main checkout. Take one or more identifiers (`/dispatch DOT-26`, `/dispatch DOT-26 DOT-31 DOT-33`); with none, list the user's assigned issues in progress or selected for development and ask which.
 
+Then ask the repo whether it wants a worktree at all:
+
+```bash
+test -x bin/worktree-setup && echo worktree || echo branch
+```
+
+That script is what assigns ports, hostname, and database to a new checkout, so its presence is the repo's own statement that parallel checkouts buy something here. Without it — a dotfiles repo, a docs repo, anything with no per-checkout state to isolate — dispatch runs in **branch mode**: the branch gets created in place and step 3 is skipped entirely. The test is `-x` rather than `-f` because `wta` runs the script only when it is executable; keying on the same bit keeps the two from ever disagreeing about which mode a repo is in. A repo that wants isolated checkouts but has nothing to provision opts in with an executable empty file.
+
+Branch mode is not merely worktrees-being-unnecessary. Where a repo's files are symlinked into a live environment — an editor config into `~/.config`, a shell rc into `$HOME` — a worktree is actively wrong: edits land in a copy nothing is reading, and the change appears to have no effect.
+
+It is also single-issue by construction, since one checkout holds one branch. Given several identifiers in branch mode, say so and ask which one to take.
+
 ## 2. Name the branch
 
 Fetch each issue (the Linear tools are namespaced per workspace — `ToolSearch: "linear get issue"` rather than assuming) and derive a branch as `<KEY>-<short-slug>`: the uppercase identifier, then two to four words from the title.
@@ -32,6 +44,8 @@ Use Linear's `gitBranchName` as raw material, **not verbatim** — it is a long,
 If the branch or its worktree already exists, reuse it and say so. Dispatch is idempotent; a re-run on a prepared issue re-briefs rather than failing.
 
 ## 3. Build the runway
+
+**Worktree mode only.** In branch mode this whole step is `git switch -c <branch>` from the checkout you are standing in — no window, no provisioning, nothing to report. Go to step 4.
 
 ```bash
 source "$HOME/dotfiles/bash/functions"   # see below — do not skip this
@@ -52,20 +66,20 @@ Report what provisioning chose (the app URL, the ports, the database mode) — i
 
 ## 4. Read the ticket
 
-Run `preflight` for the issue, from inside its worktree, with two changes:
+Run `preflight` for the issue — from inside its worktree, or in branch mode right here — with two changes:
 
 - **Pass the identifier explicitly.** Dispatch already resolved it; do not make preflight re-derive it from the branch.
 - **Stop after the interrogation.** Preflight normally ends in plan mode; here the brief and the questions *are* the artifact, and a plan-mode gate would park every parallel runway on an approval prompt. Skip it.
 
 Everything else about preflight applies and is the reason this step is not hand-rolled: relations and comments override the description, the code it names gets read rather than inferred, and the enriched context gets written back to the issue so it outlives the session.
 
-**Several issues at once:** fan the reading out, one subagent per issue, each returning its brief and questions. The worktrees are already isolated, so the reads do not interfere. Create the worktrees first, in sequence — `wta` and `bin/worktree-setup` touch shared state (the traefik config directory, the port scan, the database server) and racing them invites collisions.
+**Several issues at once** (worktree mode; branch mode takes one): fan the reading out, one subagent per issue, each returning its brief and questions. The worktrees are already isolated, so the reads do not interfere. Create the worktrees first, in sequence — `wta` and `bin/worktree-setup` touch shared state (the traefik config directory, the port scan, the database server) and racing them invites collisions.
 
 ## 5. Report the batch
 
 One block per issue, in the order given:
 
-- **Where it is** — worktree path, branch, tmux window name, and what provisioning assigned (`wtinfo`'s output: URL, ports, database mode).
+- **Where it is** — worktree path, branch, tmux window name, and what provisioning assigned (`wtinfo`'s output: URL, ports, database mode). In branch mode: the branch and the checkout it was created in, and nothing else.
 - **The brief** — preflight's, unedited: what the issue asks, what is already done, where the code disagrees with the ticket, what success looks like.
 - **The questions**, numbered, ranked by how much the answer changes the work.
 - **Anything already blocking** — a stale premise, an unmet dependency, a red baseline noticed in passing.
@@ -80,4 +94,6 @@ Work begins with `takeoff` in the chosen worktree, which is where the questions 
 
 So do not run `takeoff` here, and do not start implementing here, however complete the brief in front of you feels. Answering the questions is not the release; it is the input the worktree's own session needs. Hand them over and stop. The `worktree-guard` hook denies writes and test runs against a worktree from outside it, so this is enforced rather than merely asked for — but arriving at that denial means the handoff was already missed. If a single session genuinely should own one worktree, `EnterWorktree({path: …})` moves it there properly instead of prefixing every command.
 
-That teardown is `wtr <branch>` — it runs the repo's `bin/worktree-teardown` first, so routes and cloned databases go with it, and closes the ticket's tmux window. Mention it when a dispatched issue turns out to be a non-starter; an abandoned worktree is cheap to remove and expensive to rediscover in a month.
+In branch mode none of this applies: there is no second session to hand to, and `takeoff` continues here once the questions are answered. Everything dispatch withholds it still withholds — no code, no ticket movement — but the reason is the pause for answers, not the handoff.
+
+That teardown is `wtr <branch>` — it runs the repo's `bin/worktree-teardown` first, so routes and cloned databases go with it, and closes the ticket's tmux window. Mention it when a dispatched issue turns out to be a non-starter; an abandoned worktree is cheap to remove and expensive to rediscover in a month. In branch mode the equivalent is `git switch main` and `git branch -d <branch>`.
