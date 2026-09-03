@@ -53,9 +53,6 @@ if [ -e "/usr/local/cuda" ]; then
   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64
 fi
 
-# npm bin
-export PATH="./node_modules/.bin:$PATH"
-
 if [ -d "$HOME/go" ]; then
   export GOPATH="$HOME/go"
   export PATH="$GOPATH/bin:$PATH"

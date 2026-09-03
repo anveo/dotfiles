@@ -183,8 +183,6 @@ bindkey '^x^e' edit-command-line
 # zle -N edit-and-execute-command
 # bindkey '^Xe' edit-and-execute-command
 
-export PATH="./bin:$PATH"
-
 # Remove dups using zsh built-in
 typeset -U path
 
