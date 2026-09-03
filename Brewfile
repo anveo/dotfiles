@@ -43,6 +43,8 @@ brew "difftastic"
 brew "direnv"
 # Lightweight DNS forwarder and DHCP server
 brew "dnsmasq"
+# Perl lib for reading and writing EXIF metadata
+brew "exiftool"
 # Modern, maintained replacement for ls
 brew "eza"
 # Easiest way to build and release mobile apps
