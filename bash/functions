@@ -620,9 +620,20 @@ wta() {
     # actually looking at, and finishing before the window opens means the
     # summary in it is the real one. It also keeps concurrent dispatches from
     # racing over the port scan and traefik config dir.
+    # Spelled out rather than chained with &&: a subshell exits on its last
+    # command, so `[[ -x bin/worktree-setup ]] && ...` made "this repo has
+    # nothing to provision" indistinguishable from "provisioning failed", and
+    # the `|| return` below then bailed before opening the window -- leaving a
+    # created worktree and no way into it. Repos with no worktree-setup are
+    # normal (`/dispatch --worktree` makes them for isolation alone), so only a
+    # real failure should stop us.
     ( cd "$dest" || exit 1
-      [[ -e .envrc ]] && command -v direnv >/dev/null 2>&1 && direnv allow
-      [[ -x bin/worktree-setup ]] && bin/worktree-setup
+      if [[ -e .envrc ]] && command -v direnv >/dev/null 2>&1; then
+        direnv allow || exit
+      fi
+      if [[ -x bin/worktree-setup ]]; then
+        bin/worktree-setup || exit
+      fi
     ) || return
 
     if [[ -z "$TMUX" ]]; then
@@ -693,8 +704,15 @@ wtinfo() {
 
   if [[ ! -f "$f" ]]; then
     if [[ "$(git rev-parse --git-dir 2>/dev/null)" == */worktrees/* ]]; then
-      echo "wtinfo: no .envrc.worktree here -- run bin/worktree-setup" >&2
-      return 1
+      # Missing provisioning is only a problem in a repo that has any. A
+      # `/dispatch --worktree` checkout of a repo with no worktree-setup is
+      # unprovisioned by design -- it exists for isolation, not for ports.
+      if [[ -x "$(git rev-parse --show-toplevel)/bin/worktree-setup" ]]; then
+        echo "wtinfo: no .envrc.worktree here -- run bin/worktree-setup" >&2
+        return 1
+      fi
+      echo "wtinfo: unprovisioned worktree ($PWD) -- repo has no bin/worktree-setup"
+      return 0
     fi
     echo "wtinfo: not a provisioned worktree ($PWD)"
     return 0
