@@ -1,6 +1,6 @@
 ---
 name: dispatch
-description: Prepare one or more Linear issues for work — create a branch for each (in a provisioned worktree where the repo asks for one), read the ticket and the code it names, and report a brief plus the questions that need answering. Stops before any code is written. Use when starting work on an issue by identifier, or when asked to "dispatch DOT-26", "set up these issues", "prepare a worktree for", or "get these ready to work on".
+description: Prepare one or more Linear issues for work — create a branch for each (in a provisioned worktree where the repo asks for one, or where --worktree forces it), read the ticket and the code it names, and report a brief plus the questions that need answering. Stops before any code is written. Use when starting work on an issue by identifier, or when asked to "dispatch DOT-26", "set up these issues", "prepare a worktree for", or "get these ready to work on". Accepts --worktree / --branch to override the repo's default mode.
 ---
 
 # dispatch
@@ -35,6 +35,14 @@ Branch mode is not merely worktrees-being-unnecessary. Where a repo's files are 
 
 It is also single-issue by construction, since one checkout holds one branch. Given several identifiers in branch mode, say so and ask which one to take.
 
+**Overriding the default.** `--worktree` and `--branch` force a mode for the whole invocation and beat the `bin/worktree-setup` test. Both at once is an error — ask which was meant. The flags are positional-agnostic (`/dispatch --worktree DOT-30` and `/dispatch DOT-30 --worktree` are the same), and anything that is not a flag is an identifier.
+
+`--worktree` on a repo that would auto-detect branch mode is the one that earns its keep. Branch mode assumes the live checkout is free, and sometimes it is not: a long-running branch mid-test, a bisect, a config you are actively living in and do not want disturbed. Forcing a worktree buys a second issue somewhere to happen that cannot perturb any of it.
+
+In a symlinked repo that inverts the warning above rather than contradicting it. Edits in the forced worktree are inert — nothing is reading them, because the symlinks still point at the live checkout — and here that is the point, not the bug: it is what lets a config change be eyeballed, diffed, and approved before it takes effect anywhere. **Say this in the report.** Someone who forgets is going to edit a shell rc, open a new shell, see no change, and lose an hour to it. Nothing about the change reaches the live environment until the branch is merged into the checkout the symlinks point at.
+
+`--branch` on a provisioning repo is the cheaper direction: skip ports, hostname, and database for a change that needs none of them — a README line, a comment fix, a version bump. It inherits branch mode's single-issue rule.
+
 ## 2. Name the branch
 
 Fetch each issue (the Linear tools are namespaced per workspace — `ToolSearch: "linear get issue"` rather than assuming) and derive a branch as `<KEY>-<short-slug>`: the uppercase identifier, then two to four words from the title.
@@ -62,7 +70,7 @@ That window is what makes parallel work supervisable: it is addressable by name,
 
 Do **not** substitute the Agent tool's own worktree isolation for this. It creates a bare worktree and skips the repo's provisioning entirely, which produces a checkout that looks fine and cannot serve a request.
 
-Report what provisioning chose (the app URL, the ports, the database mode) — it is the first thing anyone needs and the last thing they will think to ask for.
+Report what provisioning chose (the app URL, the ports, the database mode) — it is the first thing anyone needs and the last thing they will think to ask for. Under `--worktree` in a repo with no `bin/worktree-setup` there is nothing to report and that is correct; `wtinfo` says as much, and the worktree is doing its whole job by existing.
 
 ## 4. Read the ticket
 
@@ -79,7 +87,7 @@ Everything else about preflight applies and is the reason this step is not hand-
 
 One block per issue, in the order given:
 
-- **Where it is** — worktree path, branch, tmux window name, and what provisioning assigned (`wtinfo`'s output: URL, ports, database mode). In branch mode: the branch and the checkout it was created in, and nothing else.
+- **Where it is** — worktree path, branch, tmux window name, and what provisioning assigned (`wtinfo`'s output: URL, ports, database mode). In branch mode: the branch and the checkout it was created in, and nothing else. When a flag overrode the default, say which and why it changes what the reader should expect — above all that a forced worktree in a symlinked repo has no effect on the live environment yet.
 - **The brief** — preflight's, unedited: what the issue asks, what is already done, where the code disagrees with the ticket, what success looks like.
 - **The questions**, numbered, ranked by how much the answer changes the work.
 - **Anything already blocking** — a stale premise, an unmet dependency, a red baseline noticed in passing.
@@ -94,6 +102,6 @@ Work begins with `takeoff` in the chosen worktree, which is where the questions 
 
 So do not run `takeoff` here, and do not start implementing here, however complete the brief in front of you feels. Answering the questions is not the release; it is the input the worktree's own session needs. Hand them over and stop. The `worktree-guard` hook denies writes and test runs against a worktree from outside it, so this is enforced rather than merely asked for — but arriving at that denial means the handoff was already missed. If a single session genuinely should own one worktree, `EnterWorktree({path: …})` moves it there properly instead of prefixing every command.
 
-In branch mode none of this applies: there is no second session to hand to, and `takeoff` continues here once the questions are answered. Everything dispatch withholds it still withholds — no code, no ticket movement — but the reason is the pause for answers, not the handoff.
+In branch mode none of this applies: there is no second session to hand to, and `takeoff` continues here once the questions are answered. A `--worktree` dispatch is a worktree like any other, flag or not — it has its own window and its own session, so the handoff above holds in full. Everything dispatch withholds it still withholds — no code, no ticket movement — but the reason is the pause for answers, not the handoff.
 
 That teardown is `wtr <branch>` — it runs the repo's `bin/worktree-teardown` first, so routes and cloned databases go with it, and closes the ticket's tmux window. Mention it when a dispatched issue turns out to be a non-starter; an abandoned worktree is cheap to remove and expensive to rediscover in a month. In branch mode the equivalent is `git switch main` and `git branch -d <branch>`.
