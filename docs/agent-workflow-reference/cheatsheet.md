@@ -103,13 +103,17 @@ there is an error rather than a no-op.
 | `wta --db clone <branch>` | Either form, but hand `bin/worktree-setup` the database mode instead of letting it prompt. `reuse` (the default) shares the main checkout's dev database; `clone` copies it, for a branch that writes |
 | `wta -h` | The flags and what they do |
 | `wtr <branch>` | Stop overmind, run teardown, remove worktree, close its window |
+| `wtr --db drop <branch>` | Same, but tell `bin/worktree-teardown` what becomes of a clone-mode database instead of letting it prompt. `keep` is what a non-interactive teardown does anyway; `drop` is the one you have to ask for |
 | `wtinfo` | What setup assigned here: URL, ports (with up/down), database mode — or `unprovisioned worktree` in a repo that has no `bin/worktree-setup` |
 | `ovls` | Every running overmind, with its directory and whether its socket survives |
 | `ovclean` | Kill orphaned overminds and stale overmind tmux servers |
 | `killport <port> [sig]` | Kill whatever is listening on a TCP port |
 
-Flags go **before** the branch name, in any order; `wta` refuses a trailing flag
-rather than silently dropping it, which is what an unnoticed `--db` would do.
+Flags go **before** the branch name, in any order; both `wta` and `wtr` refuse a
+trailing flag rather than silently dropping it, which is what an unnoticed `--db`
+would do. The two parse alike on purpose — as do the `bin/worktree-setup` and
+`bin/worktree-teardown` they forward to, which are the authority on the values
+each `--db` accepts (`reuse|clone` going up, `keep|drop` coming down).
 
 Worktrees live at `<repo>.worktrees/<branch>`. Branch names follow
 `KEY-short-slug` (`APP-191-track-llm-tokens`); the skills match on the key and
