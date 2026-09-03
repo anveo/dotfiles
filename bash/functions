@@ -640,9 +640,23 @@ wta() {
     win=$(tmux new-window -d -P -F '#{window_id}' -n "$ticket" -c "$dest") || return
     # Flags a window gone quiet: as close as tmux gets to "that agent finished".
     tmux set-option -w -t "$win" monitor-silence 60
-    # Best-effort: this can lose the race against a slow shell startup, which is
-    # why the summary is printed here too -- and here is where you're looking.
-    tmux send-keys -t "$win" wtinfo Enter
+    # Start the session in the window rather than leaving an empty shell. An
+    # empty window makes "go over there and start claude" the expensive option
+    # and carrying on in the dispatching session the cheap one, which is how a
+    # ticket ends up implemented from the main checkout against the wrong
+    # .envrc. Not `wtinfo && claude`: claude takes the alternate screen and
+    # would wipe the summary a moment after printing it. It is printed below
+    # instead, in the shell you are actually looking at.
+    #
+    # --name gives the session the ticket's name as well, so the /resume picker
+    # and the prompt box agree with the window you found it in. It also sets the
+    # terminal title, which is harmless: allow-rename is off, so that escape
+    # cannot rename the tmux window out from under us.
+    if command -v claude >/dev/null 2>&1; then
+      tmux send-keys -t "$win" "claude --name $ticket" Enter
+    else
+      tmux send-keys -t "$win" wtinfo Enter
+    fi
     echo "wta: $ticket ($win) -> $dest"
     ( cd "$dest" && wtinfo )
     return
