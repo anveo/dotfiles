@@ -36,7 +36,7 @@ the branch.
 | Command | Action |
 |---------|--------|
 | `wta <branch>` | Create worktree, `cd` into it, rename the current window |
-| `wta -w <branch>` | Same, but give it its own tmux window and stay put — the `/dispatch` form |
+| `wta -w <branch>` | Same, but give it its own tmux window running a Claude session named for the ticket, and stay put — the `/dispatch` form |
 | `wtr <branch>` | Stop overmind, run teardown, remove worktree, close its window |
 | `wtinfo` | What setup assigned here: URL, ports (with up/down), database mode |
 | `ovls` | Every running overmind, with its directory and whether its socket survives |
@@ -52,8 +52,15 @@ and database names downstream.
 
 ## The tmux window model
 
-`wta -w` gives each worktree a detached window named for the ticket. The point is
-**addressability**, not tidiness:
+`wta -w` gives each worktree a detached window named for the ticket, running a
+Claude session of the same name (`claude --name`), so the window, the prompt box
+and the `/resume` picker all agree. Starting it here rather than leaving an empty
+shell is deliberate: an empty window makes "go over there and start claude" the
+expensive option and carrying on in the dispatching session the cheap one, which
+is how a ticket gets implemented from the main checkout against the wrong
+`.envrc`.
+
+The point of the window is **addressability**, not tidiness:
 
 ```bash
 tmux capture-pane -t "<session>:=APP-191" -p -S -50   # read an agent's state
@@ -123,6 +130,15 @@ changing them, start a fresh session.
 
 **Skills are symlinked one directory at a time** by `bin/install-ai.sh`. A newly
 created skill is invisible until linked — re-run the installer or link it by hand.
+
+**One session per worktree, enforced.** The `worktree-guard` hook
+(`extras/claude/hooks/`, wired into `settings.json` by `bin/install-ai.sh`) denies
+writes and command runs against a `*.worktrees/<branch>/` path from a session
+rooted anywhere else. Reads stay allowed, so a dispatching session can still brief
+from the main checkout. Two consequences worth knowing: a write-ish command that
+merely *mentions* a worktree path is denied too, and if one session genuinely
+should own a worktree, `EnterWorktree({path: …})` moves it there properly instead
+of prefixing every call with `git -C`.
 
 **The compose stack is a singleton run from the main checkout.** Never
 `docker compose up` from a worktree; per-worktree routing happens through files
