@@ -1,3 +1,8 @@
+-- Lets the `hs` CLI talk to this running instance, e.g.
+--   hs -c 'print(watchers.tmuxWindow:isEnabled())'
+--   hs -c 'print(hs.application.frontmostApplication():bundleID())'
+require("hs.ipc")
+
 local hyper = { "cmd", "alt", "ctrl", "shift" }
 -- local hyper = { "cmd", "alt", "ctrl" }
 
@@ -53,25 +58,60 @@ hs.hotkey.bind(hyper, "b", focusApp("Blender"))
 hs.hotkey.bind(hyper, "a", focusApp("com.ableton.live"))
 
 -- Right option + number -> tmux window
-local rightOptDown = false
+--
+-- Device-specific modifier bits in CGEventFlags (present on keyDown events too,
+-- so no flagsChanged bookkeeping is needed):
+--   0x20 left option    0x40 right option
+--   0x01 left ctrl      0x2000 right ctrl
+-- 0x40 confirmed on Logitech MX Keys. To verify on another keyboard, paste this
+-- into the Hammerspoon console, press the key, and read the printed flags:
+--   ft = hs.eventtap.new({hs.eventtap.event.types.flagsChanged}, function(e)
+--     print(string.format("flags=0x%x", e:getRawEventData().CGEventData.flags)) end):start()
+local RIGHT_OPTION_MASK = 0x40
+local GHOSTTY_BUNDLE_ID = "com.mitchellh.ghostty"
 
-local flagWatcher = hs.eventtap.new({hs.eventtap.event.types.flagsChanged}, function(e)
-  local flags = e:getRawEventData().CGEventData.flags
-  -- 0x40 confirmed on Logitech MX Keys (right option doubles as right ctrl)
-  -- may differ on other keyboards, e.g. MacBook — verify with flag logging
-  rightOptDown = (flags & 0x40) ~= 0
-end)
-flagWatcher:start()
+-- Resolve tmux once at load time. Hammerspoon's own PATH is the bare system one,
+-- so ask the user's login shell first (covers Homebrew on either architecture,
+-- MacPorts, Nix, ~/.local/bin, ...), then fall back to well-known locations.
+local function findExecutable(name)
+  local out = hs.execute("command -v " .. name, true) or ""
+  local fromShell = out:match("([^\n]+)%s*$") -- last line, skipping shell startup noise
+  if fromShell and hs.fs.attributes(fromShell) then return fromShell end
 
-local keyWatcher = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(e)
-  if not rightOptDown then return false end
-  local n = tonumber(hs.keycodes.map[e:getKeyCode()])
-  if n and n >= 1 and n <= 9 then
-    hs.execute("/opt/homebrew/bin/tmux select-window -t " .. tostring(n))
-    return true
+  local candidates = {
+    "/opt/homebrew/bin", "/usr/local/bin", "/opt/local/bin", "/usr/bin",
+    os.getenv("HOME") .. "/.nix-profile/bin",
+  }
+  for _, dir in ipairs(candidates) do
+    local path = dir .. "/" .. name
+    if hs.fs.attributes(path) then return path end
   end
+end
+
+local tmux = findExecutable("tmux")
+if not tmux then
+  hs.notify.new({title="Hammerspoon", informativeText="tmux not found; Right option + number is disabled"}):send()
+end
+
+-- Global on purpose: a `local` eventtap is unreachable once init.lua finishes
+-- and Lua's garbage collector will reap it, which silently stops the tap.
+watchers = {}
+
+watchers.tmuxWindow = hs.eventtap.new({hs.eventtap.event.types.keyDown}, function(e)
+  if not tmux then return false end
+  local flags = e:getRawEventData().CGEventData.flags
+  if (flags & RIGHT_OPTION_MASK) == 0 then return false end
+  -- Only act in Ghostty; elsewhere Right option + digit keeps its normal meaning.
+  local front = hs.application.frontmostApplication()
+  if not front or front:bundleID() ~= GHOSTTY_BUNDLE_ID then return false end
+  local n = tonumber(hs.keycodes.map[e:getKeyCode()])
+  if not (n and n >= 1 and n <= 9) then return false end
+  -- hs.task is async and skips the shell, so the tap callback returns immediately.
+  -- macOS disables event taps whose callbacks run too long.
+  hs.task.new(tmux, nil, { "select-window", "-t", tostring(n) }):start()
+  return true
 end)
-keyWatcher:start()
+watchers.tmuxWindow:start()
 
 hs.hotkey.bind(hyper, "k", function()
   local win = hs.window.focusedWindow();
