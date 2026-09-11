@@ -103,7 +103,7 @@ there is an error rather than a no-op.
 | `wta --db clone <branch>` | Either form, but hand `bin/worktree-setup` the database mode instead of letting it prompt. `reuse` (the default) shares the main checkout's dev database; `clone` copies it, for a branch that writes |
 | `wta -h` | The flags and what they do |
 | `wtr <branch>` | Stop overmind, run teardown, remove worktree, close its window |
-| `wtr --db drop <branch>` | Same, but tell `bin/worktree-teardown` what becomes of a clone-mode database instead of letting it prompt. `keep` is what a non-interactive teardown does anyway; `drop` is the one you have to ask for |
+| `wtr --db drop <branch>` | Same, but hand `bin/worktree-teardown` the database mode instead of letting it prompt. `keep` (what teardown does anyway with no terminal) leaves the cloned database; `drop` removes it. No effect on a reuse-mode worktree, which has no clone |
 | `wtinfo` | What setup assigned here: URL, ports (with up/down), database mode — or `unprovisioned worktree` in a repo that has no `bin/worktree-setup` |
 | `ovls` | Every running overmind, with its directory and whether its socket survives |
 | `ovclean` | Kill orphaned overminds and stale overmind tmux servers |
@@ -114,6 +114,12 @@ trailing flag rather than silently dropping it, which is what an unnoticed `--db
 would do. The two parse alike on purpose — as do the `bin/worktree-setup` and
 `bin/worktree-teardown` they forward to, which are the authority on the values
 each `--db` accepts (`reuse|clone` going up, `keep|drop` coming down).
+
+**`--db` needs a `bin/` script that takes it.** Pointed at a repo whose
+`worktree-setup` or `worktree-teardown` predates the flag, the script exits on the
+unknown argument — and on the teardown side that stops the removal after overmind
+is already down. Leave `--db` off for those repos; without it both functions call
+the scripts exactly as they always did.
 
 Worktrees live at `<repo>.worktrees/<branch>`. Branch names follow
 `KEY-short-slug` (`APP-191-track-llm-tokens`); the skills match on the key and
@@ -203,7 +209,10 @@ would burn ports, connections, and CPU on runways you never fly.
 (`~/.claude/shell-snapshots/`). Editing `bash/functions` does not reach a running
 session, and the failure is silent rather than a clean error. Any skill calling
 `wta`/`wtr`/`wtinfo` must `source "$HOME/dotfiles/bash/functions"` first; after
-changing them, start a fresh session.
+changing them, start a fresh session. `make check` is what verifies a change to
+them: it parses the file under both bash and zsh, then runs
+`test/worktree_functions_test.sh`, which covers both argument parsers and
+asserts that `--db` reaches the `bin/` scripts as two arguments rather than one.
 
 **Skills are symlinked one directory at a time** by `bin/install-ai.sh`. A newly
 created skill is invisible until linked — re-run the installer or link it by hand.

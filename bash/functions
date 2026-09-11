@@ -823,10 +823,10 @@ wtr() {
         shift ;;
       -h|--help)
         echo "$usage"
-        echo "  --db    what becomes of a clone-mode worktree's database, for repos"
-        echo "          with a bin/worktree-teardown; skips its prompt. Without a"
-        echo "          terminal and without this, teardown keeps the clone."
-        echo "          A reuse-mode worktree has no clone, so the flag is a no-op."
+        echo "  --db    what becomes of a cloned database, for repos with a"
+        echo "          bin/worktree-teardown that takes the flag; skips its prompt."
+        echo "          A teardown script older than the flag refuses it and stops"
+        echo "          the removal -- leave --db off for those."
         return 0 ;;
       # Reject unknown flags rather than treating them as a branch name: an agent
       # running against a stale copy of this function would otherwise try to
@@ -879,6 +879,13 @@ wtr() {
   # had one -- there is still a worktree to remove, so a --db passed here is
   # ignored rather than fatal. It can only have been "keep" or "drop", and
   # dropping nothing is the safe way to be wrong.
+  #
+  # A teardown script that predates the flag is the case this cannot paper over:
+  # it exits non-zero on the unknown argument and the `|| return` below stops
+  # the removal -- after overmind is already down, which is the half-torn-down
+  # state --db exists to prevent. Loud is right, but the flag is the thing to
+  # drop, not the worktree. `wta` has the same exposure to an older
+  # worktree-setup; the two bin/ scripts are the authority on their own flags.
   if [[ -x "$dest/bin/worktree-teardown" ]]; then
     (cd "$dest" && bin/worktree-teardown "${teardown_args[@]}") || return
   fi
