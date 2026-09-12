@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <rect width="256" height="256" rx="56" fill="#0f1a14"/>
+  <!-- window frame with solid title bar -->
+  <rect x="34" y="38" width="188" height="180" rx="22" fill="none" stroke="#39ff8a" stroke-width="20"/>
+  <path d="M24 60 a26 26 0 0 1 26-26 h156 a26 26 0 0 1 26 26 v26 H24 z" fill="#39ff8a"/>
+  <!-- HUD flight-path marker -->
+  <circle cx="128" cy="156" r="26" fill="none" stroke="#39ff8a" stroke-width="18"/>
+  <line x1="58" y1="156" x2="90" y2="156" stroke="#39ff8a" stroke-width="18" stroke-linecap="round"/>
+  <line x1="166" y1="156" x2="198" y2="156" stroke="#39ff8a" stroke-width="18" stroke-linecap="round"/>
+  <line x1="128" y1="120" x2="128" y2="104" stroke="#39ff8a" stroke-width="18" stroke-linecap="round"/>
+</svg>
