@@ -53,7 +53,7 @@ hs.hotkey.bind(hyper, "p", focusApp("1Password"))
 hs.hotkey.bind(hyper, "j", focusApp("com.jetbrains.datagrip"))
 hs.hotkey.bind(hyper, "z", focusApp("Zoom"))
 hs.hotkey.bind(hyper, "c", focusApp("Claude"))
-hs.hotkey.bind(hyper, "g", focusApp("ChatGPT"))
+hs.hotkey.bind(hyper, "g", focusApp("Godot"))
 hs.hotkey.bind(hyper, "b", focusApp("Blender"))
 hs.hotkey.bind(hyper, "a", focusApp("com.ableton.live"))
 
