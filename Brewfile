@@ -149,6 +149,8 @@ brew "ripgrep"
 brew "rtk"
 # Substitute for classic 'make' tool with autoconf/automake functionality
 brew "scons"
+# Static analysis and lint tool, for (ba)sh scripts
+brew "shellcheck"
 # SQL linter and auto-formatter for Humans
 brew "sqlfluff"
 # Crypto and x509 Swiss-Army-Knife
