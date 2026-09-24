@@ -27,6 +27,41 @@ return {
     config = function()
       local telescope = require("telescope")
       local actions = require("telescope.actions")
+      local action_state = require("telescope.actions.state")
+
+      -- The stock actions.delete_buffer lets nvim_buf_delete close every window
+      -- showing the buffer. If that leaves only neo-tree, its
+      -- close_if_last_window quits Neovim. Point those windows at the most
+      -- recently used other buffer first so the layout survives.
+      local function delete_buffer_keep_windows(prompt_bufnr)
+        local picker = action_state.get_current_picker(prompt_bufnr)
+        picker:delete_selection(function(selection)
+          local bufnr = selection.bufnr
+          if vim.bo[bufnr].modified then
+            vim.notify("Unsaved changes, not deleting: " .. vim.api.nvim_buf_get_name(bufnr), vim.log.levels.WARN)
+            return false
+          end
+
+          local replacement
+          local last_used = -1
+          for _, info in ipairs(vim.fn.getbufinfo({ buflisted = 1 })) do
+            if info.bufnr ~= bufnr and info.lastused > last_used then
+              replacement, last_used = info.bufnr, info.lastused
+            end
+          end
+          replacement = replacement or vim.api.nvim_create_buf(true, false)
+
+          for _, win in ipairs(vim.fn.win_findbuf(bufnr)) do
+            vim.api.nvim_win_set_buf(win, replacement)
+          end
+          if picker.original_bufnr == bufnr then
+            picker.original_bufnr = replacement
+          end
+
+          local force = vim.bo[bufnr].buftype == "terminal"
+          return pcall(vim.api.nvim_buf_delete, bufnr, { force = force })
+        end)
+      end
 
       telescope.setup({
         defaults = {
@@ -61,7 +96,19 @@ return {
           },
           buffers = {
             sort_mru = true,
-            ignore_current_buffer = true,
+            -- BufExplorer-style: open in normal mode (j/k, d, q); `i` to fuzzy
+            -- filter. <C-d> deletes from insert mode, overriding preview
+            -- scroll-down in this picker only.
+            initial_mode = "normal",
+            -- attach_mappings, not `mappings`: per-picker `mappings` drop keymap
+            -- opts, and `d` needs nowait so it doesn't pause for global
+            -- d-prefixed maps (surround's ds, marks' dm*).
+            attach_mappings = function(_, map)
+              map("i", "<C-d>", delete_buffer_keep_windows)
+              map("n", "d", delete_buffer_keep_windows, { nowait = true })
+              map("n", "q", actions.close)
+              return true
+            end,
           },
         },
       })

@@ -40,6 +40,10 @@ Inside Telescope:
 | `<Esc>` | Close picker |
 | `<C-j>` / `<C-k>` | Navigate results |
 | `<C-q>` | Send results to quickfix list |
+| `<Tab>` | Toggle multi-select on current result |
+| `<C-d>` | Delete buffer(s) (buffers picker only) |
+
+The buffers picker (`<C-b>`) opens in normal mode, BufExplorer-style: `j`/`k` to move, `d` to delete (keeps windows open), `q`/`<Esc>` to close, `i` to start fuzzy filtering.
 
 ### Neo-tree (file explorer)
 
