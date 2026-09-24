@@ -121,16 +121,17 @@ return {
 
   -- Color previews in code
   {
-    "norcalli/nvim-colorizer.lua",
+    -- Maintained fork of norcalli/nvim-colorizer.lua (abandoned; uses
+    -- deprecated vim.tbl_flatten)
+    "catgoose/nvim-colorizer.lua",
     event = { "BufReadPre", "BufNewFile" },
-    config = function()
-      require("colorizer").setup({
-        "*",
-      }, {
-        css = true,
-        css_fn = true,
-      })
-    end,
+    opts = {
+      filetypes = { "*" },
+      options = {
+        -- css preset: names, hex, rgb(), hsl(), oklch(), var()
+        parsers = { css = true },
+      },
+    },
   },
 
   -- TODO/FIXME/HACK highlighting and searching

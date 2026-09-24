@@ -84,7 +84,7 @@ What's in the box. Grouped by category.
 | [indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim) | Indent guide lines with scope highlighting | (automatic) |
 | [dressing.nvim](https://github.com/stevearc/dressing.nvim) | Better UI for rename prompts, code actions, selects | (automatic) |
 | [nvim-web-devicons](https://github.com/nvim-tree/nvim-web-devicons) | File type icons for telescope, neo-tree, lualine | (automatic) |
-| [nvim-colorizer.lua](https://github.com/norcalli/nvim-colorizer.lua) | Inline color previews for hex codes, CSS colors | (automatic) |
+| [nvim-colorizer.lua](https://github.com/catgoose/nvim-colorizer.lua) | Inline color previews for hex codes, CSS colors | (automatic) |
 | [todo-comments.nvim](https://github.com/folke/todo-comments.nvim) | Highlight and search TODO/FIXME/HACK comments | `]t`, `[t`, `<Leader>ft` |
 | [toggleterm.nvim](https://github.com/akinsho/toggleterm.nvim) | Toggle a terminal drawer without leaving neovim | `<C-\>` |
 
