@@ -103,6 +103,7 @@ prefix is itself `C-Space`, an accidental double-tap dropped you into copy mode.
 |-----|--------|
 | `prefix r` | Reload tmux config |
 | `prefix C-l` | Send `C-l` to pane (clear screen) |
+| `prefix C-k` | Send `C-k` to pane (kill to end of line) |
 | `C-\` | Send prefix to nested session (e.g. overmind) |
 | Scroll wheel | Scroll pane / enter copy mode (mouse) |
 
