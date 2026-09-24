@@ -197,8 +197,10 @@ Enabled globally via conform.nvim. Configured formatters:
 
 ### Installed Language Servers (Mason)
 
-lua_ls, ruby_lsp, ts_ls, gopls, rust_analyzer, terraformls, bashls,
+lua_ls, ts_ls, gopls, rust_analyzer, terraformls, bashls,
 jsonls, yamlls, dockerls, ruff
+
+`ruby_lsp` is not managed by Mason: it's a gem in each Ruby. New rbenv Rubies get it automatically via rbenv-default-gems (`extras/rbenv/default-gems`); for an existing Ruby, run `gem install ruby-lsp`.
 
 ---
 

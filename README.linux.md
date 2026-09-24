@@ -13,6 +13,7 @@ Open a new shell / connection
 
     git clone https://github.com/rbenv/ruby-build.git
     ~/.rbenv/plugins/ruby-build
+    git clone https://github.com/rbenv/rbenv-default-gems.git ~/.rbenv/plugins/rbenv-default-gems
 
     rbenv install 2.3.0
     rbenv global 2.3.0

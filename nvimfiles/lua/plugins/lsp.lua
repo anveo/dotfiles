@@ -14,9 +14,12 @@ return {
     dependencies = { "mason.nvim" },
     config = function()
       require("mason-lspconfig").setup({
+        -- ruby_lsp is intentionally absent: Mason pins its gem to whichever
+        -- rbenv Ruby it was installed under, and it breaks when that Ruby is
+        -- removed. Install it per Ruby instead (`gem install ruby-lsp`); it's
+        -- still enabled below and found on PATH via rbenv shims.
         ensure_installed = {
           "lua_ls",
-          "ruby_lsp",
           "ts_ls",
           "gopls",
           "rust_analyzer",
@@ -27,7 +30,6 @@ return {
           "dockerls",
           "ruff",
         },
-        automatic_installation = true,
       })
     end,
   },
@@ -66,7 +68,7 @@ return {
 
           -- Inlay hints toggle (neovim 0.10+)
           local client = vim.lsp.get_client_by_id(event.data.client_id)
-          if client and client.supports_method("textDocument/inlayHint") then
+          if client and client:supports_method("textDocument/inlayHint") then
             map("<Leader>ih", function()
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
             end, "Toggle inlay hints")

@@ -114,6 +114,17 @@ elif [ `uname` = 'Linux' ]; then
   # ln -fs "$HOME/dotfiles/extras/espanso/match/base.yml" "$ESPANSO_DIR/match/base.yml"
 fi
 
+# rbenv-default-gems installs these into every new Ruby (`rbenv install`).
+# Only if rbenv is set up; the plugin is cloned into ~/.rbenv/plugins once.
+if [ -d "$HOME/.rbenv" ]; then
+  echo "Setting up rbenv default gems..."
+  if [ ! -d "$HOME/.rbenv/plugins/rbenv-default-gems" ]; then
+    git clone https://github.com/rbenv/rbenv-default-gems.git "$HOME/.rbenv/plugins/rbenv-default-gems"
+  fi
+  echo "ln -nfs $HOME/dotfiles/extras/rbenv/default-gems $HOME/.rbenv/default-gems"
+  ln -nfs $HOME/dotfiles/extras/rbenv/default-gems $HOME/.rbenv/default-gems
+fi
+
 echo "Setting up VisiData configs..."
 mkdir -p $HOME/.visidata
 echo "ln -nfs $HOME/dotfiles/extras/visidata/config.py $HOME/.visidata/config.py"
