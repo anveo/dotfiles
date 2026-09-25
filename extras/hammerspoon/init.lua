@@ -119,5 +119,8 @@ hs.hotkey.bind(hyper, "k", function()
   win:moveToScreen(win:screen():next())
 end)
 
+-- Hyper+I is reserved: Karabiner remaps it to ctrl+shift+d for Synergy's lock
+-- to screen (extras/karabiner.json).
+
 -- Toggle Chrome's vertical tab sidebar (see chrome-sidebar.lua)
 hs.hotkey.bind(hyper, "v", require("chrome-sidebar"))

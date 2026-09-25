@@ -19,6 +19,24 @@
                         ]
                     },
                     {
+                        "description": "Hyper+I sends ctrl+shift+d (Synergy lock to screen; Synergy's hotkey recorder can't capture Hyper)",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "i",
+                                    "modifiers": { "mandatory": ["command", "control", "option", "shift"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "d",
+                                        "modifiers": ["left_control", "left_shift"]
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
                         "manipulators": [
                             {
                                 "description": "Change caps_lock to control when used as modifier, escape when used alone",
