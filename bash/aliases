@@ -336,7 +336,7 @@ ports() {
 }
 alias netlisteners='ports'
 
-alias hb="hub browse"
+alias hb="gh browse"
 
 # send shake guesture to android emulator
 alias shake="adb shell input keyevent 82"
