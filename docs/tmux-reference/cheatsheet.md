@@ -10,7 +10,7 @@ Quick reference for the tmux config. Prefix is `C-Space`.
 
 | Key | Action |
 |-----|--------|
-| `prefix c` | New window |
+| `prefix c` / `prefix C-c` | New window |
 | `prefix q` | Previous window |
 | `prefix e` | Next window |
 | `prefix Tab` | Last window (most recently used) |
@@ -82,7 +82,6 @@ prefix is itself `C-Space`, an accidental double-tap dropped you into copy mode.
 | `Enter` | copy | Yank selection and exit copy mode |
 | `q` / `Escape` | copy | Exit copy mode |
 | `prefix p` | normal | Paste buffer |
-| `prefix C-c` | normal | Save buffer to system clipboard |
 | `prefix C-v` | normal | Paste from system clipboard |
 | Mouse drag | copy | Select text and copy to clipboard on release |
 | `Shift` + mouse drag | -- | Ghostty native selection (bypasses tmux) |
