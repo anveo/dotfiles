@@ -51,6 +51,8 @@ Fetch each issue (the Linear tools are namespaced per workspace — `ToolSearch:
 
 Use Linear's `gitBranchName` as raw material, **not verbatim** — it is a long, user-prefixed slug (`anveo/dot-26-start-issue-compose-the-lifecycle-skills-into-…`) and the convention here is the hand-shortened form (`DOT-26-dispatch-skill`). This is safe because `preflight` matches on the key and number only, never the slug, so a shortened branch still resolves to its issue. Keep it short for a second reason: the worktree slug drives hostnames and database names downstream.
 
+**A repo's own branch convention wins on format.** Check the repo's `CLAUDE.md` before naming. If it specifies case, prefix, or separators — LaceUp's says Linear's `lu-<n>-<slug>`, lowercase — follow that instead of the uppercase default, but still shorten the slug to two to four words (`lu-4-steps-complication`, not Linear's `lu-4-complication-show-steps-when-idle-phase-heart-rate-when`, which Linear has already cut off mid-phrase). Use `gitBranchName` verbatim only when the repo explicitly asks for it.
+
 If the branch or its worktree already exists, reuse it and say so. Dispatch is idempotent; a re-run on a prepared issue re-briefs rather than failing.
 
 ## 3. Build the runway
