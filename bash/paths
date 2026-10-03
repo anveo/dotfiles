@@ -43,9 +43,13 @@ export MANPATH="${HOME}/local/share/man:${MANPATH}"
 
 if [ -d "$HOME/Library/Android/sdk" ]; then
   export ANDROID_HOME="$HOME/Library/Android/sdk"
+  # Android tools fall back to $XDG_CONFIG_HOME/.android, but Android Studio
+  # (launched from the Dock, without this shell's env) uses ~/.android. Pin it
+  # so terminal and Studio builds share one debug.keystore and AVD directory.
+  export ANDROID_USER_HOME="$HOME/.android"
   export PATH=$PATH:$ANDROID_HOME/emulator
   export PATH=$PATH:$ANDROID_HOME/platform-tools
-  # export PATH=$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools:$PATH
+  export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
 fi
 
 if [ -e "/usr/local/cuda" ]; then
