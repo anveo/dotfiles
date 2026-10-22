@@ -23,8 +23,20 @@ return {
         rust = { "rustfmt" },
         ruby = { "rubocop" },
         terraform = { "terraform_fmt" },
-        gdscript = { "gdformat" },
+        gdscript = { "gdstyle" },
         ["_"] = { "trim_whitespace" },
+      },
+      formatters = {
+        -- gdstyle (github.com/atelico/gdstyle) only formats in place, no stdin.
+        -- Installed from its GitHub release into ~/.local/bin (no brew formula).
+        gdstyle = {
+          command = "gdstyle",
+          args = { "fmt", "--no-color", "$FILENAME" },
+          stdin = false,
+          cwd = function(self, ctx)
+            return require("conform.util").root_file({ "gdstyle.toml", ".gdstyle.toml", "project.godot" })(self, ctx)
+          end,
+        },
       },
       format_on_save = {
         timeout_ms = 3000,

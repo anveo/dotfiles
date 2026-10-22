@@ -62,7 +62,7 @@ What's in the box. Grouped by category.
 
 | Plugin | What it does | Key commands |
 |--------|-------------|--------------|
-| [conform.nvim](https://github.com/stevearc/conform.nvim) | Format on save with per-language formatters | `<Leader>bf`, auto on save |
+| [conform.nvim](https://github.com/stevearc/conform.nvim) | Format on save with per-language formatters (custom `gdstyle` definition for GDScript) | `<Leader>bf`, auto on save |
 | [nvim-lint](https://github.com/mfussenegger/nvim-lint) | Async linting on save (most linting delegated to LSP) | (automatic) |
 
 ## Git
@@ -97,8 +97,8 @@ What's in the box. Grouped by category.
 | [vim-bundler](https://github.com/tpope/vim-bundler) | Bundler integration, `gf` on gem names in Gemfile | `gf` on gem name |
 | [csv.vim](https://github.com/chrisbra/csv.vim) | CSV column highlighting, filtering, sorting | `:CSVTable`, column navigation |
 | [markdown-preview.nvim](https://github.com/iamcco/markdown-preview.nvim) | Live markdown preview in the browser (synced scroll) | `<Leader>mp`, `:MarkdownPreviewToggle` |
-| [godotdev.nvim](https://github.com/Mathijs-Bakker/godotdev.nvim) | Godot 4: LSP via editor TCP server, DAP debugging, scene tree, run commands, in-editor class docs | `gK`, `:GodotRunProject`, `:GodotSceneTree`, `:GodotDocs`, `:checkhealth godotdev` |
-| [nvim-dap](https://github.com/mfussenegger/nvim-dap) + [nvim-dap-ui](https://github.com/rcarriga/nvim-dap-ui) | Debug Adapter Protocol client and UI (currently only wired up for Godot) | `:DapContinue`, `:DapToggleBreakpoint` |
+| [godotdev.nvim](https://github.com/Mathijs-Bakker/godotdev.nvim) | Godot 4: LSP via editor TCP server, DAP debugging, scene tree, run commands, in-editor class docs | `gK`, `<Leader>G` group, `:checkhealth godotdev` |
+| [nvim-dap](https://github.com/mfussenegger/nvim-dap) + [nvim-dap-ui](https://github.com/rcarriga/nvim-dap-ui) | Debug Adapter Protocol client and UI (currently only wired up for Godot) | `<F5>`, `<F9>`, `<F10>`-`<F12>`, `<Leader>Gd`, `<Leader>Gb` |
 
 ## Database
 

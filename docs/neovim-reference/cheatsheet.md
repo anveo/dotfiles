@@ -368,25 +368,59 @@ it doesn't auto-build, run `:Lazy build markdown-preview.nvim`.
 
 ### Godot (godotdev.nvim)
 
+Keymaps are buffer-local to `gdscript`, `gdshader`, and `gdresource` buffers,
+under the `<Leader>G` group (capital G; `<Leader>g` is git).
+
 | Key / Command | Action |
 |---------------|--------|
-| `gK` | Godot class docs for symbol under cursor (buffer-local, gdscript only) |
+| `gK` | Godot class docs for symbol under cursor |
+| `<Leader>Gr` / `<Leader>GR` | Run project: console in a bottom split / detached |
+| `<Leader>Gs` / `<Leader>GS` | Run current scene: console / detached |
+| `<Leader>Gp` | Telescope picker to run a scene |
+| `<Leader>Gc` | Reopen the run console |
+| `<Leader>Gt` | Static scene tree inspector (`<CR>` jump, `g` open script, `y` yank path, `q` close) |
+| `<Leader>Gl` | Reconnect LSP after restarting the Godot editor |
+| `<Leader>Gh` | Toggle inlay hints (if the Godot LSP supports them) |
+| `<Leader>Gd` / `<F5>` | Debug: launch scene / continue |
+| `<Leader>Gb` / `<F9>` | Debug: toggle breakpoint |
+| `<Leader>GB` | Debug: conditional breakpoint |
+| `<F10>` / `<F11>` / `<F12>` | Debug: step over / into / out |
+| `<Leader>Gu` | Debug: toggle dap-ui |
+| `<Leader>Gx` | Debug: terminate session |
 | `:GodotDocs [Class]` | Docs in a float; `:GodotDocsBuffer` / `:GodotDocsBrowser` for other renderers |
-| `:GodotRunProject` | Run the project; output captured in a bottom console |
-| `:GodotRunCurrentScene` | Run the scene matching the current script |
-| `:GodotRunScenePicker` | Telescope picker to run a scene |
-| `:GodotShowConsole` | Reopen the run console |
-| `:GodotSceneTree [path]` | Static scene tree inspector (`<CR>` jump, `g` open script, `y` yank path, `q` close) |
-| `:GodotReconnectLSP` | Reconnect after restarting the Godot editor |
-| `:GodotToggleInlineHints` | Toggle inlay hints (if the Godot LSP supports them) |
-| `:DapContinue` / `:DapToggleBreakpoint` | Debug via Godot's DAP server (port 6006); dap-ui opens automatically |
-| `:checkhealth godotdev` | Verify Godot binary, LSP/DAP ports, curl, formatter |
+| `:GodotRunScene {path}` | Run a specific scene |
+| `:checkhealth godotdev` | Verify Godot binary, LSP/DAP ports, curl |
+
+The F-keys mirror Godot's own debugger shortcuts and are global so they work
+from dap-ui windows too. `<F11>` collides with macOS "Show Desktop" when that
+Mission Control shortcut is on; use `<Leader>G` maps if it fires.
 
 The LSP is Godot's own editor server over TCP (port 6005), so the Godot editor
 must be open with Editor Settings > Network > Language Server > "Enable" on.
-Nothing from Mason is involved. Formatting uses `gdformat` (from `gdtoolkit` in
-the Brewfile) via conform, not the plugin's own formatter. GDScript buffers use
-hard tabs to match the Godot editor.
+Nothing from Mason is involved. Debugging connects to Godot's DAP server (port
+6006); dap-ui opens automatically on session start.
+
+Formatting uses [gdstyle](https://github.com/atelico/gdstyle) via conform, not
+the plugin's own formatter. gdstyle has no Homebrew formula and only formats in
+place, so it is installed from its GitHub release tarball into `~/.local/bin`
+and conform runs it with `stdin = false`. It defaults to tabs, matching the
+`gdscript` ftplugin (hard tabs, width 4). Per-project rules go in `gdstyle.toml`
+at the project root (`gdstyle init` generates one).
+
+#### Installing gdstyle
+
+No Homebrew formula, so grab the release binary (Apple Silicon shown; use
+`x86_64-apple-darwin` on Intel):
+
+```sh
+gh release download --repo atelico/gdstyle --pattern 'gdstyle-aarch64-apple-darwin.tar.gz' --dir /tmp/gdstyle
+tar xzf /tmp/gdstyle/gdstyle-aarch64-apple-darwin.tar.gz -C /tmp/gdstyle
+cp /tmp/gdstyle/gdstyle ~/.local/bin/
+gdstyle --version
+```
+
+Re-run the same commands to upgrade. `cargo install gdstyle` also works if a
+Rust toolchain is present.
 
 ### Database (vim-dadbod)
 
