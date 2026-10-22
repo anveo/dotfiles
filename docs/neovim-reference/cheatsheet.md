@@ -366,6 +366,28 @@ default mapping (`<C-p>`) is **not** used here -- it collides with Telescope
 `find_files`. First use builds a prebuilt server binary (no yarn/npm needed); if
 it doesn't auto-build, run `:Lazy build markdown-preview.nvim`.
 
+### Godot (godotdev.nvim)
+
+| Key / Command | Action |
+|---------------|--------|
+| `gK` | Godot class docs for symbol under cursor (buffer-local, gdscript only) |
+| `:GodotDocs [Class]` | Docs in a float; `:GodotDocsBuffer` / `:GodotDocsBrowser` for other renderers |
+| `:GodotRunProject` | Run the project; output captured in a bottom console |
+| `:GodotRunCurrentScene` | Run the scene matching the current script |
+| `:GodotRunScenePicker` | Telescope picker to run a scene |
+| `:GodotShowConsole` | Reopen the run console |
+| `:GodotSceneTree [path]` | Static scene tree inspector (`<CR>` jump, `g` open script, `y` yank path, `q` close) |
+| `:GodotReconnectLSP` | Reconnect after restarting the Godot editor |
+| `:GodotToggleInlineHints` | Toggle inlay hints (if the Godot LSP supports them) |
+| `:DapContinue` / `:DapToggleBreakpoint` | Debug via Godot's DAP server (port 6006); dap-ui opens automatically |
+| `:checkhealth godotdev` | Verify Godot binary, LSP/DAP ports, curl, formatter |
+
+The LSP is Godot's own editor server over TCP (port 6005), so the Godot editor
+must be open with Editor Settings > Network > Language Server > "Enable" on.
+Nothing from Mason is involved. Formatting uses `gdformat` (from `gdtoolkit` in
+the Brewfile) via conform, not the plugin's own formatter. GDScript buffers use
+hard tabs to match the Godot editor.
+
 ### Database (vim-dadbod)
 
 | Key / Command | Action |

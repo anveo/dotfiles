@@ -17,6 +17,7 @@ nvimfiles/
       flash.lua             -- flash.nvim motion
       formatting.lua        -- conform.nvim (format on save)
       git.lua               -- fugitive, gitsigns, diffview
+      godot.lua             -- godotdev.nvim (Godot 4 LSP/DAP/docs), nvim-dap, nvim-dap-ui
       linting.lua           -- nvim-lint
       lsp.lua               -- lspconfig, mason
       neo-tree.lua          -- File explorer

@@ -23,6 +23,7 @@ return {
         rust = { "rustfmt" },
         ruby = { "rubocop" },
         terraform = { "terraform_fmt" },
+        gdscript = { "gdformat" },
         ["_"] = { "trim_whitespace" },
       },
       format_on_save = {

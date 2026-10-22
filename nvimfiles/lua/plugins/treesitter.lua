@@ -13,6 +13,7 @@ return {
         "gitcommit", "gitrebase",
         "vim", "vimdoc", "query",
         "regex", "sql",
+        "gdscript", "gdshader", "godot_resource",
       }
 
       require("nvim-treesitter").install(parsers)
