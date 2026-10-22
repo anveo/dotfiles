@@ -25,6 +25,10 @@ return {
               ".svn",
               ".sass-cache",
             },
+            -- never_show hides even with visible = true (hide_by_* only dims)
+            never_show_by_pattern = {
+              "*.uid", -- Godot 4.4+ writes one beside every script
+            },
           },
           follow_current_file = {
             enabled = true,

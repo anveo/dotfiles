@@ -82,6 +82,7 @@ return {
           file_ignore_patterns = {
             "node_modules/", ".git/", "vendor/", "coverage/", "tmp/",
             "%.png", "%.jpg", "%.gif", "%.pdf", "%.zip",
+            "%.uid$", -- Godot 4.4+ writes one beside every script
           },
           vimgrep_arguments = {
             "rg", "--color=never", "--no-heading", "--with-filename",
