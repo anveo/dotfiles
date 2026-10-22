@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# Godot external editor -> the running Neovim that has a Godot file open.
+#
+# Godot: Editor Settings > Text Editor > External
+#   Use External Editor: on
+#   Exec Path:  /Users/<you>/dotfiles/scripts/godot-nvim-open
+#   Exec Flags: {file} {line} {col}
+#
+# Neovim listens on $GODOT_NVIM_SOCKET once a .gd/.gdshader/.tscn buffer is
+# open (see nvimfiles/lua/plugins/godot.lua). Uses nvim's own --server/
+# --remote-send, so no nvr/python needed.
+set -euo pipefail
+
+SOCKET="${GODOT_NVIM_SOCKET:-/tmp/godot.nvim}"
+TERMINAL_APP="${GODOT_NVIM_TERMINAL:-Ghostty}"
+
+FILE="${1:?usage: godot-nvim-open FILE [LINE] [COL]}"
+LINE="${2:-1}"
+COL="${3:-1}"
+
+if ! nvim --server "$SOCKET" --remote-expr '1' >/dev/null 2>&1; then
+  msg="No Neovim listening on $SOCKET. Open a .gd file in Neovim first."
+  echo "$msg" >&2
+  osascript -e "display notification \"$msg\" with title \"Godot -> Neovim\"" 2>/dev/null || true
+  exit 1
+fi
+
+# --remote-expr runs over RPC, so it works whatever mode Neovim is in
+# (--remote-send queues keystrokes and depends on the current mode).
+FILE_VIM="${FILE//\'/\'\'}"
+nvim --server "$SOCKET" --remote-expr \
+  "execute(['stopinsert', 'edit ' . fnameescape('${FILE_VIM}'), 'call cursor(${LINE}, ${COL})', 'normal! zz'])" \
+  >/dev/null
+
+if [[ -z "${GODOT_NVIM_NO_FOCUS:-}" ]]; then
+  osascript -e "tell application \"$TERMINAL_APP\" to activate" 2>/dev/null || true
+fi

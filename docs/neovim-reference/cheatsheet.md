@@ -407,6 +407,34 @@ and conform runs it with `stdin = false`. It defaults to tabs, matching the
 `gdscript` ftplugin (hard tabs, width 4). Per-project rules go in `gdstyle.toml`
 at the project root (`gdstyle init` generates one).
 
+
+#### Open scripts from the Godot editor in Neovim
+
+Clicking a script in Godot's FileSystem dock (or an error in the debugger)
+jumps to it in the running Neovim. Neovim listens on `/tmp/godot.nvim` as soon
+as a Godot buffer is open (see `godot.lua`), and `scripts/godot-nvim-open`
+sends the file, line, and column over `nvim --server ... --remote-expr`, then
+brings Ghostty to the front. No `nvr`/python needed.
+
+Godot: Editor Settings > Text Editor > External (enable Advanced Settings):
+
+| Setting | Value |
+|---------|-------|
+| Use External Editor | on |
+| Exec Path | absolute path; Godot does not expand `~`. Copy it with `realpath ~/dotfiles/scripts/godot-nvim-open | pbcopy` |
+| Exec Flags | `{file} {line} {col}` |
+
+Notes:
+- One socket, so one Neovim per Godot session. A second Neovim that opens a
+  `.gd` file sees the live socket and leaves it alone. Stale sockets from a
+  crash are removed automatically.
+- If nothing is listening, the script exits 1 and posts a macOS notification.
+- `GODOT_NVIM_TERMINAL` overrides the app to focus (default `Ghostty`);
+  `GODOT_NVIM_NO_FOCUS=1` skips focusing.
+- The plugin's own `autostart_editor_server` is not used: it bails whenever
+  `v:servername` is set, and Neovim always sets it for its default socket.
+
+
 #### Installing gdstyle
 
 No Homebrew formula, so grab the release binary (Apple Silicon shown; use

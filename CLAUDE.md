@@ -59,4 +59,5 @@ nvimfiles/
 
 - `Brewfile` -- Homebrew packages (includes tree-sitter and tree-sitter-cli for treesitter parser compilation)
 - `bin/install.sh` -- Symlink setup script (`make install`)
+- `scripts/godot-nvim-open` -- Godot external editor hook; opens files in the Neovim listening on `/tmp/godot.nvim`
 - Monicur project (`~/code/monicur/monicur`) has a `.nvim.lua` for dadbod DATABASE_URL integration

@@ -20,6 +20,30 @@ local function godot_run(method, console)
   end
 end
 
+-- Listen on a fixed socket so Godot's external editor setting can send files
+-- here (scripts/godot-nvim-open). Not the plugin's autostart_editor_server:
+-- that refuses to start when v:servername is already set, and Neovim always
+-- sets it for its default random socket. serverstart() adds a second address.
+local godot_socket = "/tmp/godot.nvim"
+local function start_godot_socket()
+  if vim.tbl_contains(vim.fn.serverlist(), godot_socket) then
+    return
+  end
+  local uv = vim.uv or vim.loop
+  if uv.fs_stat(godot_socket) then
+    local ok, chan = pcall(vim.fn.sockconnect, "pipe", godot_socket, { rpc = true })
+    if ok and chan > 0 then
+      vim.fn.chanclose(chan)
+      return -- another Neovim owns it; leave it alone
+    end
+    uv.fs_unlink(godot_socket) -- stale socket from a crash
+  end
+  local ok, err = pcall(vim.fn.serverstart, godot_socket)
+  if not ok then
+    vim.notify("godot: could not listen on " .. godot_socket .. ": " .. tostring(err), vim.log.levels.WARN)
+  end
+end
+
 -- Buffer-local Godot keymaps under <Leader>G (capital: <Leader>g is git).
 local function godot_keymaps(buf)
   local map = function(keys, fn, desc)
@@ -82,12 +106,16 @@ return {
       vim.api.nvim_create_autocmd("FileType", {
         group = vim.api.nvim_create_augroup("GodotKeymaps", { clear = true }),
         pattern = godot_filetypes,
-        callback = function(event) godot_keymaps(event.buf) end,
+        callback = function(event)
+          godot_keymaps(event.buf)
+          start_godot_socket()
+        end,
       })
       -- The buffer that triggered lazy-loading already fired FileType
       for _, buf in ipairs(vim.api.nvim_list_bufs()) do
         if vim.tbl_contains(godot_filetypes, vim.bo[buf].filetype) then
           godot_keymaps(buf)
+          start_godot_socket()
         end
       end
     end,
