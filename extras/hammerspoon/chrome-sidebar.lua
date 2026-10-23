@@ -14,12 +14,18 @@ local SIDEBAR_LABELS = {
   "expand tabs", "collapse tabs",
 }
 
+-- Chrome appends the shortcut hint to the label, e.g. "Collapse Tabs (⇧⌘L)";
+-- strip it so a changed or removed shortcut doesn't break the match.
+local function normalizeLabel(s)
+  return (string.lower(tostring(s or "")):gsub("%s*%b()$", ""))
+end
+
 local function findSidebarButton(el, depth)
   depth = depth or 0
   if not el or depth > 25 then return nil end
   if el:attributeValue("AXRole") == "AXButton" then
-    local title = string.lower(tostring(el:attributeValue("AXTitle") or ""))
-    local desc = string.lower(tostring(el:attributeValue("AXDescription") or ""))
+    local title = normalizeLabel(el:attributeValue("AXTitle"))
+    local desc = normalizeLabel(el:attributeValue("AXDescription"))
     for _, label in ipairs(SIDEBAR_LABELS) do
       if title == label or desc == label then return el end
     end
