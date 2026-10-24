@@ -135,6 +135,11 @@ mkdir -p "$HOME/.config/lazygit"
 echo "ln -fs $HOME/dotfiles/extras/lazygit/config.yml $HOME/.config/lazygit/config.yml"
 ln -fs "$HOME/dotfiles/extras/lazygit/config.yml" "$HOME/.config/lazygit/config.yml"
 
+echo "Setting up k9s skins..."
+mkdir -p "$HOME/.config/k9s/skins"
+echo "ln -fs $HOME/dotfiles/extras/k9s/skins/transparent.yaml $HOME/.config/k9s/skins/transparent.yaml"
+ln -fs "$HOME/dotfiles/extras/k9s/skins/transparent.yaml" "$HOME/.config/k9s/skins/transparent.yaml"
+
 echo "Setting up tig configs..."
 echo "ln -nfs $HOME/dotfiles/extras/tig/config $HOME/.tigrc"
 ln -nfs $HOME/dotfiles/extras/tig/config $HOME/.tigrc
