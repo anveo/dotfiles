@@ -161,8 +161,8 @@ brew "stern"
 brew "tfenv"
 # Text interface for Git repositories
 brew "tig"
-# Simplified and community-driven man pages
-brew "tldr"
+# Official tldr client (Rust); provides the `tldr` command
+brew "tlrc"
 # Drop-in replacement for tmux-plugin-manager (tpm) with a TUI
 brew "tpack"
 # Lightweight BitTorrent client
