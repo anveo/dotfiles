@@ -213,7 +213,7 @@ clearDockerLog() {
 # set OP_ACCOUNT in ~/.localrc or similar
 opon() {
   if [[ -z $OP_SESSION ]]; then
-    eval $(op signin $OP_ACCOUNT)
+    eval $(op signin --account "$OP_ACCOUNT")
 
     OS_TYPE=$(uname -s)
     if [ "$OS_TYPE" = Darwin ]; then # MacOS

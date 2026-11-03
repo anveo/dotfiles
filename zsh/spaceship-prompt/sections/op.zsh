@@ -40,5 +40,5 @@ spaceship_op() {
     --prefix "$SPACESHIP_OP_PREFIX" \
     --suffix "$SPACESHIP_OP_SUFFIX" \
     --symbol "$SPACESHIP_OP_SYMBOL" \
-    "$op_session$OP_EXPIRED"
+    "${OP_ACCOUNT:-$op_session}$OP_EXPIRED"
 }
