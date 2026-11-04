@@ -910,8 +910,53 @@ wtr() {
     elif tmux list-windows -F '#W' | grep -qxF "$ticket"; then
       tmux kill-window -t "=$ticket" && echo "wtr: closed window $ticket"
     fi
+    # A window `promote`d into its own session. Same rule as above: never kill
+    # the session we're typing in.
+    if tmux has-session -t "=$ticket" 2>/dev/null \
+      && [[ "$(tmux display-message -p '#S')" != "$ticket" ]]; then
+      tmux kill-session -t "=$ticket" && echo "wtr: closed session $ticket"
+    fi
   fi
 }
+
+# Move the current tmux window, running processes and all, into a session of
+# its own -- for when a worktree outgrows one window and wants a Ghostty tab of
+# its own (tabs are the namespace; nested tmux breaks vim-tmux-navigator).
+# The session is named after the window (or $1), then attach from a new tab
+# with `tm <name>`. Nothing restarts: agents and overmind keep running.
+promote() {
+  if [[ -z "$TMUX" ]]; then
+    echo "promote: not inside tmux" >&2
+    return 1
+  fi
+
+  # tmux rejects '.' and ':' in session names (they're target separators).
+  local name=${1:-$(tmux display-message -p '#W')}
+  name=$(printf '%s' "$name" | tr '.:' '__')
+  local win; win=$(tmux display-message -p '#{window_id}')
+
+  if tmux has-session -t "=$name" 2>/dev/null; then
+    echo "promote: session '$name' already exists -- pass another name" >&2
+    return 1
+  fi
+
+  # The only window in its session: moving it would destroy the session and
+  # detach this client. The session already is "just this window" -- rename it.
+  if [[ "$(tmux display-message -p '#{session_windows}')" -eq 1 ]]; then
+    tmux rename-session "$name" && echo "promote: renamed this session to $name"
+    return
+  fi
+
+  # new-session always creates a window; track it by id so the cleanup can't
+  # hit the wrong one, then drop it once ours has moved in.
+  local starter
+  starter=$(tmux new-session -d -P -F '#{window_id}' -s "$name" -c "$PWD") || return
+  tmux move-window -s "$win" -t "=$name:" || { tmux kill-session -t "=$name"; return 1; }
+  tmux kill-window -t "$starter"
+  echo "promote: moved to session $name -- open a Ghostty tab and run: tm $name"
+}
+# Formation flying: peel off and fly solo.
+alias peel=promote
 
 # Overmind instances run private tmux servers (-L overmind-<session>-<hash>),
 # so they never show in `tmux ls`, and an instance whose ./.overmind.sock was

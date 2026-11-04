@@ -66,6 +66,12 @@ naming when it removes the worktree.
 | `prefix $` | Rename session |
 | `prefix (` / `)` | Previous/next session |
 
+`promote [name]` (shell function, alias `peel`) moves the current window -- running processes
+and all -- into a new session named after the window, so it can get its own
+Ghostty tab via `tm <name>`. For a worktree window that has outgrown one window's
+worth of splits. In a single-window session it just renames the session. `wtr`
+closes a promoted ticket session along with the worktree.
+
 ---
 
 ## Copy Mode (vi)

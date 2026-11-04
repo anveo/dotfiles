@@ -102,12 +102,13 @@ there is an error rather than a no-op.
 | `wta -w <branch>` | Same, but give it its own tmux window running a Claude session named for the ticket, and stay put — the `/dispatch` form |
 | `wta --db clone <branch>` | Either form, but hand `bin/worktree-setup` the database mode instead of letting it prompt. `reuse` (the default) shares the main checkout's dev database; `clone` copies it, for a branch that writes |
 | `wta -h` | The flags and what they do |
-| `wtr <branch>` | Stop overmind, run teardown, remove worktree, close its window |
+| `wtr <branch>` | Stop overmind, run teardown, remove worktree, close its window (or its promoted session) |
 | `wtr --db drop <branch>` | Same, but hand `bin/worktree-teardown` the database mode instead of letting it prompt. `keep` (what teardown does anyway with no terminal) leaves the cloned database; `drop` removes it. No effect on a reuse-mode worktree, which has no clone |
 | `wtinfo` | What setup assigned here: URL, ports (with up/down), database mode — or `unprovisioned worktree` in a repo that has no `bin/worktree-setup` |
 | `ovls` | Every running overmind, with its directory and whether its socket survives |
 | `ovclean` | Kill orphaned overminds and stale overmind tmux servers |
 | `killport <port> [sig]` | Kill whatever is listening on a TCP port |
+| `promote [name]` / `peel` | Move the current window into a session of its own (named for the window), processes and all, for a Ghostty tab — `tm <name>` to attach |
 
 Flags go **before** the branch name, in any order; both `wta` and `wtr` refuse a
 trailing flag rather than silently dropping it, which is what an unnoticed `--db`
@@ -156,8 +157,22 @@ every prepared runway with what is running in it.
 **Do not nest tmux sessions.** Overmind already runs a private tmux server per
 instance (`-L overmind-<title>-<hash>`), invisible to `tmux ls` and prone to
 orphaning — that is what `ovls`/`ovclean` exist for. A third layer compounds it
-and costs a prefix keystroke. Split panes and zoom instead; a task genuinely
-needing many views should get a *sibling* session, not a nested one.
+and costs a prefix keystroke — and vim-tmux-navigator's `C-h/j/k/l` stop at the
+outer layer, so inner panes need `C-\` plus a key. Split panes and zoom instead;
+a task genuinely needing many views should get a *sibling* session, not a nested
+one.
+
+**Promoting a window to a session.** One window's worth of splits gets cramped
+once a worktree needs overmind, a console and nvim side by side. Ghostty tabs are
+the namespace, so the move is a sibling session in its own tab: run `promote`
+from inside the ticket's window, then `tm APP-191` in a new Ghostty tab. tmux's
+`move-window` carries the window across intact — the Claude session, overmind and
+anything else running keep going, and the window id (`@23`) survives, so
+id-based `capture-pane`/`send-keys` targets still work; name-based ones become
+`APP-191:=APP-191`. A promoted window no longer shows in `prefix w`, which lists
+the current session only. `wtr` closes the promoted session along with the
+worktree. In a session with only that one window, `promote` renames the session
+instead, since moving its last window would destroy it and detach the client.
 
 ---
 

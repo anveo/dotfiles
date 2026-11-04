@@ -11,6 +11,8 @@ Criticism is welcome.
 
 At the end of each plan, give me a list of unresolved questions to answer, if any. Make the questions extremely concise. Sacrifice grammar for the sake of concision.
 
+Number every list of questions plainly (1. 2. 3.), never bullets or circled glyphs, so I can answer by number. Keep numbering stable when re-asking a subset.
+
 ## Inclusive Terminology
 
 Use: allowlist/blocklist, primary/replica, placeholder/example, main branch, conflict-free, concurrent/parallel
