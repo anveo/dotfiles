@@ -39,7 +39,6 @@ source $HOME/dotfiles/bash/paths
 source $HOME/dotfiles/bash/functions
 source $HOME/dotfiles/bash/prompt
 
-# source $HOME/dotfiles/shell/autojump.sh
 # source $HOME/dotfiles/shell/direnv.sh
 source $HOME/dotfiles/shell/adobe.sh
 source $HOME/dotfiles/shell/fzf.sh
@@ -47,7 +46,7 @@ source $HOME/dotfiles/shell/fzf.sh
 source $HOME/dotfiles/shell/fnm.sh
 source $HOME/dotfiles/shell/rbenv.sh
 source $HOME/dotfiles/shell/uv.sh
-source $HOME/dotfiles/shell/z.sh
+source $HOME/dotfiles/shell/zoxide.sh
 
 # Put secret stuff in here
 if [ -f ~/.localrc ]; then
