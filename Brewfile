@@ -191,6 +191,8 @@ brew "yq"
 brew "yt-dlp"
 # General-purpose lossless data-compression library
 brew "zlib"
+# Shell extension to navigate your filesystem faster
+brew "zoxide"
 # UNIX shell (command interpreter)
 brew "zsh"
 # Go-based command-line wrapper for easy interaction with Datadog APIs

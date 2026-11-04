@@ -56,7 +56,6 @@ zplug "plugins/fzf",      from:oh-my-zsh
 zplug "plugins/nmap",     from:oh-my-zsh
 zplug "plugins/urltools", from:oh-my-zsh
 
-zplug "b4b4r07/enhancd", use:init.sh
 zplug "chrissicool/zsh-256color"
 zplug "mafredri/zsh-async", from:github, use:async.zsh
 zplug "MichaelAquilina/zsh-autoswitch-virtualenv"
@@ -64,7 +63,6 @@ zplug "supercrabtree/k"
 zplug "zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-completions"
 zplug "Aloxaf/fzf-tab"
-zplug "agkozak/zsh-z"
 zplug "zsh-users/zsh-history-substring-search", defer:3
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 
@@ -131,11 +129,6 @@ if zplug check "denysdovhan/spaceship-prompt"; then
   source $HOME/dotfiles/zsh/spaceship-prompt/sections/subshell.zsh
   # Overrides the stock dir section (shortens paths inside git worktrees)
   source $HOME/dotfiles/zsh/spaceship-prompt/sections/dir.zsh
-fi
-
-if zplug check "b4b4r07/enhancd"; then
-  ENHANCD_FILTER="fzf:peco:percol"
-  ENHANCD_COMMAND="c"
 fi
 
 source $HOME/dotfiles/bash/aliases
