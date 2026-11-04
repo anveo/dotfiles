@@ -1085,3 +1085,29 @@ tlsoff() {
   echo "  copy it first next time if you still need it; anything started while"
   echo "  it was on keeps writing to the deleted file until it restarts"
 }
+
+# Pin the terminal tab title: `tabtitle my label` (alias `tt`); bare `tabtitle` unpins.
+# Ghostty's shell integration retitles on every prompt and command, so the pin is
+# re-applied from zle line-init (runs after Ghostty's precmd) and from a preexec
+# hook kept last in the list (runs after Ghostty's preexec). Not for tmux, where
+# tmux owns the outer title; use `prefix + ,` to rename the window instead.
+# zsh only: relies on zle hooks and preexec_functions.
+if [ -n "$ZSH_VERSION" ]; then
+  autoload -Uz add-zle-hook-widget
+  _tabtitle_apply() {
+    [[ -n $TABTITLE ]] && print -rn -- $'\e]2;'"${TABTITLE//[[:cntrl:]]}"$'\a' > $TTY
+  }
+  _tabtitle_line_init() {
+    _tabtitle_apply
+    preexec_functions=(${preexec_functions:#_tabtitle_apply} _tabtitle_apply)
+  }
+  add-zle-hook-widget line-init _tabtitle_line_init
+  tabtitle() {
+    if [[ -n $TMUX ]]; then
+      print -u2 "tabtitle: inside tmux; use prefix + , to rename the window"
+      return 1
+    fi
+    TABTITLE="$*"
+    _tabtitle_apply
+  }
+fi

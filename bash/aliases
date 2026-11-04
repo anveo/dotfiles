@@ -346,6 +346,9 @@ alias emu='$ANDROID_HOME/emulator/emulator'
 # ¯\_(ツ)_/¯
 alias tflip="tmux new -s '🖕 🙃 🖕'"
 
+# pin the terminal tab title (tabtitle is zsh only, see functions)
+[ -n "$ZSH_VERSION" ] && alias tt='tabtitle'
+
 # search hidden files
 alias ag='ag --hidden '
 

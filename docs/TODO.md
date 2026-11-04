@@ -117,7 +117,7 @@ we've already set. The full set:
 | `sudo` | Wraps sudo to preserve Ghostty terminfo in elevated sessions | **Disabled** |
 | `ssh-env` | Wraps ssh to set `TERM=xterm-256color` on remote hosts | **Disabled** |
 | `ssh-terminfo` | Wraps ssh to auto-install Ghostty's terminfo on remote hosts | **Disabled** |
-| `title` | Updates terminal title with shell/command info | Enabled (we disabled) |
+| `title` | Updates terminal title with shell/command info | Enabled (trialing; `no-title` commented out, `tabtitle`/`tt` in `bash/functions` pins a manual title) |
 | `new-tab-cwd` | New terminals inherit the working directory of the focused terminal | Enabled |
 
 Use `no-` prefix to disable. Multiple features are comma-separated:
