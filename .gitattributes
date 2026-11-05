@@ -1,3 +1,8 @@
 *.rb diff=ruby
 *.py diff=python
 *.vim diff=vim
+
+# Windows scripts must stay CRLF; batch files with LF can misparse.
+*.cmd text eol=crlf
+*.bat text eol=crlf
+*.ps1 text eol=crlf
