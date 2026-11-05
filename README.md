@@ -70,3 +70,16 @@ tracked in this repo). Use `prefix + T` for the interactive TUI.
 
     command -v zsh | sudo tee -a /etc/shells
     chsh -s $(which zsh)
+
+## Windows
+
+Double-click `install-windows.cmd` (or run it from cmd/PowerShell) to copy the
+scripts in `extras/windows/bin` into `C:\bin`, which must already be on the
+Windows PATH. These are plain copies, not symlinks, so re-run it after editing a
+script. Each `<name>.ps1` gets a `<name>.cmd` shim so it runs by name from cmd
+and the Run dialog. See `extras/windows/README.md` for the one-off setup and
+debloat scripts.
+
+From WSL:
+
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$(wslpath -w extras/windows/install.ps1)"

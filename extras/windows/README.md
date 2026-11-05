@@ -68,6 +68,30 @@ To remove a kept package, uncomment its line in `windows11-debloat.ps1` and re-r
 
 ---
 
+### `bin/` — Everyday scripts copied to `C:\bin`
+
+Installed by `install-windows.cmd` at the repo root (see the top-level README).
+
+- **`unlock-oldwin`** — for a secondary drive that once held a Windows
+  install and may still hold your own files. `unlock-oldwin J:` (elevated,
+  read-only, a few minutes) lists only the top-level items Explorer couldn't
+  delete even after its "Continue" prompt, with a description of common names,
+  and skips anything in use. `unlock-oldwin J: 'Windows,ProgramData'` then makes your
+  account the owner of just those, replaces their permissions with full
+  control for you, Administrators and SYSTEM, and clears
+  read-only/hidden/system flags, so you can delete them in Explorer. It
+  refuses anything in use: Steam libraries, registered WSL distros, Store/Xbox
+  folders, an active page file, boot files, and folders holding a service or
+  running program. Junctions are unlocked as links and never followed (old
+  installs have junctions that point back into the live `C:\`). Unlocking
+  needs an elevated terminal. `unlock-oldwin J: -Check` is read-only and
+  reports, per folder, what Explorer couldn't delete (no permission, can't
+  list, path too long); run it elevated to see what's left after Explorer's
+  "Continue" prompt. For folders Explorer can't delete (very long paths),
+  `unlock-oldwin J: Windows -Delete` removes them with robocopy.
+
+---
+
 ## Manual Recommended Steps
 
 Things that can't be scripted cleanly or are too personal to automate.
