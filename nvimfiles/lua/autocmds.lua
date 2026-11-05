@@ -84,6 +84,20 @@ autocmd({ "WinEnter", "BufWinEnter", "CursorHold" }, {
   command = "checktime",
 })
 
+-- Create missing parent directories on save (e.g. :e new/dir/file.lua then :w)
+autocmd("BufWritePre", {
+  group = augroup("AutoMkdir", { clear = true }),
+  callback = function(args)
+    -- skip special buffers and URL-style names (oil://, scp://, fugitive://)
+    if vim.bo[args.buf].buftype ~= "" then return end
+    if args.match:match("^%w%w+:[\\/][\\/]") then return end
+    local dir = vim.fn.fnamemodify(args.match, ":p:h")
+    if vim.fn.isdirectory(dir) == 0 then
+      vim.fn.mkdir(dir, "p")
+    end
+  end,
+})
+
 -- Equalize splits on resize
 autocmd("VimResized", {
   group = augroup("ResizeEqualize", { clear = true }),
