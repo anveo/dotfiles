@@ -79,7 +79,6 @@
   # When creating a new branch off a remote branch, always set it up to
   # track the remote branch so that we can pull from there.
 	autosetupmerge = true
-  mergeoptions = --no-ff
 	autosetuprebase = always
 
 [branch "master"]
@@ -138,3 +137,8 @@
 	withLease = true
 [credential "https://git.heroku.com"]
 	helper = !heroku git:credentials
+[pull]
+	rebase = true
+[rebase]
+	# stash uncommitted changes around a rebase (incl. pull --rebase) and restore after
+	autoStash = true
