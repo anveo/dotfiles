@@ -19,3 +19,8 @@ check:
 	bash test/worktree_functions_test.sh
 	@echo "Behaviour (zsh)..."
 	zsh test/worktree_functions_test.sh
+	@echo "zsh config..."
+	zsh -n .zshrc
+	zsh -n zsh/compinit.zsh
+	zsh -n zsh/build-bundle.zsh
+	zsh test/zsh_config_test.sh
