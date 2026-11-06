@@ -1,0 +1,136 @@
+#!/bin/zsh
+# mcp-cohort: give a group of projects ("cohort") its own MCP servers at Claude Code local scope.
+#
+# Usage:
+#   mcp-cohort <cohort> [project-dir ...]    Add the cohort's missing servers to these projects
+#                                            (defaults to the current directory).
+#   mcp-cohort --sync [--yes] <cohort>       Make every project that uses the cohort match its
+#                                            file: add new servers, update changed ones, remove
+#                                            ones deleted from the file.
+#
+# Cohort files live at ${MCP_COHORT_DIR:-${XDG_CONFIG_HOME:-~/.config}/mcp-cohort}/<cohort>.json,
+# in .mcp.json format. Keep them out of public repos: they hold private server addresses.
+# A worktree or subdirectory resolves to its main repo root, which is where Claude Code keys
+# local-scope config.
+#
+# Both modes record the cohort's server names in
+# ${XDG_STATE_HOME:-~/.local/state}/mcp-cohort/<cohort>.names, so --sync can find projects that
+# hold a server since deleted from the file.
+#
+# Neither mode ever runs `claude mcp remove`: that deletes the OAuth sign-in for the server's URL
+# in every project on the machine. --sync edits ~/.claude.json directly instead (atomically, with
+# a backup at ~/.claude.json.mcp-cohort.bak). Running Claude Code sessions and the desktop app
+# rewrite that file, so it asks first if any are running, and they need a restart to see changes.
+#
+# Setup guide: https://app.notion.com/p/40e8f83c912980bf9ec7ec9e8c42b146 (Local MCP Setup)
+emulate -L zsh
+
+die() { print -u2 -- "mcp-cohort: $*"; exit 1 }
+usage="usage: mcp-cohort <cohort> [project-dir ...]  |  mcp-cohort --sync [--yes] <cohort>"
+
+sync=0 yes=0
+while [[ $1 == --* ]]; do
+  case $1 in
+    --sync) sync=1 ;;
+    --yes) yes=1 ;;
+    --help) print -- $usage; exit 0 ;;
+    *) die "unknown option $1; $usage" ;;
+  esac
+  shift
+done
+
+(( $# >= 1 )) || die $usage
+(( $+commands[jq] )) || die "jq is required"
+(( $+commands[claude] )) || die "claude is not on PATH"
+
+cohort=$1; shift
+file=${MCP_COHORT_DIR:-${XDG_CONFIG_HOME:-$HOME/.config}/mcp-cohort}/$cohort.json
+state=${XDG_STATE_HOME:-$HOME/.local/state}/mcp-cohort/$cohort.names
+config=$HOME/.claude.json
+[[ -f $file ]] || die "no cohort file: $file"
+names=( ${(f)"$(jq -r '.mcpServers | keys[]' $file)"} )
+(( ${#names} )) || die "no servers in $file"
+old=()
+[[ -f $state ]] && old=( ${(f)"$(<$state)"} )
+
+record_names() {
+  mkdir -p ${state:h}
+  print -l -- ${(u)@} >| $state
+}
+
+if (( sync )); then
+  (( $# == 0 )) || die "--sync takes no project dirs; it finds them in $config"
+
+  want=$(jq -c '.mcpServers' $file)
+  oldjson=$(print -l -- $old | jq -Rsc 'split("\n") | map(select(length > 0))')
+
+  # Shared jq: $cur = names in the file, $gone = recorded names no longer in it,
+  # a project is a member if it holds any of either.
+  defs='($want | keys) as $cur | ($old - $cur) as $gone | (($cur + $old) | unique) as $all
+        | def member: ((.mcpServers // {}) | keys) as $k | any($all[]; . as $n | $k | index($n));'
+
+  report=$(jq -r --argjson want $want --argjson old $oldjson "$defs"'
+    .projects // {} | to_entries[] | select(.value | member) | .key as $p | .value.mcpServers as $m
+    | ($cur[] | if $m[.] == null then "added    \(.)  \($p)"
+                elif $m[.] == $want[.] then "ok       \(.)  \($p)"
+                else "updated  \(.)  \($p)" end),
+      ($gone[] | select($m[.] != null) | "removed  \(.)  \($p)")' $config) || die "can't read $config"
+
+  if [[ -z $report ]]; then
+    print -- "no projects use cohort '$cohort' yet; add it first with: mcp-cohort $cohort <dirs>"
+    exit 0
+  fi
+  print -- $report
+  if [[ $report != *(added|updated|removed)* ]]; then
+    record_names $names
+    exit 0
+  fi
+
+  if pgrep -qx claude && (( ! yes )); then
+    [[ -t 0 ]] || die "Claude Code is running and may overwrite $config; quit it or pass --yes"
+    read -q "?Claude Code is running and may overwrite $config. Write anyway? [y/N] " || { print; exit 1 }
+    print
+  fi
+
+  cp -p $config $config.mcp-cohort.bak
+  tmp=$(mktemp $config.mcp-cohort.XXXXXX) || die "can't create temp file"
+  if jq --argjson want $want --argjson old $oldjson "$defs"'
+      .projects |= with_entries(
+        if (.value | member)
+        then .value.mcpServers = (((.value.mcpServers // {}) | delpaths([$gone[] | [.]])) + $want)
+        else . end)' $config >| $tmp; then
+    chmod 600 $tmp
+    mv -f $tmp $config
+  else
+    rm -f $tmp
+    die "jq failed; $config left unchanged"
+  fi
+  record_names $names
+  print -- "synced; restart running Claude Code sessions to pick up the changes"
+  exit 0
+fi
+
+(( $# )) || set -- .
+
+for dir in "$@"; do
+  [[ -d $dir ]] || { print -u2 -- "skip     $dir (not a directory)"; continue }
+  root=${dir:A}
+  if common=$(git -C $root rev-parse --path-format=absolute --git-common-dir 2>/dev/null); then
+    root=${common:h}
+  fi
+
+  for name in $names; do
+    want=$(jq -cS --arg n $name '.mcpServers[$n]' $file)
+    have=$(jq -cS --arg p $root --arg n $name '.projects[$p].mcpServers[$n] // empty' $config)
+    if [[ -z $have ]]; then
+      ( cd $root && claude mcp add-json -s local $name $want >/dev/null ) \
+        && print -- "added    $name  $root" \
+        || print -u2 -- "failed   $name  $root"
+    elif [[ $have == $want ]]; then
+      print -- "ok       $name  $root"
+    else
+      print -u2 -- "differs  $name  $root (run: mcp-cohort --sync $cohort)"
+    fi
+  done
+done
+record_names $old $names
