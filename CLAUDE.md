@@ -57,6 +57,7 @@ nvimfiles/
 
 ## Other Dotfiles
 
+- `.zshrc` -- zsh config; plugins are managed by **antidote** (cloned to `~/.antidote`, not Homebrew, so it works on Linux/WSL). The plugin list is `zsh/plugins.txt`, compiled to a static bundle at `~/.cache/zsh/plugins.zsh` that rebuilds when the list changes. `compinit` runs once, from `zsh/compinit.zsh`, at its place in that list (after fpath plugins, before fzf-tab).
 - `Brewfile` -- Homebrew packages (includes tree-sitter and tree-sitter-cli for treesitter parser compilation)
 - `bin/install.sh` -- Symlink setup script (`make install`)
 - `scripts/godot-nvim-open` -- Godot external editor hook; opens files in the Neovim listening on `/tmp/godot.nvim`

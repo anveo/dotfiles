@@ -196,27 +196,30 @@ alias diskspace="du -S | sort -n -r |more"
 # Show me the size (sorted) of only the folders in this directory
 alias folders="find . -maxdepth 1 -type d -print | xargs du -sk | sort -rn"
 
-# Easy archive extraction
-extract () {
-  if [ -f $1 ] ; then
-    case $1 in
-      *.tar.bz2)   tar xvjf $1    ;;
-  *.tar.gz)    tar xvzf $1    ;;
-  *.bz2)       bunzip2 $1     ;;
-  *.rar)       unrar x $1       ;;
-  *.gz)        gunzip $1      ;;
-  *.tar)       tar xvf $1     ;;
-  *.tbz2)      tar xvjf $1    ;;
-  *.tgz)       tar xvzf $1    ;;
-  *.zip)       unzip $1       ;;
-  *.Z)         uncompress $1  ;;
-  *.7z)        7z x $1        ;;
-  *)           echo "don't know how to extract '$1'..." ;;
-  esac
-  else
-    echo "'$1' is not a valid file!"
-      fi
-}
+# Easy archive extraction. Bash only: zsh gets the more thorough `extract` (and
+# `x`) from the Oh My Zsh plugin in zsh/plugins.txt.
+if [ -n "$BASH_VERSION" ]; then
+  extract () {
+    if [ -f $1 ] ; then
+      case $1 in
+        *.tar.bz2)   tar xvjf $1    ;;
+        *.tar.gz)    tar xvzf $1    ;;
+        *.bz2)       bunzip2 $1     ;;
+        *.rar)       unrar x $1     ;;
+        *.gz)        gunzip $1      ;;
+        *.tar)       tar xvf $1     ;;
+        *.tbz2)      tar xvjf $1    ;;
+        *.tgz)       tar xvzf $1    ;;
+        *.zip)       unzip $1       ;;
+        *.Z)         uncompress $1  ;;
+        *.7z)        7z x $1        ;;
+        *)           echo "don't know how to extract '$1'..." ;;
+      esac
+    else
+      echo "'$1' is not a valid file!"
+    fi
+  }
+fi
 alias xtract="extract"
 
 function ssh-reagent () {

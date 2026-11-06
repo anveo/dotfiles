@@ -21,10 +21,6 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 # fnm (Node version manager)
 fnm install --lts
 
-# zplug
-curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
-zplug install
-
 # Set default shell
 chsh -s $(which zsh)
 
@@ -45,6 +41,25 @@ After upgrading neovim, recompile parsers:
     :TSUpdate
 
 See `docs/neovim-reference/` for keybinding cheatsheet and plugin inventory.
+
+## Zsh
+
+Plugins are managed by [antidote](https://antidote.sh) and listed in
+`zsh/plugins.txt`. There is no install step: the first zsh start clones
+antidote into `~/.antidote` and then the plugins, which takes a few seconds once.
+antidote is cloned rather than installed from Homebrew so the same setup works
+on Linux and WSL.
+
+`.zshrc` compiles the list into a static file of `source` lines at
+`~/.cache/zsh/plugins.zsh` and rebuilds it whenever `zsh/plugins.txt` changes,
+so adding or removing a plugin only needs a new shell. If a build fails (say,
+offline on first start), the shell starts without plugins and retries on the
+next one. `updatevm` runs `antidote update` to pull new plugin versions.
+
+Only a change to `zsh/plugins.txt` triggers a rebuild. After anything else that
+changes the generated file, such as a new antidote version or a different
+`$DOTFILES` path, run `fixzsh`. It clears the completion cache and the static
+file and restarts zsh; it also helps when completions go stale.
 
 ## Tmux
 

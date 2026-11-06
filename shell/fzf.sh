@@ -32,9 +32,15 @@ _fzf_compgen_dir() {
   fd --type d --hidden --follow --exclude ".git" . "$1"
 }
 
-if [[ -z "${ZSH_VERSION}" ]]; then
-  [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-# elif [[ -z "${BASH_VERSION}" ]]; then
-  # [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+# Key bindings (Ctrl-R, Ctrl-T, Alt-C) and completion. zsh gets these from the
+# Oh My Zsh fzf plugin in zsh/plugins.txt, so only bash is set up here.
+# `fzf --bash` needs fzf 0.48+; older installs fall back to the install script's file.
+if [ -n "${BASH_VERSION}" ] && command -v fzf >/dev/null 2>&1; then
+  if fzf_bash_init=$(fzf --bash 2>/dev/null); then
+    eval "$fzf_bash_init"
+  elif [ -f ~/.fzf.bash ]; then
+    source ~/.fzf.bash
+  fi
+  unset fzf_bash_init
 fi
 
