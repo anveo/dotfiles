@@ -1,4 +1,4 @@
-# Initialise completion exactly once. Loaded from zsh/plugins.txt rather than
+# Initialize completion exactly once. Loaded from zsh/plugins.txt rather than
 # .zshrc so it runs after every plugin above it has added to fpath and before
 # fzf-tab, which needs compinit to have run already.
 autoload -Uz compinit

@@ -12,7 +12,7 @@ ohmyzsh/ohmyzsh path:plugins/extract
 
 mafredri/zsh-async path:async.zsh
 
-# Completion is initialised here: after all fpath additions above, before fzf-tab.
+# Completion is initialized here: after all fpath additions above, before fzf-tab.
 $DOTFILES/zsh/compinit.zsh
 
 # fzf-tab must follow compinit and precede anything that wraps widgets.
