@@ -7,7 +7,8 @@
 # the main repo's name plus a worktree marker instead, e.g.
 #   monicur.worktrees/app-217-foo/.infra/terraform  ->  ⑂/.infra/terraform
 #
-# Must be sourced after the spaceship theme loads so this definition wins.
+# Sourced before the spaceship theme loads: spaceship only loads a stock
+# section when no function of that name exists yet, so this definition wins.
 #
 
 SPACESHIP_DIR_WORKTREE_SYMBOL="${SPACESHIP_DIR_WORKTREE_SYMBOL="⑂"}"
