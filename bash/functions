@@ -172,7 +172,8 @@ function tre() {
 function fixzsh() {
   rm ~/.zcompdump*;
   # rm ~/.antigen/.zcompdump*;
-  rm ~/.zplug/zcompdump*;
+  # Drop the static plugin bundle too; .zshrc regenerates it on the next start
+  rm -f "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/plugins.zsh";
   exec zsh;
 }
 
@@ -322,29 +323,27 @@ updatevm() {
   if command -v tldr &> /dev/null; then
     tldr --update
   fi
-  _update_zplug
+  _update_antidote
 }
 
-# Print the HEAD commit of zplug and every plugin repo it manages
-_zplug_heads() {
+# Print the HEAD commit of antidote and every plugin repo it has cloned
+_antidote_heads() {
   local d
-  git -C "$HOME/.zplug" rev-parse HEAD 2>/dev/null
-  [ -d "$HOME/.zplug/repos" ] || return 0
-  for d in "$HOME"/.zplug/repos/*/*; do
+  git -C "$HOME/.antidote" rev-parse HEAD 2>/dev/null
+  for d in "$(antidote home)"/*/*/*; do
     [ -d "$d/.git" ] && git -C "$d" rev-parse HEAD 2>/dev/null
   done
 }
 
-# Update zplug and its plugins; reload zsh only if any repo moved
-_update_zplug() {
+# Update antidote and its plugins; reload zsh only if any repo moved
+_update_antidote() {
   [ -n "$ZSH_VERSION" ] || return 0
-  command -v zplug &> /dev/null || return 0
+  command -v antidote &> /dev/null || return 0
   local before
-  before=$(_zplug_heads)
-  git -C "$HOME/.zplug" pull
-  zplug update
-  if [ "$before" != "$(_zplug_heads)" ]; then
-    echo "zplug plugins changed; reloading zsh"
+  before=$(_antidote_heads)
+  antidote update
+  if [ "$before" != "$(_antidote_heads)" ]; then
+    echo "zsh plugins changed; reloading zsh"
     exec zsh
   fi
 }

@@ -1,0 +1,31 @@
+# zsh plugins, managed by antidote (https://antidote.sh) and loaded top to
+# bottom. .zshrc turns this list into a static bundle and rebuilds it whenever
+# this file changes; `antidote update` pulls new versions of the plugins.
+
+# Completion definitions only. These must be on fpath before compinit runs.
+zsh-users/zsh-completions kind:fpath path:src
+
+# Oh My Zsh plugins. copypath needs clipcopy from lib/clipboard.zsh.
+ohmyzsh/ohmyzsh path:lib/clipboard.zsh
+ohmyzsh/ohmyzsh path:plugins/copypath
+ohmyzsh/ohmyzsh path:plugins/extract
+
+chrissicool/zsh-256color
+mafredri/zsh-async path:async.zsh
+
+# Completion is initialised here: after all fpath additions above, before fzf-tab.
+$DOTFILES/zsh/compinit.zsh
+
+# fzf-tab must follow compinit and precede anything that wraps widgets.
+Aloxaf/fzf-tab
+# fzf's own Tab completion falls back to fzf-tab, so fzf loads after it.
+# This plugin is also what sets up fzf's Ctrl-R / Ctrl-T key bindings in zsh.
+ohmyzsh/ohmyzsh path:plugins/fzf
+
+spaceship-prompt/spaceship-prompt path:spaceship.zsh
+
+# Widget wrappers go last. history-substring-search must follow
+# syntax-highlighting.
+zsh-users/zsh-autosuggestions
+zsh-users/zsh-syntax-highlighting
+zsh-users/zsh-history-substring-search

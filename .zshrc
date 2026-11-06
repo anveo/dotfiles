@@ -18,13 +18,13 @@ if type brew &>/dev/null; then
   export HOMEBREW_PREFIX="${HOMEBREW_PREFIX:-$(brew --prefix)}"
 fi
 
-if [[ ! -d ~/.zplug ]];then
-  git clone https://github.com/b4b4r07/zplug ~/.zplug
-fi
+# Emacs key bindings, even though $EDITOR is nvim. zsh picks vi bindings when
+# $EDITOR contains "vi", so select emacs before any plugin binds keys --
+# switching afterwards would leave those bindings in the vi keymap.
+bindkey -e
 
-source ~/.zplug/init.zsh
-
-# Setup completion paths
+# Completion paths. These must be on fpath before compinit, which runs inside
+# the plugin bundle below (see zsh/compinit.zsh).
 if [[ -n "$HOMEBREW_PREFIX" ]]; then
   FPATH=$HOMEBREW_PREFIX/share/zsh/site-functions:$FPATH
 fi
@@ -35,101 +35,53 @@ if [[ -d "$docker_completions" ]]; then
   fpath=($docker_completions $fpath)
 fi
 
-# Initialize completions once after all paths are set
-# Cache compinit to speed up startup (only rebuild once per day)
-autoload -Uz compinit
-if [[ -n ${HOME}/.zcompdump(#qN.mh+24) ]]; then
-  compinit
-else
-  compinit -C
+# Custom spaceship sections; prompt order is set in ~/.spaceshiprc.zsh. These
+# are sourced before the spaceship plugin loads, which they rely on: their
+# defaults expect $SPACESHIP_PROMPT_DEFAULT_SUFFIX to be unset still, and
+# spaceship skips loading a stock section whose function already exists.
+source $DOTFILES/zsh/spaceship-prompt/sections/aws_vault.zsh
+# source $DOTFILES/zsh/spaceship-prompt/sections/k8s.zsh
+source $DOTFILES/zsh/spaceship-prompt/sections/op.zsh
+source $DOTFILES/zsh/spaceship-prompt/sections/subshell.zsh
+# Overrides the stock dir section (shortens paths inside git worktrees)
+source $DOTFILES/zsh/spaceship-prompt/sections/dir.zsh
+
+# Plugins, via antidote (https://antidote.sh). The plugin list is
+# zsh/plugins.txt. Cloned rather than installed from Homebrew so the same
+# bootstrap works on Linux and WSL.
+if [[ ! -d ~/.antidote ]]; then
+  git clone --depth=1 https://github.com/mattmc3/antidote.git ~/.antidote
 fi
+fpath=(~/.antidote/functions $fpath)
+autoload -Uz antidote
 
-# Make sure to use double quotes for zplug
-
-# zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh"
-# zplug "lib/*", from:oh-my-zsh
-zplug "plugins/copydir",  from:oh-my-zsh
-zplug "plugins/copyfile", from:oh-my-zsh
-zplug "plugins/encode64", from:oh-my-zsh
-zplug "plugins/extract",  from:oh-my-zsh
-zplug "plugins/fzf",      from:oh-my-zsh
-zplug "plugins/nmap",     from:oh-my-zsh
-zplug "plugins/urltools", from:oh-my-zsh
-
-zplug "chrissicool/zsh-256color"
-zplug "mafredri/zsh-async", from:github, use:async.zsh
-zplug "MichaelAquilina/zsh-autoswitch-virtualenv"
-zplug "supercrabtree/k"
-zplug "zsh-users/zsh-autosuggestions"
-zplug "zsh-users/zsh-completions"
-zplug "Aloxaf/fzf-tab"
-zplug "zsh-users/zsh-history-substring-search", defer:3
-zplug "zsh-users/zsh-syntax-highlighting", defer:2
-
-# if [[ $OSTYPE = (linux)* ]]; then
-  # zplug "plugins/archlinux",            from:oh-my-zsh, if:"(( $+commands[pacman] ))"
-  # #zplug "plugins/debian",               from:oh-my-zsh
-  # zplug "plugins/dnf",                  from:oh-my-zsh, if:"(( $+commands[dnf] ))"
-  # #zplug "plugins/fedora",               from:oh-my-zsh
-  # zplug "plugins/mock",                 from:oh-my-zsh, if:"(( $+commands[mock] ))"
-  # #zplug "plugins/suse",                 from:oh-my-zsh
-  # #zplug "plugins/ubuntu",               from:oh-my-zsh
-# fi
-
-# if [[ $OSTYPE = (darwin)* ]]; then
-# # zplug "plugins/brew",                 from:oh-my-zsh, if:"(( $+commands[brew] ))"
-# fi
-if zplug check "zsh-users/zsh-autosuggestions"; then
-  # This speeds up pasting w/ autosuggest
-  # https://github.com/zsh-users/zsh-autosuggestions/issues/238
-  pasteinit() {
-    OLD_SELF_INSERT=${${(s.:.)widgets[self-insert]}[2,3]}
-    zle -N self-insert url-quote-magic # I wonder if you'd need `.url-quote-magic`?
-  }
-
-  pastefinish() {
-    zle -N self-insert $OLD_SELF_INSERT
-  }
-
-  zstyle :bracketed-paste-magic paste-init pasteinit
-  zstyle :bracketed-paste-magic paste-finish pastefinish
-
-  bindkey '^ ' autosuggest-accept
+# antidote turns the list into a static file of plain source lines, rebuilt only
+# when the list changes. The file holds machine-specific paths, so it lives in
+# the cache directory rather than the repo.
+zsh_plugins=$DOTFILES/zsh/plugins.txt
+zsh_bundle=${XDG_CACHE_HOME:-$HOME/.cache}/zsh/plugins.zsh
+if [[ ! $zsh_bundle -nt $zsh_plugins ]]; then
+  mkdir -p ${zsh_bundle:h}
+  antidote bundle <$zsh_plugins >|$zsh_bundle
 fi
+source $zsh_bundle
+unset zsh_plugins zsh_bundle
 
-zplug "mollifier/anyframe"
-if zplug check "mollifier/anyframe"; then
-    # expressly specify to use peco
-    #zstyle ":anyframe:selector:" use peco
-    # expressly specify to use percol
-    #zstyle ":anyframe:selector:" use percol
-    # expressly specify to use fzf-tmux
-    #zstyle ":anyframe:selector:" use fzf-tmux
-    # expressly specify to use fzf
-    zstyle ":anyframe:selector:" use fzf
+# This speeds up pasting w/ autosuggest
+# https://github.com/zsh-users/zsh-autosuggestions/issues/238
+pasteinit() {
+  OLD_SELF_INSERT=${${(s.:.)widgets[self-insert]}[2,3]}
+  zle -N self-insert url-quote-magic # I wonder if you'd need `.url-quote-magic`?
+}
 
-    # specify path and options for peco, percol, or fzf
-    #zstyle ":anyframe:selector:peco:" command 'peco --no-ignore-case'
-    #zstyle ":anyframe:selector:percol:" command 'percol --case-sensitive'
-    #zstyle ":anyframe:selector:fzf-tmux:" command 'fzf-tmux --extended'
-    #zstyle ":anyframe:selector:fzf:" command 'fzf --extended'
-    #zstyle ":anyframe:selector:fzf:" command 'fzf'
+pastefinish() {
+  zle -N self-insert $OLD_SELF_INSERT
+}
 
-    #bindkey '^@' anyframe-widget-cd-ghq-repository
-    #bindkey '^r' anyframe-widget-put-history
-fi
+zstyle :bracketed-paste-magic paste-init pasteinit
+zstyle :bracketed-paste-magic paste-finish pastefinish
 
-# spaceship-prompt
-zplug "denysdovhan/spaceship-prompt", use:spaceship.zsh, from:github, as:theme
-
-if zplug check "denysdovhan/spaceship-prompt"; then
-  source $HOME/dotfiles/zsh/spaceship-prompt/sections/aws_vault.zsh
-  # source $HOME/dotfiles/zsh/spaceship-prompt/sections/k8s.zsh
-  source $HOME/dotfiles/zsh/spaceship-prompt/sections/op.zsh
-  source $HOME/dotfiles/zsh/spaceship-prompt/sections/subshell.zsh
-  # Overrides the stock dir section (shortens paths inside git worktrees)
-  source $HOME/dotfiles/zsh/spaceship-prompt/sections/dir.zsh
-fi
+bindkey '^ ' autosuggest-accept
 
 source $HOME/dotfiles/bash/aliases
 source $HOME/dotfiles/bash/functions
@@ -150,19 +102,9 @@ export HISTFILE=~/.zsh_history
 export SAVEHIST=100000
 export HISTSIZE=100000
 
-# ignore that $EDITOR is vim and use emacs bindings
-bindkey -e
-
 # Put secret stuff in here
 if [ -f ~/.localrc ]; then
   . ~/.localrc
-fi
-
-if ! zplug check --verbose; then
-    printf "Install? [y/N]: "
-    if read -q; then
-        echo; zplug install
-    fi
 fi
 
 # Emacs style
@@ -179,12 +121,9 @@ bindkey '^x^e' edit-command-line
 # Remove dups using zsh built-in
 typeset -U path
 
-zplug load # --verbose
-
 # uncomment zmodload on line 1 to use profiling
 # {
 #   echo "=== $(date) ==="
 #   zprof
 #   echo ""
 # } >> ~/zsh_profile.log
-
