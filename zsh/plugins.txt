@@ -10,7 +10,6 @@ ohmyzsh/ohmyzsh path:lib/clipboard.zsh
 ohmyzsh/ohmyzsh path:plugins/copypath
 ohmyzsh/ohmyzsh path:plugins/extract
 
-chrissicool/zsh-256color
 mafredri/zsh-async path:async.zsh
 
 # Completion is initialised here: after all fpath additions above, before fzf-tab.
