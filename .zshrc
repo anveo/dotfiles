@@ -83,6 +83,16 @@ zstyle :bracketed-paste-magic paste-finish pastefinish
 
 bindkey '^ ' autosuggest-accept
 
+# Up/Down (and Ctrl-P/Ctrl-N) search history for entries containing what is
+# already typed. Both arrow-key encodings are bound, since terminals send
+# either depending on cursor-key mode.
+bindkey '^[[A' history-substring-search-up
+bindkey '^[OA' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+bindkey '^[OB' history-substring-search-down
+bindkey '^P' history-substring-search-up
+bindkey '^N' history-substring-search-down
+
 source $HOME/dotfiles/bash/aliases
 source $HOME/dotfiles/bash/functions
 source $HOME/dotfiles/bash/env
