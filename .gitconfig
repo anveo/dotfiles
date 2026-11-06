@@ -142,3 +142,5 @@
 [rebase]
 	# stash uncommitted changes around a rebase (incl. pull --rebase) and restore after
 	autoStash = true
+[fetch]
+	prune = true
