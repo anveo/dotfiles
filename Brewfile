@@ -1,7 +1,8 @@
 tap "datadog-labs/pack", trusted: true
-tap "facebook/fb", trusted: true
+tap "facebook/fb", "https://github.com/meta/homebrew-fb.git"
 tap "getagentseal/codeburn", trusted: true
 tap "heroku/brew", trusted: true
+tap "meta/fb", "https://github.com/meta/homebrew-fb.git"
 tap "peonping/tap", "https://github.com/PeonPing/homebrew-tap", trusted: true
 # Processes triangulated solid meshes
 brew "admesh"
@@ -69,6 +70,8 @@ brew "git"
 brew "git-delta"
 # Render markdown on the CLI
 brew "glow"
+# Tool for glamorous shell scripts
+brew "gum"
 # Kubernetes package manager
 brew "helm"
 # Process manager for Procfile-based applications
@@ -97,6 +100,8 @@ brew "lazydocker"
 brew "lazygit"
 # Postgres C API library
 brew "libpq"
+# Find what models run on your hardware
+brew "llmfit"
 # Simple tool to make locally trusted development certificates
 brew "mkcert"
 # Deep clean and optimize your Mac
@@ -161,7 +166,7 @@ brew "stern"
 brew "tfenv"
 # Text interface for Git repositories
 brew "tig"
-# Official tldr client (Rust); provides the `tldr` command
+# Official tldr client written in Rust
 brew "tlrc"
 # Drop-in replacement for tmux-plugin-manager (tpm) with a TUI
 brew "tpack"
@@ -197,8 +202,6 @@ brew "zoxide"
 brew "zsh"
 # Go-based command-line wrapper for easy interaction with Datadog APIs
 brew "datadog-labs/pack/pup"
-# Companion server for automating iOS Simulators
-brew "facebook/fb/idb-companion"
 # See where your AI coding tokens go - by task, tool, model, and project
 brew "getagentseal/codeburn/codeburn"
 # Everything you need to get started with Heroku
@@ -215,6 +218,8 @@ cask "blender"
 cask "bruno"
 # E-books management software
 cask "calibre"
+# Menu bar dashboard for Claude Code sessions
+cask "claudoscope"
 # Cross-platform Text Expander written in Rust
 cask "espanso"
 # Web browser
