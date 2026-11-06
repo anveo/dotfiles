@@ -56,15 +56,15 @@ fpath=(~/.antidote/functions $fpath)
 autoload -Uz antidote
 
 # antidote turns the list into a static file of plain source lines, rebuilt only
-# when the list changes. The file holds machine-specific paths, so it lives in
-# the cache directory rather than the repo.
+# when the list changes (see zsh/build-bundle.zsh). The file holds
+# machine-specific paths, so it lives in the cache directory rather than the repo.
 zsh_plugins=$DOTFILES/zsh/plugins.txt
 zsh_bundle=${XDG_CACHE_HOME:-$HOME/.cache}/zsh/plugins.zsh
-if [[ ! $zsh_bundle -nt $zsh_plugins ]]; then
-  mkdir -p ${zsh_bundle:h}
-  antidote bundle <$zsh_plugins >|$zsh_bundle
+source $DOTFILES/zsh/build-bundle.zsh
+zsh_build_bundle $zsh_plugins $zsh_bundle
+if [[ -r $zsh_bundle ]]; then
+  source $zsh_bundle
 fi
-source $zsh_bundle
 unset zsh_plugins zsh_bundle
 
 # This speeds up pasting w/ autosuggest

@@ -52,9 +52,14 @@ on Linux and WSL.
 
 `.zshrc` compiles the list into a static file of `source` lines at
 `~/.cache/zsh/plugins.zsh` and rebuilds it whenever `zsh/plugins.txt` changes,
-so adding or removing a plugin only needs a new shell. `updatevm` runs
-`antidote update` to pull new plugin versions. If completions go stale, `fixzsh`
-clears the completion cache and the static file and restarts zsh.
+so adding or removing a plugin only needs a new shell. If a build fails (say,
+offline on first start), the shell starts without plugins and retries on the
+next one. `updatevm` runs `antidote update` to pull new plugin versions.
+
+Only a change to `zsh/plugins.txt` triggers a rebuild. After anything else that
+changes the generated file, such as a new antidote version or a different
+`$DOTFILES` path, run `fixzsh`. It clears the completion cache and the static
+file and restarts zsh; it also helps when completions go stale.
 
 ## Tmux
 
