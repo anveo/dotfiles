@@ -170,7 +170,9 @@ function tre() {
 
 # Fix issues with zsh completion:
 function fixzsh() {
-  rm ~/.zcompdump*;
+  # Without this, zsh aborts on "no matches found" before rm -f gets to run
+  [ -n "$ZSH_VERSION" ] && setopt localoptions nonomatch
+  rm -f "${ZDOTDIR:-$HOME}"/.zcompdump*;
   # rm ~/.antigen/.zcompdump*;
   # Drop the static plugin bundle too; .zshrc regenerates it on the next start
   rm -f "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/plugins.zsh";
