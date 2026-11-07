@@ -9,6 +9,8 @@
 #
 # `make check` runs it. install-ai.sh runs with HOME pointing at a temp dir, so
 # every link and edit lands there and the real ~/.claude is never touched.
+# install-ai.sh links to $HOME/dotfiles/..., which does not exist under the
+# temp HOME, so those links dangle; that is expected and not checked here.
 
 if ! command -v jq >/dev/null 2>&1; then
   echo "jq is not installed; cannot run these tests (brew install jq)"
@@ -99,6 +101,15 @@ home=$(new_home)
 ln -s "$TMPROOT/nowhere/RTK.md" "$home/.claude/RTK.md"
 check "install-ai.sh exits 0" run_install "$home"
 check "the symlink is removed" test ! -L "$home/.claude/RTK.md"
+
+echo "== worktree-guard is retired =="
+home=$(new_home)
+guard="$home/.claude/hooks/worktree-guard"
+printf '{"hooks": {"PreToolUse": [{"matcher": "Bash", "hooks": [{"type": "command", "command": "%s"}]}]}}\n' "$guard" \
+  >"$home/.claude/settings.json"
+check "install-ai.sh exits 0" run_install "$home"
+check "the worktree-guard registration is gone" settings_has "$home" \
+  "$commands | index(\"$guard\") == null"
 
 echo "== a command that is not a string =="
 home=$(new_home)
