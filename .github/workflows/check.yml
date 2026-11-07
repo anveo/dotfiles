@@ -46,11 +46,6 @@ jobs:
         if: runner.os == 'macOS'
         run: brew install fzf
 
-      # .zshrc reads the repo from ~/dotfiles (DOTFILES=$HOME/dotfiles), where
-      # every real install lives; the runner checks out elsewhere.
-      - name: Link the checkout to ~/dotfiles
-        run: ln -s "$GITHUB_WORKSPACE" ~/dotfiles
-
       # .zshrc and test/zsh_config_test.sh load antidote from ~/.antidote.
       - name: Install antidote
         run: git clone --depth=1 https://github.com/mattmc3/antidote.git ~/.antidote
