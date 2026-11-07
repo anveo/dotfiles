@@ -224,6 +224,12 @@ else
   fi
 fi
 
+echo "== claude hooks =="
+# The reverse of the rtk check: a hook that is registered but whose command is
+# gone (a renamed hook file, an uninstalled tool). See doctor-claude-hooks.sh.
+. "$ROOT/bin/doctor-claude-hooks.sh"
+check_claude_hooks "$HOME/.claude/settings.json"
+
 echo "== Brewfile =="
 if command -v brew >/dev/null 2>&1; then
   if out=$(brew bundle check --no-upgrade --verbose --file="$ROOT/Brewfile" 2>&1); then
