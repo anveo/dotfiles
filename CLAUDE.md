@@ -18,7 +18,7 @@ Neovim-specific conventions and known issues live in `nvimfiles/CLAUDE.md`.
 
 - `.zshrc` -- zsh config; plugins are managed by **antidote** (cloned to `~/.antidote`, not Homebrew, so it works on Linux/WSL). The plugin list is `zsh/plugins.txt`, compiled to a static bundle at `~/.cache/zsh/plugins.zsh` that rebuilds when the list changes. `compinit` runs once, from `zsh/compinit.zsh`, at its place in that list (after fpath plugins, before fzf-tab).
 - `Brewfile` -- Homebrew packages (includes tree-sitter and tree-sitter-cli for treesitter parser compilation)
-- `bin/doctor` -- machine health check (`make doctor`): dangling symlinks, tmux/ghostty/git config, missing alias targets, the rtk hook and RTK.md, Brewfile. FAIL exits non-zero, WARN does not. Add a check here when an install step can silently break.
+- `bin/doctor` -- machine health check (`make doctor`): dangling symlinks, tmux/ghostty/git config, missing alias targets, the rtk hook and RTK.md, Claude hook commands in `~/.claude/settings.json` that point at missing files (`bin/doctor-claude-hooks.sh`), Brewfile. FAIL exits non-zero, WARN does not. Add a check here when an install step can silently break.
 - `make check` -- repo checks: `test/syntax_check.sh` parses every tracked shell file (both bash and zsh for `bash/{aliases,functions,env,paths}` and `shell/*.sh`), then the behaviour tests
 - Monicur project (`~/code/monicur/monicur`) has a `.nvim.lua` for dadbod DATABASE_URL integration
 
