@@ -12,6 +12,9 @@ untouched.
 Retired commands:
   - worktree-guard, the old name of runway-write-guard. Left in place it
     would point at a dangling symlink and run on every Bash and Edit call.
+  - rtk's hook (`rtk hook claude`, or the `rtk-rewrite.sh` script older rtk
+    versions registered). rtk was removed from these dotfiles; its hook
+    silently rewrote commands, and with rtk uninstalled it fails on every call.
 """
 
 import json
@@ -31,7 +34,14 @@ RETIRED = [os.path.join(hooks_dir, "worktree-guard")]
 
 
 def retired(command):
-    return command in RETIRED
+    if command in RETIRED:
+        return True
+    words = (command or "").split()
+    if not words:
+        return False
+    if os.path.basename(words[0]) == "rtk":
+        return True
+    return any(os.path.basename(word) == "rtk-rewrite.sh" for word in words)
 
 
 try:

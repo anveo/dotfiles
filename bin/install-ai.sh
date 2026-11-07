@@ -18,26 +18,19 @@ for skill in $HOME/dotfiles/extras/claude/skills/*/; do
   ln -nfs "${skill%/}" "$HOME/.claude/skills/$(basename $skill)"
 done
 
-# RTK's global instructions (~/.claude/RTK.md) and the hook wiring in
-# settings.json are placed by `rtk init -g`, not by this repo. A stale symlink
-# from when RTK.md lived here would shadow the real file.
-if [ -L "$HOME/.claude/RTK.md" ] && [ ! -e "$HOME/.claude/RTK.md" ]; then
-  echo "Removing dangling $HOME/.claude/RTK.md symlink"
+# rtk was removed from these dotfiles. `rtk init -g` used to write
+# ~/.claude/RTK.md (file or, earlier, a symlink into this repo); remove
+# whatever is left. Its hook registration is removed from settings.json below.
+if [ -e "$HOME/.claude/RTK.md" ] || [ -L "$HOME/.claude/RTK.md" ]; then
+  echo "rm $HOME/.claude/RTK.md (rtk removed)"
   rm -f "$HOME/.claude/RTK.md"
-fi
-
-if command -v rtk >/dev/null 2>&1; then
-  echo "rtk init -g"
-  rtk init -g || echo "WARNING: rtk init -g failed"
-else
-  echo "WARNING: rtk not found on PATH -- install it, then run: rtk init -g"
 fi
 
 # Hooks (the Airboss pair, see docs/airboss.md). The symlink alone would leave a
 # hook inert -- settings.json is what actually runs it -- and a guard nobody
 # wired up fails exactly the way the thing it guards against fails. So this
-# registers them too, after `rtk init -g` so that rtk's own edit to the same
-# file cannot clobber them. See bin/claude-settings-hooks.py.
+# registers them too, and removes retired registrations (worktree-guard, rtk).
+# See bin/claude-settings-hooks.py.
 echo "Setting up Claude hooks..."
 mkdir -p $HOME/.claude/hooks
 for hook in runway-write-guard runway-callsign; do
