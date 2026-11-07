@@ -304,9 +304,35 @@ else
 fi
 ( cd "$clone" && wta -w --base feature TST-21-override ) >/dev/null 2>&1
 tip_is "--base overrides the start point" TST-21-override "$feature_sha"
+# git 2.48+ recreates origin/HEAD on the fetch inside `git wta`, which would
+# make this case pass without ever reaching the fallback; `never` stops that.
+git -C "$clone" config remote.origin.followRemoteHEAD never
 git -C "$clone" remote set-head origin -d >/dev/null 2>&1
 ( cd "$clone" && wta -w TST-22-nohead ) >/dev/null 2>&1
 tip_is "falls back to origin/main without origin/HEAD" TST-22-nohead "$main_sha"
+
+# A remote whose default is master, with no origin/HEAD: origin/main does not
+# exist, so wta must branch from HEAD rather than fail on an invalid ref.
+morigin="$TMPROOT/morigin"
+mclone="$TMPROOT/mclone"
+{
+  git init -q -b master "$morigin"
+  git -C "$morigin" -c user.email=t@e -c user.name=t commit -q --allow-empty -m seed
+  git clone -q "$morigin" "$mclone"
+  git -C "$mclone" config remote.origin.followRemoteHEAD never
+  git -C "$mclone" remote set-head origin -d
+} >/dev/null 2>&1
+head_sha=$(git -C "$mclone" rev-parse HEAD)
+if ( cd "$mclone" && wta -w TST-23-master ) >/dev/null 2>&1; then
+  got=$(git -C "$mclone" rev-parse TST-23-master 2>/dev/null)
+  if [ "$got" = "$head_sha" ]; then
+    ok "with neither origin/HEAD nor origin/main, branches from HEAD"
+  else
+    bad "with neither origin/HEAD nor origin/main, branches from HEAD (tip $got)"
+  fi
+else
+  bad "with neither origin/HEAD nor origin/main, wta should still succeed"
+fi
 
 echo
 echo "passed $PASS, failed $FAIL"
