@@ -150,8 +150,6 @@ brew "qcachegrind"
 brew "rdap"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
-# CLI proxy to minimize LLM token consumption
-brew "rtk"
 # Substitute for classic 'make' tool with autoconf/automake functionality
 brew "scons"
 # Static analysis and lint tool, for (ba)sh scripts

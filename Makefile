@@ -28,5 +28,7 @@ check:
 	python3 extras/claude/hooks/runway-callsign-test
 	@echo "doctor: Claude hook commands..."
 	bash test/doctor_claude_hooks_test.sh
+	@echo "install-ai: Claude settings..."
+	bash test/install_ai_settings_test.sh
 	@echo "zsh config..."
 	zsh test/zsh_config_test.sh
