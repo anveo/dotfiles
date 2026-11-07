@@ -149,8 +149,12 @@ check_claude_hooks() {
   # The second streams records as NUL-terminated pairs: the events, then the
   # command. Raw strings, not @tsv, so a backslash, tab or newline in a command
   # arrives as itself. $(...) would drop the NULs, hence the process
-  # substitution. A command is prefixed "s" when it is a usable string, or "x"
-  # plus its JSON when it is not (not a string, or holding a NUL).
+  # substitution, which also loses jq's exit status; that is fine, because the
+  # first pass already ran the same filter on the same file. A command is
+  # prefixed "s" when it is a usable string, or "x" plus its JSON when it is
+  # not (not a string, or holding a NUL). The NUL test uses explode, not
+  # contains: jq 1.6's string contains is strstr, which reads "\u0000" as an
+  # empty needle and matches every string.
   while IFS= read -r -d '' events && IFS= read -r -d '' cmd; do
     case "$cmd" in
       x*)
@@ -166,7 +170,7 @@ check_claude_hooks() {
       | group_by(.command)[]
       | (map(.event) | unique | join(", ")), "\u0000",
         (.[0].command
-         | if type == "string" and (contains("\u0000") | not)
+         | if type == "string" and (explode | index([0]) | not)
            then "s" + . else "x" + tojson end), "\u0000"
     ' "$settings")
 }

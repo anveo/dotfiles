@@ -174,11 +174,15 @@ settings "$f" '{"Stop": [{"hooks": [
   {"type": "command", "command": null},
   {"type": "command", "command": 42},
   {"type": "command", "command": {"a": 1}},
+  {"type": "command", "command": "'"$hooks"'/gone\u0000x"},
   {"type": "command", "command": "'"$hooks"'/present"}]}]}'
 out=$(run_check "$f")
 expect "null WARNs" "$out" WARN "not a usable string (null)"
 expect "a number WARNs" "$out" WARN "not a usable string (42)"
 expect "an object WARNs" "$out" WARN 'not a usable string ({"a":1})'
+expect "a string holding a NUL WARNs" "$out" WARN 'not a usable string (' 'gone\u0000x'
+# On a jq whose NUL test matched every string (1.6's contains), this hook
+# would WARN too instead of being checked.
 expect "the other hooks are still checked" "$out" OK "$hooks/present exists"
 expect_none "a non-string is not a FAIL" "$out" FAIL
 
