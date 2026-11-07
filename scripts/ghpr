@@ -20,8 +20,9 @@ KEY=$(echo "$BRANCH" | grep -oiE '[a-z]+-[0-9]+' | head -1 | tr '[:lower:]' '[:u
 # Strip user/project prefix (e.g. anveo/mon-145-feature → mon-145-feature)
 SLUG="${BRANCH##*/}"
 
-# Convert hyphens to spaces to get the description
-DESC=$(echo "$SLUG" | tr '-' ' ')
+# Convert hyphens to spaces to get the description. Lowercased so the key strip
+# below matches DOT-66-... as well as dot-66-...; title-casing restores case.
+DESC=$(echo "$SLUG" | tr '-' ' ' | tr '[:upper:]' '[:lower:]')
 
 if [ -n "$KEY" ]; then
   KEY_LETTERS=$(echo "$KEY" | grep -oE '[A-Z]+' | tr '[:upper:]' '[:lower:]')
