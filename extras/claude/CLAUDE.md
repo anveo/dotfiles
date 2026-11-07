@@ -30,8 +30,6 @@ I auto-allow commands by **stable prefix**, so run them in a form that can be al
 - **Prefer dedicated tools over the shell** for reading/searching: Read / Grep / Glob instead of `cat` / `grep` / `find` / `ls` / `sed` / `head` / `tail`. If Grep/Glob aren't available, run a single bare `grep`/`rg`.
 - **Use canonical, stable prefixes.** Don't insert inline env assignments mid-prefix (`env RAILS_ENV=test bundle …`). RSpec already runs in the test env; isolate the rare runner-in-test case.
 - **No `echo` separators** between steps, and **no heredocs** (`cat <<EOF`) — create scratch files with the Write tool, then run them in one command.
-- **rtk rewrites commands.** The rtk hook (see RTK.md below) may run `git status` as `rtk git status`, so allowlist entries match the `rtk <cmd>` form. Where RTK.md says to batch related commands into one call, these rules win: one command per call.
-
 ## Writing style for shared artifacts
 
 When writing PR descriptions, Linear tickets, Notion docs, or similar artifacts, write for a dual audience of humans and AI agents. Keep load-bearing facts explicit (exact metric names, commands, IDs, constraints — things AI can't infer), but carry them in flowing prose humans can scan. Clear, concise, informative, low noise. Prefer tight paragraphs over exhaustive headers/tables/bullets; humans infer well and can ask follow-ups.
@@ -39,6 +37,3 @@ When writing PR descriptions, Linear tickets, Notion docs, or similar artifacts,
 Pitch it at a mid-level engineer and keep it simple (KISS). Write it so the author can read it cold six months later and know exactly what changed and why — self-contained, no reliance on context that lives only in a conversation or someone's head. Briefly say why the change matters for the business.
 
 Write out full terms on first use with the abbreviation/acronym in parentheses — e.g. "Continuous Integration (CI)" — then use the abbreviation from there on.
-
-
-@RTK.md

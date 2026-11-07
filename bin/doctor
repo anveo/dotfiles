@@ -201,32 +201,9 @@ else
   fi
 fi
 
-echo "== rtk =="
-# `rtk init -g` (run by install-ai.sh) writes ~/.claude/RTK.md and registers
-# its Bash hook in the untracked ~/.claude/settings.json. CLAUDE.md imports
-# @RTK.md; if either piece is missing, the import loads nothing and the hook
-# does not run, and neither says so.
-if ! command -v rtk >/dev/null 2>&1; then
-  skip "rtk hook (rtk not installed; CLAUDE.md's @RTK.md import loads nothing)"
-else
-  if [ -f "$HOME/.claude/RTK.md" ]; then
-    ok "~/.claude/RTK.md exists"
-  else
-    warn "~/.claude/RTK.md is missing, so CLAUDE.md's @RTK.md import loads nothing (run make ai)"
-  fi
-  settings="$HOME/.claude/settings.json"
-  if [ ! -f "$settings" ]; then
-    warn "$settings does not exist, so the rtk hook could not be checked (run make ai)"
-  elif grep -q '"rtk hook claude"' "$settings"; then
-    ok "rtk hook is registered in $settings"
-  else
-    warn "rtk hook is not registered in $settings (run make ai)"
-  fi
-fi
-
 echo "== claude hooks =="
-# The reverse of the rtk check: a hook that is registered but whose command is
-# gone (a renamed hook file, an uninstalled tool). See doctor-claude-hooks.sh.
+# A hook that is registered but whose command is gone (a renamed hook file, an
+# uninstalled tool). See doctor-claude-hooks.sh.
 . "$ROOT/bin/doctor-claude-hooks.sh"
 check_claude_hooks "$HOME/.claude/settings.json"
 
