@@ -127,7 +127,7 @@ expect "wtr rejects a bad --db value"          1 stderr "--db must be keep or dr
 expect "wtr rejects a flag after the branch"   1 stderr "flags go before the branch"           wtr br --db drop
 
 echo "== wta: argument parsing (the same cases, deliberately repeated) =="
-expect "wta --help exits 0, usage on stdout"   0 stdout "usage: wta [-w] [--db reuse|clone] <branch>" wta --help
+expect "wta --help exits 0, usage on stdout"   0 stdout "usage: wta [-w] [--db reuse|clone] [--base <ref>] <branch>" wta --help
 expect "wta -h exits 0, usage on stdout"       0 stdout "usage: wta"                                  wta -h
 expect "wta with no args exits 1"              1 stderr "usage: wta"                                  wta
 expect "wta rejects an unknown flag"           1 stderr "unknown option --bogus"                      wta --bogus br
@@ -135,6 +135,8 @@ expect "wta rejects --db with no value"        1 stderr "--db needs a value"    
 expect "wta rejects an empty --db="            1 stderr "--db needs a value"                          wta --db= br
 expect "wta rejects a bad --db value"          1 stderr "--db must be reuse or clone (got 'x')"       wta --db x br
 expect "wta rejects a flag after the branch"   1 stderr "flags go before the branch"                  wta br --db clone
+expect "wta rejects --base with no value"      1 stderr "--base needs a value"                        wta --base
+expect "wta rejects an empty --base="          1 stderr "--base needs a value"                        wta --base= br
 
 echo "== wtr: relay to bin/worktree-teardown =="
 wtr_relay() { # name id expected-log flag...
@@ -241,6 +243,42 @@ if ( cd "$repo" && wta -w TST-noprov ) >/dev/null 2>&1; then
 else
   bad "wta -w in a repo with nothing to provision should exit 0"
 fi
+
+echo "== wta: start point =="
+# A clone whose checked-out branch is ahead of origin/main: the new worktree
+# must not inherit that unmerged work.
+origin=$(make_repo bo worktree-setup none)
+clone="$TMPROOT/clone"
+git clone -q "$origin" "$clone" >/dev/null 2>&1
+{
+  git -C "$clone" config user.email test@example.com
+  git -C "$clone" config user.name Test
+  git -C "$clone" switch -q -c feature
+  echo wip > "$clone/wip"
+  git -C "$clone" add wip
+  git -C "$clone" commit -qm wip
+} >/dev/null 2>&1
+main_sha=$(git -C "$clone" rev-parse origin/main)
+feature_sha=$(git -C "$clone" rev-parse feature)
+
+tip_is() { # name branch expected-sha
+  local got
+  got=$(git -C "$clone" rev-parse "$2" 2>/dev/null)
+  if [ "$got" = "$3" ]; then ok "$1"; else bad "$1 (tip $got, wanted $3)"; fi
+}
+
+( cd "$clone" && wta -w TST-20-default ) >/dev/null 2>&1
+tip_is "branches from origin/HEAD, not the checked-out branch" TST-20-default "$main_sha"
+if [ -z "$(git -C "$clone" config branch.TST-20-default.merge)" ]; then
+  ok "the new branch does not track origin/main"
+else
+  bad "the new branch tracks $(git -C "$clone" config branch.TST-20-default.merge)"
+fi
+( cd "$clone" && wta -w --base feature TST-21-override ) >/dev/null 2>&1
+tip_is "--base overrides the start point" TST-21-override "$feature_sha"
+git -C "$clone" remote set-head origin -d >/dev/null 2>&1
+( cd "$clone" && wta -w TST-22-nohead ) >/dev/null 2>&1
+tip_is "falls back to origin/main without origin/HEAD" TST-22-nohead "$main_sha"
 
 echo
 echo "passed $PASS, failed $FAIL"

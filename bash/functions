@@ -603,8 +603,8 @@ adb_photo() {
 # where it is -- the form /dispatch uses, since renaming the current window
 # once per issue would leave you cd'd in whichever worktree came last.
 wta() {
-  local new_window=0 db_mode=""
-  local usage='usage: wta [-w] [--db reuse|clone] <branch>'
+  local new_window=0 db_mode="" base=""
+  local usage='usage: wta [-w] [--db reuse|clone] [--base <ref>] <branch>'
 
   # A loop rather than a single case: there are three flags now, and the one
   # this forwards to (worktree-setup) parses the same way, so the two read
@@ -625,11 +625,24 @@ wta() {
           echo "wta: --db needs a value" >&2; echo "$usage" >&2; return 1
         fi
         shift ;;
+      --base)
+        if [[ $# -lt 2 || -z "$2" ]]; then
+          echo "wta: --base needs a value" >&2; echo "$usage" >&2; return 1
+        fi
+        base=$2; shift 2 ;;
+      --base=*)
+        base=${1#--base=}
+        if [[ -z "$base" ]]; then
+          echo "wta: --base needs a value" >&2; echo "$usage" >&2; return 1
+        fi
+        shift ;;
       -h|--help)
         echo "$usage"
         echo "  -w      provision in a new detached tmux window, leaving this shell put."
         echo "  --db    database mode for repos with a bin/worktree-setup; skips its"
         echo "          prompt. Ignored on a re-run, which keeps the mode already set."
+        echo "  --base  start point for the new branch. Default: the freshly fetched"
+        echo "          origin/HEAD (else origin/main); HEAD in a repo with no origin."
         return 0 ;;
       # Reject unknown flags rather than treating them as a branch name: an agent
       # running against a stale copy of this function would otherwise try to
@@ -668,7 +681,7 @@ wta() {
   local root dest f ticket
   root=$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)") || return
 
-  git wta "$1" || return
+  git wta "$1" ${base:+"$base"} || return
   dest="$root.worktrees/$1"
 
   # Branches are named per Linear's convention (app-230-fix-binstubs, APP-230),
