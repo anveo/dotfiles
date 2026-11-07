@@ -128,6 +128,20 @@ expect "a double-quoted value with a space is skipped whole" "$out" FAIL "$hooks
 expect "several assignments, single-quoted, are skipped" "$out" FAIL "$hooks/gone-g"
 expect "a word that is not a shell name is not an assignment" "$out" WARN "a/b=c is a relative path"
 
+echo "== scripts run by an interpreter =="
+f="$TMPROOT/interp.json"
+settings "$f" '{"PreToolUse": [{"hooks": [
+  {"type": "command", "command": "/bin/sh -e ~/.claude/hooks/gone.sh --flag"},
+  {"type": "command", "command": "sh ~/.claude/hooks/not-executable"},
+  {"type": "command", "command": "sh -c \"exit 0\""},
+  {"type": "command", "command": "sh hook.sh"}]}]}'
+out=$(run_check "$f")
+expect "a missing script FAILs, naming the event and runner" "$out" FAIL PreToolUse "$hooks/gone.sh (run by sh) is missing"
+expect "the interpreter itself is still checked" "$out" OK "/bin/sh exists"
+expect "a script need not be executable" "$out" OK "$hooks/not-executable (run by sh) exists"
+expect "a relative script WARNs as unverifiable" "$out" WARN "hook.sh (run by sh) is a relative path"
+expect_none "inline code (-c) has no script to check" "$(printf '%s\n' "$out" | grep 'exit')" WARN
+
 echo "== bare commands =="
 f="$TMPROOT/bare.json"
 settings "$f" '{"PreToolUse": [{"matcher": "Bash", "hooks": [

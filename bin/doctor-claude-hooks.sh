@@ -7,6 +7,12 @@
 # call, and nothing on disk is left dangling to say so: once the symlink is
 # deleted, the stale command string in settings.json is the only trace.
 #
+# When the command is an interpreter (`python3 ~/hook.py`, `bash x.sh`), the
+# script it runs is checked too: the interpreter outliving its script is the
+# same stale-string failure. Only the first non-option argument is taken as the
+# script, so an option that takes a value (`python3 -W ignore x.py`) is misread
+# as the script; that reports a relative path it could not check, not a FAIL.
+#
 # Bare commands are looked up on doctor's PATH, which is the terminal's. Claude
 # Code started from the Dock may run hooks with a shorter PATH.
 #
@@ -38,10 +44,11 @@ _hook_expand() {
 }
 
 # Sets _hook_prog to the program a hook command runs, after any leading
-# VAR=value assignments. Every pass consumes input, so it always terminates.
+# VAR=value assignments, and _hook_script to the script it hands an
+# interpreter, if any. Every pass consumes input, so it always terminates.
 _hook_command_words() {
   local cmd=$1 name rest
-  _hook_prog=
+  _hook_prog= _hook_script=
   while :; do
     cmd="${cmd#"${cmd%%[![:space:]]*}"}"
     name=${cmd%%=*}
@@ -58,30 +65,54 @@ _hook_command_words() {
   done
   _hook_split "$cmd"
   _hook_prog=$(_hook_expand "$_hw_word")
+  # The options after which there is no script file: inline code, a module.
+  # (-e is inline code to perl, node and ruby, but errexit to a shell.)
+  local inline
+  case "${_hook_prog##*/}" in
+    sh|bash|zsh|dash|ksh)  inline=" -c " ;;
+    python|python[0-9]*)   inline=" -c -m " ;;
+    node|ruby|perl)        inline=" -e -E -p " ;;
+    *) return 0 ;;
+  esac
+  rest=$_hw_rest
+  while :; do
+    _hook_split "$rest"
+    case "$_hw_word" in
+      ''|-) break ;;  # end of line, or stdin
+      -*)
+        case "$inline" in *" $_hw_word "*) break ;; esac
+        rest=$_hw_rest ;;
+      *) _hook_script=$(_hook_expand "$_hw_word"); break ;;
+    esac
+  done
 }
 
-# Report on the program a hook runs.
-_hook_report() { # events path
-  local events=$1 path=$2
+# Report on one path a hook needs. With a runner, the path is a script that
+# runner reads, so it only has to be a file; without one, it is the program.
+_hook_report() { # events path [runner]
+  local events=$1 path=$2 runner=$3 label=$2
+  [ -n "$runner" ] && label="$path (run by ${runner##*/})"
   case "$path" in
     '')
       warn "$events: a hook has an empty command" ;;
     *'$'*)
-      warn "$events: $path uses a variable, so it could not be checked" ;;
+      warn "$events: $label uses a variable, so it could not be checked" ;;
     /*)
       if [ ! -e "$path" ]; then
-        bad "$events: $path is missing"
+        bad "$events: $label is missing"
       elif [ ! -f "$path" ]; then
-        bad "$events: $path is not a file"
-      elif [ ! -x "$path" ]; then
-        bad "$events: $path is not executable"
+        bad "$events: $label is not a file"
+      elif [ -z "$runner" ] && [ ! -x "$path" ]; then
+        bad "$events: $label is not executable"
       else
-        ok "$path exists ($events)"
+        ok "$label exists ($events)"
       fi ;;
     */*)
-      warn "$events: $path is a relative path, so it could not be checked" ;;
+      warn "$events: $label is a relative path, so it could not be checked" ;;
     *)
-      if command -v "$path" >/dev/null 2>&1; then
+      if [ -n "$runner" ]; then
+        warn "$events: $label is a relative path, so it could not be checked"
+      elif command -v "$path" >/dev/null 2>&1; then
         ok "$path is on PATH ($events)"
       else
         warn "$events: $path is not on PATH"
@@ -117,5 +148,8 @@ check_claude_hooks() {
   while IFS=$'\t' read -r events cmd; do
     _hook_command_words "$cmd"
     _hook_report "$events" "$_hook_prog"
+    if [ -n "$_hook_script" ]; then
+      _hook_report "$events" "$_hook_script" "$_hook_prog"
+    fi
   done <<<"$rows"
 }
