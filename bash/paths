@@ -1,4 +1,4 @@
-export PATH="$HOME/dotfiles/scripts:$PATH"
+export PATH="${DOTFILES:-$HOME/dotfiles}/scripts:$PATH"
 
 # homebrew needs /usr/local/sbin and /usr/local/share/python
 if [ `uname` = 'Darwin' ]; then

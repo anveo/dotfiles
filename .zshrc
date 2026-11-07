@@ -10,7 +10,9 @@ if [ -n "$TMUX" ]; then
   fi
 fi
 
-export DOTFILES=$HOME/dotfiles
+# A DOTFILES already in the environment wins, so a test (or a worktree) can
+# point the whole config at another checkout.
+export DOTFILES=${DOTFILES:-$HOME/dotfiles}
 export XDG_CONFIG_HOME="$HOME/.config"
 
 # Put Homebrew on PATH first: antidote calls `zsh` by name, and on Linux/WSL
@@ -87,10 +89,10 @@ bindkey '^[OB' history-substring-search-down
 bindkey '^P' history-substring-search-up
 bindkey '^N' history-substring-search-down
 
-source $HOME/dotfiles/bash/aliases
-source $HOME/dotfiles/bash/functions
-source $HOME/dotfiles/bash/env
-source $HOME/dotfiles/bash/paths
+source $DOTFILES/bash/aliases
+source $DOTFILES/bash/functions
+source $DOTFILES/bash/env
+source $DOTFILES/bash/paths
 
 for file in $DOTFILES/shell/*.sh; do
   [ -r "$file" ] && [ -f "$file" ] && source "$file";
