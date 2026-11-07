@@ -1,0 +1,37 @@
+name: Check
+
+# make check on Linux and macOS: every tracked shell file parses, and the
+# behaviour tests pass. Claude reviews read this result (see claude.yml).
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: check-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install zsh
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y zsh
+
+      # .zshrc and test/zsh_config_test.sh load antidote from ~/.antidote.
+      - name: Install antidote
+        run: git clone --depth=1 https://github.com/mattmc3/antidote.git ~/.antidote
+
+      - name: make check
+        run: make check
