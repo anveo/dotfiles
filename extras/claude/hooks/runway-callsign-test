@@ -1,0 +1,84 @@
+#!/usr/bin/env python3
+"""Cases for runway-callsign, fed sample SessionStart events.
+
+Fixtures are real directories in a temp dir -- a runway (marker present), a
+plain worktree (no marker), and a main checkout -- since the hook finds the
+marker through the worktree's `.git` file. Nothing outside the temp dir is
+touched.
+
+Run it directly: ./runway-callsign-test
+"""
+
+import json
+import os
+import shutil
+import subprocess
+import sys
+import tempfile
+
+HOOK = os.path.join(os.path.dirname(os.path.abspath(__file__)), "runway-callsign")
+
+TMP = os.path.realpath(tempfile.mkdtemp())
+MAIN = os.path.join(TMP, "repo")
+TREE = os.path.join(TMP, "repo.worktrees", "DOT-99-feature-alpha")
+PLAIN = os.path.join(TMP, "repo.worktrees", "scratch")
+OUTSIDE = os.path.join(TMP, "elsewhere")
+
+
+def worktree(path, name, sign=None):
+    gitdir = os.path.join(MAIN, ".git", "worktrees", name)
+    os.makedirs(gitdir, exist_ok=True)
+    os.makedirs(os.path.join(path, "app", "models"), exist_ok=True)
+    with open(os.path.join(path, ".git"), "w", encoding="utf-8") as handle:
+        handle.write(f"gitdir: {gitdir}\n")
+    if sign:
+        with open(os.path.join(gitdir, "callsign"), "w", encoding="utf-8") as handle:
+            handle.write(f"future=ignored\ncallsign={sign}\n")
+
+
+os.makedirs(os.path.join(MAIN, ".git"))
+os.makedirs(OUTSIDE)
+worktree(TREE, "DOT-99-feature-alpha", "DOT-99")
+worktree(PLAIN, "scratch")
+
+CASES = [
+    # (label, event, expected sessionTitle or None)
+    ("unnamed session at a runway's root is named for it",
+     {"hook_event_name": "SessionStart", "source": "startup", "cwd": TREE}, "DOT-99"),
+    ("unnamed session in a runway subdirectory is named for it",
+     {"hook_event_name": "SessionStart", "source": "resume", "cwd": f"{TREE}/app/models"}, "DOT-99"),
+    ("a name already set is left alone",
+     {"hook_event_name": "SessionStart", "source": "startup", "cwd": TREE,
+      "session_title": "my-name"}, None),
+    ("a plain worktree is not a runway",
+     {"hook_event_name": "SessionStart", "source": "startup", "cwd": PLAIN}, None),
+    ("the main checkout is not a runway",
+     {"hook_event_name": "SessionStart", "source": "startup", "cwd": MAIN}, None),
+    ("outside any repo, nothing happens",
+     {"hook_event_name": "SessionStart", "source": "startup", "cwd": OUTSIDE}, None),
+]
+
+
+def run(stdin):
+    proc = subprocess.run([HOOK], input=stdin, capture_output=True, text=True, check=False)
+    out = proc.stdout.strip()
+    title = json.loads(out)["hookSpecificOutput"].get("sessionTitle") if out else None
+    return proc.returncode, title
+
+
+failures = 0
+for label, event, want in CASES:
+    rc, got = run(json.dumps(event))
+    ok = rc == 0 and got == want
+    failures += not ok
+    print(f"{'ok  ' if ok else 'FAIL'}  {label}  (want {want!r}, got {got!r}, exit {rc})")
+
+rc, got = run("not json")
+ok = rc == 0 and got is None
+failures += not ok
+print(f"{'ok  ' if ok else 'FAIL'}  malformed event is ignored  (exit {rc})")
+
+shutil.rmtree(TMP)
+total = len(CASES) + 1
+print(f"\n{total - failures}/{total} passed")
+sys.exit(1 if failures else 0)

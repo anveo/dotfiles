@@ -1,0 +1,86 @@
+#!/usr/bin/env python3
+"""SessionStart hook: name a session after the runway it starts on.
+
+A runway's callsign (`DOT-99`) is its tmux window name and the address other
+sessions message its pilot by (see docs/airboss.md). `wta -w` already starts its
+session with `claude --name <callsign>`, but a session started by hand in the
+same worktree would otherwise get a generic `<dir>-<2 chars>` name, and
+`SendMessage(to: "DOT-99")` would miss it.
+
+So: if the session has no custom name yet (the event's `session_title` is
+empty) and its cwd is inside a worktree carrying a callsign marker, set the
+title to that callsign. Anywhere else, do nothing. A name set with `--name` or
+`/rename` always wins.
+
+Known limits: `EnterWorktree` mid-session does not fire SessionStart, and two
+sessions on one runway share the name (ListAgents disambiguates with a short ID).
+Claude Code applies `sessionTitle` on startup, resume and fork only.
+
+Contract: SessionStart JSON on stdin; JSON on stdout only when naming.
+Registered in ~/.claude/settings.json by bin/install-ai.sh.
+"""
+
+import json
+import os
+import sys
+
+# Duplicated from runway-write-guard rather than shared: both are symlinked
+# into ~/.claude/hooks as single files, and a sibling module would need
+# realpath gymnastics to import for the sake of fifteen lines.
+
+
+def callsign(root):
+    """The callsign in a worktree's marker, or None when it is not a runway."""
+    try:
+        with open(os.path.join(root, ".git"), encoding="utf-8") as handle:
+            line = handle.readline().strip()
+    except OSError:
+        return None
+    if not line.startswith("gitdir:"):
+        return None
+    gitdir = os.path.join(root, line[len("gitdir:"):].strip())
+    try:
+        with open(os.path.join(gitdir, "callsign"), encoding="utf-8") as handle:
+            for entry in handle:
+                key, _, value = entry.strip().partition("=")
+                if key == "callsign" and value:
+                    return value
+    except OSError:
+        pass
+    return None
+
+
+def worktree_root(path):
+    """Nearest ancestor of path (inclusive) holding a `.git` entry."""
+    path = os.path.abspath(path)
+    while True:
+        if os.path.lexists(os.path.join(path, ".git")):
+            return path
+        parent = os.path.dirname(path)
+        if parent == path:
+            return None
+        path = parent
+
+
+def main():
+    try:
+        event = json.load(sys.stdin)
+    except (json.JSONDecodeError, ValueError):
+        return  # Never let a malformed event disturb the session.
+
+    if event.get("session_title"):
+        return  # Named already; that choice wins.
+
+    root = worktree_root(event.get("cwd") or os.getcwd())
+    sign = callsign(root) if root else None
+    if not sign:
+        return
+
+    json.dump(
+        {"hookSpecificOutput": {"hookEventName": "SessionStart", "sessionTitle": sign}},
+        sys.stdout,
+    )
+
+
+if __name__ == "__main__":
+    main()

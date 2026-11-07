@@ -23,5 +23,7 @@ check:
 	bash test/worktree_functions_test.sh
 	@echo "Behaviour (zsh)..."
 	zsh test/worktree_functions_test.sh
+	@echo "Claude hooks..."
+	python3 extras/claude/hooks/runway-callsign-test
 	@echo "zsh config..."
 	zsh test/zsh_config_test.sh
