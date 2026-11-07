@@ -690,6 +690,14 @@ wta() {
   ticket=$(printf '%s' "$1" | sed -n 's|^\([A-Za-z][A-Za-z0-9]*-[0-9][0-9]*\).*|\1|p' | tr '[:lower:]' '[:upper:]')
   [[ -z "$ticket" ]] && ticket="$1"
 
+  # The callsign marker: what makes this worktree a runway (see
+  # docs/airboss.md). It goes in the worktree's private git dir, so it never
+  # shows in `git status`, cannot be committed, and `git worktree remove` takes
+  # it along. key=value lines; readers ignore keys they do not know. Everything
+  # else -- the write guard, the session-naming hook -- reads the callsign from
+  # here rather than re-deriving it from the branch.
+  printf 'callsign=%s\n' "$ticket" > "$(git -C "$dest" rev-parse --absolute-git-dir)/callsign" || return
+
   # Gitignored files the worktree still needs: `git worktree add` only brings
   # tracked files, so secrets and machine-local config get left behind. Copy
   # them from the main worktree. Add to this list as new ones show up; the

@@ -244,6 +244,32 @@ else
   bad "wta -w in a repo with nothing to provision should exit 0"
 fi
 
+echo "== wta: the callsign marker =="
+# The marker is what makes a worktree a runway; the write guard and the
+# session-naming hook both read it. It lives in the worktree's private git dir.
+marker_is() { # name repo branch expected-callsign
+  local name=$1 repo=$2 branch=$3 want=$4
+  local dest="$repo.worktrees/$branch" got
+  got=$(sed -n 's/^callsign=//p' "$(git -C "$dest" rev-parse --absolute-git-dir 2>/dev/null)/callsign" 2>/dev/null)
+  if [ "$got" = "$want" ]; then ok "$name"; else bad "$name (callsign '$got', wanted '$want')"; fi
+}
+
+repo=$(make_repo mk1 worktree-setup none)
+( cd "$repo" && wta -w TST-99-feature-alpha ) >/dev/null 2>&1
+marker_is "wta -w writes the ticket as the callsign" "$repo" TST-99-feature-alpha TST-99
+( cd "$repo" && wta -w tst-7-lowercase ) >/dev/null 2>&1
+marker_is "a lowercase ticket is upcased" "$repo" tst-7-lowercase TST-7
+( cd "$repo" && wta -w scratch ) >/dev/null 2>&1
+marker_is "a branch with no ticket is its own callsign" "$repo" scratch scratch
+# Plain wta cds the shell into the worktree, so a subshell keeps this one put.
+( cd "$repo" && wta TST-8-plain ) >/dev/null 2>&1
+marker_is "plain wta (no -w) writes it too" "$repo" TST-8-plain TST-8
+if git -C "$repo.worktrees/TST-99-feature-alpha" status --porcelain | grep -q callsign; then
+  bad "the marker shows in git status"
+else
+  ok "the marker stays out of git status"
+fi
+
 echo "== wta: start point =="
 # A clone whose checked-out branch is ahead of origin/main: the new worktree
 # must not inherit that unmerged work.
