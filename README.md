@@ -28,6 +28,19 @@ chsh -s $(which zsh)
 curl -fsSL https://claude.ai/install.sh | bash
 ```
 
+## Health checks
+
+`make doctor` checks this machine's install: dangling symlinks where the install
+scripts put links, `.tmux.conf` loaded into a throwaway tmux server,
+`ghostty +validate-config`, git config that names missing files or tools,
+aliases whose target is not installed, and `brew bundle check`. FAIL lines exit
+non-zero; WARN lines (aliases, Brewfile) do not, since a missing optional tool
+is often deliberate. Run it after `make install`, a new machine, or a big
+cleanup.
+
+`make check` checks the repo itself: every tracked shell file parses in the
+shell(s) that source it (`test/syntax_check.sh`), plus the behaviour tests.
+
 ## Neovim
 
 Plugins auto-install on first launch via lazy.nvim. Treesitter parsers
