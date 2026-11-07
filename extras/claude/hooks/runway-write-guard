@@ -1,17 +1,25 @@
 #!/usr/bin/env python3
-"""PreToolUse guard: keep a session out of somebody else's worktree.
+"""PreToolUse guard: keep a session off somebody else's runway.
 
-`wta -w` gives every dispatched ticket its own worktree and its own tmux window,
-and the point of that is one Claude session per runway. Nothing enforced it: the
-dispatching session, sitting in the main checkout, could reach into a worktree
-with `git -C` or `cd <worktree> && ...` and implement the whole ticket from the
-wrong place. That session resolves the wrong .envrc (ports, hostname, database),
-runs against whatever branch the main checkout has checked out, and has to
-re-specify the path on every single call -- one omission and the edit or the
-commit lands in the main checkout instead.
+A runway is a worktree that `wta` prepared: its own tmux window, provisioning,
+and a pilot session named for its callsign (see docs/airboss.md). What marks
+one is the callsign file `wta` writes into the worktree's private git dir,
+`<repo>/.git/worktrees/<name>/callsign`. The point of a runway is one Claude
+session per ticket. Without a guard, the tower -- the dispatching session in
+the main checkout -- could reach into a runway with `git -C` or
+`cd <worktree> && ...` and implement the whole ticket from the wrong place. That
+session resolves the wrong .envrc (ports, hostname, database), runs against
+whatever branch the main checkout has checked out, and has to re-specify the
+path on every single call -- one omission and the edit or the commit lands in
+the main checkout instead.
 
-So: if a tool call names a path inside `*.worktrees/<name>/` and this session's
-cwd is not inside that same worktree, deny it and say where the work belongs.
+So: if a tool call names a path inside a runway and this session's cwd is not
+inside that same runway, deny it and name the session the runway belongs to.
+
+Only runways. A plain `git worktree add` checkout has no window, ports, database
+or pilot, so there is nothing to protect and no one to hand the work to; a
+session that wants an isolated branch there is left alone. Worktrees made
+before the marker existed are not runways either -- nothing backfills them.
 
 Reads stay allowed. `dispatch` legitimately reads a worktree's code from the main
 checkout while briefing, and its per-issue subagents inherit that cwd. What gets
@@ -29,14 +37,16 @@ import os
 import re
 import sys
 
-# `~/code/repo.worktrees/feature-alpha` -> that whole prefix. Stops at
-# the branch segment: everything below it belongs to the same worktree.
+# A whole path into `~/code/repo.worktrees/...`. Which prefix of it is the
+# worktree is not decided here: a branch may contain slashes
+# (`anveo/dot-98-x` lives at `repo.worktrees/anveo/dot-98-x`), so the root is
+# found on disk by worktree_root(), not by counting segments.
 #
 # Anchored on `/` or `~/` and refusing glob and placeholder characters, so that
 # prose about the convention is not mistaken for a path into a real worktree.
 # Writing documentation that mentions `*.worktrees/<branch>/` -- or a hook that
 # matches it -- must not trip the hook.
-WORKTREE_RE = re.compile(r"""(?:/|~/)[^\s'"|;&()*<>`]*\.worktrees/[^\s'"|;&()/*<>`]+""")
+WORKTREE_RE = re.compile(r"""(?:/|~/)[^\s'"|;&()*<>`]*\.worktrees/[^\s'"|;&()*<>`]+""")
 
 # Bash commands that write to the tree, change git state, or run the project's
 # own tooling. Matched case-sensitively against the whole command string, so a
@@ -91,12 +101,31 @@ def allow():
     sys.exit(0)
 
 
+def worktree_root(path):
+    """The worktree a path under `<repo>.worktrees/` belongs to, or None.
+
+    Walks up from the path to the nearest directory holding a `.git` entry,
+    stopping before the `.worktrees` directory itself. The path need not exist
+    (a Write creates it); its ancestors are what get checked.
+    """
+    marker = ".worktrees" + os.sep
+    cut = path.find(marker)
+    if cut < 0:
+        return None
+    floor = path[: cut + len(".worktrees")]
+    while len(path) > len(floor):
+        if os.path.lexists(os.path.join(path, ".git")):
+            return path
+        path = os.path.dirname(path)
+    return None
+
+
 def worktrees_named(text):
     """Distinct worktree roots referenced by a string, as absolute paths."""
     roots = []
     for match in WORKTREE_RE.findall(text or ""):
-        root = os.path.abspath(os.path.expanduser(match))
-        if root not in roots:
+        root = worktree_root(os.path.abspath(os.path.expanduser(match)))
+        if root and root not in roots:
             roots.append(root)
     return roots
 
@@ -105,16 +134,34 @@ def inside(path, root):
     return path == root or path.startswith(root + os.sep)
 
 
-def window_name(root):
-    """The tmux window `wta` names for a worktree.
+def callsign(root):
+    """The runway's callsign, or None when the worktree is not a runway.
 
-    Mirrors wta's own extraction: the leading TEAM-123 of the branch where there
-    is one, the whole branch otherwise. Splitting on the first dash instead
-    would name the window FEATURE for `feature-alpha`.
+    A linked worktree's `.git` is a file, `gitdir: <path>`, pointing at its
+    private git dir; `wta` writes `callsign=<ID>` (plus any later keys) there.
+    The callsign is read, never re-derived from the branch: it is the window
+    name and the session name both, and the marker is its single source.
+
+    Duplicated in runway-callsign; change both or they disagree on what a
+    runway is.
     """
-    branch = os.path.basename(root)
-    match = re.match(r"([A-Za-z][A-Za-z0-9]*-[0-9]+)", branch)
-    return match.group(1).upper() if match else branch
+    try:
+        with open(os.path.join(root, ".git"), encoding="utf-8") as handle:
+            line = handle.readline().strip()
+    except OSError:
+        return None  # Not there, or a directory: a main checkout, not a runway.
+    if not line.startswith("gitdir:"):
+        return None
+    gitdir = os.path.join(root, line[len("gitdir:"):].strip())
+    try:
+        with open(os.path.join(gitdir, "callsign"), encoding="utf-8") as handle:
+            for entry in handle:
+                key, _, value = entry.strip().partition("=")
+                if key == "callsign" and value:
+                    return value
+    except OSError:
+        pass
+    return None
 
 
 def interpreted_script(command):
@@ -158,17 +205,22 @@ def main():
         allow()
 
     for root in roots:
-        if not inside(cwd, root):
-            deny(
-                f"{verb} in {root} from a session rooted at {cwd}.\n\n"
-                "That worktree has its own tmux window, ports, hostname and "
-                "database, and none of them are loaded here. Start a Claude "
-                "session in its window instead:\n\n"
-                f"    tmux select-window -t ={window_name(root)}\n\n"
-                "Reads are allowed from here; writing and running are not. "
-                "If this session genuinely should own the worktree, "
-                "EnterWorktree({path: \"" + root + "\"}) moves it there properly."
-            )
+        if inside(cwd, root):
+            continue
+        sign = callsign(root)
+        if sign is None:
+            continue  # A plain worktree, not a runway: nothing to guard.
+        deny(
+            f"{verb} in {root} from a session rooted at {cwd}.\n\n"
+            f"That is runway {sign}: it belongs to session `{sign}`, tmux "
+            f"window `{sign}`, with its own ports, hostname and database, none "
+            "of which are loaded here. Hand the work to that session "
+            f"(SendMessage to \"{sign}\") or switch to its window:\n\n"
+            f"    tmux select-window -t ={sign}\n\n"
+            "Reads are allowed from here; writing and running are not. "
+            "If this session genuinely should own the runway, "
+            "EnterWorktree({path: \"" + root + "\"}) moves it there properly."
+        )
 
     allow()
 

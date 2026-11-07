@@ -33,32 +33,43 @@ else
   echo "WARNING: rtk not found on PATH -- install it, then run: rtk init -g"
 fi
 
-# Hooks. The symlink alone would leave the guard inert -- settings.json is what
-# actually runs it -- and a guard nobody wired up fails exactly the way the
-# thing it guards against fails. So this registers it too, after `rtk init -g`
-# so that rtk's own edit to the same file cannot clobber it.
+# Hooks (the Airboss pair, see docs/airboss.md). The symlink alone would leave a
+# hook inert -- settings.json is what actually runs it -- and a guard nobody
+# wired up fails exactly the way the thing it guards against fails. So this
+# registers them too, after `rtk init -g` so that rtk's own edit to the same
+# file cannot clobber them.
 #
 # This is the one place this repo writes to ~/.claude/settings.json, which is
-# untracked and machine-local. The edit is additive, idempotent, and keyed on
-# the command string, so re-running changes nothing.
+# untracked and machine-local. The edit is idempotent and keyed on the command
+# string, so re-running changes nothing. It also removes the registration of
+# `worktree-guard`, the old name of runway-write-guard: left in place, it would
+# point at a dangling symlink and run on every Bash and Edit call.
 echo "Setting up Claude hooks..."
 mkdir -p $HOME/.claude/hooks
-echo "ln -nfs $HOME/dotfiles/extras/claude/hooks/worktree-guard $HOME/.claude/hooks/worktree-guard"
-ln -nfs $HOME/dotfiles/extras/claude/hooks/worktree-guard $HOME/.claude/hooks/worktree-guard
+for hook in runway-write-guard runway-callsign; do
+  echo "ln -nfs $HOME/dotfiles/extras/claude/hooks/$hook $HOME/.claude/hooks/$hook"
+  ln -nfs "$HOME/dotfiles/extras/claude/hooks/$hook" "$HOME/.claude/hooks/$hook"
+done
+if [ -L "$HOME/.claude/hooks/worktree-guard" ]; then
+  echo "rm $HOME/.claude/hooks/worktree-guard (renamed runway-write-guard)"
+  rm -f "$HOME/.claude/hooks/worktree-guard"
+fi
 
-python3 - "$HOME/.claude/settings.json" "$HOME/.claude/hooks/worktree-guard" <<'PY'
+python3 - "$HOME/.claude/settings.json" "$HOME/.claude/hooks" <<'PY'
 import json
 import os
 import sys
 
-settings_path, hook_command = sys.argv[1], sys.argv[2]
-# The absolute path, not "$HOME/...": settings.json is generated and
-# machine-local, and a literal that depends on shell expansion fails silently
-# if the runner does not do it.
-entry = {
-    "matcher": "Bash|Edit|Write|NotebookEdit",
-    "hooks": [{"type": "command", "command": hook_command}],
-}
+settings_path, hooks_dir = sys.argv[1], sys.argv[2]
+# Absolute paths, not "$HOME/...": settings.json is generated and machine-local,
+# and a literal that depends on shell expansion fails silently if the runner
+# does not do it.
+WANTED = [
+    # (event, matcher or None, hook name)
+    ("PreToolUse", "Bash|Edit|Write|NotebookEdit", "runway-write-guard"),
+    ("SessionStart", None, "runway-callsign"),
+]
+RETIRED = [os.path.join(hooks_dir, "worktree-guard")]
 
 try:
     with open(settings_path) as handle:
@@ -67,19 +78,42 @@ except FileNotFoundError:
     settings = {}
 except (json.JSONDecodeError, ValueError) as error:
     sys.exit(f"WARNING: {settings_path} is not valid JSON ({error}); "
-             "leaving it alone. Register worktree-guard by hand.")
+             "leaving it alone. Register the runway hooks by hand.")
 
-pre = settings.setdefault("hooks", {}).setdefault("PreToolUse", [])
-if any(h.get("command") == hook_command
-       for existing in pre for h in existing.get("hooks", [])):
-    print(f"worktree-guard already registered in {settings_path}")
-    sys.exit(0)
+hooks = settings.setdefault("hooks", {})
+changed = False
 
-pre.append(entry)
-tmp = settings_path + ".tmp"
-with open(tmp, "w") as handle:
-    json.dump(settings, handle, indent=2)
-    handle.write("\n")
-os.replace(tmp, settings_path)
-print(f"registered worktree-guard in {settings_path}")
+# Drop retired commands; drop an entry only when nothing else is left in it.
+for event, entries in hooks.items():
+    kept = []
+    for entry in entries:
+        inner = [h for h in entry.get("hooks", []) if h.get("command") not in RETIRED]
+        if len(inner) != len(entry.get("hooks", [])):
+            changed = True
+            print(f"removed retired hook from {event}")
+            if not inner:
+                continue
+            entry["hooks"] = inner
+        kept.append(entry)
+    hooks[event] = kept
+
+for event, matcher, name in WANTED:
+    command = os.path.join(hooks_dir, name)
+    entries = hooks.setdefault(event, [])
+    if any(h.get("command") == command for e in entries for h in e.get("hooks", [])):
+        print(f"{name} already registered in {settings_path}")
+        continue
+    entry = {"hooks": [{"type": "command", "command": command}]}
+    if matcher:
+        entry = {"matcher": matcher, **entry}
+    entries.append(entry)
+    changed = True
+    print(f"registered {name} in {settings_path}")
+
+if changed:
+    tmp = settings_path + ".tmp"
+    with open(tmp, "w") as handle:
+        json.dump(settings, handle, indent=2)
+        handle.write("\n")
+    os.replace(tmp, settings_path)
 PY

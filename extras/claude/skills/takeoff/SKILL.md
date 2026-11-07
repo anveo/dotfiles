@@ -9,7 +9,7 @@ Takeoff is the moment the flight commits to the runway. `preflight` ended in a p
 
 **The failure mode this skill exists to prevent is starting on assumption** — building on an environment nobody verified, against a plan whose open questions were never answered, on top of a test suite that was already red. Every one of those is checkable in the first five minutes and unattributable after the first hour.
 
-Where this sits in the pattern: `preflight` orients (or `dispatch` does it across several issues at once, worktrees and all), `takeoff` begins the work, `approach` submits it, `crosscheck` verifies the review, `land` merges.
+Where this sits in the pattern: `preflight` orients (or `dispatch` does it across several issues at once, worktrees and all), `takeoff` begins the work, `approach` submits it, `crosscheck` verifies the review, `land` merges. Terms (tower, runway, pilot, callsign, sortie, handoff) are defined in `~/dotfiles/docs/airboss.md`.
 
 ## 1. Line-up check — settle the briefing
 
@@ -24,7 +24,7 @@ If there was no preflight — the user is starting cold — say so and run the s
 Every item here is a query, not a guess:
 
 - **Right branch or worktree for the ticket.** The branch name carries the issue key — that is what lets `preflight` and `land` resolve it later. If the work belongs in a fresh worktree, `wta <branch>` creates and provisions it (ports, hostname, database — the repo's `bin/worktree-setup` handles the specifics).
-- **Standing in it, not pointing at it.** `git rev-parse --show-toplevel` must equal the ticket's worktree. If it returns the main checkout while the work belongs to a worktree, stop — this is a session `dispatch` prepared a runway for and handed off, and the tmux window named for the ticket already has its own session waiting. Say so and let the user switch to it. Working from here means the wrong `.envrc`, the wrong branch, and a path prefix on every command that only has to be forgotten once to write into the main checkout. `EnterWorktree({path: …})` is the alternative when this session really should own the worktree; prefixing every call is not.
+- **Standing in it, not pointing at it.** `git rev-parse --show-toplevel` must equal the ticket's worktree. If it returns the main checkout while the work belongs to a worktree, stop — this is the tower, `dispatch` prepared a runway for this ticket, and the tmux window named for its callsign already has its own pilot session waiting. Say so and let the user switch to it. Working from here means the wrong `.envrc`, the wrong branch, and a path prefix on every command that only has to be forgotten once to write into the main checkout. `EnterWorktree({path: …})` is the alternative when this session really should own the worktree; prefixing every call is not.
 - **Environment loads.** direnv active (`direnv exec .` for commands), dependencies current (`bundle check` or the repo's equivalent), migrations applied. In a worktree: `.envrc.worktree` exists — its absence means setup never ran.
 - **A green baseline.** Run the spec subset closest to the planned work — or the repo's designated target (`make claude-test` here) — *before the first edit*, and record the result. This is the item that pays for the whole skill: a failure found now is provably pre-existing; the same failure found mid-work is a debugging detour through code you did not break. A red baseline in the area you are about to change is a stop — report it, do not build on it.
 

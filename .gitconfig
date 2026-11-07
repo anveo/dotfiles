@@ -46,7 +46,15 @@
         # Worktrees live in a sibling dir named <repo>.worktrees/<branch>.
         # --git-common-dir (not --show-toplevel) so they resolve to the main
         # repo even when run from inside another worktree.
-        wta = "!f() { root=$(dirname \"$(git rev-parse --path-format=absolute --git-common-dir)\"); git worktree add -b \"$1\" \"$root.worktrees/$1\"; }; f"
+        #
+        # wta branches from the freshly fetched default branch (origin/HEAD,
+        # else origin/main), not from whatever the main checkout has out -- an
+        # unmerged feature branch would otherwise ride along into every new
+        # worktree. A second argument overrides the start point. A repo with no
+        # origin, or whose origin has neither HEAD nor main (a master-default
+        # remote with followRemoteHEAD off), keeps the old behaviour: HEAD. --no-track: a branch
+        # tracking origin/main would make a plain `git push` refuse or misfire.
+        wta = "!f() { root=$(dirname \"$(git rev-parse --path-format=absolute --git-common-dir)\"); base=$2; if [ -z \"$base\" ] && git remote get-url origin >/dev/null 2>&1; then git fetch -q origin || echo 'git wta: fetch failed; branching from the last-fetched origin' >&2; base=$(git symbolic-ref -q --short refs/remotes/origin/HEAD || { git rev-parse -q --verify refs/remotes/origin/main >/dev/null && echo origin/main; }); [ -n \"$base\" ] || echo 'git wta: no origin/HEAD or origin/main; branching from HEAD' >&2; fi; git worktree add --no-track -b \"$1\" \"$root.worktrees/$1\" ${base:+\"$base\"}; }; f"
         wtr = "!f() { root=$(dirname \"$(git rev-parse --path-format=absolute --git-common-dir)\"); git worktree remove \"$root.worktrees/$1\"; }; f"
         wtl = worktree list
 

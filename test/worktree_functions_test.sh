@@ -127,7 +127,7 @@ expect "wtr rejects a bad --db value"          1 stderr "--db must be keep or dr
 expect "wtr rejects a flag after the branch"   1 stderr "flags go before the branch"           wtr br --db drop
 
 echo "== wta: argument parsing (the same cases, deliberately repeated) =="
-expect "wta --help exits 0, usage on stdout"   0 stdout "usage: wta [-w] [--db reuse|clone] <branch>" wta --help
+expect "wta --help exits 0, usage on stdout"   0 stdout "usage: wta [-w] [--db reuse|clone] [--base <ref>] <branch>" wta --help
 expect "wta -h exits 0, usage on stdout"       0 stdout "usage: wta"                                  wta -h
 expect "wta with no args exits 1"              1 stderr "usage: wta"                                  wta
 expect "wta rejects an unknown flag"           1 stderr "unknown option --bogus"                      wta --bogus br
@@ -135,6 +135,8 @@ expect "wta rejects --db with no value"        1 stderr "--db needs a value"    
 expect "wta rejects an empty --db="            1 stderr "--db needs a value"                          wta --db= br
 expect "wta rejects a bad --db value"          1 stderr "--db must be reuse or clone (got 'x')"       wta --db x br
 expect "wta rejects a flag after the branch"   1 stderr "flags go before the branch"                  wta br --db clone
+expect "wta rejects --base with no value"      1 stderr "--base needs a value"                        wta --base
+expect "wta rejects an empty --base="          1 stderr "--base needs a value"                        wta --base= br
 
 echo "== wtr: relay to bin/worktree-teardown =="
 wtr_relay() { # name id expected-log flag...
@@ -240,6 +242,96 @@ if ( cd "$repo" && wta -w TST-noprov ) >/dev/null 2>&1; then
   fi
 else
   bad "wta -w in a repo with nothing to provision should exit 0"
+fi
+
+echo "== wta: the callsign marker =="
+# The marker is what makes a worktree a runway; the write guard and the
+# session-naming hook both read it. It lives in the worktree's private git dir.
+marker_is() { # name repo branch expected-callsign
+  local name=$1 repo=$2 branch=$3 want=$4
+  local dest="$repo.worktrees/$branch" got
+  got=$(sed -n 's/^callsign=//p' "$(git -C "$dest" rev-parse --absolute-git-dir 2>/dev/null)/callsign" 2>/dev/null)
+  if [ "$got" = "$want" ]; then ok "$name"; else bad "$name (callsign '$got', wanted '$want')"; fi
+}
+
+repo=$(make_repo mk1 worktree-setup none)
+( cd "$repo" && wta -w TST-99-feature-alpha ) >/dev/null 2>&1
+marker_is "wta -w writes the ticket as the callsign" "$repo" TST-99-feature-alpha TST-99
+( cd "$repo" && wta -w tst-7-lowercase ) >/dev/null 2>&1
+marker_is "a lowercase ticket is upcased" "$repo" tst-7-lowercase TST-7
+( cd "$repo" && wta -w scratch ) >/dev/null 2>&1
+marker_is "a branch with no ticket is its own callsign" "$repo" scratch scratch
+( cd "$repo" && wta -w anveo/tst-12-prefixed ) >/dev/null 2>&1
+marker_is "a user-prefixed branch takes the ticket from its last segment" "$repo" anveo/tst-12-prefixed TST-12
+# Plain wta cds the shell into the worktree, so a subshell keeps this one put.
+( cd "$repo" && wta TST-8-plain ) >/dev/null 2>&1
+marker_is "plain wta (no -w) writes it too" "$repo" TST-8-plain TST-8
+if git -C "$repo.worktrees/TST-99-feature-alpha" status --porcelain | grep -q callsign; then
+  bad "the marker shows in git status"
+else
+  ok "the marker stays out of git status"
+fi
+
+echo "== wta: start point =="
+# A clone whose checked-out branch is ahead of origin/main: the new worktree
+# must not inherit that unmerged work.
+origin=$(make_repo bo worktree-setup none)
+clone="$TMPROOT/clone"
+git clone -q "$origin" "$clone" >/dev/null 2>&1
+{
+  git -C "$clone" config user.email test@example.com
+  git -C "$clone" config user.name Test
+  git -C "$clone" switch -q -c feature
+  echo wip > "$clone/wip"
+  git -C "$clone" add wip
+  git -C "$clone" commit -qm wip
+} >/dev/null 2>&1
+main_sha=$(git -C "$clone" rev-parse origin/main)
+feature_sha=$(git -C "$clone" rev-parse feature)
+
+tip_is() { # name branch expected-sha
+  local got
+  got=$(git -C "$clone" rev-parse "$2" 2>/dev/null)
+  if [ "$got" = "$3" ]; then ok "$1"; else bad "$1 (tip $got, wanted $3)"; fi
+}
+
+( cd "$clone" && wta -w TST-20-default ) >/dev/null 2>&1
+tip_is "branches from origin/HEAD, not the checked-out branch" TST-20-default "$main_sha"
+if [ -z "$(git -C "$clone" config branch.TST-20-default.merge)" ]; then
+  ok "the new branch does not track origin/main"
+else
+  bad "the new branch tracks $(git -C "$clone" config branch.TST-20-default.merge)"
+fi
+( cd "$clone" && wta -w --base feature TST-21-override ) >/dev/null 2>&1
+tip_is "--base overrides the start point" TST-21-override "$feature_sha"
+# git 2.48+ recreates origin/HEAD on the fetch inside `git wta`, which would
+# make this case pass without ever reaching the fallback; `never` stops that.
+git -C "$clone" config remote.origin.followRemoteHEAD never
+git -C "$clone" remote set-head origin -d >/dev/null 2>&1
+( cd "$clone" && wta -w TST-22-nohead ) >/dev/null 2>&1
+tip_is "falls back to origin/main without origin/HEAD" TST-22-nohead "$main_sha"
+
+# A remote whose default is master, with no origin/HEAD: origin/main does not
+# exist, so wta must branch from HEAD rather than fail on an invalid ref.
+morigin="$TMPROOT/morigin"
+mclone="$TMPROOT/mclone"
+{
+  git init -q -b master "$morigin"
+  git -C "$morigin" -c user.email=t@e -c user.name=t commit -q --allow-empty -m seed
+  git clone -q "$morigin" "$mclone"
+  git -C "$mclone" config remote.origin.followRemoteHEAD never
+  git -C "$mclone" remote set-head origin -d
+} >/dev/null 2>&1
+head_sha=$(git -C "$mclone" rev-parse HEAD)
+if ( cd "$mclone" && wta -w TST-23-master ) >/dev/null 2>&1; then
+  got=$(git -C "$mclone" rev-parse TST-23-master 2>/dev/null)
+  if [ "$got" = "$head_sha" ]; then
+    ok "with neither origin/HEAD nor origin/main, branches from HEAD"
+  else
+    bad "with neither origin/HEAD nor origin/main, branches from HEAD (tip $got)"
+  fi
+else
+  bad "with neither origin/HEAD nor origin/main, wta should still succeed"
 fi
 
 echo
