@@ -9,7 +9,9 @@
 # `make check` runs it. The bundle cases are isolated (a temp ANTIDOTE_HOME,
 # a local plugin, and a file:// clone that fails without touching the
 # network). The startup cases start a real interactive zsh on this repo's
-# .zshrc, so they need the plugins installed, which any earlier shell does.
+# .zshrc, so they need antidote in ~/.antidote and are skipped without it.
+# They read this checkout's zsh/plugins.txt, so a plugin it adds is cloned
+# into antidote's real home -- the same clone the next shell would make.
 
 ROOT=${0:A:h:h}
 TMPROOT=$(mktemp -d)
@@ -47,7 +49,18 @@ echo "== interactive zsh startup =="
 # rewritten with this checkout's paths. ANTIDOTE_HOME stays at its real
 # location, because off macOS antidote keeps its clones under XDG_CACHE_HOME
 # and would re-clone every plugin into the temp dir.
-antidote_home=$(zsh -fc 'fpath=($HOME/.antidote/functions $fpath); autoload -Uz antidote; antidote home' 2>/dev/null)
+#
+# Without ~/.antidote, .zshrc would clone it there and an empty ANTIDOTE_HOME
+# would send every plugin clone to the temp dir, so skip instead. Test the
+# directory .zshrc tests: `antidote home` alone can still succeed through an
+# fpath inherited from the calling shell.
+antidote_home=
+if [[ -d $HOME/.antidote ]]; then
+  antidote_home=$(zsh -fc 'fpath=($HOME/.antidote/functions $fpath); autoload -Uz antidote; antidote home' 2>/dev/null)
+fi
+if [[ -z $antidote_home ]]; then
+  ok "interactive zsh startup (skipped: antidote not installed in ~/.antidote)"
+else
 probe='
 zmodload zsh/parameter
 print -r -- "keymap: $(bindkey -lL main)"
@@ -75,6 +88,7 @@ case "$out" in
   *"comps: "*)  ok  "completions are registered" ;;
   *)            bad "completions are registered (no probe output)" ;;
 esac
+fi
 
 echo "== bash fzf key bindings =="
 if command -v fzf >/dev/null 2>&1; then
