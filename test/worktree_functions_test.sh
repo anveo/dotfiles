@@ -30,6 +30,17 @@ fi
 unset TMUX              # no window bookkeeping; not what these cover
 TMPROOT=$(mktemp -d)
 trap 'rm -rf "$TMPROOT"' EXIT
+
+# wta and wtr call `git wta` / `git wtr`, aliases defined in this repo's
+# .gitconfig and installed as ~/.gitconfig. A CI runner has no such file, and a
+# developer's has unrelated settings (diff.external, LFS filters) that are not
+# under test. So git gets a global config holding just those two aliases, read
+# from the repo -- the same definitions `make install` would put in place.
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+export GIT_CONFIG_GLOBAL="$TMPROOT/gitconfig"
+for a in wta wtr; do
+  git config -f "$GIT_CONFIG_GLOBAL" "alias.$a" "$(git config -f "$ROOT/.gitconfig" "alias.$a")"
+done
 PASS=0
 FAIL=0
 

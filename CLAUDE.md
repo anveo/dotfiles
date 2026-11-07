@@ -21,3 +21,14 @@ Neovim-specific conventions and known issues live in `nvimfiles/CLAUDE.md`.
 - `bin/doctor` -- machine health check (`make doctor`): dangling symlinks, tmux/ghostty/git config, missing alias targets, Brewfile. FAIL exits non-zero, WARN does not. Add a check here when an install step can silently break.
 - `make check` -- repo checks: `test/syntax_check.sh` parses every tracked shell file (both bash and zsh for `bash/{aliases,functions,env,paths}` and `shell/*.sh`), then the behaviour tests
 - Monicur project (`~/code/monicur/monicur`) has a `.nvim.lua` for dadbod DATABASE_URL integration
+
+## Review Guidelines
+
+Reviews are requested by hand with an `@claude` mention on the PR (`.github/workflows/claude.yml`); nothing reviews on push. The `Check` workflow runs `make check` on Ubuntu and macOS -- read its result rather than assuming.
+
+- Files sourced by both `.zshrc` and `.bashrc` (`bash/{aliases,functions,env,paths}`, `shell/*.sh`) must parse and behave in both bash and zsh.
+- macOS-only commands (`pmset`, `defaults`, `osascript`, `/Applications/...`) belong inside a Darwin guard.
+- A check that cannot run must say so (skip or warn), never report ok. Empty output is not success.
+- Checks and tests must not change the machine: no installs, clones, or writes outside a temp dir, and never touch the user's running tmux server.
+- Install steps must be idempotent: `make install` is re-run on machines that already have the links.
+- Flag behaviour changes the PR description does not mention.
