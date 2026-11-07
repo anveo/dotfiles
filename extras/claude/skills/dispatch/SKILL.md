@@ -11,7 +11,7 @@ A dispatcher plans the flight and issues its release; nothing rolls without one.
 
 Dispatch writes no code and moves no tickets. It ends at a brief and a question list, which is exactly where `takeoff` begins.
 
-Where this sits: **dispatch** prepares → `takeoff` builds → `approach` submits → `crosscheck` verifies the review → `land` merges. `preflight` is the reading half of dispatch, and stays useful on its own when you are already standing in a branch.
+Where this sits: **dispatch** prepares → `takeoff` builds → `approach` submits → `crosscheck` verifies the review → `land` merges. `preflight` is the reading half of dispatch, and stays useful on its own when you are already standing in a branch. Terms (tower, runway, pilot, callsign, sortie, handoff) are defined in `~/dotfiles/docs/airboss.md`; in them, this session is the tower.
 
 ## 1. Resolve the target
 
@@ -66,7 +66,7 @@ wta -w <branch>                          # add --db clone when the ticket asked 
 
 **The `source` is load-bearing.** Claude Code's Bash tool loads shell functions from a snapshot taken when the session started, so a session that began before the last dotfiles change is holding a stale `wta` — and the failure is silent rather than loud: an older copy has no `-w`, so it either errors or treats the flag as a branch name. Sourcing the file first guarantees the current definitions of `wta`, `wtr`, and `wtinfo` regardless of session age.
 
-`wta` creates `<repo>.worktrees/<branch>`, copies the gitignored files a bare `git worktree add` leaves behind, runs `direnv allow`, and — this is the part that matters — runs the repo's `bin/worktree-setup` when it exists, which is what assigns ports, hostname, and database.
+`wta` creates `<repo>.worktrees/<branch>` on a branch cut from the freshly fetched default branch (not whatever the main checkout has out; `--base <ref>` overrides), copies the gitignored files a bare `git worktree add` leaves behind, runs `direnv allow`, and — this is the part that matters — runs the repo's `bin/worktree-setup` when it exists, which is what assigns ports, hostname, and database. It also writes the callsign marker (`callsign=DOT-26`, in the worktree's private git dir), which is what makes the worktree a runway: the write guard and the session-naming hook both key on it.
 
 **The `-w` is not optional here.** Bare `wta` is the interactive one-at-a-time form: it `cd`s the current shell into the worktree and renames the window. Run that once per issue and you rename the window you are standing in N times, ending up in whichever worktree came last. `-w` instead gives each worktree its own detached tmux window named for the ticket, and leaves your shell where it is. Outside tmux it just prepares the worktree and says so.
 
@@ -110,4 +110,4 @@ What does not happen here is the building. Do not run `takeoff` here and do not 
 
 In branch mode none of this applies: there is no second session to hand to, and `takeoff` continues here once the questions are answered. A `--worktree` dispatch is a worktree like any other, flag or not — it has its own window and its own session, so the handoff above holds in full. Everything dispatch withholds it still withholds — no code, no ticket movement — but the reason is the pause for answers, not the handoff.
 
-That teardown is `wtr <branch>` — it runs the repo's `bin/worktree-teardown` first, so routes and cloned databases go with it, and closes the ticket's tmux window. Mention it when a dispatched issue turns out to be a non-starter; an abandoned worktree is cheap to remove and expensive to rediscover in a month. In branch mode the equivalent is `git switch main` and `git branch -d <branch>`.
+That teardown is `wtr <branch>` (alias `park`) — it runs the repo's `bin/worktree-teardown` first, so routes and cloned databases go with it, and closes the ticket's tmux window. Mention it when a dispatched issue turns out to be a non-starter; an abandoned worktree is cheap to remove and expensive to rediscover in a month. In branch mode the equivalent is `git switch main` and `git branch -d <branch>`.

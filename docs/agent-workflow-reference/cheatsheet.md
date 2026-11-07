@@ -232,14 +232,18 @@ asserts that `--db` reaches the `bin/` scripts as two arguments rather than one.
 **Skills are symlinked one directory at a time** by `bin/install-ai.sh`. A newly
 created skill is invisible until linked — re-run the installer or link it by hand.
 
-**One session per worktree, enforced.** The `worktree-guard` hook
+**One session per runway, enforced.** The `runway-write-guard` hook
 (`extras/claude/hooks/`, wired into `settings.json` by `bin/install-ai.sh`) denies
-writes and command runs against a `*.worktrees/<branch>/` path from a session
-rooted anywhere else. Reads stay allowed, so a dispatching session can still brief
-from the main checkout. Two consequences worth knowing: a write-ish command that
-merely *mentions* a worktree path is denied too, and if one session genuinely
-should own a worktree, `EnterWorktree({path: …})` moves it there properly instead
-of prefixing every call with `git -C`.
+writes and command runs against a runway (a worktree `wta` made, carrying a
+callsign marker) from a session rooted anywhere else, and names the runway's
+session in the denial. Plain `git worktree add` checkouts are not guarded. Reads
+stay allowed, so a dispatching session can still brief from the main checkout.
+Two consequences worth knowing: a write-ish command that merely *mentions* a
+runway path is denied too, and if one session genuinely should own a runway,
+`EnterWorktree({path: …})` moves it there properly instead of prefixing every
+call with `git -C`. Its sibling, `runway-callsign`, names a hand-started session
+on a runway after its callsign. Vocabulary and the marker format:
+[`docs/airboss.md`](../airboss.md).
 
 **The compose stack is a singleton run from the main checkout.** Never
 `docker compose up` from a worktree; per-worktree routing happens through files

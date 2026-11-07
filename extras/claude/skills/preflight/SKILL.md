@@ -11,6 +11,8 @@ A preflight is the check you run *before* committing to the roll — the point a
 
 Preflight ends at a plan. It does not write code.
 
+Terms (tower, runway, pilot, callsign, sortie, handoff) are defined in `~/dotfiles/docs/airboss.md`.
+
 ## 1. Resolve the issue
 
 If the user passed an identifier (`/preflight APP-218`), use it and skip ahead.
