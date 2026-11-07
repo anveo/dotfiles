@@ -385,7 +385,7 @@ alias clr='claude --resume'    # interactive picker over past sessions
 
 # Airboss names for the worktree helpers: taxi out to a runway, park when done.
 alias taxi='wta'    # taxi <branch>, or taxi -w <branch> for its own window
-alias park='wtr'    # park <branch> removes the runway
+alias park='wtr'    # park <branch> removes the runway; bare park picks one with fzf
 
 function dmk () {
   eval $(minikube -p minikube docker-env)

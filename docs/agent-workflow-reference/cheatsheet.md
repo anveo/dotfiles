@@ -96,14 +96,20 @@ there is an error rather than a no-op.
 
 ## Worktree commands
 
+`taxi` and `park` are aliases for the `wta` and `wtr` shell functions (see
+[`docs/airboss.md`](../airboss.md)). Use the aliases at the keyboard. Skills and
+scripts call `wta`/`wtr` by name, so error messages and the rest of this doc use
+those names.
+
 | Command | Action |
 |---------|--------|
-| `wta <branch>` | Create worktree, `cd` into it, rename the current window |
-| `wta -w <branch>` | Same, but give it its own tmux window running a Claude session named for the ticket, and stay put — the `/dispatch` form |
-| `wta --db clone <branch>` | Either form, but hand `bin/worktree-setup` the database mode instead of letting it prompt. `reuse` (the default) shares the main checkout's dev database; `clone` copies it, for a branch that writes |
-| `wta -h` | The flags and what they do |
-| `wtr <branch>` | Stop overmind, run teardown, remove worktree, close its window (or its promoted session) |
-| `wtr --db drop <branch>` | Same, but hand `bin/worktree-teardown` the database mode instead of letting it prompt. `keep` (what teardown does anyway with no terminal) leaves the cloned database; `drop` removes it. No effect on a reuse-mode worktree, which has no clone |
+| `taxi <branch>` | Create worktree, `cd` into it, rename the current window |
+| `taxi -w <branch>` | Same, but give it its own tmux window running a Claude session named for the ticket, and stay put — the `/dispatch` form |
+| `taxi --db clone <branch>` | Either form, but hand `bin/worktree-setup` the database mode instead of letting it prompt. `reuse` (the default) shares the main checkout's dev database; `clone` copies it, for a branch that writes |
+| `taxi -h` | The flags and what they do |
+| `park <branch>` | Stop overmind, run teardown, remove worktree, close its window (or its promoted session) |
+| `park` (no branch) | Pick the worktree to park with fzf (terminal only; without a TTY it prints usage) |
+| `park --db drop <branch>` | Same, but hand `bin/worktree-teardown` the database mode instead of letting it prompt. `keep` (what teardown does anyway with no terminal) leaves the cloned database; `drop` removes it. No effect on a reuse-mode worktree, which has no clone |
 | `wtinfo` | What setup assigned here: URL, ports (with up/down), database mode — or `unprovisioned worktree` in a repo that has no `bin/worktree-setup` |
 | `ovls` | Every running overmind, with its directory and whether its socket survives |
 | `ovclean` | Kill orphaned overminds and stale overmind tmux servers |
@@ -292,7 +298,7 @@ Mark the PR ready, then:
 ```
 
 ```bash
-wtr APP-191-track-llm-tokens          # teardown when finished or abandoning
+park APP-191-track-llm-tokens         # teardown when finished or abandoning
 ```
 
 In branch mode there is no second window and no teardown: `/takeoff` onward run in

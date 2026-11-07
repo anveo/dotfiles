@@ -884,9 +884,34 @@ wtr() {
     esac
   done
 
+  # No branch: pick one with fzf, but only for a person at a terminal. An agent
+  # or a script (no TTY) still gets the usage error rather than a picker it
+  # cannot answer.
   if [[ -z "$1" ]]; then
-    echo "$usage" >&2
-    return 1
+    if [[ ! -t 0 || ! -t 1 ]] || ! command -v fzf >/dev/null 2>&1; then
+      echo "$usage" >&2
+      return 1
+    fi
+    local pick_common pick_root runways picked
+    pick_common=$(git rev-parse --path-format=absolute --git-common-dir) || return
+    pick_root=$(dirname "$pick_common")
+    # Only worktrees wta made (under <repo>.worktrees/), named the way wtr
+    # takes them -- the path below that prefix, slashes and all.
+    runways=$(git worktree list --porcelain \
+      | awk -v p="worktree $pick_root.worktrees/" 'index($0, p) == 1 { print substr($0, length(p) + 1) }')
+    if [[ -z "$runways" ]]; then
+      echo "wtr: no worktrees under $pick_root.worktrees/" >&2
+      return 1
+    fi
+    picked=$(printf '%s\n' "$runways" \
+      | WTR_ROOT="$pick_root" fzf --prompt='park> ' --height=40% --reverse \
+          --preview 'git -C "$WTR_ROOT.worktrees/"{} status -sb' --preview-window=right,60%)
+    if [[ -z "$picked" ]]; then
+      echo "wtr: nothing selected" >&2
+      return 1
+    fi
+    set -- "$picked"
+    echo "wtr: parking $1"
   fi
 
   # Flags after the branch name would otherwise be dropped in silence, which is

@@ -33,6 +33,7 @@ Airboss is the name for the worktree workflow in these dotfiles: `dispatch` → 
 ```bash
 taxi -w DOT-99-short-slug    # = wta -w: prepare a runway in its own window
 park DOT-99-short-slug       # = wtr: tear it down
+park                         # no branch: pick a runway with fzf
 wtinfo                       # what provisioning assigned, from inside a runway
 ```
 
