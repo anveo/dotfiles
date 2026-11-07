@@ -26,5 +26,7 @@ check:
 	@echo "Claude hooks..."
 	python3 extras/claude/hooks/runway-write-guard-test
 	python3 extras/claude/hooks/runway-callsign-test
+	@echo "doctor: Claude hook commands..."
+	bash test/doctor_claude_hooks_test.sh
 	@echo "zsh config..."
 	zsh test/zsh_config_test.sh
