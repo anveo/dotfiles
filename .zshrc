@@ -13,6 +13,14 @@ fi
 export DOTFILES=$HOME/dotfiles
 export XDG_CONFIG_HOME="$HOME/.config"
 
+# Put Homebrew on PATH first: antidote calls `zsh` by name, and on Linux/WSL
+# that zsh may only exist under linuxbrew.
+if [[ -x /home/linuxbrew/.linuxbrew/bin/brew ]]; then
+  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+elif [[ -x /opt/homebrew/bin/brew ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
 # Cache brew prefix once to avoid slow subshells (~100-200ms each)
 if type brew &>/dev/null; then
   export HOMEBREW_PREFIX="${HOMEBREW_PREFIX:-$(brew --prefix)}"
