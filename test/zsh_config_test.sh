@@ -40,6 +40,14 @@ lacks() { ! grep -q "$@"; }
 echo "== interactive zsh startup =="
 # zsh -f skips the user's own rc files so the repo's .zshrc is the one tested.
 # stderr is dropped: without a terminal, zle and fzf print harmless warnings.
+#
+# DOTFILES=$ROOT makes .zshrc load this checkout's files rather than
+# ~/dotfiles, so a run from a worktree tests the worktree. The plugin bundle is
+# built in a temp XDG_CACHE_HOME: the live one in ~/.cache would otherwise be
+# rewritten with this checkout's paths. ANTIDOTE_HOME stays at its real
+# location, because off macOS antidote keeps its clones under XDG_CACHE_HOME
+# and would re-clone every plugin into the temp dir.
+antidote_home=$(zsh -fc 'fpath=($HOME/.antidote/functions $fpath); autoload -Uz antidote; antidote home' 2>/dev/null)
 probe='
 zmodload zsh/parameter
 print -r -- "keymap: $(bindkey -lL main)"
@@ -48,8 +56,14 @@ print -r -- "up: $(bindkey "^[[A")"
 print -r -- "ctrl-space: $(bindkey "^ ")"
 print -r -- "extract: ${functions_source[extract]}"
 print -r -- "compdef: ${+functions[compdef]} comps: ${#_comps}"
+print -r -- "wta: ${functions_source[wta]}"
+print -r -- "path0: ${path[(r)*/scripts]}"
 '
-out=$(cd "$TMPROOT" && zsh -f -i -c "source $ROOT/.zshrc; $probe" 2>/dev/null)
+out=$(cd "$TMPROOT" && DOTFILES=$ROOT XDG_CACHE_HOME=$TMPROOT/xdg-cache ANTIDOTE_HOME=$antidote_home \
+  zsh -f -i -c "source $ROOT/.zshrc; $probe" 2>/dev/null)
+has "bash/* come from this checkout"        "$out" "wta: $ROOT/bash/functions"
+has "scripts/ on PATH is this checkout's"   "$out" "path0: $ROOT/scripts"
+check "the plugin bundle is built in the temp cache" [ -r $TMPROOT/xdg-cache/zsh/plugins.zsh ]
 has "emacs is the main keymap"              "$out" "keymap: bindkey -A emacs main"
 has "Tab goes through fzf's completion"     "$out" "tab: \"^I\" fzf-completion"
 has "Up arrow searches history by substring" "$out" "up: \"^[[A\" history-substring-search-up"
