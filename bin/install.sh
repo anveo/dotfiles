@@ -96,6 +96,13 @@ if [ `uname` = 'Darwin' ]; then
   ln -nfs $HOME/dotfiles/extras/ghostty/config $HOME/.config/ghostty/config
   echo "ln -nfs $HOME/dotfiles/extras/ghostty/themes $HOME/.config/ghostty/themes"
   ln -nfs $HOME/dotfiles/extras/ghostty/themes $HOME/.config/ghostty/themes
+  # The cask puts the CLI inside the app bundle, off PATH. `ghostty +validate-config`
+  # and friends are worth having at hand (make doctor uses it).
+  GHOSTTY_CLI=/Applications/Ghostty.app/Contents/MacOS/ghostty
+  if [ -x "$GHOSTTY_CLI" ]; then
+    echo "ln -nfs $GHOSTTY_CLI $HOME/bin/ghostty"
+    ln -nfs "$GHOSTTY_CLI" "$HOME/bin/ghostty"
+  fi
 
   LAZYGIT_LIB_DIR="$HOME/Library/Application Support/lazygit"
   mkdir -p "$LAZYGIT_LIB_DIR"
