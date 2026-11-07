@@ -120,8 +120,13 @@ _hook_report() { # events path [runner]
   esac
 }
 
+# Every command hook in the settings, as {event, command} objects.
+_HOOKS_JQ='[ (.hooks // {}) | to_entries[] | .key as $event
+  | (.value // [])[] | (.hooks // [])[]
+  | select(.type == "command") | {event: $event, command: .command} ]'
+
 check_claude_hooks() {
-  local settings=$1 rows events cmd
+  local settings=$1 count events cmd
   if [ ! -f "$settings" ]; then
     warn "$settings does not exist, so hook commands were not checked (run make ai)"
     return 0
@@ -130,26 +135,42 @@ check_claude_hooks() {
     warn "jq is not installed, so hook commands in $settings were not checked"
     return 0
   fi
-  if ! rows=$(jq -r '
-      [ (.hooks // {}) | to_entries[] | .key as $event
-        | (.value // [])[] | (.hooks // [])[]
-        | select(.type == "command") | {event: $event, command: .command} ]
-      | group_by(.command)[]
-      | [ (map(.event) | unique | join(", ")), .[0].command ] | @tsv
-    ' "$settings" 2>&1); then
+  # Two passes. This one validates the file and counts the hooks; its output
+  # is a number, so it can go through $(...) and keep jq's error text.
+  if ! count=$(jq "$_HOOKS_JQ | length" "$settings" 2>&1); then
     bad "$settings could not be read as Claude settings, so hook commands were not checked:"
-    printf '%s\n' "$rows" | detail
+    printf '%s\n' "$count" | detail
     return 0
   fi
-  if [ -z "$rows" ]; then
+  if [ "$count" = 0 ]; then
     skip "hook commands (none registered in $settings)"
     return 0
   fi
-  while IFS=$'\t' read -r events cmd; do
-    _hook_command_words "$cmd"
+  # The second streams records as NUL-terminated pairs: the events, then the
+  # command. Raw strings, not @tsv, so a backslash, tab or newline in a command
+  # arrives as itself. $(...) would drop the NULs, hence the process
+  # substitution, which also loses jq's exit status; that is fine, because the
+  # first pass already ran the same filter on the same file. A command is
+  # prefixed "s" when it is a usable string, or "x" plus its JSON when it is
+  # not (not a string, or holding a NUL). The NUL test uses explode, not
+  # contains: jq 1.6's string contains is strstr, which reads "\u0000" as an
+  # empty needle and matches every string.
+  while IFS= read -r -d '' events && IFS= read -r -d '' cmd; do
+    case "$cmd" in
+      x*)
+        warn "$events: a hook command is not a usable string (${cmd#x}), so it could not be checked"
+        continue ;;
+    esac
+    _hook_command_words "${cmd#s}"
     _hook_report "$events" "$_hook_prog"
     if [ -n "$_hook_script" ]; then
       _hook_report "$events" "$_hook_script" "$_hook_prog"
     fi
-  done <<<"$rows"
+  done < <(jq -j "$_HOOKS_JQ"'
+      | group_by(.command)[]
+      | (map(.event) | unique | join(", ")), "\u0000",
+        (.[0].command
+         | if type == "string" and (explode | index([0]) | not)
+           then "s" + . else "x" + tojson end), "\u0000"
+    ' "$settings")
 }
