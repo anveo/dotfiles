@@ -1,0 +1,164 @@
+#!/usr/bin/env bash
+#
+# Health check for this machine's install of the dotfiles: catches the silent
+# breakage a hand audit once found -- dangling symlinks, config files the tools
+# reject, aliases pointing at binaries that are not installed, git config that
+# names files or tools that are not there.
+#
+#   make doctor        (or bin/doctor)
+#
+# `make check` asks whether the repo is correct; this asks whether the machine
+# is. FAIL exits non-zero. WARN does not: a missing alias target or Brewfile
+# entry is often deliberate on a given machine. A check whose tool is absent is
+# skipped, and says so.
+
+ROOT=$(cd "$(dirname "$0")/.." && pwd)
+TMPROOT=$(mktemp -d)
+trap 'rm -rf "$TMPROOT"' EXIT
+FAILS=0
+WARNS=0
+
+ok()   { echo "  ok   $1"; }
+warn() { WARNS=$((WARNS+1)); echo "  WARN $1"; }
+bad()  { FAILS=$((FAILS+1)); echo "  FAIL $1"; }
+skip() { echo "  skip $1"; }
+# Indent a block of tool output under the line that reported it.
+detail() { sed 's/^/         /'; }
+
+echo "== dangling symlinks =="
+# Only where install.sh and install-ai.sh put links, and only as deep as they
+# go: walking all of $HOME is slow and reports things these dotfiles never made.
+scan() { # dir maxdepth
+  [ -d "$1" ] || return 0
+  find "$1" -maxdepth "$2" -type l ! -exec test -e {} \; -print 2>/dev/null
+}
+dangling=$(
+  scan "$HOME" 1
+  scan "$HOME/bin" 1
+  scan "$HOME/.config" 3
+  scan "$HOME/.claude" 1
+  scan "$HOME/.claude/skills" 1
+  scan "$HOME/.claude/hooks" 1
+  scan "$HOME/.rbenv" 1
+  scan "$HOME/.visidata" 1
+  scan "$HOME/Library/Application Support/espanso" 2
+  scan "$HOME/Library/Application Support/lazygit" 1
+)
+if [ -z "$dangling" ]; then
+  ok "no dangling symlinks"
+else
+  bad "dangling symlinks (remove them, or re-run make install):"
+  while IFS= read -r link; do
+    echo "$link -> $(readlink "$link")"
+  done <<<"$dangling" | detail
+fi
+
+echo "== tmux =="
+if command -v tmux >/dev/null 2>&1; then
+  # A throwaway server on its own socket, so the running one is untouched. The
+  # `run 'tpack init'` line is dropped: it would load continuum and resurrect
+  # into this server, and plugins are not what is being checked.
+  sock="doctor-$$"
+  grep -v "^run 'tpack init'" "$ROOT/.tmux.conf" >"$TMPROOT/tmux.conf"
+  tmux -L "$sock" -f /dev/null new-session -d 2>/dev/null
+  if out=$(tmux -L "$sock" source-file "$TMPROOT/tmux.conf" 2>&1); then
+    ok ".tmux.conf loads cleanly"
+  else
+    bad ".tmux.conf has errors:"
+    printf '%s\n' "$out" | detail
+  fi
+  tmux -L "$sock" kill-server 2>/dev/null
+else
+  skip ".tmux.conf (tmux not installed)"
+fi
+
+echo "== ghostty =="
+ghostty=$(command -v ghostty || true)
+app=/Applications/Ghostty.app/Contents/MacOS/ghostty
+[ -z "$ghostty" ] && [ -x "$app" ] && ghostty=$app
+if [ -n "$ghostty" ]; then
+  if out=$("$ghostty" +validate-config 2>&1); then
+    ok "ghostty config is valid"
+  else
+    bad "ghostty +validate-config:"
+    printf '%s\n' "$out" | detail
+  fi
+else
+  skip "ghostty config (ghostty not installed)"
+fi
+
+echo "== git config =="
+# Paths git silently ignores when they are missing.
+excludes=$(git config --global --path --get core.excludesfile)
+if [ -z "$excludes" ]; then
+  warn "core.excludesfile is not set"
+elif [ -f "$excludes" ]; then
+  ok "core.excludesfile resolves ($excludes)"
+else
+  bad "core.excludesfile points at a missing file: $excludes"
+fi
+# include.path is relative to the file that names it, i.e. ~/.gitconfig.
+while IFS= read -r inc; do
+  [ -z "$inc" ] && continue
+  case "$inc" in
+    /*) path=$inc ;;
+    *)  path="$HOME/$inc" ;;
+  esac
+  if [ -f "$path" ]; then
+    ok "include.path resolves ($path)"
+  else
+    bad "include.path points at a missing file: $path (make install creates ~/.gitsecrets)"
+  fi
+done <<<"$(git config --global --path --get-all include.path)"
+# Tools git runs on every diff, edit, or LFS checkout. A missing one breaks
+# the command outright rather than degrading.
+for key in core.editor diff.external difftool.difftastic.cmd filter.lfs.process; do
+  val=$(git config --global --get "$key") || continue
+  tool=${val%% *}
+  if command -v "$tool" >/dev/null 2>&1; then
+    ok "$key: $tool is installed"
+  else
+    bad "$key runs $tool, which is not installed"
+  fi
+done
+
+echo "== alias targets =="
+# The aliases a real interactive zsh ends up with: bash/aliases, the shell/*.sh
+# snippets, and the plugins, after their own OS and command -v guards. Only the
+# first word of each is checked, skipping VAR=value prefixes, the separator a
+# leading newline parses to, and $VAR paths.
+probe='
+for name val in ${(kv)aliases}; do
+  words=(${(z)val})
+  while [[ $words[1] == ([A-Za-z_]*=*|\;) ]]; do shift words; done
+  target=${(Q)words[1]}
+  [[ -z $target || $target == \$* ]] && continue
+  whence -w -- $target >/dev/null || print -r -- "$name -> $target"
+done
+'
+if command -v zsh >/dev/null 2>&1; then
+  missing=$(cd "$TMPROOT" && zsh -f -i -c "source $ROOT/.zshrc; $probe" 2>/dev/null | sort)
+  if [ -z "$missing" ]; then
+    ok "every alias target resolves"
+  else
+    warn "aliases whose target is not installed:"
+    printf '%s\n' "$missing" | detail
+  fi
+else
+  skip "alias targets (zsh not installed)"
+fi
+
+echo "== Brewfile =="
+if command -v brew >/dev/null 2>&1; then
+  if out=$(brew bundle check --no-upgrade --verbose --file="$ROOT/Brewfile" 2>&1); then
+    ok "everything in the Brewfile is installed"
+  else
+    warn "Brewfile entries not installed (brew bundle --file=$ROOT/Brewfile):"
+    printf '%s\n' "$out" | grep -v '^The Brewfile' | detail
+  fi
+else
+  skip "Brewfile (brew not installed)"
+fi
+
+echo "failed $FAILS, warned $WARNS"
+[ "$FAILS" -eq 0 ]

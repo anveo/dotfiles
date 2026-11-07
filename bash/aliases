@@ -84,8 +84,10 @@ alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && k
 # find . -name .gitattributes | map dirname
 alias map="xargs -n1"
 
-# Lock the screen (when going AFK)
-alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
+# Sleep the display (when going AFK). Locks only if Lock Screen is set to require
+# a password immediately after the display turns off; ⌃⌘Q always locks.
+# (The old CGSession -suspend binary was removed in macOS 11.)
+alias afk="pmset displaysleepnow"
 
 # One of @janmoesen’s ProTip™s
 for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
