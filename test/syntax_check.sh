@@ -11,7 +11,8 @@
 #   bash/{aliases,functions,env,paths}, shell/*.sh   both (.zshrc and .bashrc source them)
 #   bash/*, .bashrc                                  bash
 #   .zshrc, *.zsh                                    zsh
-#   anything else                                    its #! line, if a shell
+#   anything else                                    its #! line, if a shell;
+#                                                    else bash, if *.sh with no #!
 
 cd "$(dirname "$0")/.." || exit 1
 FAIL=0
@@ -25,7 +26,9 @@ parse() { # shell file
   fi
 }
 
-while IFS= read -r f; do
+# -z: without it, git quotes paths with unusual characters and they would not
+# open.
+while IFS= read -r -d '' f; do
   case "$f" in
     bash/aliases|bash/functions|bash/env|bash/paths|shell/*.sh)
       parse bash "$f"; parse zsh "$f" ;;
@@ -40,10 +43,13 @@ while IFS= read -r f; do
       case "$first" in
         '#!'*bash*) parse bash "$f" ;;
         '#!'*zsh*)  parse zsh "$f" ;;
-        '#!'*/sh|'#!'*' sh') parse sh "$f" ;;
+        '#!'*/sh|'#!'*/sh' '*|'#!'*' sh'|'#!'*' sh '*) parse sh "$f" ;;
+        # A non-shell #! wins over the name (scripts/256colors.sh is Perl).
+        '#!'*) ;;
+        *) case "$f" in *.sh) parse bash "$f" ;; esac ;;
       esac ;;
   esac
-done < <(git ls-files)
+done < <(git ls-files -z)
 
 echo "parsed $COUNT, failed $FAIL"
 [ "$FAIL" -eq 0 ]
