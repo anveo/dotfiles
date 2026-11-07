@@ -34,9 +34,13 @@ RETIRED = [os.path.join(hooks_dir, "worktree-guard")]
 
 
 def retired(command):
+    # A hand-edited settings.json may hold a non-string here; leave it alone
+    # rather than abort the install.
+    if not isinstance(command, str):
+        return False
     if command in RETIRED:
         return True
-    words = (command or "").split()
+    words = [word.strip("\"'") for word in command.split()]
     if not words:
         return False
     if os.path.basename(words[0]) == "rtk":

@@ -61,7 +61,8 @@ cat >"$home/.claude/settings.json" <<'JSON'
         {"type": "command", "command": "/opt/homebrew/bin/rtk hook claude"},
         {"type": "command", "command": "keep-me --no-rtk"}
       ]},
-      {"matcher": "Bash", "hooks": [{"type": "command", "command": "/Users/x/.claude/hooks/rtk-rewrite.sh"}]}
+      {"matcher": "Bash", "hooks": [{"type": "command", "command": "/Users/x/.claude/hooks/rtk-rewrite.sh"}]},
+      {"matcher": "Bash", "hooks": [{"type": "command", "command": "\"/Users/x/.claude/hooks/rtk-rewrite.sh\""}]}
     ],
     "PostToolUse": [
       {"hooks": [{"type": "command", "command": "echo unrelated"}]}
@@ -98,6 +99,15 @@ home=$(new_home)
 ln -s "$TMPROOT/nowhere/RTK.md" "$home/.claude/RTK.md"
 check "install-ai.sh exits 0" run_install "$home"
 check "the symlink is removed" test ! -L "$home/.claude/RTK.md"
+
+echo "== a command that is not a string =="
+home=$(new_home)
+cat >"$home/.claude/settings.json" <<'JSON'
+{"hooks": {"PreToolUse": [{"hooks": [{"type": "command", "command": ["x"]}]}]}}
+JSON
+check "install-ai.sh exits 0" run_install "$home"
+check "the odd entry is left alone" settings_has "$home" \
+  '[.hooks.PreToolUse[].hooks[].command | select(. == ["x"])] | length == 1'
 
 echo "== no settings.json yet =="
 home=$(new_home)
