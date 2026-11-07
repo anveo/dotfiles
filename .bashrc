@@ -31,22 +31,25 @@ if [[ "${COLORTERM}" == "gnome-terminal" ]]; then
     unset COLORTERM
 fi
 
-source $HOME/dotfiles/bash/env
-source $HOME/dotfiles/bash/config
-source $HOME/dotfiles/bash/aliases
-source $HOME/dotfiles/bash/completions
-source $HOME/dotfiles/bash/paths
-source $HOME/dotfiles/bash/functions
-source $HOME/dotfiles/bash/prompt
+# A DOTFILES already in the environment wins, as in .zshrc.
+export DOTFILES=${DOTFILES:-$HOME/dotfiles}
 
-# source $HOME/dotfiles/shell/direnv.sh
-source $HOME/dotfiles/shell/adobe.sh
-source $HOME/dotfiles/shell/fzf.sh
-# source $HOME/dotfiles/shell/nvm.sh
-source $HOME/dotfiles/shell/fnm.sh
-source $HOME/dotfiles/shell/rbenv.sh
-source $HOME/dotfiles/shell/uv.sh
-source $HOME/dotfiles/shell/zoxide.sh
+source $DOTFILES/bash/env
+source $DOTFILES/bash/config
+source $DOTFILES/bash/aliases
+source $DOTFILES/bash/completions
+source $DOTFILES/bash/paths
+source $DOTFILES/bash/functions
+source $DOTFILES/bash/prompt
+
+# source $DOTFILES/shell/direnv.sh
+source $DOTFILES/shell/adobe.sh
+source $DOTFILES/shell/fzf.sh
+# source $DOTFILES/shell/nvm.sh
+source $DOTFILES/shell/fnm.sh
+source $DOTFILES/shell/rbenv.sh
+source $DOTFILES/shell/uv.sh
+source $DOTFILES/shell/zoxide.sh
 
 # Put secret stuff in here
 if [ -f ~/.localrc ]; then

@@ -9,7 +9,9 @@
 # `make check` runs it. The bundle cases are isolated (a temp ANTIDOTE_HOME,
 # a local plugin, and a file:// clone that fails without touching the
 # network). The startup cases start a real interactive zsh on this repo's
-# .zshrc, so they need the plugins installed, which any earlier shell does.
+# .zshrc, so they need antidote in ~/.antidote and are skipped without it.
+# They read this checkout's zsh/plugins.txt, so a plugin it adds is cloned
+# into antidote's real home -- the same clone the next shell would make.
 
 ROOT=${0:A:h:h}
 TMPROOT=$(mktemp -d)
@@ -40,6 +42,25 @@ lacks() { ! grep -q "$@"; }
 echo "== interactive zsh startup =="
 # zsh -f skips the user's own rc files so the repo's .zshrc is the one tested.
 # stderr is dropped: without a terminal, zle and fzf print harmless warnings.
+#
+# DOTFILES=$ROOT makes .zshrc load this checkout's files rather than
+# ~/dotfiles, so a run from a worktree tests the worktree. The plugin bundle is
+# built in a temp XDG_CACHE_HOME: the live one in ~/.cache would otherwise be
+# rewritten with this checkout's paths. ANTIDOTE_HOME stays at its real
+# location, because off macOS antidote keeps its clones under XDG_CACHE_HOME
+# and would re-clone every plugin into the temp dir.
+#
+# Without ~/.antidote, .zshrc would clone it there and an empty ANTIDOTE_HOME
+# would send every plugin clone to the temp dir, so skip instead. Test the
+# directory .zshrc tests: `antidote home` alone can still succeed through an
+# fpath inherited from the calling shell.
+antidote_home=
+if [[ -d $HOME/.antidote ]]; then
+  antidote_home=$(zsh -fc 'fpath=($HOME/.antidote/functions $fpath); autoload -Uz antidote; antidote home' 2>/dev/null)
+fi
+if [[ -z $antidote_home ]]; then
+  ok "interactive zsh startup (skipped: antidote not installed in ~/.antidote)"
+else
 probe='
 zmodload zsh/parameter
 print -r -- "keymap: $(bindkey -lL main)"
@@ -48,8 +69,14 @@ print -r -- "up: $(bindkey "^[[A")"
 print -r -- "ctrl-space: $(bindkey "^ ")"
 print -r -- "extract: ${functions_source[extract]}"
 print -r -- "compdef: ${+functions[compdef]} comps: ${#_comps}"
+print -r -- "wta: ${functions_source[wta]}"
+print -r -- "path0: ${path[(r)*/scripts]}"
 '
-out=$(cd "$TMPROOT" && zsh -f -i -c "source $ROOT/.zshrc; $probe" 2>/dev/null)
+out=$(cd "$TMPROOT" && DOTFILES=$ROOT XDG_CACHE_HOME=$TMPROOT/xdg-cache ANTIDOTE_HOME=$antidote_home \
+  zsh -f -i -c "source $ROOT/.zshrc; $probe" 2>/dev/null)
+has "bash/* come from this checkout"        "$out" "wta: $ROOT/bash/functions"
+has "scripts/ on PATH is this checkout's"   "$out" "path0: $ROOT/scripts"
+check "the plugin bundle is built in the temp cache" [ -r $TMPROOT/xdg-cache/zsh/plugins.zsh ]
 has "emacs is the main keymap"              "$out" "keymap: bindkey -A emacs main"
 has "Tab goes through fzf's completion"     "$out" "tab: \"^I\" fzf-completion"
 has "Up arrow searches history by substring" "$out" "up: \"^[[A\" history-substring-search-up"
@@ -61,6 +88,7 @@ case "$out" in
   *"comps: "*)  ok  "completions are registered" ;;
   *)            bad "completions are registered (no probe output)" ;;
 esac
+fi
 
 echo "== bash fzf key bindings =="
 if command -v fzf >/dev/null 2>&1; then
