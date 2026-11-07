@@ -8,19 +8,15 @@ ai:
 	@echo "Installing AI configs..."
 	./bin/install-ai.sh
 
-# Shell functions are sourced by zsh but written in bash syntax, so both shells
-# have to agree. Syntax-check first -- a parse error makes every behavioural
-# case fail in a way that says nothing about what broke.
+# Shell files sourced by both zsh and bash have to parse in both. Syntax-check
+# first -- a parse error makes every behavioural case fail in a way that says
+# nothing about what broke.
 check:
 	@echo "Syntax..."
-	bash -n bash/functions
-	zsh -n bash/functions
+	bash test/syntax_check.sh
 	@echo "Behaviour (bash)..."
 	bash test/worktree_functions_test.sh
 	@echo "Behaviour (zsh)..."
 	zsh test/worktree_functions_test.sh
 	@echo "zsh config..."
-	zsh -n .zshrc
-	zsh -n zsh/compinit.zsh
-	zsh -n zsh/build-bundle.zsh
 	zsh test/zsh_config_test.sh
