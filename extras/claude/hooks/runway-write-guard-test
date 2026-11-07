@@ -1,0 +1,145 @@
+#!/usr/bin/env python3
+"""Cases for runway-write-guard.
+
+The guard tells a runway from a plain worktree by reading the callsign marker
+through the worktree's `.git` file, so the fixtures are real directories in a
+temp dir: one runway (marker present), one plain worktree (no marker). Nothing
+outside the temp dir is touched.
+
+Run it directly: ./runway-write-guard-test
+"""
+
+import json
+import os
+import shutil
+import subprocess
+import sys
+import tempfile
+
+GUARD = os.path.join(os.path.dirname(os.path.abspath(__file__)), "runway-write-guard")
+
+TMP = os.path.realpath(tempfile.mkdtemp())
+MAIN = os.path.join(TMP, "repo")
+TREE = os.path.join(TMP, "repo.worktrees", "DOT-99-feature-alpha")  # a runway
+PLAIN = os.path.join(TMP, "repo.worktrees", "scratch")  # git worktree add, no marker
+SLUG = os.path.join(TMP, "repo.worktrees", "cleanup-rm-dead-code")
+
+
+def worktree(path, name, sign=None):
+    """A linked worktree as git lays it out: `.git` file -> private git dir."""
+    gitdir = os.path.join(MAIN, ".git", "worktrees", name)
+    os.makedirs(gitdir, exist_ok=True)
+    os.makedirs(path, exist_ok=True)
+    with open(os.path.join(path, ".git"), "w", encoding="utf-8") as handle:
+        handle.write(f"gitdir: {gitdir}\n")
+    if sign:
+        with open(os.path.join(gitdir, "callsign"), "w", encoding="utf-8") as handle:
+            # A later key ahead of it would be legal too; readers skip unknowns.
+            handle.write(f"callsign={sign}\nfuture=ignored\n")
+
+
+os.makedirs(os.path.join(MAIN, ".git"))
+worktree(TREE, "DOT-99-feature-alpha", "DOT-99")
+worktree(PLAIN, "scratch")
+worktree(SLUG, "cleanup-rm-dead-code", "cleanup-rm-dead-code")
+
+# A stand-in for a scratch patch script that rewrites a runway from the main
+# checkout -- the case a scan of the command text alone cannot see, because the
+# path appears only inside the script.
+SCRIPT = os.path.join(TMP, "patch.py")
+with open(SCRIPT, "w", encoding="utf-8") as handle:
+    handle.write(f'import pathlib\nROOT = pathlib.Path("{TREE}")\nROOT.joinpath("x").write_text("y")\n')
+
+BENIGN = os.path.join(TMP, "benign.py")
+with open(BENIGN, "w", encoding="utf-8") as handle:
+    handle.write("print('nothing to do with worktrees')\n")
+
+CASES = [
+    # (label, tool, tool_input, cwd, expect_denied)
+    ("bash: test run in a runway from the main checkout", "Bash",
+     {"command": f"cd {TREE} && direnv exec . bundle exec rspec spec/"}, MAIN, True),
+    ("bash: git add via -C from the main checkout", "Bash",
+     {"command": f"git -C {TREE} add app/models/thing.rb"}, MAIN, True),
+    ("bash: git commit via -C from the main checkout", "Bash",
+     {"command": f"git -C {TREE} commit -F /tmp/msg.txt"}, MAIN, True),
+    ("bash: patch script naming the runway only inside itself", "Bash",
+     {"command": f"python3 {SCRIPT}"}, MAIN, True),
+    ("bash: same test run from inside the runway", "Bash",
+     {"command": f"cd {TREE} && direnv exec . bundle exec rspec spec/"}, TREE, False),
+    ("bash: reading a runway's code while briefing", "Bash",
+     {"command": f"grep -rn 'Thing' {TREE}/app"}, MAIN, False),
+    ("bash: read-only git against a runway", "Bash",
+     {"command": f"git -C {TREE} status --short"}, MAIN, False),
+    ("bash: provisioning a runway from the main checkout", "Bash",
+     {"command": f"cd {TREE} && bin/worktree-setup"}, MAIN, False),
+    ("bash: wta itself", "Bash",
+     {"command": "source ~/dotfiles/bash/functions && wta -w feature-beta"}, MAIN, False),
+    ("bash: interpreter on a script that touches no worktree", "Bash",
+     {"command": f"python3 {BENIGN}"}, MAIN, False),
+    ("bash: rm inside a branch slug is not a deletion", "Bash",
+     {"command": f"grep -rn foo {SLUG}/app"}, MAIN, False),
+    ("bash: ordinary work in the main checkout", "Bash",
+     {"command": f"cd {MAIN} && bundle exec rspec spec/"}, MAIN, False),
+    # Prose about the convention is not a path into a worktree. Documenting this
+    # guard, or editing the guard itself, must not trip it.
+    ("bash: a glob pattern in documentation is not a real path", "Bash",
+     {"command": "python3 -c \"print('denies writes under *.worktrees/<branch>/')\""}, MAIN, False),
+    ("edit: writing into a runway from the main checkout", "Edit",
+     {"file_path": f"{TREE}/app/models/thing.rb"}, MAIN, True),
+    ("write: writing into a runway from inside it", "Write",
+     {"file_path": f"{TREE}/app/models/thing.rb"}, TREE, False),
+    ("edit: a file outside any worktree", "Edit",
+     {"file_path": f"{MAIN}/app/models/thing.rb"}, MAIN, False),
+    ("read tool is never our business", "Read",
+     {"file_path": f"{TREE}/app/models/thing.rb"}, MAIN, False),
+    # The narrowing: a worktree with no callsign marker is not a runway.
+    ("edit: a plain worktree from the main checkout", "Edit",
+     {"file_path": f"{PLAIN}/notes.md"}, MAIN, False),
+    ("bash: git commit in a plain worktree from elsewhere", "Bash",
+     {"command": f"git -C {PLAIN} commit -m wip"}, MAIN, False),
+    ("edit: one runway from inside another", "Edit",
+     {"file_path": f"{TREE}/app/models/thing.rb"}, SLUG, True),
+]
+
+
+def run(tool, tool_input, cwd):
+    event = {"tool_name": tool, "tool_input": tool_input, "cwd": cwd}
+    out = subprocess.run(
+        [GUARD], input=json.dumps(event), capture_output=True, text=True, check=False
+    ).stdout.strip()
+    if not out:
+        return False, ""
+    decision = json.loads(out)["hookSpecificOutput"]
+    return decision["permissionDecision"] == "deny", decision["permissionDecisionReason"]
+
+
+failures = 0
+
+
+def check(label, ok, detail=""):
+    global failures
+    failures += not ok
+    print(f"{'ok  ' if ok else 'FAIL'}  {label}{detail}")
+
+
+for label, tool, tool_input, cwd, expect_denied in CASES:
+    denied, _ = run(tool, tool_input, cwd)
+    want = "deny" if expect_denied else "allow"
+    got = "deny" if denied else "allow"
+    check(label, denied == expect_denied, f"  (want {want}, got {got})")
+
+# The denial names the runway's session and window by callsign, read from the
+# marker -- not re-derived from the branch, which here would say the same thing
+# only by coincidence of naming.
+_, reason = run("Edit", {"file_path": f"{TREE}/x"}, MAIN)
+check("denial names the callsign's session", "session `DOT-99`" in reason)
+check("denial names the callsign's tmux window", "-t =DOT-99" in reason)
+
+# Malformed input never blocks the session.
+out = subprocess.run([GUARD], input="not json", capture_output=True, text=True, check=False)
+check("malformed event is allowed", out.returncode == 0 and not out.stdout.strip())
+
+shutil.rmtree(TMP)
+total = len(CASES) + 3
+print(f"\n{total - failures}/{total} passed")
+sys.exit(1 if failures else 0)
