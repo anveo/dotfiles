@@ -62,3 +62,14 @@ nvimfiles/
 - `bin/install.sh` -- Symlink setup script (`make install`)
 - `scripts/godot-nvim-open` -- Godot external editor hook; opens files in the Neovim listening on `/tmp/godot.nvim`
 - Monicur project (`~/code/monicur/monicur`) has a `.nvim.lua` for dadbod DATABASE_URL integration
+
+## Review Guidelines
+
+Reviews are requested by hand with an `@claude` mention on the PR (`.github/workflows/claude.yml`); nothing reviews on push. The `Check` workflow runs `make check` on Ubuntu and macOS -- read its result rather than assuming.
+
+- Files sourced by both `.zshrc` and `.bashrc` (`bash/{aliases,functions,env,paths}`, `shell/*.sh`) must parse and behave in both bash and zsh.
+- macOS-only commands (`pmset`, `defaults`, `osascript`, `/Applications/...`) belong inside a Darwin guard.
+- A check that cannot run must say so (skip or warn), never report ok. Empty output is not success.
+- Checks and tests must not change the machine: no installs, clones, or writes outside a temp dir, and never touch the user's running tmux server.
+- Install steps must be idempotent: `make install` is re-run on machines that already have the links.
+- Flag behaviour changes the PR description does not mention.
