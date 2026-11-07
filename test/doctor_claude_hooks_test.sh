@@ -152,6 +152,36 @@ expect "a command on PATH is ok" "$out" OK "sh is on PATH"
 expect "a command not on PATH WARNs, naming the event" "$out" WARN PreToolUse doctor-test-no-such-command
 expect_none "a missing bare command does not FAIL" "$out" FAIL
 
+echo "== commands are read raw, not @tsv-escaped =="
+printf '#!/bin/sh\n' >"$hooks/back\\slash"
+chmod +x "$hooks/back\\slash"
+f="$TMPROOT/raw.json"
+settings "$f" '{"PreToolUse": [{"hooks": [
+  {"type": "command", "command": "'"$hooks"'/back\\slash"}]}],
+  "Stop": [{"hooks": [
+  {"type": "command", "command": "'"$hooks"'/present\t--tab"}]}],
+  "Notification": [{"hooks": [
+  {"type": "command", "command": "'"$hooks"'/present\n--newline"}]}]}'
+out=$(run_check "$f")
+expect "a backslash in an existing path is ok" "$out" OK "$hooks/back\\slash exists"
+expect "a tab ends the program word" "$out" OK "$hooks/present exists" Stop
+expect "a newline ends the program word" "$out" OK "$hooks/present exists" Notification
+expect_none "none of them FAILs" "$out" FAIL
+
+echo "== commands that are not strings =="
+f="$TMPROOT/nonstring.json"
+settings "$f" '{"Stop": [{"hooks": [
+  {"type": "command", "command": null},
+  {"type": "command", "command": 42},
+  {"type": "command", "command": {"a": 1}},
+  {"type": "command", "command": "'"$hooks"'/present"}]}]}'
+out=$(run_check "$f")
+expect "null WARNs" "$out" WARN "not a usable string (null)"
+expect "a number WARNs" "$out" WARN "not a usable string (42)"
+expect "an object WARNs" "$out" WARN 'not a usable string ({"a":1})'
+expect "the other hooks are still checked" "$out" OK "$hooks/present exists"
+expect_none "a non-string is not a FAIL" "$out" FAIL
+
 echo "== nothing to check is never ok =="
 out=$(run_check "$TMPROOT/absent.json")
 expect "a missing settings file WARNs" "$out" WARN "absent.json"
