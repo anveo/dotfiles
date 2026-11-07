@@ -31,6 +31,17 @@ jobs:
         if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y zsh fzf
 
+      # The runner's /home/linuxbrew is group-writable, and .zshrc puts its
+      # site-functions on fpath. compinit's first full run then finds insecure
+      # directories, asks whether to continue, gets no answer without a
+      # terminal, and aborts -- so compdef is never defined. Remove group and
+      # other write from whatever compaudit flags, as the zsh docs advise.
+      - name: Secure completion directories (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          zsh -fc 'fpath=(/home/linuxbrew/.linuxbrew/share/zsh/site-functions $fpath); autoload -Uz compaudit; compaudit' \
+            | xargs -r sudo chmod g-w,o-w
+
       - name: Install fzf (macOS)
         if: runner.os == 'macOS'
         run: brew install fzf
