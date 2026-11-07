@@ -23,6 +23,8 @@ MAIN = os.path.join(TMP, "repo")
 TREE = os.path.join(TMP, "repo.worktrees", "DOT-99-feature-alpha")  # a runway
 PLAIN = os.path.join(TMP, "repo.worktrees", "scratch")  # git worktree add, no marker
 SLUG = os.path.join(TMP, "repo.worktrees", "cleanup-rm-dead-code")
+# A branch with a slash nests a level deeper: anveo/dot-98-x.
+NESTED = os.path.join(TMP, "repo.worktrees", "anveo", "dot-98-x")
 
 
 def worktree(path, name, sign=None):
@@ -42,6 +44,7 @@ os.makedirs(os.path.join(MAIN, ".git"))
 worktree(TREE, "DOT-99-feature-alpha", "DOT-99")
 worktree(PLAIN, "scratch")
 worktree(SLUG, "cleanup-rm-dead-code", "cleanup-rm-dead-code")
+worktree(NESTED, "dot-98-x", "DOT-98")
 
 # A stand-in for a scratch patch script that rewrites a runway from the main
 # checkout -- the case a scan of the command text alone cannot see, because the
@@ -99,6 +102,15 @@ CASES = [
      {"command": f"git -C {PLAIN} commit -m wip"}, MAIN, False),
     ("edit: one runway from inside another", "Edit",
      {"file_path": f"{TREE}/app/models/thing.rb"}, SLUG, True),
+    # Slash branches: the root is the nested worktree, not its first segment.
+    ("edit: a slash-branch runway from the main checkout", "Edit",
+     {"file_path": f"{NESTED}/app/new_file.rb"}, MAIN, True),
+    ("bash: git commit in a slash-branch runway from the main checkout", "Bash",
+     {"command": f"git -C {NESTED} commit -m wip"}, MAIN, True),
+    ("edit: a slash-branch runway from inside it", "Edit",
+     {"file_path": f"{NESTED}/app/new_file.rb"}, NESTED, False),
+    ("edit: the namespace dir above a slash branch is no worktree", "Edit",
+     {"file_path": f"{TMP}/repo.worktrees/anveo/notes.md"}, MAIN, False),
 ]
 
 

@@ -37,14 +37,16 @@ import os
 import re
 import sys
 
-# `~/code/repo.worktrees/feature-alpha` -> that whole prefix. Stops at
-# the branch segment: everything below it belongs to the same worktree.
+# A whole path into `~/code/repo.worktrees/...`. Which prefix of it is the
+# worktree is not decided here: a branch may contain slashes
+# (`anveo/dot-98-x` lives at `repo.worktrees/anveo/dot-98-x`), so the root is
+# found on disk by worktree_root(), not by counting segments.
 #
 # Anchored on `/` or `~/` and refusing glob and placeholder characters, so that
 # prose about the convention is not mistaken for a path into a real worktree.
 # Writing documentation that mentions `*.worktrees/<branch>/` -- or a hook that
 # matches it -- must not trip the hook.
-WORKTREE_RE = re.compile(r"""(?:/|~/)[^\s'"|;&()*<>`]*\.worktrees/[^\s'"|;&()/*<>`]+""")
+WORKTREE_RE = re.compile(r"""(?:/|~/)[^\s'"|;&()*<>`]*\.worktrees/[^\s'"|;&()*<>`]+""")
 
 # Bash commands that write to the tree, change git state, or run the project's
 # own tooling. Matched case-sensitively against the whole command string, so a
@@ -99,12 +101,31 @@ def allow():
     sys.exit(0)
 
 
+def worktree_root(path):
+    """The worktree a path under `<repo>.worktrees/` belongs to, or None.
+
+    Walks up from the path to the nearest directory holding a `.git` entry,
+    stopping before the `.worktrees` directory itself. The path need not exist
+    (a Write creates it); its ancestors are what get checked.
+    """
+    marker = ".worktrees" + os.sep
+    cut = path.find(marker)
+    if cut < 0:
+        return None
+    floor = path[: cut + len(".worktrees")]
+    while len(path) > len(floor):
+        if os.path.lexists(os.path.join(path, ".git")):
+            return path
+        path = os.path.dirname(path)
+    return None
+
+
 def worktrees_named(text):
     """Distinct worktree roots referenced by a string, as absolute paths."""
     roots = []
     for match in WORKTREE_RE.findall(text or ""):
-        root = os.path.abspath(os.path.expanduser(match))
-        if root not in roots:
+        root = worktree_root(os.path.abspath(os.path.expanduser(match)))
+        if root and root not in roots:
             roots.append(root)
     return roots
 
@@ -120,6 +141,9 @@ def callsign(root):
     private git dir; `wta` writes `callsign=<ID>` (plus any later keys) there.
     The callsign is read, never re-derived from the branch: it is the window
     name and the session name both, and the marker is its single source.
+
+    Duplicated in runway-callsign; change both or they disagree on what a
+    runway is.
     """
     try:
         with open(os.path.join(root, ".git"), encoding="utf-8") as handle:

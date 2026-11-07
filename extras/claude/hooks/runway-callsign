@@ -30,7 +30,11 @@ import sys
 
 
 def callsign(root):
-    """The callsign in a worktree's marker, or None when it is not a runway."""
+    """The callsign in a worktree's marker, or None when it is not a runway.
+
+    Duplicated in runway-write-guard; change both or they disagree on what a
+    runway is.
+    """
     try:
         with open(os.path.join(root, ".git"), encoding="utf-8") as handle:
             line = handle.readline().strip()
