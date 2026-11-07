@@ -26,6 +26,8 @@ Airboss is the name for the worktree workflow in these dotfiles: `dispatch` → 
 
 **The write guard.** The `runway-write-guard` PreToolUse hook denies writes and command runs (Edit, Write, NotebookEdit, and Bash commands that write or run project tooling) against a runway from any session whose working directory is outside it. The denial names the runway's session and window by callsign. Reads are always allowed, so the tower can brief from the main checkout. Worktrees without a marker are not guarded.
 
+**rtk in worktrees.** The rtk hook rewrites `git …` to `rtk git …` on runways, which are not isolated, so that is fine. In a worktree made by `EnterWorktree` (under `.claude/worktrees/`), rtk 1.1.0 skips the rewrite, because Claude Code's worktree isolation refuses a typed `rtk git …` there: it can't tell which repository the command targets. Use plain `git` in those sessions.
+
 **The handoff.** After briefing, `/dispatch` checks that the runway's session appears in `ListAgents` under its callsign, then sends it the brief with `SendMessage`. The Linear comment remains the durable record, and dispatch falls back to the comment alone when the session isn't listed.
 
 ## Commands
