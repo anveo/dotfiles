@@ -9,6 +9,11 @@
 # `make check` runs it. Every fixture lives in a temp dir, and HOME points
 # there, so the real ~/.claude is never read or written.
 
+if ! command -v jq >/dev/null 2>&1; then
+  echo "jq is not installed; cannot run these tests (brew install jq)"
+  exit 1
+fi
+
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 TMPROOT=$(mktemp -d)
 trap 'rm -rf "$TMPROOT"' EXIT
@@ -109,13 +114,27 @@ expect "a quoted path is unquoted, then expanded" "$out" FAIL "$hooks/gone-d is"
 expect "a leading VAR=value is skipped" "$out" FAIL "$hooks/gone-c"
 expect "any other variable WARNs as unverifiable" "$out" WARN '$OTHER/bin/thing'
 
+echo "== VAR=value prefixes =="
+# A quoted assignment once looped forever; every case here has to return.
+f="$TMPROOT/assign.json"
+settings "$f" '{"Stop": [{"hooks": [
+  {"type": "command", "command": "\"A=1\" ~/.claude/hooks/gone-e"},
+  {"type": "command", "command": "FOO=\"a b\" ~/.claude/hooks/gone-f"},
+  {"type": "command", "command": "X='"'"'c d'"'"' Y=2 ~/.claude/hooks/gone-g"},
+  {"type": "command", "command": "a/b=c ~/.claude/hooks/present"}]}]}'
+out=$(run_check "$f")
+expect "a quoted assignment is the program, not a prefix" "$out" WARN "A=1 is not on PATH"
+expect "a double-quoted value with a space is skipped whole" "$out" FAIL "$hooks/gone-f"
+expect "several assignments, single-quoted, are skipped" "$out" FAIL "$hooks/gone-g"
+expect "a word that is not a shell name is not an assignment" "$out" WARN "a/b=c is a relative path"
+
 echo "== bare commands =="
 f="$TMPROOT/bare.json"
 settings "$f" '{"PreToolUse": [{"matcher": "Bash", "hooks": [
   {"type": "command", "command": "sh -c true"},
   {"type": "command", "command": "doctor-test-no-such-command hook claude"}]}]}'
 out=$(run_check "$f")
-expect "a command on PATH is ok" "$out" OK sh
+expect "a command on PATH is ok" "$out" OK "sh is on PATH"
 expect "a command not on PATH WARNs, naming the event" "$out" WARN PreToolUse doctor-test-no-such-command
 expect_none "a missing bare command does not FAIL" "$out" FAIL
 
