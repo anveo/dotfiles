@@ -261,6 +261,8 @@ marker_is "wta -w writes the ticket as the callsign" "$repo" TST-99-feature-alph
 marker_is "a lowercase ticket is upcased" "$repo" tst-7-lowercase TST-7
 ( cd "$repo" && wta -w scratch ) >/dev/null 2>&1
 marker_is "a branch with no ticket is its own callsign" "$repo" scratch scratch
+( cd "$repo" && wta -w anveo/tst-12-prefixed ) >/dev/null 2>&1
+marker_is "a user-prefixed branch takes the ticket from its last segment" "$repo" anveo/tst-12-prefixed TST-12
 # Plain wta cds the shell into the worktree, so a subshell keeps this one put.
 ( cd "$repo" && wta TST-8-plain ) >/dev/null 2>&1
 marker_is "plain wta (no -w) writes it too" "$repo" TST-8-plain TST-8

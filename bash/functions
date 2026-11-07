@@ -686,8 +686,9 @@ wta() {
 
   # Branches are named per Linear's convention (app-230-fix-binstubs, APP-230),
   # so the leading TEAM-123 is the useful label; fall back to the branch when
-  # there is no ticket in it.
-  ticket=$(printf '%s' "$1" | sed -n 's|^\([A-Za-z][A-Za-z0-9]*-[0-9][0-9]*\).*|\1|p' | tr '[:lower:]' '[:upper:]')
+  # there is no ticket in it. Matched against the last path segment, so
+  # Linear's prefixed form (anveo/app-230-fix-binstubs) still yields APP-230.
+  ticket=$(printf '%s' "${1##*/}" | sed -n 's|^\([A-Za-z][A-Za-z0-9]*-[0-9][0-9]*\).*|\1|p' | tr '[:lower:]' '[:upper:]')
   [[ -z "$ticket" ]] && ticket="$1"
 
   # The callsign marker: what makes this worktree a runway (see
