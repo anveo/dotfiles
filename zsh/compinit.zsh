@@ -22,7 +22,16 @@ autoload -Uz compinit
   fi
 
   # Compile the dump so later startups load bytecode instead of parsing it.
+  # Compile to a per-process temp file and rename it into place: zcompile
+  # writing $dump.zwc directly races when several shells start at once (tmux
+  # restoring panes), and the loser fails with "can't write zwc file" because
+  # the winner's freshly created .zwc is mode 0444. The rename is atomic.
   if [[ ! $dump.zwc -nt $dump ]]; then
-    zcompile $dump
+    local tmp=$dump.$$.zwc
+    if zcompile $tmp $dump; then
+      mv -f $tmp $dump.zwc
+    else
+      rm -f $tmp
+    fi
   fi
 }
