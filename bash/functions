@@ -1204,51 +1204,6 @@ tlsoff() {
   echo "  it was on keeps writing to the deleted file until it restarts"
 }
 
-# Caps lock state on macOS: capslock [status|toggle|on|off] (default status).
-# Prints the resulting state. For when caps lock ends up on with no key to
-# clear it: Karabiner turns the physical key into ctrl/esc, and Synergy can
-# leave the lock state out of sync when moving between machines.
-# Sets the HID lock state through IOKit via JXA rather than sending a keypress,
-# so Karabiner never sees a key to remap and on/off are exact. No installs.
-capslock() {
-  local mode="${1:-status}"
-  case "$mode" in
-    status|toggle|on|off) ;;
-    *) echo "usage: capslock [status|toggle|on|off]" >&2; return 1 ;;
-  esac
-
-  if [ "$(uname -s)" != Darwin ]; then
-    echo "capslock: macOS only" >&2
-    return 1
-  fi
-
-  # kIOHIDParamConnectType = 1, kIOHIDCapsLockState = 1. The state printed is
-  # read back after the set, not assumed.
-  osascript -l JavaScript -e '
-    ObjC.import("IOKit");
-    ObjC.bindFunction("mach_task_self", ["unsigned int", []]);
-    function run(argv) {
-      const svc = $.IOServiceGetMatchingService(0, $.IOServiceMatching("IOHIDSystem"));
-      if (!svc) throw new Error("IOHIDSystem not found");
-      const conn = Ref(), cur = Ref();
-      if ($.IOServiceOpen(svc, $.mach_task_self(), 1, conn) !== 0) throw new Error("IOServiceOpen failed");
-      const read = () => {
-        if ($.IOHIDGetModifierLockState(conn[0], 1, cur) !== 0) throw new Error("read failed");
-        return cur[0] ? 1 : 0;
-      };
-      try {
-        const mode = argv[0];
-        if (mode !== "status") {
-          const want = mode === "on" ? 1 : mode === "off" ? 0 : 1 - read();
-          if ($.IOHIDSetModifierLockState(conn[0], 1, want) !== 0) throw new Error("set failed");
-        }
-        return read() ? "on" : "off";
-      } finally {
-        $.IOServiceClose(conn[0]);
-      }
-    }' "$mode"
-}
-
 # Apple Wireless Direct Link (AWDL) and the guard that keeps it down (`make
 # awdl`; see extras/awdl-guard/awdl-guard). `awdl` reports both. `awdl on`
 # pauses the guard and brings AWDL up, for a one-off AirDrop or Universal
