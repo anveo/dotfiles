@@ -63,6 +63,50 @@ else
   done <<<"$dangling" | detail
 fi
 
+echo "== links into the repo =="
+# The dangling scan above only finds links whose target is gone. An app that
+# saves its own config (Karabiner, `karabiner_cli --select-profile` in
+# particular) can instead replace the link with a plain copy, after which repo
+# edits are silently ignored. Each pair is a link make install creates and
+# the repo path it should point at; keep it in step with bin/install.sh. A
+# path that does not exist is skipped: that tool is not set up on this machine.
+links=(
+  ".zshrc:.zshrc"
+  ".tmux.conf:.tmux.conf"
+  ".gitconfig:.gitconfig"
+  ".tigrc:extras/tig/config"
+  ".config/nvim:nvimfiles"
+  ".config/lazygit/config.yml:extras/lazygit/config.yml"
+  ".visidata/config.py:extras/visidata/config.py"
+)
+if [ "$(uname -s)" = Darwin ]; then
+  links+=(
+    ".config/karabiner/karabiner.json:extras/karabiner.json"
+    ".hammerspoon:extras/hammerspoon"
+    ".config/ghostty/config:extras/ghostty/config"
+    "Library/Application Support/espanso/config/default.yml:extras/espanso/config/default.yml"
+    "Library/Application Support/espanso/match/base.yml:extras/espanso/match/base.yml"
+    "Library/Application Support/lazygit/config.yml:extras/lazygit/config.yml"
+  )
+fi
+replaced=
+for pair in "${links[@]}"; do
+  path="$HOME/${pair%%:*}"
+  want="$ROOT/${pair#*:}"
+  [ -e "$path" ] || [ -L "$path" ] || continue
+  if [ ! -L "$path" ]; then
+    replaced+="~/${pair%%:*} is a plain $( [ -d "$path" ] && echo directory || echo file ), not a link to $want"$'\n'
+  elif [ "$(readlink "$path")" != "$want" ]; then
+    replaced+="~/${pair%%:*} links to $(readlink "$path"), not $want"$'\n'
+  fi
+done
+if [ -z "$replaced" ]; then
+  ok "every checked config is still a link into the repo"
+else
+  warn "configs that no longer link into the repo (move any local changes into the repo, then re-run make install):"
+  printf '%s' "$replaced" | detail
+fi
+
 echo "== tmux =="
 if command -v tmux >/dev/null 2>&1; then
   # A throwaway server on its own socket, so the running one is untouched. The
