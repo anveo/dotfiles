@@ -4,10 +4,13 @@
             "complex_modifications": {
                 "rules": [
                     {
-                        "description": "Change right_command key to command+control+option+shift. (Use shift+caps_lock as caps_lock)",
+                        "description": "Change right_command key to command+control+option+shift (Hyper). caps_lock is optional so a stuck caps lock state cannot disable Hyper",
                         "manipulators": [
                             {
-                                "from": { "key_code": "right_command" },
+                                "from": {
+                                    "key_code": "right_command",
+                                    "modifiers": { "optional": ["caps_lock"] }
+                                },
                                 "to": [
                                     {
                                         "key_code": "right_command",
@@ -24,7 +27,10 @@
                             {
                                 "from": {
                                     "key_code": "i",
-                                    "modifiers": { "mandatory": ["command", "control", "option", "shift"] }
+                                    "modifiers": {
+                                        "mandatory": ["command", "control", "option", "shift"],
+                                        "optional": ["caps_lock"]
+                                    }
                                 },
                                 "to": [
                                     {
@@ -32,6 +38,22 @@
                                         "modifiers": ["left_control", "left_shift"]
                                     }
                                 ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Shift+caps_lock toggles caps lock (the key is otherwise control/escape). Karabiner sends it, so its own caps lock state stays in step",
+                        "manipulators": [
+                            {
+                                "from": {
+                                    "key_code": "caps_lock",
+                                    "modifiers": {
+                                        "mandatory": ["shift"],
+                                        "optional": ["caps_lock"]
+                                    }
+                                },
+                                "to": [{ "key_code": "caps_lock" }],
                                 "type": "basic"
                             }
                         ]
@@ -145,6 +167,7 @@
                 }
             ],
             "name": "brian",
+            "selected": true,
             "virtual_hid_keyboard": {
                 "caps_lock_delay_milliseconds": 0,
                 "keyboard_type": "ansi",
