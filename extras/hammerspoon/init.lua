@@ -10,12 +10,20 @@ hs.hotkey.bind(hyper, "0", function()
   hs.reload()
 end)
 
--- Focus apps
-local function focusApp(name)
+-- Focus an app, launching it if it isn't running. hint is a bundle ID
+-- (contains a dot) or an exact app name. Exact on purpose: hs.application.find
+-- matches names loosely, so "Todoist" also hit Safari's "AutoFill (Todoist)".
+local function focusApp(hint)
   return function()
-    local app = hs.application.find(name)
-    app:unhide()
-    app:activate()
+    local app = hs.application.get(hint)
+    if app then
+      app:unhide()
+      app:activate()
+    elseif hint:find(".", 1, true) then
+      hs.application.launchOrFocusByBundleID(hint)
+    else
+      hs.application.launchOrFocus(hint)
+    end
   end
 end
 
@@ -32,12 +40,12 @@ hs.hotkey.bind(hyper, "h", hs.grid.toggleShow)
 
 -- Use Karabiner-EventViewer->Frontmost application to find bundle identifiers
 hs.hotkey.bind(hyper, "1", focusApp("com.google.Chrome"))
-hs.hotkey.bind(hyper, "2", focusApp("Todoist"))
+hs.hotkey.bind(hyper, "2", focusApp("com.todoist.mac.Todoist"))
 hs.hotkey.bind(hyper, "3", focusApp("com.microsoft.VSCode"))
 
 hs.hotkey.bind(hyper, "t", focusApp("ghostty"))
 
-hs.hotkey.bind(hyper, "o", focusApp("Todoist"))
+hs.hotkey.bind(hyper, "o", focusApp("com.todoist.mac.Todoist"))
 
 hs.hotkey.bind(hyper, "n", focusApp("notion.id"))
 hs.hotkey.bind(hyper, "x", focusApp("Notion Calendar")) -- com.cron.electron
