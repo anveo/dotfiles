@@ -1,4 +1,4 @@
-.PHONY: install ai check doctor
+.PHONY: install ai awdl awdl-uninstall check doctor
 
 install:
 	@echo "Installing..."
@@ -7,6 +7,14 @@ install:
 ai:
 	@echo "Installing AI configs..."
 	./bin/install-ai.sh
+
+# macOS only, needs sudo: a root LaunchDaemon that keeps AWDL down so Wi-Fi
+# stops stuttering under Synergy. Not part of `install` for that reason.
+awdl:
+	./bin/install-awdl-guard.sh install
+
+awdl-uninstall:
+	./bin/install-awdl-guard.sh uninstall
 
 # `check` asks whether the repo is correct; `doctor` asks whether this machine's
 # install is healthy (dangling links, tool-rejected configs, missing binaries).
@@ -28,6 +36,8 @@ check:
 	python3 extras/claude/hooks/runway-callsign-test
 	@echo "doctor: Claude hook commands..."
 	bash test/doctor_claude_hooks_test.sh
+	@echo "awdl guard..."
+	bash test/awdl_guard_test.sh
 	@echo "install-ai: Claude settings..."
 	bash test/install_ai_settings_test.sh
 	@echo "zsh config..."

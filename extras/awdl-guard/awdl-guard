@@ -1,0 +1,55 @@
+#!/bin/bash
+#
+# Keeps Apple Wireless Direct Link (AWDL, interface awdl0) down.
+#
+# AWDL is the peer-to-peer Wi-Fi link behind AirDrop, AirPlay-to-device,
+# Sidecar and Universal Control. While it is up, the Wi-Fi radio hops off the
+# access point's channel every few seconds, and anything latency-sensitive over
+# Wi-Fi stutters -- Synergy's mouse and keyboard most noticeably. Turning it
+# off by hand (`ifconfig awdl0 down`) only lasts until macOS brings it back up,
+# typically on wake. This puts it back down whenever that happens.
+#
+# Runs as root under launchd: /Library/LaunchDaemons/local.dotfiles.awdl-guard.plist,
+# installed by `make awdl`. Pause it with the `awdl on` shell function.
+#
+# Plain /bin/bash (3.2) on purpose: it runs as root, so nothing from Homebrew
+# or the user's PATH. The plist pins PATH to the system directories.
+
+# Seconds between checks when no routing message arrives. route monitor
+# reports interface flag changes, so this is only a backstop.
+RECHECK=${AWDL_GUARD_RECHECK:-30}
+
+log() { logger -t awdl-guard "$*"; }
+
+down_if_up() {
+  # ifconfig lists flags in bit order and UP is bit 0, so it is always first.
+  case "$(ifconfig awdl0 2>/dev/null)" in
+    *'<UP,'*|*'<UP>'*)
+      if ifconfig awdl0 down; then
+        log "awdl0 was up; took it down"
+      else
+        log "awdl0 is up and ifconfig awdl0 down failed"
+      fi ;;
+  esac
+}
+
+# Every routing-socket message wakes the loop, including RTM_IFINFO for awdl0
+# coming up. Messages span several lines, so one event can mean a few checks;
+# each is a single ifconfig, which is cheap.
+exec 3< <(route -n monitor)
+
+log "started"
+while :; do
+  down_if_up
+  started=$SECONDS
+  # A message or a timeout: loop and check either way. End of input means
+  # route monitor died, so exit and let launchd's KeepAlive start a fresh one.
+  # bash 3.2's read returns 1 for both timeout and end of input (bash 4+ gives
+  # >128 for a timeout), so tell them apart by how long the read took. An end
+  # of input landing just as the timer ran out reads as a timeout once; the
+  # next read then fails at once and is caught.
+  if ! read -r -t "$RECHECK" -u 3 _ && [ $((SECONDS - started)) -lt "$RECHECK" ]; then
+    log "route monitor exited; stopping so launchd restarts the guard"
+    exit 1
+  fi
+done

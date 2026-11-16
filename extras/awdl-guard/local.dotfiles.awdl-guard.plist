@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Keeps AWDL (awdl0) down; see extras/awdl-guard/awdl-guard. Installed to
+  /Library/LaunchDaemons by `make awdl`. The script it runs is a root-owned
+  copy, not the repo file: a root daemon must not execute anything the user
+  account can edit.
+-->
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>local.dotfiles.awdl-guard</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/bin/bash</string>
+		<string>/Library/PrivilegedHelperTools/local.dotfiles.awdl-guard</string>
+	</array>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<key>PATH</key>
+		<string>/usr/bin:/bin:/usr/sbin:/sbin</string>
+	</dict>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>KeepAlive</key>
+	<true/>
+</dict>
+</plist>

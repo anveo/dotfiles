@@ -1249,6 +1249,59 @@ capslock() {
     }' "$mode"
 }
 
+# Apple Wireless Direct Link (AWDL) and the guard that keeps it down (`make
+# awdl`; see extras/awdl-guard/awdl-guard). `awdl` reports both. `awdl on`
+# pauses the guard and brings AWDL up, for a one-off AirDrop or Universal
+# Control; the pause lasts until `awdl off` or the next boot. Both need sudo.
+awdl() {
+  local mode="${1:-status}" label=local.dotfiles.awdl-guard
+  local plist="/Library/LaunchDaemons/local.dotfiles.awdl-guard.plist" link guard
+  case "$mode" in
+    status|on|off) ;;
+    *) echo "usage: awdl [status|on|off]" >&2; return 1 ;;
+  esac
+
+  if [ "$(uname -s)" != Darwin ]; then
+    echo "awdl: macOS only" >&2
+    return 1
+  fi
+
+  if [ ! -f "$plist" ]; then
+    if [ "$mode" != status ]; then
+      echo "awdl: guard not installed -- run make awdl in the dotfiles" >&2
+      return 1
+    fi
+    guard="not installed (make awdl)"
+  elif launchctl print "system/$label" 2>/dev/null | grep -q 'state = running'; then
+    guard=running
+  else
+    guard="paused (awdl off to resume)"
+  fi
+
+  case "$mode" in
+    on)
+      sudo launchctl bootout "system/$label" 2>/dev/null
+      sudo ifconfig awdl0 up || return
+      guard="paused (awdl off to resume)"
+      ;;
+    off)
+      if [ "$guard" != running ]; then
+        sudo launchctl bootstrap system "$plist" || return
+      fi
+      # The guard would catch it within a moment; this makes the output true now.
+      sudo ifconfig awdl0 down || return
+      guard=running
+      ;;
+  esac
+
+  case "$(ifconfig awdl0 2>/dev/null)" in
+    *'<UP,'*|*'<UP>'*) link=up ;;
+    '') link=missing ;;
+    *) link=down ;;
+  esac
+  echo "awdl0 $link, guard $guard"
+}
+
 # Pin the terminal tab title: `tabtitle my label` (alias `tt`); bare `tabtitle` unpins.
 # Ghostty's shell integration retitles on every prompt and command, so the pin is
 # re-applied from zle line-init (runs after Ghostty's precmd) and from a preexec

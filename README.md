@@ -42,6 +42,20 @@ machine, or a big cleanup.
 `make check` checks the repo itself: every tracked shell file parses in the
 shell(s) that source it (`test/syntax_check.sh`), plus the behaviour tests.
 
+## macOS: AWDL guard (Synergy lag over Wi-Fi)
+
+Apple Wireless Direct Link (AWDL) powers AirDrop, Sidecar and Universal
+Control, and makes the Wi-Fi radio leave the access point's channel every few
+seconds, so Synergy stutters on a Mac without Ethernet. `make awdl` (one `sudo`)
+installs a root LaunchDaemon, `local.dotfiles.awdl-guard`, that puts `awdl0`
+back down whenever macOS brings it up, typically on wake. It costs AirDrop,
+Sidecar, Universal Control and direct-to-device AirPlay; AirPlay and Google Cast
+over the normal network still work. `awdl` shows the state, `awdl on` pauses the
+guard until `awdl off` or the next boot, `make awdl-uninstall` removes it. The
+script lives in `extras/awdl-guard/`; the daemon runs a root-owned copy in
+`/Library/PrivilegedHelperTools`, so re-run `make awdl` after changing it
+(`make doctor` warns when the copies differ).
+
 ## Neovim
 
 Plugins auto-install on first launch via lazy.nvim. Treesitter parsers

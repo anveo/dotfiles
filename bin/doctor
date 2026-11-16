@@ -251,6 +251,26 @@ echo "== claude hooks =="
 . "$ROOT/bin/doctor-claude-hooks.sh"
 check_claude_hooks "$HOME/.claude/settings.json"
 
+echo "== awdl guard =="
+# Opt-in (make awdl), so not being installed is not a problem. Once installed,
+# a stopped daemon or a stale copy of the script means AWDL can come back.
+AWDL_LABEL=local.dotfiles.awdl-guard
+if [ "$(uname -s)" != Darwin ]; then
+  skip "awdl guard (macOS only)"
+elif [ ! -f "/Library/LaunchDaemons/$AWDL_LABEL.plist" ]; then
+  skip "awdl guard (not installed; make awdl to install)"
+else
+  if launchctl print "system/$AWDL_LABEL" 2>/dev/null | grep -q 'state = running'; then
+    ok "awdl guard is running"
+  else
+    warn "awdl guard is installed but not running (paused with awdl on? awdl off resumes it)"
+  fi
+  if ! cmp -s "$ROOT/extras/awdl-guard/awdl-guard" "/Library/PrivilegedHelperTools/$AWDL_LABEL" \
+    || ! cmp -s "$ROOT/extras/awdl-guard/$AWDL_LABEL.plist" "/Library/LaunchDaemons/$AWDL_LABEL.plist"; then
+    warn "awdl guard's installed copy differs from the repo (make awdl to update)"
+  fi
+fi
+
 echo "== Brewfile =="
 if command -v brew >/dev/null 2>&1; then
   if out=$(brew bundle check --no-upgrade --verbose --file="$ROOT/Brewfile" 2>&1); then
