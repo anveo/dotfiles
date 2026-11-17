@@ -19,6 +19,10 @@ shell-integration = detect
 # Trialing the title feature (resets tab title after ssh exits, shows running command).
 # Uncomment to go back to letting nothing manage the title.
 # shell-integration-features = no-title
+# When you ssh, install xterm-ghostty terminfo on the remote host (cached locally
+# per host). If that fails, fall back to TERM=xterm-256color so tools like screen
+# still start. Unlisted features (cursor, sudo, title) keep their defaults.
+shell-integration-features = ssh-terminfo,ssh-env
 
 # Cursor Configuration
 cursor-style = block
